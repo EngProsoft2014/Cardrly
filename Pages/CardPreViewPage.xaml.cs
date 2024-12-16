@@ -1,5 +1,6 @@
 using Cardrly.Mode_s.Card;
 using Plugin.NFC;
+using Polly.Caching;
 using System.Text;
 
 namespace Cardrly.Pages;
@@ -9,7 +10,7 @@ public partial class CardPreViewPage : Controls.CustomControl
     CardResponse Card = new CardResponse();
     public CardPreViewPage(CardResponse _Card)
     {
-		InitializeComponent();
+        InitializeComponent();
 
         Card = _Card;
         // Initialize NFC Plugin
@@ -209,19 +210,6 @@ public partial class CardPreViewPage : Controls.CustomControl
         }
     }
 
-    public static string EscapeVCardValue(string value)
-    {
-        if (string.IsNullOrEmpty(value))
-            return string.Empty;
-
-        return value
-            .Replace("\\", "\\\\") // Escape backslash
-            .Replace(",", "\\,")   // Escape comma
-            .Replace(";", "\\;")   // Escape semicolon
-            .Replace("\n", "\\n")  // Escape newline
-            .Replace("\r", "");    // Remove carriage return (already handled in line breaks)
-    }
-
     /// <summary>
     /// Event raised when a NFC Tag is discovered
     /// </summary>
@@ -229,7 +217,7 @@ public partial class CardPreViewPage : Controls.CustomControl
     /// <param name="format">Format the tag</param>
     async void Current_OnTagDiscovered(ITagInfo tagInfo, bool format)
     {
-       
+
         if (!CrossNFC.Current.IsWritingTagSupported)
         {
             await ShowAlert("Writing tag is not supported on this device");
@@ -247,27 +235,38 @@ public partial class CardPreViewPage : Controls.CustomControl
               //$"LOGO:{Card.UrlImgProfile}\n" +
               "END:VCARD";
 
-        //  string vCardData = "BEGIN:VCARD\n" +
-        //"VERSION:3.0\n" +
-        //"FN:Tarek Gaber\n" +
-        //"ORG:Engprosoft company\n" +
-        //"TEL:+18324686031\n" +
-        //"EMAIL:engprosoftcompany@gmail.com\n" +
-        //"END:VCARD";
+
+        //string vCardData = "BEGIN:VCARD\n" +
+        //                  "VERSION:3.0\n" +
+        //                  "FN:Tarek Gaber\n" +
+        //                  "ORG:Engprosoft company\n" +
+        //                  "TEL:+18324686031\n" +
+        //                  "EMAIL:engprosoftcompany@gmail.com\n" +
+        //                  "END:VCARD";
 
         //string vCardData = Card.ToString();
+
 
         try
         {
             NFCNdefRecord record = null;
-            if(_type == NFCNdefTypeFormat.Mime)
+            //if (_type == NFCNdefTypeFormat.Mime)
+            //{
+            //    record = new NFCNdefRecord
+            //    {
+            //        TypeFormat = NFCNdefTypeFormat.Mime,
+            //        MimeType = "text/vcard",
+            //        Payload = NFCUtils.EncodeToByteArray(vCardData),
+            //        Uri = Card.CardUrl
+            //    };
+            //}
+
+            if (_type == NFCNdefTypeFormat.Uri)
             {
                 record = new NFCNdefRecord
                 {
-                    TypeFormat = NFCNdefTypeFormat.Mime,
-                    MimeType = "text/vcard",
-                    Payload = NFCUtils.EncodeToByteArray(vCardData),
-                    Uri = Card.CardUrl
+                    TypeFormat = NFCNdefTypeFormat.Uri,
+                    Payload = NFCUtils.EncodeToByteArray(Card.CardUrl)
                 };
             }
 
@@ -317,16 +316,14 @@ public partial class CardPreViewPage : Controls.CustomControl
     /// <param name="e"></param>
     async void Button_Clicked_StartWriting_Uri(object sender, System.EventArgs e) => await Publish(NFCNdefTypeFormat.Uri);
 
+
     /// <summary>
     /// Start publish operation to write the tag (CUSTOM) when <see cref="Current_OnTagDiscovered(ITagInfo, bool)"/> event will be raised
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    async void Button_Clicked_StartWriting_Custom(object sender, System.EventArgs e)
-    {
-        await Publish();
-        await Publish(NFCNdefTypeFormat.Mime);
-    }
+    async void Button_Clicked_StartWriting_Custom(object sender, System.EventArgs e) => await Publish(NFCNdefTypeFormat.Mime);
+    
 
     /// <summary>
     /// Start publish operation to format the tag when <see cref="Current_OnTagDiscovered(ITagInfo, bool)"/> event will be raised

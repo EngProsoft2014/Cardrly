@@ -90,7 +90,7 @@ namespace Cardrly.ViewModels
                     {
                         card.UrlImgProfile = Utility.ServerUrl + card.UrlImgProfile;
                         card.UrlImgCover = Utility.ServerUrl + card.UrlImgCover;
-                        card.CardUrl = $"https://cards.engprosoft.net/profile/{card.Id}";
+                        card.CardUrl = $"https://app.cardrly.com/profile/{card.Id}";
                     }
                     CardLst = json;
                 }

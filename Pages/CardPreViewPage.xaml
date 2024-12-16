@@ -24,11 +24,12 @@
                TextColor="Black" VerticalOptions="CenterAndExpand" TranslationX="0"></Label>
             <Label Text="Setup Card" FontSize="12" TextColor="#FF7F3E" FontAttributes="Bold" VerticalOptions="CenterAndExpand">
                 <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="Button_Clicked_StartWriting_Custom"></TapGestureRecognizer>
+                    <TapGestureRecognizer Tapped="Button_Clicked_StartWriting_Uri"></TapGestureRecognizer>
                 </Label.GestureRecognizers>
             </Label>
         </StackLayout>
 
+        
         <!--Data-->
         <ScrollView VerticalOptions="FillAndExpand">
             <StackLayout Margin="0,50,0,30" Spacing="10">
