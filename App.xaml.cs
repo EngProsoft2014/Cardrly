@@ -1,6 +1,7 @@
 ﻿
 
 
+using Akavache;
 using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Pages;
@@ -19,6 +20,10 @@ namespace Cardrly
         {
             Rep = GenericRep;
             _service = service;
+
+            BlobCache.ApplicationName = "CardrlyDB";
+            BlobCache.EnsureInitialized();
+
             InitializeComponent();
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(ApiConstants.syncFusionLicence);
             string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
