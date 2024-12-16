@@ -92,13 +92,14 @@
                                                                             <!--Edit Card-->
                                                                             <Button Text="Edit" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" CornerRadius="20"
                                                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=EditCardClickCommand}"
-                                                                                    CommandParameter="{Binding .}"></Button>
+                                                                                    CommandParameter="{Binding .}" WidthRequest="80"></Button>
                                                                             <!--PreView-->
                                                                             <Button Text="PreView" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" CornerRadius="20"
                                                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=CardPreViewClickCommand}"
-                                                                                    CommandParameter="{Binding .}"></Button>
+                                                                                    CommandParameter="{Binding .}" WidthRequest="80"></Button>
                                                                             <!--More Optiions-->
-                                                                            <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="Gray" HorizontalOptions="FillAndExpand">
+                                                                            <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="Gray" 
+                                                                                    HorizontalOptions="FillAndExpand" WidthRequest="80">
                                                                                 <Image WidthRequest="25">
                                                                                     <Image.Source>
                                                                                         <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="15"></FontImageSource>
