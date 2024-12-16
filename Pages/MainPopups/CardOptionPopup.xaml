@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+             xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+             x:Class="Cardrly.Pages.MainPopups.CardOptionPopup"
+             CloseWhenBackgroundIsClicked="True"
+             NavigationPage.HasNavigationBar="False" 
+             BackgroundColor="#90000000"
+             Title="CardOptionPopup">
+    <mopups:PopupPage.Animation>
+        <mopupsanim:MoveAnimation
+           DurationIn="700"
+           EasingIn="BounceOut"
+           PositionIn="Bottom"
+           PositionOut="Center" />
+    </mopups:PopupPage.Animation>
+
+    <StackLayout VerticalOptions="EndAndExpand">
+
+        <Border Padding="10" Margin="20" BackgroundColor="Transparent" StrokeThickness="0">
+            <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
+                <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
+                    <StackLayout  BackgroundColor="#FFFFFF" Spacing="3">
+                        <!--Setup Card-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="Setup Card"
+                               TextColor="#FF7F3E"
+                               FontSize="16"
+                               FontFamily="AlmaraiBold"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="CenterAndExpand" 
+                               Padding="8">
+
+                            </Label>
+
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_SetupCard"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Edit Card-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label 
+                               Text="Edit Card"
+                               TextColor="#FF7F3E"
+                               FontSize="16"
+                               FontFamily="AlmaraiBold"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="CenterAndExpand"
+                               Padding="8">
+
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_EditCaed"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Preview Card-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label 
+                               Text="Preview Card"
+                               TextColor="#FF7F3E"
+                               FontSize="16"
+                               FontFamily="AlmaraiBold"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="CenterAndExpand"
+                               Padding="8">
+
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_PreviewCard"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Delete Card-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label 
+                               Text="Delete Card"
+                               TextColor="Red"
+                               FontSize="16"
+                               FontFamily="AlmaraiBold"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="CenterAndExpand"
+                               Padding="8">
+
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_DeleteCard"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </StackLayout>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="25"></RoundRectangle>
+                    </Border.StrokeShape>
+                </Border>
+                <Border Padding="10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
+
+
+                    <Label Text="Cancle"
+                       TextColor="#FF7F3E"
+                       FontSize="14"
+                       FontFamily="AlmaraiBold"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       HorizontalOptions="CenterAndExpand"
+                       Padding="10">
+
+                    </Label>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Cancel"></TapGestureRecognizer>
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20"></RoundRectangle>
+                    </Border.StrokeShape>
+                </Border>
+
+            </StackLayout>
+        </Border>
+    </StackLayout>
+</mopups:PopupPage>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Controls="clr-namespace:Cardrly.Controls"
+             x:Class="Cardrly.Pages.CardPreViewPage"
+             Title="CardPreViewPage">
+    <StackLayout Margin="20">
+        <!--Header-->
+        <StackLayout Orientation="Horizontal">
+            <Image VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="{Binding Card.CardName}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+               TextColor="Black" VerticalOptions="CenterAndExpand" TranslationX="0"></Label>
+            <Label Text="Setup Card" FontSize="12" TextColor="#FF7F3E" FontAttributes="Bold" VerticalOptions="CenterAndExpand">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Button_Clicked_StartWriting_Custom"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+
+        <Label Text="Clear Card" FontSize="12" TextColor="#FF7F3E" FontAttributes="Bold" Margin="0,30,0,0">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Button_Clicked_FormatTag"></TapGestureRecognizer>
+            </Label.GestureRecognizers>
+        </Label>
+        <!--Data-->
+        <ScrollView VerticalOptions="FillAndExpand">
+            <StackLayout Margin="0,50,0,30" Spacing="10">
+                <!--Card Design-->
+                <VerticalStackLayout Spacing="3" VerticalOptions="CenterAndExpand">
+                    <!--Cover Iamge-->
+                    <Border StrokeShape="RoundRectangle 10" Margin="30,0,30,0" StrokeThickness="1.5" HeightRequest="130" Stroke="#FF7F3E">
+                        <Image Source="{Binding Card.UrlImgCover}"
+                           VerticalOptions="FillAndExpand" Aspect="AspectFill"></Image>
+                    </Border>
+                    <Grid>
+                        <!--Card Info-->
+                        <Border StrokeShape="RoundRectangle 10" Margin="30,0,30,0" StrokeThickness="1" BackgroundColor="#FF7F3E">
+                            <StackLayout HorizontalOptions="CenterAndExpand" Margin="0,55,0,30" Spacing="5">
+                                <!--Name-->
+                                <Label Text="{Binding Card.PersonName}" FontSize="16" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"></Label>
+                                <!--JobTitle-->
+                                <Label Text="{Binding Card.JobTitle}" FontSize="14" TextColor="#219B9D" HorizontalTextAlignment="Center"></Label>
+                                <!--location-->
+                                <Label Text="{Binding Card.location}" FontSize="14" TextColor="#219B9D" HorizontalTextAlignment="Center"></Label>
+                                <!--Bio-->
+                                <Label Text="{Binding Card.Bio}" FontSize="14" TextColor="#219B9D" HorizontalTextAlignment="Center"></Label>
+                            </StackLayout>
+                            <Border.Shadow>
+                                <Shadow Offset="0,15" Brush="{OnPlatform Android=LightGray,iOS=Gray}" Radius="10"></Shadow>
+                            </Border.Shadow>
+                        </Border>
+                        <!--Profile Iamge-->
+                        <Border StrokeShape="RoundRectangle 60" HeightRequest="100" WidthRequest="100" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" 
+                            TranslationY="-50" StrokeThickness="1" Stroke="#FF7F3E">
+                            <Image Source="{Binding Card.UrlImgProfile}" Aspect="AspectFill"></Image>
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+                
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</Controls:CustomControl>

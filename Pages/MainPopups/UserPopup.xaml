@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+                  xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+                  x:Class="Cardrly.Pages.MainPopups.UserPopup"
+                  CloseWhenBackgroundIsClicked="True"
+                  NavigationPage.HasNavigationBar="False" 
+                  BackgroundColor="#90000000"
+                  Title="LanguagePopup">
+
+
+    <mopups:PopupPage.Animation>
+        <mopupsanim:MoveAnimation
+           DurationIn="700"
+           EasingIn="BounceOut"
+           PositionIn="Bottom"
+           PositionOut="Center" />
+    </mopups:PopupPage.Animation>
+
+    <StackLayout VerticalOptions="EndAndExpand">
+
+        <Border Padding="10" Margin="20" BackgroundColor="Transparent" Stroke="Transparent">
+            <StackLayout HorizontalOptions="FillAndExpand" Spacing="10">
+                <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
+                    <StackLayout  BackgroundColor="#FFFFFF">
+                        <Label Text="Type of Card" FontAutoScalingEnabled="False"
+                           TextColor="#333333"
+                           FontSize="13"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           HorizontalOptions="CenterAndExpand"
+                           Padding="8"></Label>
+
+                        <Line X1="150" HorizontalOptions="FillAndExpand" BackgroundColor="#212121"></Line>
+
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label x:Name="lblCreateLink" FontAutoScalingEnabled="False"
+                                   Text="Create Link"
+                                   TextColor="Black"
+                                   FontSize="14"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="StartAndExpand" 
+                                   Padding="8">
+
+                            </Label>
+
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_CreateLink"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+
+                        <Line X1="150"  HorizontalOptions="FillAndExpand" BackgroundColor="#212121"></Line>
+
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label x:Name="lblCustomVcard" FontAutoScalingEnabled="False"
+                                   Text="Custom Vcard"
+                                   TextColor="Black"
+                                   FontSize="14"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="StartAndExpand"
+                                   Padding="8">
+
+                            </Label>
+
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Custom_Vcard"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+
+
+                    </StackLayout>
+
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="30"></RoundRectangle>
+                    </Border.StrokeShape>
+                </Border>
+                <Border Padding="10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
+
+                    <Label Text="Cancel" FontAutoScalingEnabled="False"
+                           TextColor="Gray"
+                           FontSize="14"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           HorizontalOptions="CenterAndExpand"
+                           Padding="10">
+
+                    </Label>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20"></RoundRectangle>
+                    </Border.StrokeShape>
+                </Border>
+
+
+            </StackLayout>
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="25"></RoundRectangle>
+            </Border.StrokeShape>
+        </Border>
+    </StackLayout>
+</mopups:PopupPage>
