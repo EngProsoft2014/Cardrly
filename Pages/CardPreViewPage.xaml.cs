@@ -72,37 +72,9 @@ public partial class CardPreViewPage : Controls.CustomControl
             if (DeviceInfo.Platform == DevicePlatform.iOS)
                 _isDeviceiOS = true;
 
-
             CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
 
-            //// Custom NFC configuration (ex. UI messages in French)
-            //CrossNFC.Current.SetConfiguration(new NfcConfiguration
-            //{
-            //	DefaultLanguageCode = "fr",
-            //	Messages = new UserDefinedMessages
-            //	{
-            //		NFCSessionInvalidated = "Session invalidée",
-            //		NFCSessionInvalidatedButton = "OK",
-            //		NFCWritingNotSupported = "L'écriture des TAGs NFC n'est pas supporté sur cet appareil",
-            //		NFCDialogAlertMessage = "Approchez votre appareil du tag NFC",
-            //		NFCErrorRead = "Erreur de lecture. Veuillez rééssayer",
-            //		NFCErrorEmptyTag = "Ce tag est vide",
-            //		NFCErrorReadOnlyTag = "Ce tag n'est pas accessible en écriture",
-            //		NFCErrorCapacityTag = "La capacité de ce TAG est trop basse",
-            //		NFCErrorMissingTag = "Aucun tag trouvé",
-            //		NFCErrorMissingTagInfo = "Aucune information à écrire sur le tag",
-            //		NFCErrorNotSupportedTag = "Ce tag n'est pas supporté",
-            //		NFCErrorNotCompliantTag = "Ce tag n'est pas compatible NDEF",
-            //		NFCErrorWrite = "Aucune information à écrire sur le tag",
-            //		NFCSuccessRead = "Lecture réussie",
-            //		NFCSuccessWrite = "Ecriture réussie",
-            //		NFCSuccessClear = "Effaçage réussi"
-            //	}
-            //});
-
             await AutoStartAsync().ConfigureAwait(false);
-
-
         }
     }
 
@@ -350,7 +322,11 @@ public partial class CardPreViewPage : Controls.CustomControl
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    async void Button_Clicked_StartWriting_Custom(object sender, System.EventArgs e) => await Publish(NFCNdefTypeFormat.Mime);
+    async void Button_Clicked_StartWriting_Custom(object sender, System.EventArgs e)
+    {
+        await Publish();
+        await Publish(NFCNdefTypeFormat.Mime);
+    }
 
     /// <summary>
     /// Start publish operation to format the tag when <see cref="Current_OnTagDiscovered(ITagInfo, bool)"/> event will be raised

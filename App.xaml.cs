@@ -14,6 +14,7 @@ namespace Cardrly
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
         #endregion
+        [Obsolete]
         public App(IGenericRepository GenericRep, Services.Data.ServicesService service)
         {
             Rep = GenericRep;
@@ -21,6 +22,7 @@ namespace Cardrly
             InitializeComponent();
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(ApiConstants.syncFusionLicence);
             string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
+
             if (string.IsNullOrEmpty(AccountId))
             {
                 var vm = new LoginViewModel(Rep, _service);

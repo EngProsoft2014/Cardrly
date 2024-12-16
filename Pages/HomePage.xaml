@@ -94,7 +94,7 @@
                                                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=EditCardClickCommand}"
                                                                                     CommandParameter="{Binding .}" WidthRequest="80"></Button>
                                                                             <!--PreView-->
-                                                                            <Button Text="PreView" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" CornerRadius="20"
+                                                                            <Button Text="Preview" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" CornerRadius="20"
                                                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=CardPreViewClickCommand}"
                                                                                     CommandParameter="{Binding .}" WidthRequest="80"></Button>
                                                                             <!--More Optiions-->

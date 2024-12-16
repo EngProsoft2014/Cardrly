@@ -29,11 +29,6 @@
             </Label>
         </StackLayout>
 
-        <Label Text="Clear Card" FontSize="12" TextColor="#FF7F3E" FontAttributes="Bold" Margin="0,30,0,0">
-            <Label.GestureRecognizers>
-                <TapGestureRecognizer Tapped="Button_Clicked_FormatTag"></TapGestureRecognizer>
-            </Label.GestureRecognizers>
-        </Label>
         <!--Data-->
         <ScrollView VerticalOptions="FillAndExpand">
             <StackLayout Margin="0,50,0,30" Spacing="10">
