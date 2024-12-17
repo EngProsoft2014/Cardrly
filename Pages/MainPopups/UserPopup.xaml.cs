@@ -25,7 +25,7 @@ public partial class UserPopup : Mopups.Pages.PopupPage
     private async void TapGestureRecognizer_Custom_Vcard(object sender, TappedEventArgs e)
     {
         var vm = new AddCustomCardViewModel(Rep,_service);
-        var page = new AddCustomCardPage();
+        var page = new AddCustomCardPage(vm);
         page.BindingContext = vm;
         await App.Current!.MainPage!.Navigation.PushAsync(page);
         await MopupService.Instance.PopAsync();

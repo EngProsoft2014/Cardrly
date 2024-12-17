@@ -54,11 +54,11 @@
         #region Cards
         public static string CardGetAllApi = "Account/";
         public static string CardGetApi = "Account/{0}/Card/{1}";
-        public static string CardAddApi = "Account/{0}/Card";
+        public static string CardAddApi = "Account/";
         public static string CardUpdateApi = "Account/";
         public static string CardDeleteApi = "Account/";
         public static string CardToggleApi = "Account/{0}/Card/{1}/ToggleActive";
-        public static string CardGetDetailsAllApi = "CardDetails/{0}";
+        public static string CardGetDetailsAllApi = "CardDetails/";
         #endregion
     }
 }

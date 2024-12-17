@@ -5,7 +5,7 @@ namespace Cardrly.Pages;
 
 public partial class HomePage : Controls.CustomControl
 {
-
+    CardsViewModel cardsViewModel;
     #region Service
     readonly IGenericRepository Rep;
     readonly Services.Data.ServicesService _service;
@@ -21,11 +21,11 @@ public partial class HomePage : Controls.CustomControl
     {
 		if (e.NewIndex == 1)
 		{
-            CardsView.BindingContext = new CardsViewModel(Rep,_service);
+            CardsView.BindingContext = cardsViewModel = new CardsViewModel(Rep,_service);
 		}
 		else if (e.NewIndex == 2)
 		{
-			ContactView.BindingContext = new ContactViewModel();
+			ContactView.BindingContext  = new ContactViewModel();
 		}
 		else if (e.NewIndex == 3)
 		{
@@ -45,5 +45,12 @@ public partial class HomePage : Controls.CustomControl
 
         // Return true to prevent the default behavior
         return true;
+    }
+
+    private void RefreshView_Refreshing(object sender, EventArgs e)
+    {
+        RefView.IsRefreshing = true;
+        cardsViewModel.Init();
+        RefView.IsRefreshing = false;
     }
 }

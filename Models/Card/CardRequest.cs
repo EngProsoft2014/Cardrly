@@ -1,13 +1,16 @@
 ﻿using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace Cardrly.Mode_s.Card
 {
     public class CardRequest : INotifyPropertyChanged
     {
         public string CardName { get; set; } = default!;
-        public string? Cardlayout { get; set; } = default!;
+        public string? Cardlayout { get; set; } = "_mobilecard"!;
         public byte[]? ImgFileProfile { get; set; }
+        [JsonIgnore]
         ImageSource? _ImgProfileFile;
+        [JsonIgnore]
         public ImageSource? ImgProfileFile
         {
             get
@@ -25,7 +28,9 @@ namespace Cardrly.Mode_s.Card
         }
         public string? ExtensionProfile { get; set; } = "No";
         public byte[]? ImgFileCover { get; set; }
+        [JsonIgnore]
         ImageSource? _ImgCoverFile;
+        [JsonIgnore]
         public ImageSource? ImgCoverFile
         {
             get

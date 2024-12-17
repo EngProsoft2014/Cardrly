@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Controls="clr-namespace:Cardrly.Controls"
+             x:Class="Cardrly.Pages.Links.LinksPage"
+             Title="LinksPage">
+    <StackLayout Margin="20" Spacing="20">
+        <!--Header-->
+        <StackLayout Orientation="Horizontal">
+            <Image VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="My Links" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                   TextColor="Black" VerticalOptions="CenterAndExpand" ></Label>
+            <!--Add Iamge-->
+            <Image >
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E" Size="25"></FontImageSource>
+                </Image.Source>
+            </Image>
+        </StackLayout>
+        <!--Data-->
+        <CollectionView ItemsSource="{Binding CardDetails.CardLinks}" EmptyView="Sorry no aata here...." VerticalOptions="FillAndExpand">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border StrokeShape="RoundRectangle 20" Padding="10">
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <!--Icon-->
+                            <Border StrokeShape="RoundRectangle 50" StrokeThickness="0" HeightRequest="60" WidthRequest="60">
+                                <Image Source="{Binding AccountLinkUrlImgName}" Aspect="AspectFill"></Image>
+                            </Border>
+                            <VerticalStackLayout Margin="0,7,0,0" HorizontalOptions="FillAndExpand" Spacing="7">
+                                <!--Titel-->
+                                <Label Text="{Binding AccountLinkTitle}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                <!--TypeLink-->
+                                <Label Text="{Binding ValueOf}" FontSize="12" TextColor="Gray" FontAttributes="Bold"></Label>
+                            </VerticalStackLayout>
+                            <!--Delete Icon-->
+                            <Image >
+                                <Image.Source>
+                                    <FontImageSource Glyph="" FontFamily="FontIcon" Color="Gray" Size="20"></FontImageSource>
+                                </Image.Source>
+                            </Image>
+                            <!--IsAdctive-->
+                            <CheckBox Color="#FF7F3E" IsChecked="{Binding Active}"></CheckBox>
+                        </StackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <!--Save Button-->
+        <Button  FontAutoScalingEnabled="False" Text="Save" FontSize="16" FontAttributes="Bold" BackgroundColor="#FF7F3E" TextColor="White"
+                 Command="{Binding SaveClickCommand}" HorizontalOptions="FillAndExpand"></Button>
+    </StackLayout>
+</Controls:CustomControl>

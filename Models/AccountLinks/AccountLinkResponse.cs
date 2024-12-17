@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Cardrly.Models.AccountLinks
+﻿namespace Cardrly.Models.AccountLinks
 {
     public class AccountLinkResponse
     {

@@ -62,14 +62,14 @@ namespace Cardrly.ViewModels
         async Task EditCardClick(CardResponse card)
         {
             var vm = new AddCustomCardViewModel(card,Rep,_service);
-            var page = new AddCustomCardPage();
+            var page = new AddCustomCardPage(vm);
             page.BindingContext = vm;
             await App.Current!.MainPage!.Navigation.PushAsync(page);
         }
         #endregion
 
         #region Methodes
-        async void Init()
+        public async void Init()
         {
             await GetAllCards();
         }

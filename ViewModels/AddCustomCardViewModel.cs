@@ -7,6 +7,8 @@ using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Mode_s.Card;
 using Cardrly.Pages.MainPopups;
+using Cardrly.Models.Card;
+using Cardrly.Pages.Links;
 
 namespace Cardrly.ViewModels
 {
@@ -21,6 +23,8 @@ namespace Cardrly.ViewModels
         public int isCoverImageAdded = 1;
         [ObservableProperty]
         CardResponse card = new CardResponse();
+        [ObservableProperty]
+        int addOrUpdate = 0; // 1 - Add & 2 - update 
         #endregion
 
         #region Service
@@ -33,12 +37,15 @@ namespace Cardrly.ViewModels
         {
             Rep = GenericRep;
             _service = service;
+            AddOrUpdate = 1;
         }
         public AddCustomCardViewModel(CardResponse _card, IGenericRepository GenericRep, Services.Data.ServicesService service)
         {
             Rep = GenericRep;
             _service = service;
+            Card = _card;
             Init(_card);
+            AddOrUpdate = 2;
         }
         #endregion
 
@@ -108,8 +115,25 @@ namespace Cardrly.ViewModels
             {
                 string UserToken = await _service.UserToken();
                 string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
+                CardRequestDto requestDto = new CardRequestDto()
+                {
+                    PersonName = Request.PersonName,
+                    Cardlayout = Request.Cardlayout,
+                    CardName = Request.CardName,
+                    Bio = Request.Bio,
+                    CardTheme = Request.CardTheme,
+                    ExtensionCover = Request.ExtensionCover,
+                    ExtensionProfile = Request.ExtensionProfile,
+                    FontStyle = Request.FontStyle,
+                    ImgFileCover = Request.ImgFileCover,
+                    ImgFileProfile = Request.ImgFileProfile,
+                    JobTitle = Request.JobTitle,
+                    LinkColor = Request.LinkColor,
+                    location = Request.location,
+                    PersonNikeName = Request.PersonNikeName,
+                };
                 UserDialogs.Instance.ShowLoading();
-                var json = await Rep.PostTRAsync<CardRequest, CardResponse>($"{ApiConstants.CardUpdateApi}{accid}/Card/{Card.Id}" , Request, UserToken );
+                var json = await Rep.PostTRAsync<CardRequestDto, CardResponse>($"{ApiConstants.CardUpdateApi}{accid}/Card/{Card.Id}" , requestDto, UserToken );
                 UserDialogs.Instance.HideHud();
                 if (json.Item1 != null)
                 {
@@ -117,15 +141,22 @@ namespace Cardrly.ViewModels
                     await toast.Show();
 
                 }
-                else
+                else if (json.Item2 != null)
                 {
                     var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
             }
-
-
             IsEnable = true;
+        }
+
+        [RelayCommand]
+        async Task EditLinksClick()
+        {
+            var vm = new LinksViewModel(Card.Id,Rep,_service);
+            var page = new LinksPage();
+            page.BindingContext = vm;
+            await App.Current!.MainPage!.Navigation.PushAsync( page );
         }
         #endregion
     }

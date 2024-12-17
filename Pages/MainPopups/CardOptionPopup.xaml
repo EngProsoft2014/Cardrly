@@ -36,7 +36,7 @@
                             </Label>
 
                             <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="TapGestureRecognizer_SetupCard"></TapGestureRecognizer>
+                                <TapGestureRecognizer Tapped="Button_Clicked_StartWriting_Uri"></TapGestureRecognizer>
                             </StackLayout.GestureRecognizers>
                         </StackLayout>
                         <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
@@ -98,6 +98,7 @@
                         <RoundRectangle CornerRadius="25"></RoundRectangle>
                     </Border.StrokeShape>
                 </Border>
+                <!--Cancle-->
                 <Border Padding="10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
 
 
@@ -118,7 +119,6 @@
                         <RoundRectangle CornerRadius="20"></RoundRectangle>
                     </Border.StrokeShape>
                 </Border>
-
             </StackLayout>
         </Border>
     </StackLayout>

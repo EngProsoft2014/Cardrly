@@ -15,5 +15,6 @@ namespace Cardrly.Mode_s.CardLink
         public string AccountLinkTitle { get; set; } = default!;
         public string? AccountLinkUrlImgName { get; set; } = default!;
         public string ValueOf { get; set; } = default!;
+        public bool? Active { get; set; } = default!;
     }
 }

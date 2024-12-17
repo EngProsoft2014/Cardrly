@@ -2,6 +2,7 @@
 <Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Controls="clr-namespace:Cardrly.Controls"
+             xmlns:pick="clr-namespace:Maui.ColorPicker;assembly=Maui.ColorPicker"
              x:Class="Cardrly.Pages.AddCustomCardPage"
              Title="AddCustomCardPage">
     <StackLayout Margin="20">
@@ -79,22 +80,22 @@
                         </VerticalStackLayout.GestureRecognizers>
                     </VerticalStackLayout>
                 </StackLayout>
-                <!--Card Name & Card Layout-->
+                <!--Card Name & location-->
                 <StackLayout Orientation="Horizontal" Spacing="35">
+                    <!--Card Name-->
                     <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <!--Card Name-->
                         <Label Text="Card Name" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                         <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                             <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                    Text="{Binding Request.CardName}"></Entry>
                         </Border>
                     </VerticalStackLayout>
-                    <!--Card Layout-->
+                    <!--location-->
                     <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="Card Layout" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                        <Label Text="Location" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                         <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                             <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
-                                   Text="{Binding Request.Cardlayout}"></Entry>
+                                   Text="{Binding Request.location}"></Entry>
                         </Border>
                     </VerticalStackLayout>
                 </StackLayout>
@@ -105,7 +106,7 @@
                         <Label Text="Person Name" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                         <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                             <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
-                   Text="{Binding Request.PersonName}"></Entry>
+                                   Text="{Binding Request.PersonName}"></Entry>
                         </Border>
                     </VerticalStackLayout>
                     <!--Person Nike Name-->
@@ -113,26 +114,7 @@
                         <Label Text="Person Nike Name" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                         <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                             <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
-                   Text="{Binding Request.PersonNikeName}"></Entry>
-                        </Border>
-                    </VerticalStackLayout>
-                </StackLayout>
-                <!--location & Card Theme-->
-                <StackLayout Orientation="Horizontal" Spacing="35">
-                    <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <!--location-->
-                        <Label Text="Location" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                            <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
-                   Text="{Binding Request.location}"></Entry>
-                        </Border>
-                    </VerticalStackLayout>
-                    <!--Card Theme-->
-                    <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="Card Theme" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                            <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
-                   Text="{Binding Request.CardTheme}"></Entry>
+                                   Text="{Binding Request.PersonNikeName}"></Entry>
                         </Border>
                     </VerticalStackLayout>
                 </StackLayout>
@@ -144,37 +126,49 @@
                                Text="{Binding Request.JobTitle}"></Entry>
                     </Border>
                 </VerticalStackLayout>
-                <!--Link Color & Font Style-->
+                <!--Link Color & Card Theme-->
                 <StackLayout Orientation="Horizontal" Spacing="35">
+                    <!--Link Color-->
                     <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <!--Link Color-->
                         <Label Text="Link Color" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                            <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
-   Text="{Binding Request.LinkColor}"></Entry>
+                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="80">
+                            <pick:ColorPicker PickedColorChanged="LinkColor_PickedColorChanged" PickedColor="{Binding Request.LinkColor}"></pick:ColorPicker>
                         </Border>
                     </VerticalStackLayout>
-                    <!--Font Style-->
+                    <!--Card Theme-->
                     <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="Font Style" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                            <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
-   Text="{Binding Request.FontStyle}"></Entry>
+                        <Label Text="Card Theme" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="80">
+                            <pick:ColorPicker PickedColorChanged="CardName_PickedColorChanged" PickedColor="{Binding Request.CardTheme}"></pick:ColorPicker>
                         </Border>
                     </VerticalStackLayout>
                 </StackLayout>
                 <!--Bio-->
-                <VerticalStackLayout HorizontalOptions="FillAndExpand" HeightRequest="100">
-
-                    <Label Text="Bio" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="120">
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" HeightRequest="100" Margin="0,15,0,10">
+                    <Label Text="Bio" TextColor="Gray" FontSize="13"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="80">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
-                               Text="{Binding Request.Bio}"></Entry>
+                               Text="{Binding Request.Bio}" HorizontalOptions="FillAndExpand"></Entry>
                     </Border>
                 </VerticalStackLayout>
-                <!--Save Button-->
-                <Button VerticalOptions="EndAndExpand" FontAutoScalingEnabled="False" Text="Save" FontSize="16" FontAttributes="Bold" 
-                        BackgroundColor="#FF7F3E" TextColor="White" Margin="0,80,0,0" Command="{Binding SaveClickCommand}"></Button>
+                <!--Save Button  & Edit Links-->
+                <StackLayout Orientation="Horizontal" Spacing="25" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
+                    <!--Save Button-->
+                    <Button  FontAutoScalingEnabled="False" Text="Save" FontSize="16" FontAttributes="Bold" 
+                            BackgroundColor="#FF7F3E" TextColor="White" Command="{Binding SaveClickCommand}"
+                             HorizontalOptions="FillAndExpand"></Button>
+                    <!--Edit Links-->
+                    <Border StrokeShape="RoundRectangle 10" VerticalOptions="End" Stroke="#FF7F3E" IsVisible="False">
+                        <Button  FontAutoScalingEnabled="False" Text="Edit Links" FontSize="16" FontAttributes="Bold" Command="{Binding EditLinksClickCommand}" 
+                                 BackgroundColor="Transparent" TextColor="Black" HorizontalOptions="FillAndExpand" Padding="20,0">
+                        </Button>
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding AddOrUpdate}" Value="2">
+                                <Setter Property="IsVisible" Value="True"></Setter>
+                            </DataTrigger>
+                        </Border.Triggers>
+                    </Border>
+                </StackLayout>
             </StackLayout>
         </ScrollView>
     </StackLayout>
