@@ -3,7 +3,7 @@
 <plist version="1.0">
 	<dict>
 		<key>LSRequiresIPhoneOS</key>
-		<true/>
+		<true />
 		<key>UIDeviceFamily</key>
 		<array>
 			<integer>1</integer>
@@ -35,5 +35,9 @@
 			<string>com.apple.developer.nfc.readersession.iso7816.select-identifiers</string>
 			<string>D2760000850100</string>
 		</array>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>This app needs access to the photo gallery to save photos and videos.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>This app needs access to the photo gallery to save photos and videos.</string>
 	</dict>
 </plist>

@@ -7,6 +7,8 @@ using Cardrly.ViewModels;
 using System.Collections.ObjectModel;
 using Plugin.NFC;
 using System.Text;
+using Microsoft.Maui.ApplicationModel.DataTransfer;
+using System;
 
 namespace Cardrly.Pages.MainPopups;
 
@@ -29,6 +31,15 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
         CrossNFC.Current.StartListening();
     }
 
+
+    private async void TapGestureRecognizer_ShareCard(object sender, TappedEventArgs e)
+    {
+        await Share.RequestAsync(new ShareTextRequest
+        {
+            Uri = Card.CardUrl,
+            Title = "Share Web Link"
+        });
+    }
     private async void TapGestureRecognizer_EditCaed(object sender, TappedEventArgs e)
     {
         this.IsEnabled = false;
@@ -494,4 +505,6 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
             await ShowAlert(ex.Message);
         }
     }
+
+    
 }
