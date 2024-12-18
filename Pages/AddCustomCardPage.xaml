@@ -4,7 +4,8 @@
              xmlns:Controls="clr-namespace:Cardrly.Controls"
              xmlns:pick="clr-namespace:Maui.ColorPicker;assembly=Maui.ColorPicker"
              x:Class="Cardrly.Pages.AddCustomCardPage"
-             Title="AddCustomCardPage">
+             Title="AddCustomCardPage"
+             IsEnabled="{Binding IsEnable}">
     <StackLayout Margin="20">
         <!--Header-->
         <StackLayout Orientation="Horizontal">

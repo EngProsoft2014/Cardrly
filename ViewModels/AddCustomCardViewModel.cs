@@ -154,7 +154,7 @@ namespace Cardrly.ViewModels
         async Task EditLinksClick()
         {
             var vm = new LinksViewModel(Card.Id,Rep,_service);
-            var page = new LinksPage();
+            var page = new LinksPage(vm);
             page.BindingContext = vm;
             await App.Current!.MainPage!.Navigation.PushAsync( page );
         }

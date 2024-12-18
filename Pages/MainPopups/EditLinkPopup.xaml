@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+             xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+             x:Class="Cardrly.Pages.MainPopups.EditLinkPopup"
+             CloseWhenBackgroundIsClicked="True"
+             NavigationPage.HasNavigationBar="False" 
+             BackgroundColor="#90000000"
+             Title="EditLinkPopup">
+
+    <mopups:PopupPage.Animation>
+        <mopupsanim:MoveAnimation
+       DurationIn="700"
+       EasingIn="BounceOut"
+       PositionIn="Bottom"
+       PositionOut="Center" />
+    </mopups:PopupPage.Animation>
+    <Border Padding="10" Margin="10" BackgroundColor="Transparent" StrokeThickness="0" VerticalOptions="EndAndExpand">
+        <StackLayout  HorizontalOptions="FillAndExpand" Spacing="20">
+            <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
+                <StackLayout  BackgroundColor="#FFFFFF" Spacing="3" Padding="10">
+                    <Label Text="Edit Link"
+                           TextColor="#333333"
+                           FontSize="13"
+                           FontFamily="AlmaraiRegular"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           HorizontalOptions="CenterAndExpand"
+                           Padding="8"></Label>
+                    <Line X1="150"  HorizontalOptions="FillAndExpand" BackgroundColor="#212121"></Line>
+                    <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                        <Label Text="Card Link Type" TextColor="Gray" FontSize="13" ></Label>
+                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                            <Picker x:Name="TypePicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></Picker>
+                        </Border>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout HorizontalOptions="FillAndExpand" Margin="0,10,0,0">
+                        <Label Text="Value" TextColor="Gray" FontSize="13" ></Label>
+                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                            <Entry x:Name="ValueEn" Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></Entry>
+                        </Border>
+                    </VerticalStackLayout>
+                </StackLayout>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="25"></RoundRectangle>
+                </Border.StrokeShape>
+            </Border>
+            <!--Save & Cancel-->
+            <Border Padding="10"  BackgroundColor="#FFFFFF" VerticalOptions="Center">
+                <!--Save Button  & Edit Links-->
+                <StackLayout Orientation="Horizontal" Spacing="25" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
+                    <!--Save Button-->
+                    <Button  FontAutoScalingEnabled="False" Text="Save" FontSize="16" FontAttributes="Bold" Clicked="Save_Clicked"
+                             BackgroundColor="#FF7F3E" TextColor="White" HorizontalOptions="FillAndExpand"></Button>
+                    <!--Cancle-->
+                    <Border StrokeShape="RoundRectangle 10" VerticalOptions="End" Stroke="#FF7F3E">
+                        <Button  FontAutoScalingEnabled="False" Text="Cancle" FontSize="16" FontAttributes="Bold" Clicked="Cancel_Clicked"
+                                 TextColor="Black" HorizontalOptions="FillAndExpand" Padding="20,0" BackgroundColor="Transparent">
+                        </Button>
+                    </Border>
+                </StackLayout>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"></RoundRectangle>
+                </Border.StrokeShape>
+            </Border>
+        </StackLayout>
+    </Border>
+</mopups:PopupPage>
