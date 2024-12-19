@@ -81,6 +81,30 @@
                         </VerticalStackLayout.GestureRecognizers>
                     </VerticalStackLayout>
                 </StackLayout>
+                <!--Email & Password-->
+                <StackLayout Orientation="Horizontal" Spacing="35">
+                    <!--Email-->
+                    <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                        <Label Text="Email" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                            <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                   Text="{Binding Request.Email}"></Entry>
+                        </Border>
+                    </VerticalStackLayout>
+                    <!--Password-->
+                    <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                        <Label Text="Password" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                            <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                                   Text="{Binding Request.Password}"></Entry>
+                        </Border>
+                    </VerticalStackLayout>
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout" Binding="{Binding AddOrUpdate}" Value="2">
+                            <Setter Property="IsVisible" Value="False"></Setter>
+                        </DataTrigger>
+                    </StackLayout.Triggers>
+                </StackLayout>
                 <!--Card Name & location-->
                 <StackLayout Orientation="Horizontal" Spacing="35">
                     <!--Card Name-->

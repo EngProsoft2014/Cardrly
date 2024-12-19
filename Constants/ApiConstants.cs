@@ -34,7 +34,7 @@
 
         #region Account Links 
         public static string AccountLinksAllApi = "Account/{0}/AccountLink";
-        public static string AccountLinksCurrentApi = "Account/{0}/AccountLink/current";
+        public static string AccountLinksCurrentApi = "Account/";
         public static string AccountLinksInfoApi = "Account/{0}/AccountLink/{1}";
         public static string AccountLinksAddApi = "Account/{0}/AccountLink";
         public static string AccountLinksUpdateApi = "Account/{0}/AccountLink/{1}";
@@ -66,7 +66,7 @@
         #region CardLinks
         public static string CardLinkGetAllApi = "Account/{0}/Card/{1}/CardLink";
         public static string CardLinkGetApi = "Account/{0}/Card/{1}/CardLink/{2}";
-        public static string CardLinkAddApi = "Account/{0}/Card/{1}/CardLink";
+        public static string CardLinkAddApi = "Account/";
         public static string CardLinkUpdateApi = "Account/";
         public static string CardLinkDeleteApi = "Account/";
         public static string CardLinkToggleApi = "Account/";

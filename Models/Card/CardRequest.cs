@@ -55,8 +55,8 @@ namespace Cardrly.Mode_s.Card
         public string? CardTheme { get; set; } = default!;
         public string? LinkColor { get; set; } = default!;
         public string? FontStyle { get; set; } = default!;
-
-
+        public string? Email { get; set; } = default!;
+        public string? Password { get; set; } = default!;
         public event PropertyChangedEventHandler? PropertyChanged;
     }
 }

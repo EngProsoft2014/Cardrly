@@ -6,7 +6,8 @@
              xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
              xmlns:vm="clr-namespace:Cardrly.ViewModels"
              x:Class="Cardrly.Pages.HomePage"
-             Title="HomePage">
+             Title="HomePage"
+             IsEnabled="{Binding IsEnable}">
     <StackLayout>
         <tabView:SfTabView IndicatorPlacement="Top" TabBarPlacement="Bottom" IndicatorBackground="#FF7F3E" FlowDirection="LeftToRight"
                            VerticalOptions="FillAndExpand" Margin="0,0,0,10" ContentTransitionDuration="300" SelectionChanged="SfTabView_SelectionChanged">
@@ -31,7 +32,7 @@
                         <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
                     </tabView:SfTabItem.ImageSource>
                     <tabView:SfTabItem.Content>
-                        <ContentView x:Name="CardsView">
+                        <ContentView x:Name="CardsView" IsEnabled="{Binding IsEnable}">
                             <StackLayout Margin="20">
                                 <!--Header-->
                                 <StackLayout Orientation="Horizontal">

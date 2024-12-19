@@ -9,6 +9,7 @@ using Cardrly.Mode_s.Card;
 using Cardrly.Pages.MainPopups;
 using Cardrly.Models.Card;
 using Cardrly.Pages.Links;
+using Cardrly.ViewModels.Links;
 
 namespace Cardrly.ViewModels
 {
@@ -113,40 +114,81 @@ namespace Cardrly.ViewModels
             IsEnable = false;
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
+                UserDialogs.Instance.ShowLoading();
                 string UserToken = await _service.UserToken();
                 string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
-                CardRequestDto requestDto = new CardRequestDto()
+                
+                if (AddOrUpdate == 1 )
                 {
-                    PersonName = Request.PersonName,
-                    Cardlayout = Request.Cardlayout,
-                    CardName = Request.CardName,
-                    Bio = Request.Bio,
-                    CardTheme = Request.CardTheme,
-                    ExtensionCover = Request.ExtensionCover,
-                    ExtensionProfile = Request.ExtensionProfile,
-                    FontStyle = Request.FontStyle,
-                    ImgFileCover = Request.ImgFileCover,
-                    ImgFileProfile = Request.ImgFileProfile,
-                    JobTitle = Request.JobTitle,
-                    LinkColor = Request.LinkColor,
-                    location = Request.location,
-                    PersonNikeName = Request.PersonNikeName,
-                };
-                UserDialogs.Instance.ShowLoading();
-                var json = await Rep.PostTRAsync<CardRequestDto, CardResponse>($"{ApiConstants.CardUpdateApi}{accid}/Card/{Card.Id}" , requestDto, UserToken );
-                UserDialogs.Instance.HideHud();
-                if (json.Item1 != null)
-                {
-                    var toast = Toast.Make("Successfully update card.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                    await toast.Show();
+                    CardRequestDto requestDto = new CardRequestDto()
+                    {
+                        PersonName = Request.PersonName,
+                        Cardlayout = Request.Cardlayout,
+                        CardName = Request.CardName,
+                        Bio = Request.Bio,
+                        CardTheme = Request.CardTheme,
+                        ExtensionCover = Request.ExtensionCover,
+                        ExtensionProfile = Request.ExtensionProfile,
+                        FontStyle = Request.FontStyle,
+                        ImgFileCover = Request.ImgFileCover,
+                        ImgFileProfile = Request.ImgFileProfile,
+                        JobTitle = Request.JobTitle,
+                        LinkColor = Request.LinkColor,
+                        location = Request.location,
+                        PersonNikeName = Request.PersonNikeName,
+                        Email = Request.Email,
+                        Password = Request.Password
+                    };
+                    var json = await Rep.PostTRAsync<CardRequestDto, CardResponse>($"{ApiConstants.CardUpdateApi}{accid}/Card", requestDto, UserToken);
+                    UserDialogs.Instance.HideHud();
+                    if (json.Item1 != null)
+                    {
+                        var toast = Toast.Make("Successfully Add card.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();
 
+                    }
+                    else if (json.Item2 != null)
+                    {
+                        var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();
+                    }
                 }
-                else if (json.Item2 != null)
+                else if (AddOrUpdate == 2)
                 {
-                    var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                    await toast.Show();
+                    CardRequestDto requestDto = new CardRequestDto()
+                    {
+                        PersonName = Request.PersonName,
+                        Cardlayout = Request.Cardlayout,
+                        CardName = Request.CardName,
+                        Bio = Request.Bio,
+                        CardTheme = Request.CardTheme,
+                        ExtensionCover = Request.ExtensionCover,
+                        ExtensionProfile = Request.ExtensionProfile,
+                        FontStyle = Request.FontStyle,
+                        ImgFileCover = Request.ImgFileCover,
+                        ImgFileProfile = Request.ImgFileProfile,
+                        JobTitle = Request.JobTitle,
+                        LinkColor = Request.LinkColor,
+                        location = Request.location,
+                        PersonNikeName = Request.PersonNikeName,
+                    };
+                    var json = await Rep.PostTRAsync<CardRequestDto, CardResponse>($"{ApiConstants.CardUpdateApi}{accid}/Card/{Card.Id}", requestDto, UserToken);
+                    UserDialogs.Instance.HideHud();
+                    if (json.Item1 != null)
+                    {
+                        var toast = Toast.Make("Successfully update card.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();
+
+                    }
+                    else if (json.Item2 != null)
+                    {
+                        var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();
+                    }
                 }
+                
             }
+            UserDialogs.Instance.HideHud();
             IsEnable = true;
         }
 

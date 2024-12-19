@@ -381,13 +381,13 @@ namespace Cardrly.Helpers
                     if (responseMessage.StatusCode == HttpStatusCode.Forbidden)
                     {
                         await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
-                        
+                        return default;
                     }
 
                     if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
                     {
                         await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
-                        //await StartData.UserLogout();
+                        return default;
                     }
                     var model = JsonConvert.DeserializeObject<TR>("");
                     var json = JsonConvert.DeserializeObject<ErrorResult>(jsonResult);

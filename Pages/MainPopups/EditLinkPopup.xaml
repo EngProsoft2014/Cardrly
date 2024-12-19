@@ -20,7 +20,7 @@
         <StackLayout  HorizontalOptions="FillAndExpand" Spacing="20">
             <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
                 <StackLayout  BackgroundColor="#FFFFFF" Spacing="3" Padding="10">
-                    <Label Text="Edit Link"
+                    <Label x:Name="hdrlbl" Text="Edit Link"
                            TextColor="#333333"
                            FontSize="13"
                            FontFamily="AlmaraiRegular"

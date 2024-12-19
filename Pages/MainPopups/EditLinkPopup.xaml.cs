@@ -13,6 +13,7 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
     CardLinkResponse CardLink = new CardLinkResponse();
     CardLinkResponse CardLinkRef = new CardLinkResponse();
     List<string> LinkType = new List<string>();
+    int IsUpdat = 0; // 1 - Add & 0 - Update
 
     #region Service
     readonly IGenericRepository Rep;
@@ -30,6 +31,18 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
         };
         CardLinkRef = cardLink;
         ValueEn.Text = CardLink.ValueOf;
+        LoadData();
+    }
+
+    public EditLinkPopup(int isUpdate,string accountLinkId,string cardId, IGenericRepository GenericRep, Services.Data.ServicesService service)
+    {
+        InitializeComponent();
+        Rep = GenericRep;
+        _service = service;
+        IsUpdat = isUpdate;
+        CardLinkRef.AccountLinkId = accountLinkId;
+        CardLinkRef.CardId = cardId;
+        hdrlbl.Text = "Add Link";
         LoadData();
     }
 
@@ -112,19 +125,40 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
             };
             string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
             UserDialogs.Instance.ShowLoading();
-            var json = await Rep.PostTRAsync<CardLinkRequest, CardLinkResponse>($"{ApiConstants.CardLinkUpdateApi}{accid}/Card/{CardLinkRef.CardId}/CardLink/{CardLinkRef.Id}", requestDto, UserToken);
-            UserDialogs.Instance.HideHud();
-            if (json.Item1 != null)
+            if (IsUpdat == 0 )
             {
-                CardLinkRef.ValueOf = ValueEn.Text;
-                CardLinkRef.CardLinkType = TypePicker.SelectedIndex + 1;
-                await MopupService.Instance.PopAsync();
+                var json = await Rep.PostTRAsync<CardLinkRequest, CardLinkResponse>($"{ApiConstants.CardLinkUpdateApi}{accid}/Card/{CardLinkRef.CardId}/CardLink/{CardLinkRef.Id}", requestDto, UserToken);
+                UserDialogs.Instance.HideHud();
+                if (json.Item1 != null)
+                {
+                    var toast = Toast.Make($"Successfully Add Link", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                    await MopupService.Instance.PopAsync();
+                }
+                else if (json.Item2 != null)
+                {
+                    var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
             }
-            else if (json.Item2 != null)
+            else if(IsUpdat == 1)
             {
-                var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                await toast.Show();
+                var json = await Rep.PostTRAsync<CardLinkRequest, CardLinkResponse>($"{ApiConstants.CardLinkUpdateApi}{accid}/Card/{CardLinkRef.CardId}/CardLink", requestDto, UserToken);
+                UserDialogs.Instance.HideHud();
+                if (json.Item1 != null)
+                {
+                    var toast = Toast.Make($"Successfully Add Link", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                    await MopupService.Instance.PopAsync();
+                }
+                else if (json.Item2 != null)
+                {
+                    var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
             }
+            
+            
         }
     }
 }

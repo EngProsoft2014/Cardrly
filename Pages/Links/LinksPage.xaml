@@ -2,13 +2,13 @@
 <Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Controls="clr-namespace:Cardrly.Controls"
-             xmlns:vm="clr-namespace:Cardrly.ViewModels"
+             xmlns:vm="clr-namespace:Cardrly.ViewModels.Links"
              x:Class="Cardrly.Pages.Links.LinksPage"
              Title="LinksPage"
              IsEnabled="{Binding IsEnable}">
-    <StackLayout Margin="20" Spacing="20">
+    <StackLayout Margin="20" Spacing="0">
         <!--Header-->
-        <StackLayout Orientation="Horizontal">
+        <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
             <Image VerticalOptions="CenterAndExpand">
                 <Image.Source>
                     <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
@@ -24,57 +24,62 @@
             </Image>
             <Label Text="My Links" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                    TextColor="Black" VerticalOptions="CenterAndExpand" ></Label>
+            <!--Add Button-->
+            <Image>
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddLinkCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
         </StackLayout>
         <!--Data-->
-        <CollectionView x:Name="Calc" ItemsSource="{Binding CardDetails.CardLinks}" EmptyView="Sorry no aata here...." VerticalOptions="FillAndExpand">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Border StrokeShape="RoundRectangle 20" Padding="10">
-                        <StackLayout Orientation="Horizontal" Spacing="10">
-                            <!--Icon-->
-                            <Border StrokeShape="RoundRectangle 50" StrokeThickness="0" HeightRequest="60" WidthRequest="60">
-                                <Image Source="{Binding AccountLinkUrlImgName}" Aspect="AspectFill"></Image>
-                            </Border>
-                            <VerticalStackLayout Margin="0,7,0,0" HorizontalOptions="FillAndExpand" Spacing="7">
-                                <!--Titel-->
-                                <Label Text="{Binding AccountLinkTitle}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
-                                <!--TypeLink-->
-                                <Label Text="{Binding ValueOf}" FontSize="12" TextColor="Gray" FontAttributes="Bold"></Label>
-                            </VerticalStackLayout>
-                            <!--Delete Icon-->
-                            <Image >
-                                <Image.Source>
-                                    <FontImageSource Glyph="" FontFamily="FontIcon" Color="Gray" Size="20"></FontImageSource>
-                                </Image.Source>
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LinksViewModel}},Path=DeletClickCommand}"
+        <RefreshView x:Name="RefView" Refreshing="RefreshView_Refreshing">
+            <CollectionView x:Name="Calc" ItemsSource="{Binding CardDetails.CardLinks}" EmptyView="Sorry no aata here...." VerticalOptions="FillAndExpand">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border StrokeShape="RoundRectangle 20" Padding="10">
+                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                <!--Icon-->
+                                <Border StrokeShape="RoundRectangle 50" StrokeThickness="0" HeightRequest="60" WidthRequest="60">
+                                    <Image Source="{Binding AccountLinkUrlImgName}" Aspect="AspectFill"></Image>
+                                </Border>
+                                <VerticalStackLayout Margin="0,7,0,0" HorizontalOptions="FillAndExpand" Spacing="7">
+                                    <!--Titel-->
+                                    <Label Text="{Binding AccountLinkTitle}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                    <!--TypeLink-->
+                                    <Label Text="{Binding ValueOf}" FontSize="12" TextColor="Gray" FontAttributes="Bold"></Label>
+                                </VerticalStackLayout>
+                                <!--Delete Icon-->
+                                <Image >
+                                    <Image.Source>
+                                        <FontImageSource Glyph="" FontFamily="FontIcon" Color="Gray" Size="20"></FontImageSource>
+                                    </Image.Source>
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LinksViewModel}},Path=DeletClickCommand}"
                                                           CommandParameter="{Binding .}"></TapGestureRecognizer>
-                                </Image.GestureRecognizers>
-                            </Image>
-                            <!--IsAdctive-->
-                            <CheckBox Color="#FF7F3E" IsChecked="{Binding Active}">
-                                <CheckBox.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LinksViewModel}},Path=ActiveClickCommand}"
+                                    </Image.GestureRecognizers>
+                                </Image>
+                                <!--IsAdctive-->
+                                <CheckBox Color="#FF7F3E" IsChecked="{Binding Active}">
+                                    <CheckBox.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LinksViewModel}},Path=ActiveClickCommand}"
                                                           CommandParameter="{Binding .}"></TapGestureRecognizer>
-                                </CheckBox.GestureRecognizers>
-                            </CheckBox>
-                        </StackLayout>
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LinksViewModel}},Path=SelectLinkClickCommand}"
+                                    </CheckBox.GestureRecognizers>
+                                </CheckBox>
+                            </StackLayout>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LinksViewModel}},Path=SelectLinkClickCommand}"
                                                   CommandParameter="{Binding .}"></TapGestureRecognizer>
-                        </Border.GestureRecognizers>
-                    </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-        <!--Add Button-->
-        <Image HorizontalOptions="EndAndExpand" Margin="20">
-            <Image.Source>
-                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E" Size="45"></FontImageSource>
-            </Image.Source>
-        </Image>
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
     </StackLayout>
 </Controls:CustomControl>

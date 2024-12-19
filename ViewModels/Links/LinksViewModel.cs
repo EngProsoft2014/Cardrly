@@ -1,7 +1,9 @@
 ﻿using Cardrly.Constants;
+using Cardrly.Enums;
 using Cardrly.Helpers;
 using Cardrly.Mode_s.Card;
 using Cardrly.Mode_s.CardLink;
+using Cardrly.Pages.Links;
 using Cardrly.Pages.MainPopups;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -9,27 +11,28 @@ using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
 
-namespace Cardrly.ViewModels
+namespace Cardrly.ViewModels.Links
 {
     public partial class LinksViewModel : BaseViewModel
     {
         [ObservableProperty]
         CardDetailsResponse cardDetails = new CardDetailsResponse();
-
+        public string CardId;
         #region Service
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
         #endregion
-
+        
         #region Cons
-        public LinksViewModel(string CardId,IGenericRepository GenericRep, Services.Data.ServicesService service)
+        public LinksViewModel(string cardId,IGenericRepository GenericRep, Services.Data.ServicesService service)
         {
             _service = service;
             Rep = GenericRep;
-            Init(CardId);
+            CardId = cardId;
+            Init(cardId);
         }
         #endregion
-
+        
         #region RelayCommand
         [RelayCommand]
         async Task SelectLinkClick(CardLinkResponse cardLink)
@@ -84,6 +87,15 @@ namespace Cardrly.ViewModels
             }
             IsEnable = true;
         }
+
+        [RelayCommand]
+        async Task AddLink()
+        {
+            var vm = new AddLinkViewModel(CardDetails.Id,Rep,_service);
+            var page = new AddLinksPage();
+            page.BindingContext = vm;
+            await App.Current!.MainPage!.Navigation.PushAsync(page);
+        }
         #endregion
 
         #region Methodes
@@ -101,7 +113,7 @@ namespace Cardrly.ViewModels
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
                 UserDialogs.Instance.ShowLoading();
                 var json = await Rep.GetAsync<CardDetailsResponse>($"{ApiConstants.CardGetDetailsAllApi}{CardId}", UserToken);
-                UserDialogs.Instance.HideHud();
+                
                 if (json != null)
                 {
                     foreach (CardLinkResponse cardLink in json.CardLinks)
@@ -110,6 +122,7 @@ namespace Cardrly.ViewModels
                     }
                     CardDetails = json;
                 }
+                UserDialogs.Instance.HideHud();
             }
             IsEnable = true;
         }

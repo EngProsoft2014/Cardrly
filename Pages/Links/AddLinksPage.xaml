@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Controls="clr-namespace:Cardrly.Controls"
+             xmlns:vm="clr-namespace:Cardrly.ViewModels.Links"
+             x:Class="Cardrly.Pages.Links.AddLinksPage"
+             Title="AddLinksPage">
+    <StackLayout Margin="20">
+        <!--Header-->
+        <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
+            <Image VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="Link Category" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                   TextColor="Black" VerticalOptions="CenterAndExpand" ></Label>
+        </StackLayout>
+        <!--Data-->
+        <CollectionView ItemsSource="{Binding AccountLinks}" IsGrouped="True" VerticalOptions="FillAndExpand">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Span="2" Orientation="Vertical" VerticalItemSpacing="10" HorizontalItemSpacing="10"></GridItemsLayout>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border StrokeShape="RoundRectangle 10" Padding="10">
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <!--Image-->
+                            <Image Source="{Binding UrlImgName}"
+                                   Aspect="AspectFill" WidthRequest="40" HeightRequest="40"></Image>
+                            <!--Titel-->
+                            <Label Text="{Binding Title}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                        </StackLayout>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AddLinkViewModel}},Path=SelectClickCommand}"
+                                                  CommandParameter="{Binding .}"></TapGestureRecognizer>
+                        </Border.GestureRecognizers>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <Label Text="{Binding GroupName}" TextColor="Black" FontSize="16" FontAttributes="Bold"></Label>
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
+        </CollectionView>
+    </StackLayout>
+</Controls:CustomControl>
