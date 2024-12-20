@@ -56,6 +56,8 @@
         #region Cards
         public static string CardGetAllApi = "Account/";
         public static string CardGetApi = "Account/{0}/Card/{1}";
+        public static string CardGetCardDashBoardApi = "Account/";
+        public static string CardGetAllOrSingleApi = "Account/{0}/Card/GetAllOrSingle";
         public static string CardAddApi = "Account/";
         public static string CardUpdateApi = "Account/";
         public static string CardDeleteApi = "Account/";
@@ -70,6 +72,15 @@
         public static string CardLinkUpdateApi = "Account/";
         public static string CardLinkDeleteApi = "Account/";
         public static string CardLinkToggleApi = "Account/";
+        #endregion
+
+        #region Leads
+        public static string LeadGetAllApi = "Account/{0}/Lead";
+        public static string LeadGetApi = "Account/{0}/Lead/{1}";
+        public static string LeadAddApi = "Account/";
+        public static string LeadUpdateApi = "Account/{0}/Lead/{1}";
+        public static string LeadDeleteApi = "Account/{0}/Lead/{1}/Delete";
+        public static string LeadToggleApi = "Account/";
         #endregion
     }
 }

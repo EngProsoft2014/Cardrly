@@ -1,31 +1,40 @@
 using Cardrly.Helpers;
 using Cardrly.ViewModels;
+using Cardrly.ViewModels.Leads;
 
 namespace Cardrly.Pages;
 
 public partial class HomePage : Controls.CustomControl
 {
     CardsViewModel cardsViewModel;
+    HomeViewModel homeViewModel;
     #region Service
     readonly IGenericRepository Rep;
     readonly Services.Data.ServicesService _service;
     #endregion
-    public HomePage(IGenericRepository GenericRep, Services.Data.ServicesService service)
+    public HomePage(HomeViewModel model,IGenericRepository GenericRep, Services.Data.ServicesService service)
 	{
 		InitializeComponent();
+        homeViewModel = model;
+        CardPicker.SelectedIndex = 0;
         Rep = GenericRep;
         _service = service;
+        HomeView.BindingContext = model;
     }
 
     private void SfTabView_SelectionChanged(object sender, Syncfusion.Maui.TabView.TabSelectionChangedEventArgs e)
     {
-		if (e.NewIndex == 1)
+        if (e.NewIndex == 0)
+        {
+            HomeView.BindingContext = homeViewModel;
+        }
+		else if (e.NewIndex == 1)
 		{
-            CardsView.BindingContext = cardsViewModel = new CardsViewModel(Rep,_service);
+            CardsView.BindingContext = cardsViewModel = new CardsViewModel(homeViewModel.CardLst,Rep,_service);
 		}
 		else if (e.NewIndex == 2)
 		{
-			ContactView.BindingContext  = new ContactViewModel();
+			ContactView.BindingContext  = new LeadViewModel(Rep,_service);
 		}
 		else if (e.NewIndex == 3)
 		{
@@ -47,10 +56,10 @@ public partial class HomePage : Controls.CustomControl
         return true;
     }
 
-    private void RefreshView_Refreshing(object sender, EventArgs e)
+    private void Cards_Refreshing(object sender, EventArgs e)
     {
         RefView.IsRefreshing = true;
-        cardsViewModel.Init();
+        homeViewModel.Init();
         RefView.IsRefreshing = false;
     }
 }

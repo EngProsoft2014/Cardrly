@@ -79,8 +79,16 @@
 		<PackageReference Include="Plugin.NFC" Version="0.1.26" />
 		<PackageReference Include="Polly" Version="8.5.0" />
 		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0" />
+		<PackageReference Include="Syncfusion.Maui.Charts" Version="27.2.5" />
+		<PackageReference Include="Syncfusion.Maui.ProgressBar" Version="27.2.5" />
 		<PackageReference Include="Syncfusion.Maui.TabView" Version="27.2.5" />
 		<PackageReference Include="ZXing.Net.Maui.Controls" Version="0.4.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Pages\AddLeadsPage.xaml.cs">
+	    <DependentUpon>AddLeadsPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -121,6 +129,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\ProfilePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\AddLeadsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

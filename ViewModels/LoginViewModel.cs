@@ -71,9 +71,7 @@ namespace Cardrly.ViewModels
 
                         await BlobCache.LocalMachine.InsertObject(ServicesService.UserTokenServiceKey, UserResponse?.Token, DateTimeOffset.Now.AddMinutes(43200));
 
-                        var vm = new HomeViewModel();
-                        var page = new HomePage(Rep,_service);
-                        page.BindingContext = vm;
+                        var page = new HomePage(new HomeViewModel(Rep, _service), Rep,_service);
                         await App.Current!.MainPage!.Navigation.PushAsync(page);
                     }
                 }

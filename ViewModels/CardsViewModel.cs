@@ -24,11 +24,11 @@ namespace Cardrly.ViewModels
         #endregion
 
         #region Cons
-        public CardsViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service)
+        public CardsViewModel(ObservableCollection<CardResponse> cardLst,IGenericRepository GenericRep, Services.Data.ServicesService service)
         {
             Rep = GenericRep;
             _service = service;
-            Init();
+            CardLst = cardLst;
         } 
         #endregion
 

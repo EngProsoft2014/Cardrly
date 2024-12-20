@@ -1,6 +1,12 @@
 ﻿
 
+using Akavache;
+using Cardrly.Helpers;
+using Cardrly.Pages;
+using Cardrly.Services.Data;
+using Cardrly.ViewModels;
 using CommunityToolkit.Maui.Core;
+using System.Reactive.Linq;
 
 namespace Cardrly.Controls
 {
@@ -59,6 +65,23 @@ namespace Cardrly.Controls
             }
 
             return self;
+        }
+
+        public async static Task ClearAllData(IGenericRepository generic)
+        {
+            ServicesService _service = new ServicesService(generic);
+
+            await App.Current!.MainPage!.DisplayAlert("Warnaing", "Service is currently down. Please try again later.", "ok");
+
+            string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+            Preferences.Default.Clear();
+            await BlobCache.LocalMachine.InvalidateAll();
+            await BlobCache.LocalMachine.Vacuum();
+            Preferences.Default.Set("Lan", LangValueToKeep);
+            var vm = new LoginViewModel(generic, _service);
+            var page = new LoginPage();
+            page.BindingContext = vm;
+            await Application.Current!.MainPage!.Navigation.PushAsync(page);
         }
     }
 }

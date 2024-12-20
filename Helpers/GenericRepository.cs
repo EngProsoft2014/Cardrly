@@ -99,6 +99,12 @@ namespace Cardrly.Helpers
                     
                 }
 
+                if (responseMessage.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 500. System.Net.HttpStatusCode.InternalServerError indicates\r\nthat the requested resource requires Data.", "OK");
+                    return default(T)!;
+
+                }
                 //throw new HttpRequestExceptionEx(responseMessage.StatusCode, jsonResult);   
                 jsonResult = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
                 var json1 = JsonConvert.DeserializeObject<T>(jsonResult);
@@ -106,8 +112,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name + " : " + e.Message}");
-                throw;
+                await Controls.StaticMember.ClearAllData(this);
+                return default(T);
             }
         }
 
@@ -146,13 +152,14 @@ namespace Cardrly.Helpers
                 if (responseMessage.StatusCode == HttpStatusCode.Forbidden)
                 {
                     //throw new ServiceAuthenticationException(jsonResult);
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
+                    return "";
                 }
 
                 if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
-                    //await StartData.UserLogout();
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
+                    return "";
                 }
 
                 //throw new HttpRequestExceptionEx(responseMessage.StatusCode, jsonResult);
@@ -163,8 +170,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name + " : " + e.Message}");
-                throw;
+                await Controls.StaticMember.ClearAllData(this);
+                return "";
             }
         }
 
@@ -194,12 +201,12 @@ namespace Cardrly.Helpers
 
                 if (responseMessage.StatusCode == HttpStatusCode.Forbidden)
                 {
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
                 }
 
                 if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
                     //await StartData.UserLogout();
                 }
 
@@ -219,8 +226,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name + " : " + e.Message}");
-                throw;
+                await Controls.StaticMember.ClearAllData(this);
+                return default(ApplicationUserResponse);
             }
         }
 
@@ -277,8 +284,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name + " : " + e.Message}");
-                throw;
+                await Controls.StaticMember.ClearAllData(this);
+                return "";
             }
         }
 
@@ -319,13 +326,13 @@ namespace Cardrly.Helpers
 
                 if (responseMessage.StatusCode == HttpStatusCode.Forbidden)
                 {
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
                     return default(T)!;
                 }
 
                 if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
                     //await StartData.UserLogout();
                 }
 
@@ -337,8 +344,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name + " : " + e.Message}");
-                throw;
+                await Controls.StaticMember.ClearAllData(this);
+                return default(T);
             }
         }
 
@@ -395,10 +402,9 @@ namespace Cardrly.Helpers
                 }  
             }
             catch (Exception e)
-            {
-                Debug.WriteLine($"{e.GetType().Name + " : " + e.Message}");
-                await App.Current!.MainPage!.DisplayAlert("Info", "Found_Problem_Internal_Server", "Ok");
-                var model = JsonConvert.DeserializeObject<TR>(""); 
+            {         
+                var model = JsonConvert.DeserializeObject<TR>("");
+                await Controls.StaticMember.ClearAllData(this);
                 return (model!, null); 
             }
         }
@@ -439,13 +445,13 @@ namespace Cardrly.Helpers
 
                 if (responseMessage.StatusCode == HttpStatusCode.Forbidden)
                 {
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
                     return "";
                 }
 
                 if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
                     //await StartData.UserLogout();
                     return "";
                 }
@@ -455,7 +461,7 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name + " : " + e.Message}");
+                await Controls.StaticMember.ClearAllData(this);
                 return "";
             }
         }
@@ -491,13 +497,13 @@ namespace Cardrly.Helpers
 
                 if (responseMessage.StatusCode == HttpStatusCode.Forbidden)
                 {
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
                     return "";
                 }
 
                 if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
                     //await StartData.UserLogout();
                 }
 
@@ -505,7 +511,7 @@ namespace Cardrly.Helpers
                 {
                     jsonResult = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
                     var json = JsonConvert.DeserializeObject<object>(jsonResult);
-                    return json.ToString();
+                    return json!.ToString()!;
                 }
                 else
                 {
@@ -535,8 +541,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name + " : " + e.Message}");
-                throw;
+                await Controls.StaticMember.ClearAllData(this);
+                return "";
             }
         }
 
@@ -567,12 +573,12 @@ namespace Cardrly.Helpers
 
                 if (responseMessage.StatusCode == HttpStatusCode.Forbidden)
                 {
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
                 }
 
                 if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
                     //await StartData.UserLogout();
                 }
 
@@ -613,8 +619,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name + " : " + e.Message}");
-                throw;
+                await Controls.StaticMember.ClearAllData(this);
+                return "";
             }
         }
 
@@ -664,12 +670,12 @@ namespace Cardrly.Helpers
 
                 if (responseMessage.StatusCode == HttpStatusCode.Forbidden)
                 {
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
                 }
 
                 if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
                     //await StartData.UserLogout();
                 }
 
@@ -691,8 +697,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name + " : " + e.Message}");
-                throw;
+                await Controls.StaticMember.ClearAllData(this);
+                return "";
             }
         }
 
@@ -737,7 +743,7 @@ namespace Cardrly.Helpers
 
                 if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    await App.Current.MainPage.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
+                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
                     //await StartData.UserLogout();
                 }
 
@@ -746,8 +752,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name + " : " + e.Message}");
-                throw;
+                await Controls.StaticMember.ClearAllData(this);
+                return default(T);
             }
         }
 
@@ -804,7 +810,7 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name + " : " + e.Message}");
+                await Controls.StaticMember.ClearAllData(this);
                 return "";
             }
         }
@@ -875,8 +881,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name + " : " + e.Message}");
-                throw;
+                await Controls.StaticMember.ClearAllData(this);
+                return "";
             }
         }
 
@@ -931,6 +937,7 @@ namespace Cardrly.Helpers
             }
             catch (Exception ex)
             {
+                await Controls.StaticMember.ClearAllData(this);
                 return "api not responding";
             }
         }
@@ -978,8 +985,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name + " : " + e.Message}");
-                throw;
+                await Controls.StaticMember.ClearAllData(this);
+                return default(TR);
             }
         }
     }

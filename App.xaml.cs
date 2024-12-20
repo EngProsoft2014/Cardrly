@@ -37,9 +37,7 @@ namespace Cardrly
             }
             else
             {
-                var vm = new HomeViewModel();
-                var page = new HomePage(Rep, _service);
-                page.BindingContext = vm;
+                var page = new HomePage(new HomeViewModel(Rep, _service), Rep, _service);
                 MainPage = new NavigationPage(page);
             }
 

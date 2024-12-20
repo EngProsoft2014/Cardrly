@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Controls="clr-namespace:Cardrly.Controls"
+             x:Class="Cardrly.Pages.AddLeadsPage"
+             Title="AddLeadsPage">
+    <StackLayout Margin="20">
+        <!--Header-->
+        <StackLayout Orientation="Horizontal">
+            <Image VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="Add Lead" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+           TextColor="Black" VerticalOptions="CenterAndExpand" ></Label>
+        </StackLayout>
+        <!--Data-->
+        <ScrollView VerticalOptions="FillAndExpand">
+            <StackLayout Margin="0,30,0,20" Spacing="15">
+                <!--Profile Image-->
+                <Border StrokeShape="RoundRectangle 50" HeightRequest="100" WidthRequest="100" HorizontalOptions="CenterAndExpand">
+                    <Image>
+                        <Image.Triggers>
+                            <DataTrigger Binding="{Binding IsProfileImageAdded}" TargetType="Image" Value="1">
+                                <Setter Property="Source">
+                                    <Setter.Value>
+                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="WidthRequest" Value="20"></Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsProfileImageAdded}" TargetType="Image" Value="2">
+                                <Setter Property="Source" Value="{Binding Request.ImagefileProfile}"></Setter>
+                                <Setter Property="Aspect" Value="Fill"></Setter>
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AddProfileImageClickCommand}"></TapGestureRecognizer>
+                    </Border.GestureRecognizers>
+                </Border>
+                <!--Full Name-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
+                    <Label Text="Full Name" TextColor="Gray" FontSize="13"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                               Text="{Binding Request.FullName}"></Entry>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Email-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
+                    <Label Text="Email" TextColor="Gray" FontSize="13"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                        <Entry Keyboard="Email" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                                   Text="{Binding Request.Email}"></Entry>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Address -->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
+                    <Label Text="Address " TextColor="Gray" FontSize="13"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                                   Text="{Binding Request.Address}"></Entry>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Phone-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
+                    <Label Text="Phone" TextColor="Gray" FontSize="13"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                        <Entry Keyboard="Numeric" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                                   Text="{Binding Request.Phone}"></Entry>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Company-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
+                    <Label Text="Company" TextColor="Gray" FontSize="13"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                                   Text="{Binding Request.Company}"></Entry>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Website-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
+                    <Label Text="Website" TextColor="Gray" FontSize="13"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                        <Entry Keyboard="Url" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                               Text="{Binding Request.Website}"></Entry>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Save Button-->
+                <Button  FontAutoScalingEnabled="False" Text="Save" FontSize="16" FontAttributes="Bold" VerticalOptions="EndAndExpand"
+                         BackgroundColor="#FF7F3E" TextColor="White" Command="{Binding SaveClickCommand}"
+                         HorizontalOptions="FillAndExpand"></Button>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</Controls:CustomControl>
