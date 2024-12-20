@@ -35,9 +35,11 @@
 			<string>com.apple.developer.nfc.readersession.iso7816.select-identifiers</string>
 			<string>D2760000850100</string>
 		</array>
+		<key>NSCameraUsageDescription</key>
+		<string>We require access to your camera to allow you to capture photos for your profile.</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>This app needs access to the photo gallery to save photos and videos.</string>
+		<string>We require access to your gallery to allow you to use photos for your profile.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>This app needs access to the photo gallery to save photos and videos.</string>
+		<string>We require access to your gallery to allow you to use photos for your profile.</string>
 	</dict>
 </plist>
