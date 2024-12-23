@@ -1,6 +1,9 @@
+using Cardrly.Controls;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Views;
 using Mopups.Services;
 using SkiaSharp;
+using System.IO;
 
 
 namespace Cardrly.Pages.MainPopups;
@@ -9,12 +12,17 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
 {
     public delegate void imageDelegte(string img,string imagePath);
     public event imageDelegte ImageClose;
-
+    byte[] Image;
     public AddAttachmentsPopup()
 	{
 		InitializeComponent();
 	}
 
+    public AddAttachmentsPopup(byte[] bytes)
+    {
+        InitializeComponent();
+        Image = bytes;
+    }
     private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
     {
         await MopupService.Instance.PopAsync();
@@ -56,6 +64,7 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
         {
             await DisplayAlert("error", ex.Message, "OK");
         }
+        await MopupService.Instance.PopAsync();
     }
 
     private async void TapGestureRecognizer_Tapped_Pic(object sender, TappedEventArgs e)
@@ -87,30 +96,28 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
         {
             await DisplayAlert("TripBliss.Resources.Language.AppResources.error", ex.Message, "TripBliss.Resources.Language.AppResources.OK");
         }
+        await MopupService.Instance.PopAsync();
     }
 
-    private async void TapGestureRecognizer_Tapped_Pic_pdf(object sender, TappedEventArgs e)
+    private async void TapGestureRecognizer_Tapped_EditImage(object sender, TappedEventArgs e)
     {
-        try
+        if (Image != null)
         {
-            var result = await FilePicker.Default.PickAsync(new PickOptions
+            var page = new ImageEditorPage(Image);
+            page.ImageEditClose += (img,Loc) =>
             {
-                PickerTitle = "Select a PDF file",
-                FileTypes = FilePickerFileType.Pdf
-            });
-
-            if (result != null && result.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
-            {
-                // Get the file path to save it
-                var stream = await result.OpenReadAsync();
-
-                // Display the image
-                ImageClose.Invoke(Convert.ToBase64String(Helpers.Utility.ReadToEnd(stream)), result.FullPath);
-            }
+                if (!string.IsNullOrEmpty(img) & !string.IsNullOrEmpty(Loc))
+                {
+                    ImageClose.Invoke(img,Loc);
+                }
+            };
+            await App.Current!.MainPage!.Navigation.PushAsync(page);
         }
-        catch (Exception ex)
+        else
         {
-            await App.Current!.MainPage!.DisplayAlert("TripBliss.Resources.Language.AppResources.error", $"{ex.Message}", "TripBliss.Resources.Language.AppResources.OK");
+            var toast = Toast.Make($"Please Select Image First", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            await toast.Show();
         }
+        await MopupService.Instance.PopAsync();
     }
 }

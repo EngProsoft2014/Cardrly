@@ -1,5 +1,6 @@
 ﻿
 using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Models.Lead;
 using Cardrly.Pages.MainPopups;
@@ -18,7 +19,7 @@ namespace Cardrly.ViewModels.Leads
         [ObservableProperty]
         public LeadRequest? request = new LeadRequest();
         [ObservableProperty]
-        LeadResponse ? response = new LeadResponse();
+        LeadResponse? response = new LeadResponse();
         [ObservableProperty]
         public int isProfileImageAdded = 1;
         [ObservableProperty]
@@ -52,7 +53,22 @@ namespace Cardrly.ViewModels.Leads
         [RelayCommand]
         async Task AddProfileImageClick()
         {
-            var page = new AddAttachmentsPopup();
+            AddAttachmentsPopup page;
+            if (Request!.ImgFile != null)
+            {
+                page = new AddAttachmentsPopup(Request.ImgFile);
+            }
+            else if (!string.IsNullOrEmpty(Response!.UrlImgProfile))
+            {
+                UserDialogs.Instance.ShowLoading("Loading Image");
+                var bytes = await StaticMember.GetImageBase64FromUrlAsync(Response.UrlImgProfile);
+                UserDialogs.Instance.HideHud();
+                page = new AddAttachmentsPopup(bytes);
+            }
+            else
+            {
+                page = new AddAttachmentsPopup();
+            }
             page.ImageClose += async (img, imgPath) =>
             {
                 if (!string.IsNullOrEmpty(img))
@@ -62,7 +78,7 @@ namespace Cardrly.ViewModels.Leads
                     Request.ImagefileProfile = ImageSource.FromStream(() => new MemoryStream(bytes));
                     Request.Extension = Path.GetExtension(imgPath);
                     IsProfileImageAdded = 2;
-                    await MopupService.Instance.PopAsync();
+                    
                 }
             };
             await MopupService.Instance.PushAsync(page);
@@ -79,63 +95,30 @@ namespace Cardrly.ViewModels.Leads
                 string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
                 if (AddOrUpdate == 1)
                 {
-                    if (AddOrUpdate == 1)
+                    LeadRequestDto requestDto = new LeadRequestDto
                     {
-                        LeadRequestDto requestDto = new LeadRequestDto
-                        {
-                            FullName = Request!.FullName,
-                            Phone = Request.Phone,
-                            Address = Request.Address,
-                            Company = Request.Company,
-                            Extension = Request.Extension,
-                            Email = Request.Email,
-                            ImgFile = Request.ImgFile,
-                            Website = Request.Website
-                        };
-                        var json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadAddApi}{accid}/Lead", requestDto, UserToken);
-                        
-                        if (json.Item1 != null)
-                        {
-                            var toast = Toast.Make("Successfully Add Lead.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                            await toast.Show();
-
-                        }
-                        else if (json.Item2 != null)
-                        {
-                            var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                            await toast.Show();
-                        }
-                        UserDialogs.Instance.HideHud();
-                    }
-                    else if (AddOrUpdate == 2)
+                        FullName = Request!.FullName,
+                        Phone = Request.Phone,
+                        Address = Request.Address,
+                        Company = Request.Company,
+                        Extension = Request.Extension,
+                        Email = Request.Email,
+                        ImgFile = Request.ImgFile,
+                        Website = Request.Website
+                    };
+                    var json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadAddApi}{accid}/Lead", requestDto, UserToken);
+                    if (json.Item1 != null)
                     {
-                        LeadRequestDto requestDto = new LeadRequestDto
-                        {
-                            FullName = Request!.FullName,
-                            Phone = Request.Phone,
-                            Address = Request.Address,
-                            Company = Request.Company,
-                            Extension = Request.Extension,
-                            Email = Request.Email,
-                            ImgFile = Request.ImgFile,
-                            Website = Request.Website
-                        };
-                        var json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadAddApi}{accid}/Lead/{Response.Id}", requestDto, UserToken);
-                        
-                        if (json.Item1 != null)
-                        {
-                            var toast = Toast.Make("Successfully Upadte Lead.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                            await toast.Show();
+                        var toast = Toast.Make("Successfully Add Lead.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();
 
-                        }
-                        else if (json.Item2 != null)
-                        {
-                            var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                            await toast.Show();
-                        }
-                        UserDialogs.Instance.HideHud();     
                     }
-                    
+                    else if (json.Item2 != null)
+                    {
+                        var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();
+                    }
+                    UserDialogs.Instance.HideHud();
                 }
                 else if (AddOrUpdate == 2)
                 {
@@ -150,7 +133,7 @@ namespace Cardrly.ViewModels.Leads
                         ImgFile = Request.ImgFile,
                         Website = Request.Website
                     };
-                    var json = await Rep.PostTRAsync<LeadRequestDto, LeadRequest>($"{ApiConstants.CardUpdateApi}{accid}/Card/", requestDto, UserToken);
+                    var json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadAddApi}{accid}/Lead/{Response.Id}", requestDto, UserToken);
                     UserDialogs.Instance.HideHud();
                     if (json.Item1 != null)
                     {
@@ -169,6 +152,27 @@ namespace Cardrly.ViewModels.Leads
             UserDialogs.Instance.HideHud();
             IsEnable = true;
         }
+
+        [RelayCommand]
+        async Task ScanClick()
+        {
+            AddAttachmentsPopup page;
+            if (Request!.ImgFile != null)
+            {
+                page = new AddAttachmentsPopup(Request.ImgFile);
+            }
+            else
+            {
+                page = new AddAttachmentsPopup();
+            }
+            page.ImageClose += async (img, imgPath) =>
+            {
+                if (!string.IsNullOrEmpty(img))
+                {
+                    await MopupService.Instance.PopAsync();
+                }
+            };
+        }
         #endregion
 
         #region Mehtods
@@ -180,8 +184,11 @@ namespace Cardrly.ViewModels.Leads
             Request.Email = lead.Email;
             Request.FullName = lead.FullName;
             Request.Phone = lead.Phone;
-            Request.ImagefileProfile = ImageSource.FromUri(new Uri(lead.UrlImgProfile));
-        } 
+            if (!string.IsNullOrEmpty(lead.UrlImgProfile))
+            {
+                Request.ImagefileProfile = ImageSource.FromUri(new Uri(lead.UrlImgProfile));
+            }
+        }
         #endregion
     }
 }

@@ -36,7 +36,10 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task AddCardClick()
         {
-            await MopupService.Instance.PushAsync(new UserPopup(Rep,_service));
+            var vm = new AddCustomCardViewModel(Rep, _service);
+            var page = new AddCustomCardPage(vm);
+            page.BindingContext = vm;
+            await App.Current!.MainPage!.Navigation.PushAsync(page);
         }
         [RelayCommand]
         async Task CardPreViewClick(CardResponse card)

@@ -8,6 +8,7 @@ public partial class HomePage : Controls.CustomControl
 {
     CardsViewModel cardsViewModel;
     HomeViewModel homeViewModel;
+    LeadViewModel LeadViewModel;
     #region Service
     readonly IGenericRepository Rep;
     readonly Services.Data.ServicesService _service;
@@ -34,7 +35,7 @@ public partial class HomePage : Controls.CustomControl
 		}
 		else if (e.NewIndex == 2)
 		{
-			ContactView.BindingContext  = new LeadViewModel(Rep,_service);
+			ContactView.BindingContext = LeadViewModel = new LeadViewModel(Rep,_service);
 		}
 		else if (e.NewIndex == 3)
 		{
@@ -61,5 +62,17 @@ public partial class HomePage : Controls.CustomControl
         RefView.IsRefreshing = true;
         homeViewModel.Init();
         RefView.IsRefreshing = false;
+    }
+
+    private void Lead_Refreshing(object sender, EventArgs e)
+    {
+        LeadRef.IsRefreshing= true;
+        LeadViewModel.Init();
+        LeadRef.IsRefreshing = false;
+    }
+
+    private void SearchBar_Lead(object sender, TextChangedEventArgs e)
+    {
+        LeadColc.ItemsSource = LeadViewModel.Leads.Where(a => a.FullName.Contains(e.NewTextValue));
     }
 }

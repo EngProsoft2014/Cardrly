@@ -48,7 +48,6 @@ namespace Cardrly.Controls
         }
         #endregion
 
-
         public static double Clamp(this double self, double min, double max)
         {
             if (max < min)
@@ -82,6 +81,27 @@ namespace Cardrly.Controls
             var page = new LoginPage();
             page.BindingContext = vm;
             await Application.Current!.MainPage!.Navigation.PushAsync(page);
+        }
+
+        public static async Task<byte[]> GetImageBase64FromUrlAsync(string imageUrl)
+        {
+            if (string.IsNullOrWhiteSpace(imageUrl))
+                throw new ArgumentNullException(nameof(imageUrl));
+
+            using (HttpClient client = new HttpClient())
+            {
+                // Fetch image data from the URL
+                using (Stream stream = await client.GetStreamAsync(imageUrl))
+                {
+                    // Convert stream to Base64 string
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        await stream.CopyToAsync(memoryStream);
+                        byte[] imageBytes = memoryStream.ToArray();
+                        return imageBytes;
+                    }
+                }
+            }
         }
     }
 }

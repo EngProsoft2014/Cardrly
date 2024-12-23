@@ -28,7 +28,7 @@
         #endregion
 
         #region Account 
-        public static string AccountInfoApi = "Account/{0}";
+        public static string AccountInfoApi = "Account/";
         public static string AccountInfoUpdateApi = "Account/{0}";
         #endregion
 
@@ -82,6 +82,18 @@
         public static string LeadDeleteApi = "Account/{0}/Lead/{1}/Delete";
         public static string LeadToggleApi = "Account/";
         #endregion
+
+        #region LeadAssign
+        public static string LeadAssignGetAllApi = "Account/{0}/Lead/{1}/LeadAssign";
+        public static string LeadAssignAddApi = "Account/{0}/Lead/{1}/LeadAssign";
+        public static string LeadAssignDeleteApi = "Account/{0}/Lead/{1}/LeadAssign/{2}/Delete";
+        public static string LeadAssignToggleApi = "Account/{0}/Lead/{1}/LeadAssign/{2}/ToggleActive";
+        #endregion
+
+        #region LeadComment
+        public static string LeadCommentGetAllApi = "Account/";
+        public static string LeadCommentAddApi = "Account/";
+        public static string LeadCommentDeleteApi = "Account/{0}/Lead/{1}/LeadComment/{2}/Delete";
+        #endregion
     }
 }
-

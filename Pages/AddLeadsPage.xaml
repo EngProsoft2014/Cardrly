@@ -20,7 +20,7 @@
                     <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
             </Image>
-            <Label Text="Add Lead" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+            <Label Text="Create Lead" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
            TextColor="Black" VerticalOptions="CenterAndExpand" ></Label>
         </StackLayout>
         <!--Data-->
@@ -48,6 +48,26 @@
                         <TapGestureRecognizer Command="{Binding AddProfileImageClickCommand}"></TapGestureRecognizer>
                     </Border.GestureRecognizers>
                 </Border>
+                <!--Scan Card-->
+                <Border StrokeShape="RoundRectangle 10" Padding="10" Stroke="#FF7F3E">
+                    <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="7">
+                        <Image>
+                            <Image.Source>
+                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
+                            </Image.Source>
+                        </Image>
+                        <Label Text="Scan a Card or Badge" TextColor="Black" VerticalTextAlignment="Center" FontSize="14"></Label>
+                    </HorizontalStackLayout>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ScanClickCommand}"></TapGestureRecognizer>
+                    </Border.GestureRecognizers>
+                </Border>
+                <!--Or Line-->
+                <StackLayout Orientation="Horizontal" Spacing="7">
+                    <BoxView HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand"></BoxView>
+                    <Label Text="OR" TextColor="Black" VerticalTextAlignment="Center" FontSize="14"></Label>
+                    <BoxView HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand"></BoxView>
+                </StackLayout>
                 <!--Full Name-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
                     <Label Text="Full Name" TextColor="Gray" FontSize="13"></Label>

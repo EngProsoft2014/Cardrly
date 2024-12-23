@@ -3,10 +3,12 @@ using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models.Lead;
 using Cardrly.Pages;
+using Cardrly.Pages.MainPopups;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
+using Mopups.Services;
 using System.Collections.ObjectModel;
 
 namespace Cardrly.ViewModels.Leads
@@ -71,6 +73,12 @@ namespace Cardrly.ViewModels.Leads
             page.BindingContext = vm;
             await App.Current!.MainPage!.Navigation.PushAsync(page);
         }
+
+        [RelayCommand]
+        async Task MoreOptionClick(LeadResponse res)
+        {
+            await MopupService.Instance.PushAsync(new LeadOptionsPopup(res,Rep,_service));
+        }
         #endregion
 
         #region Methodes
@@ -93,7 +101,10 @@ namespace Cardrly.ViewModels.Leads
                 {
                     foreach (LeadResponse Lead in json)
                     {
-                        Lead.UrlImgProfile = Utility.ServerUrl + Lead.UrlImgProfile;
+                        if (!string.IsNullOrEmpty(Lead.UrlImgProfile))
+                        {
+                            Lead.UrlImgProfile = Utility.ServerUrl + Lead.UrlImgProfile;
+                        }
                     }
                     Leads = json;
                 }

@@ -10,6 +10,7 @@ using Cardrly.Pages.MainPopups;
 using Cardrly.Models.Card;
 using Cardrly.Pages.Links;
 using Cardrly.ViewModels.Links;
+using Cardrly.Controls;
 
 namespace Cardrly.ViewModels
 {
@@ -74,7 +75,22 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task AddProfileImageClick()
         {
-            var page = new AddAttachmentsPopup();
+            AddAttachmentsPopup page;
+            if (Request.ImgFileProfile != null)
+            {
+                 page = new AddAttachmentsPopup(Request.ImgFileProfile);
+            }
+            else if (!string.IsNullOrEmpty(Card.UrlImgProfile))
+            {
+                UserDialogs.Instance.ShowLoading("Loading Image");
+                var bytes = await StaticMember.GetImageBase64FromUrlAsync(Card.UrlImgProfile);
+                UserDialogs.Instance.HideHud();
+                page = new AddAttachmentsPopup(bytes);
+            }
+            else
+            {
+                page = new AddAttachmentsPopup();
+            }
             page.ImageClose += async (img, imgPath) =>
             {
                 if (!string.IsNullOrEmpty(img))
@@ -84,7 +100,6 @@ namespace Cardrly.ViewModels
                     Request.ImgProfileFile = ImageSource.FromStream(() => new MemoryStream(bytes));
                     Request.ExtensionProfile = Path.GetExtension(imgPath);
                     IsProfileImageAdded = 2;
-                    await MopupService.Instance.PopAsync();
                 }
             };
             await MopupService.Instance.PushAsync(page);
@@ -92,7 +107,22 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task AddCoverImageClick()
         {
-            var page = new AddAttachmentsPopup();
+            AddAttachmentsPopup page;
+            if (Request.ImgFileCover != null)
+            {
+                page = new AddAttachmentsPopup(Request.ImgFileCover);
+            }
+            else if (!string.IsNullOrEmpty(Card.UrlImgCover))
+            {
+                UserDialogs.Instance.ShowLoading("Loading Image");
+                var bytes = await StaticMember.GetImageBase64FromUrlAsync(Card.UrlImgCover);
+                UserDialogs.Instance.HideHud();
+                page = new AddAttachmentsPopup(bytes);
+            }
+            else
+            {
+                page = new AddAttachmentsPopup();
+            }
             page.ImageClose += async (img, imgPath) =>
             {
                 if (!string.IsNullOrEmpty(img))

@@ -16,7 +16,7 @@ namespace Cardrly.Models.Lead
         public string? Company { get; set; } = default!;
         public string? Website { get; set; } = default!;
         public string? ImgProfile { get; set; } = default!;
-        public string? UrlImgProfile { get; set; } = default!;
+        public string? UrlImgProfile { get; set; } = "";
         public bool Active { get; set; } = default!;
         public bool? IsShareToUsers { get; set; } = default!;
 

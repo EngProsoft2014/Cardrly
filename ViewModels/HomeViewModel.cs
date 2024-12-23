@@ -1,8 +1,10 @@
 ﻿using Cardrly.Constants;
 using Cardrly.Helpers;
+using Cardrly.Mode_s.Account;
 using Cardrly.Mode_s.Card;
 using Cardrly.Models.Home;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using System.Collections.ObjectModel;
 
@@ -10,8 +12,11 @@ namespace Cardrly.ViewModels
 {
     public partial class HomeViewModel : BaseViewModel
     {
+        #region Prop
         [ObservableProperty]
         CardDashBoardResponse boardResponse = new CardDashBoardResponse();
+        [ObservableProperty]
+        AccountResponse accResponse = new AccountResponse();
         [ObservableProperty]
         public ObservableCollection<CardResponse> cardLst = new ObservableCollection<CardResponse>();
         [ObservableProperty]
@@ -19,7 +24,9 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         DateTime fromDate = DateTime.UtcNow.Date;
         [ObservableProperty]
-        DateTime toDate = DateTime.UtcNow.Date;
+        DateTime toDate = DateTime.UtcNow.Date; 
+        #endregion
+
         #region Service
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
@@ -34,12 +41,22 @@ namespace Cardrly.ViewModels
         }
         #endregion
 
+        #region RelayCommand
+        [RelayCommand]
+        async Task GetClick()
+        {
+            await GetAllStatistics();
+            await GetAccData();
+        } 
+        #endregion
+
         #region Methodes
         public async void Init()
         {
             await GetAllCards();
             SelectedCard = CardLst[0];
             await GetAllStatistics();
+            await GetAccData();
         }
 
         async Task GetAllStatistics()
@@ -59,7 +76,27 @@ namespace Cardrly.ViewModels
             }
             IsEnable = true;
         }
-        
+
+        async Task GetAccData()
+        {
+            IsEnable = false;
+            string UserToken = await _service.UserToken();
+            if (!string.IsNullOrEmpty(UserToken))
+            {
+                string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                UserDialogs.Instance.ShowLoading();
+                var json = await Rep.GetAsync<AccountResponse>($"{ApiConstants.AccountInfoApi}{AccId}", UserToken);
+                UserDialogs.Instance.HideHud();
+                if (json != null)
+                {
+                    AccResponse = json;
+                    AccResponse.CardProgress = ((json.CurrentCountCards / (double)json.CountCards) * 100);
+                    AccResponse.UsersProgress = Convert.ToInt32((json.CurrentCountUsers / (double)json.CountUsers) * 100);
+                    AccResponse.ExpireProgress = (json.DayOperationExpireAcc / (double)json.DayOperationAcc) * 100;
+                }
+            }
+            IsEnable = true;
+        }
 
         async Task GetAllCards()
         {

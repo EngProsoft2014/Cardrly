@@ -72,6 +72,26 @@
                                 <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_Pic"></TapGestureRecognizer>
                             </StackLayout.GestureRecognizers>
                         </StackLayout>
+
+                        <Line X1="150"  HorizontalOptions="FillAndExpand" BackgroundColor="#212121"></Line>
+
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label 
+                                    Text="Edit Photo"
+                                    TextColor="#FF7F3E"
+                                    FontSize="16"
+                                    FontFamily="AlmaraiBold"
+                                    HorizontalTextAlignment="Center"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Padding="8">
+
+                            </Label>
+
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_EditImage"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
                     </StackLayout>
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="25"></RoundRectangle>
