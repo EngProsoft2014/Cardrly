@@ -30,10 +30,7 @@ namespace Cardrly
 
             if (string.IsNullOrEmpty(AccountId))
             {
-                var vm = new LoginViewModel(Rep, _service);
-                var page = new LoginPage();
-                page.BindingContext = vm;
-                MainPage = new NavigationPage(page);
+                MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service)));
             }
             else
             {

@@ -1,11 +1,27 @@
+using Cardrly.ViewModels;
+using Syncfusion.Maui.Core.Carousel;
+
 namespace Cardrly.Pages;
 
 public partial class LoginPage : Controls.CustomControl
 {
-	public LoginPage()
+    LoginViewModel Model;
+
+    public LoginPage(LoginViewModel model)
 	{
 		InitializeComponent();
-	}
+        this.BindingContext = model;
+        Model = model;
+
+        entryEmail.Completed += (object sender, EventArgs e) =>
+        {
+            entryPassword.Focus();
+        };
+        entryPassword.Completed += (object sender, EventArgs e) =>
+        {
+            Model.LoginClickCommand.Execute(Model.LoginRequest);
+        };
+    }
 
     [Obsolete]
     protected override bool OnBackButtonPressed()

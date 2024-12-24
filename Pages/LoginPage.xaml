@@ -15,7 +15,7 @@
                                WidthRequest="300" />
             <VerticalStackLayout Spacing="15">
                 <Border StrokeShape="RoundRectangle 8">
-                    <Entry Text="{Binding LoginRequest.UserName}" Placeholder="User Name" FontSize="14" TextColor="Black" PlaceholderColor="Gray"
+                    <Entry x:Name="entryEmail" Text="{Binding LoginRequest.UserName}" Placeholder="User Name" FontSize="14" TextColor="Black" PlaceholderColor="Gray"
                        HorizontalTextAlignment="Center" FontAttributes="Bold" ></Entry>
                 </Border>
                 <Border StrokeShape="RoundRectangle 8">

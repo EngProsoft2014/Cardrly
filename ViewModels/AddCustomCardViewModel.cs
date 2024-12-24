@@ -132,7 +132,6 @@ namespace Cardrly.ViewModels
                     Request.ImgCoverFile = ImageSource.FromStream(() => new MemoryStream(bytes));
                     Request.ExtensionCover = Path.GetExtension(imgPath);
                     IsCoverImageAdded = 2;
-                    await MopupService.Instance.PopAsync();
                 }
             };
             await MopupService.Instance.PushAsync(page);

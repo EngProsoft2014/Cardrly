@@ -51,10 +51,7 @@ namespace Cardrly.ViewModels
                 await BlobCache.LocalMachine.Vacuum();
 
                 Preferences.Default.Set("Lan", LangValueToKeep);
-                var vm = new LoginViewModel(Rep, _service);
-                var page = new LoginPage();
-                page.BindingContext = vm;
-                await Application.Current!.MainPage!.Navigation.PushAsync(page);
+                await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service)));
             };
             Controls.StaticMember.ShowSnackBar("Do you want to Logout", Controls.StaticMember.SnackBarColor, Controls.StaticMember.SnackBarTextColor, action);
             return Task.CompletedTask;

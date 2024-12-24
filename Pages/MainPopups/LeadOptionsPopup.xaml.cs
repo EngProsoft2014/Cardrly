@@ -2,6 +2,8 @@
 using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models.Lead;
+using Cardrly.ViewModels;
+using CommunityToolkit.Maui.Alerts;
 using Controls.UserDialogs.Maui;
 
 using Mopups.Services;
@@ -36,7 +38,7 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
         await MopupService.Instance.PushAsync(new CommentPopup(Res,Rep,_service));
     }
 
-    private async void TapGestureRecognizer_DeleteCard(object sender, TappedEventArgs e)
+    private async void TapGestureRecognizer_DeleteLead(object sender, TappedEventArgs e)
     {
         bool ans = await DisplayAlert("Question", "Are you sure to delete This Lead", "Ok", "Cancel");
         if (ans)
@@ -47,7 +49,17 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
             if (!string.IsNullOrEmpty(UserToken))
             {
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-                await Rep.PostEAsync($"{ApiConstants.CardDeleteApi}{AccId}/Lead/{Res.Id}/Delete", UserToken);
+                string res = await Rep.PostEAsync($"{ApiConstants.LeadDeleteApi}{AccId}/Lead/{Res.Id}/Delete", UserToken);
+                if (res == "")
+                {
+                    var toast = Toast.Make($"Lead Deleted Successfully", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
+                else
+                {
+                    var toast = Toast.Make($"Can't Delete This Lead Now Try ahin Later", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
                 await MopupService.Instance.PopAsync();
             }
             UserDialogs.Instance.HideHud();
@@ -61,8 +73,8 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
         await MopupService.Instance.PushAsync(new ShareLeadPopup(Res,Rep,_service));
     }
 
-    private void TapGestureRecognizer_ShowComments(object sender, TappedEventArgs e)
+    private async void TapGestureRecognizer_ShowComments(object sender, TappedEventArgs e)
     {
-
+        await Navigation.PushAsync(new AllCommentPage(new AllCommentViewModel(Res,Rep,_service)));
     }
 }

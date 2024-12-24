@@ -12,42 +12,22 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
 {
     LeadResponse Res = new LeadResponse();
     LeadCommentResponse CommentRes = new LeadCommentResponse();
+
     #region Service
     readonly IGenericRepository Rep;
     readonly Services.Data.ServicesService _service;
     #endregion
+
+    #region Cons
     public CommentPopup(LeadResponse res, IGenericRepository GenericRep, Services.Data.ServicesService service)
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
         Rep = GenericRep;
         _service = service;
         Res = res;
         //Init();
-    }
-
-    async void Init()
-    {
-        await GetComment();
-        CommEntr.Text = CommentRes.Comment;
-    }
-    async Task GetComment()
-    {
-        this.IsEnabled = false;
-        string UserToken = await _service.UserToken();
-        if (!string.IsNullOrEmpty(UserToken))
-        {
-            string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-            UserDialogs.Instance.ShowLoading();
-            var json = await Rep.GetAsync<LeadCommentResponse>($"{ApiConstants.LeadCommentGetAllApi}{AccId}/Lead/{Res.Id}/LeadComment", UserToken);
-
-            if (json != null)
-            {
-                CommentRes = json;
-            }
-        }
-        this.IsEnabled = true;
-        UserDialogs.Instance.HideHud();
-    }
+    } 
+    #endregion
 
     private async void Save_Clicked(object sender, EventArgs e)
     {

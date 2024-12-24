@@ -60,7 +60,7 @@ public partial class HomePage : Controls.CustomControl
     private void Cards_Refreshing(object sender, EventArgs e)
     {
         RefView.IsRefreshing = true;
-        homeViewModel.Init();
+        cardsViewModel.Init();
         RefView.IsRefreshing = false;
     }
 

@@ -82,7 +82,7 @@
                                    Padding="8">
                             </Label>
                             <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="TapGestureRecognizer_DeleteCard"></TapGestureRecognizer>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_DeleteLead"></TapGestureRecognizer>
                             </StackLayout.GestureRecognizers>
                         </StackLayout>
                     </StackLayout>

@@ -77,10 +77,7 @@ namespace Cardrly.Controls
             await BlobCache.LocalMachine.InvalidateAll();
             await BlobCache.LocalMachine.Vacuum();
             Preferences.Default.Set("Lan", LangValueToKeep);
-            var vm = new LoginViewModel(generic, _service);
-            var page = new LoginPage();
-            page.BindingContext = vm;
-            await Application.Current!.MainPage!.Navigation.PushAsync(page);
+            await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(generic, _service)));
         }
 
         public static async Task<byte[]> GetImageBase64FromUrlAsync(string imageUrl)
