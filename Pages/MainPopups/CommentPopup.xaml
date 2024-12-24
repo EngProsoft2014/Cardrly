@@ -6,7 +6,7 @@
              x:Class="Cardrly.Pages.MainPopups.CommentPopup"
              CloseWhenBackgroundIsClicked="True"
              NavigationPage.HasNavigationBar="False" 
-            BackgroundColor="#90000000"
+             BackgroundColor="#90000000"
              Title="CommentPopup">
     <mopups:PopupPage.Animation>
         <mopupsanim:MoveAnimation
@@ -15,7 +15,6 @@
    PositionIn="Bottom"
    PositionOut="Center" />
     </mopups:PopupPage.Animation>
-
     <StackLayout VerticalOptions="EndAndExpand">
 
         <Border Padding="10" Margin="20" BackgroundColor="Transparent" StrokeThickness="0">

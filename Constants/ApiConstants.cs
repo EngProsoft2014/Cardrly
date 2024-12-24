@@ -57,6 +57,7 @@
         public static string CardGetAllApi = "Account/";
         public static string CardGetApi = "Account/{0}/Card/{1}";
         public static string CardGetCardDashBoardApi = "Account/";
+        public static string LeadGetScanCardApi = "Account/";
         public static string CardGetAllOrSingleApi = "Account/{0}/Card/GetAllOrSingle";
         public static string CardAddApi = "Account/";
         public static string CardUpdateApi = "Account/";
@@ -79,15 +80,15 @@
         public static string LeadGetApi = "Account/{0}/Lead/{1}";
         public static string LeadAddApi = "Account/";
         public static string LeadUpdateApi = "Account/{0}/Lead/{1}";
-        public static string LeadDeleteApi = "Account/{0}/Lead/{1}/Delete";
+        public static string LeadDeleteApi = "Account/";
         public static string LeadToggleApi = "Account/";
         #endregion
 
         #region LeadAssign
-        public static string LeadAssignGetAllApi = "Account/{0}/Lead/{1}/LeadAssign";
-        public static string LeadAssignAddApi = "Account/{0}/Lead/{1}/LeadAssign";
-        public static string LeadAssignDeleteApi = "Account/{0}/Lead/{1}/LeadAssign/{2}/Delete";
-        public static string LeadAssignToggleApi = "Account/{0}/Lead/{1}/LeadAssign/{2}/ToggleActive";
+        public static string LeadAssignGetAllApi = "Account/";
+        public static string LeadAssignAddApi = "Account/";
+        public static string LeadAssignDeleteApi = "Account/";
+        public static string LeadAssignToggleApi = "Account/";
         #endregion
 
         #region LeadComment

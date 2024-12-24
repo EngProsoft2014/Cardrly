@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -10,12 +11,54 @@ namespace Cardrly.Models.Lead
 {
     public class LeadRequest : INotifyPropertyChanged
     {
-        public string FullName { get; set; } = default!;
-        public string? Email { get; set; } = default!;
-        public string? Address { get; set; } = default!;
-        public string? Phone { get; set; } = default!;
-        public string? Company { get; set; } = default!;
-        public string? Website { get; set; } = default!;
+        private string _fullName = default!;
+        private string? _email = default!;
+        private string? _address = default!;
+        private string? _phone = default!;
+        private string? _company = default!;
+        private string? _website = default!;
+        private byte[]? _imgFile;
+        private string? _extension = string.Empty;
+        public string FullName
+        {
+            get => _fullName;
+            set => SetProperty(ref _fullName, value);
+        }
+        public string? Email
+        {
+            get => _email;
+            set => SetProperty(ref _email, value);
+        }
+        public string? Address
+        {
+            get => _address;
+            set => SetProperty(ref _address, value);
+        }
+        public string? Phone
+        {
+            get => _phone;
+            set => SetProperty(ref _phone, value);
+        }
+        public string? Company
+        {
+            get => _company;
+            set => SetProperty(ref _company, value);
+        }
+        public string? Website
+        {
+            get => _website;
+            set => SetProperty(ref _website, value);
+        }
+        public byte[]? ImgFile
+        {
+            get => _imgFile;
+            set => SetProperty(ref _imgFile, value);
+        }
+        public string? Extension
+        {
+            get => _extension;
+            set => SetProperty(ref _extension, value);
+        }
         [JsonIgnore]
         ImageSource? _ImagefileProfile;
         [JsonIgnore]
@@ -34,9 +77,22 @@ namespace Cardrly.Models.Lead
                 }
             }
         }
-        public byte[]? ImgFile { get; set; }
-        public string? Extension { get; set; } = string.Empty;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+        {
+            if (!EqualityComparer<T>.Default.Equals(field, value))
+            {
+                field = value;
+                OnPropertyChanged(propertyName);
+                return true;
+            }
+            return false;
+        }
+
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

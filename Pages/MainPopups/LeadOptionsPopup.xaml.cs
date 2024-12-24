@@ -35,4 +35,34 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
         await MopupService.Instance.PopAsync();
         await MopupService.Instance.PushAsync(new CommentPopup(Res,Rep,_service));
     }
+
+    private async void TapGestureRecognizer_DeleteCard(object sender, TappedEventArgs e)
+    {
+        bool ans = await DisplayAlert("Question", "Are you sure to delete This Lead", "Ok", "Cancel");
+        if (ans)
+        {
+            this.IsEnabled = false;
+            UserDialogs.Instance.ShowLoading();
+            string UserToken = await _service.UserToken();
+            if (!string.IsNullOrEmpty(UserToken))
+            {
+                string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                await Rep.PostEAsync($"{ApiConstants.CardDeleteApi}{AccId}/Lead/{Res.Id}/Delete", UserToken);
+                await MopupService.Instance.PopAsync();
+            }
+            UserDialogs.Instance.HideHud();
+            this.IsEnabled = true;
+        }
+    }
+
+    private async void TapGestureRecognizer_ShareLead(object sender, TappedEventArgs e)
+    {
+        await MopupService.Instance.PopAsync();
+        await MopupService.Instance.PushAsync(new ShareLeadPopup(Res,Rep,_service));
+    }
+
+    private void TapGestureRecognizer_ShowComments(object sender, TappedEventArgs e)
+    {
+
+    }
 }

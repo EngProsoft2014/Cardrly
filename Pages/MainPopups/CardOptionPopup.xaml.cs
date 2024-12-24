@@ -64,17 +64,21 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
 
     private async void TapGestureRecognizer_DeleteCard(object sender, TappedEventArgs e)
     {
-        this.IsEnabled = false;
-        string UserToken = await _service.UserToken();
-        if (!string.IsNullOrEmpty(UserToken))
+        bool ans = await DisplayAlert("Question", "Are you sure to delete This Card", "Ok", "Cancel");
+        if (ans)
         {
-            string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-            UserDialogs.Instance.ShowLoading();
-            await Rep.PostEAsync($"{ApiConstants.CardDeleteApi}{AccId}/Card/{Card.Id}/Delete", UserToken);
-            UserDialogs.Instance.HideHud();
-            await MopupService.Instance.PopAsync();
+            this.IsEnabled = false;
+            string UserToken = await _service.UserToken();
+            if (!string.IsNullOrEmpty(UserToken))
+            {
+                string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                UserDialogs.Instance.ShowLoading();
+                await Rep.PostEAsync($"{ApiConstants.CardDeleteApi}{AccId}/Card/{Card.Id}/Delete", UserToken);
+                UserDialogs.Instance.HideHud();
+                await MopupService.Instance.PopAsync();
+            }
+            this.IsEnabled = true;
         }
-        this.IsEnabled = true;
     }
 
     private async void TapGestureRecognizer_Cancel(object sender, EventArgs e)

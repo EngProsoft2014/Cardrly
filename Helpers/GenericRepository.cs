@@ -258,13 +258,11 @@ namespace Cardrly.Helpers
                     jsonResult = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
                     return "";
                 }
-
                 if (responseMessage.StatusCode == HttpStatusCode.Forbidden)
                 {
                     await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
                     return "No Content";
                 }
-
                 if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
                 {
                     await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");

@@ -8,7 +8,6 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
-using Microsoft.AspNet.SignalR.Client.Http;
 using Mopups.Services;
 
 namespace Cardrly.ViewModels.Leads
@@ -18,6 +17,8 @@ namespace Cardrly.ViewModels.Leads
         #region Prop
         [ObservableProperty]
         public LeadRequest? request = new LeadRequest();
+        [ObservableProperty]
+        public LeadScanCardRequest ? scanCard = new LeadScanCardRequest();
         [ObservableProperty]
         LeadResponse? response = new LeadResponse();
         [ObservableProperty]
@@ -157,7 +158,7 @@ namespace Cardrly.ViewModels.Leads
         async Task ScanClick()
         {
             AddAttachmentsPopup page;
-            if (Request!.ImgFile != null)
+            if (ScanCard!.ImgFile != null)
             {
                 page = new AddAttachmentsPopup(Request.ImgFile);
             }
@@ -169,9 +170,11 @@ namespace Cardrly.ViewModels.Leads
             {
                 if (!string.IsNullOrEmpty(img))
                 {
-                    await MopupService.Instance.PopAsync();
+                    ScanCard.ImgFile = Convert.FromBase64String(img);
+                    await UploadScanCard();
                 }
             };
+            await MopupService.Instance.PushAsync(page);
         }
         #endregion
 
@@ -188,6 +191,31 @@ namespace Cardrly.ViewModels.Leads
             {
                 Request.ImagefileProfile = ImageSource.FromUri(new Uri(lead.UrlImgProfile));
             }
+        }
+
+        async Task UploadScanCard()
+        {
+            IsEnable = false;
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                UserDialogs.Instance.ShowLoading();
+                string UserToken = await _service.UserToken();
+                string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
+                var json = await Rep.PostTRAsync<LeadScanCardRequest, LeadResponse>($"{ApiConstants.LeadGetScanCardApi}{accid}/Lead/GetScanCard", ScanCard, UserToken);
+                if (json.Item1 != null)
+                {
+                    var toast = Toast.Make("Successfully Scan Card.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                    Init(json.Item1);
+                }
+                else if (json.Item2 != null)
+                {
+                    var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
+            }
+            UserDialogs.Instance.HideHud();
+            IsEnable = true;
         }
         #endregion
     }

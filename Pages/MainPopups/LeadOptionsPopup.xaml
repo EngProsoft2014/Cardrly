@@ -22,9 +22,9 @@
             <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
                 <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
                     <StackLayout  BackgroundColor="#FFFFFF" Spacing="3">
-                        <!--Comment-->
+                        <!--Add Comment-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
-                            <Label Text="Comment"
+                            <Label Text="Add Comment"
                                    TextColor="#FF7F3E"
                                    FontSize="16"
                                    FontFamily="AlmaraiBold"
@@ -37,7 +37,54 @@
                                 <TapGestureRecognizer Tapped="TapGestureRecognizer_Comment"></TapGestureRecognizer>
                             </StackLayout.GestureRecognizers>
                         </StackLayout>
-                        <!--<BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>-->
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Show Comments-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="Show Comments"
+                                   TextColor="#FF7F3E"
+                                   FontSize="16"
+                                   FontFamily="AlmaraiBold"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="CenterAndExpand" 
+                                   Padding="8">
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_ShowComments"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Share Lead-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="Share Lead"
+                                   TextColor="#FF7F3E"
+                                   FontSize="16"
+                                   FontFamily="AlmaraiBold"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="CenterAndExpand" 
+                                   Padding="8">
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_ShareLead"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Delete-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="Delete"
+                                   TextColor="Red"
+                                   FontSize="16"
+                                   FontFamily="AlmaraiBold"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="CenterAndExpand" 
+                                   Padding="8">
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_DeleteCard"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
                     </StackLayout>
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="25"></RoundRectangle>

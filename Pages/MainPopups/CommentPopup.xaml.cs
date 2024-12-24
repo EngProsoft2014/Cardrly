@@ -5,7 +5,6 @@ using Cardrly.Models.LeadComment;
 using CommunityToolkit.Maui.Alerts;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
-using System.Collections.ObjectModel;
 
 namespace Cardrly.Pages.MainPopups;
 
@@ -23,7 +22,7 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
         Rep = GenericRep;
         _service = service;
         Res = res;
-        Init();
+        //Init();
     }
 
     async void Init()
@@ -69,8 +68,14 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
                 await toast.Show();
                 await MopupService.Instance.PopAsync();
             }
+            else
+            {
+                var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+                await MopupService.Instance.PopAsync();
+            }
             UserDialogs.Instance.HideHud();
-            await MopupService.Instance.PopAsync();
+            
         }
         this.IsEnabled = true;
     }
