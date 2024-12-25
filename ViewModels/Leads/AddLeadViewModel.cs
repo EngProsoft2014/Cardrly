@@ -134,7 +134,7 @@ namespace Cardrly.ViewModels.Leads
                         ImgFile = Request.ImgFile,
                         Website = Request.Website
                     };
-                    var json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadAddApi}{accid}/Lead/{Response.Id}", requestDto, UserToken);
+                    var json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadUpdateApi}{accid}/Lead/{Response.Id}", requestDto, UserToken);
                     UserDialogs.Instance.HideHud();
                     if (json.Item1 != null)
                     {

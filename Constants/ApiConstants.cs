@@ -76,10 +76,10 @@
         #endregion
 
         #region Leads
-        public static string LeadGetAllApi = "Account/{0}/Lead";
+        public static string LeadGetAllApi = "Account/";
         public static string LeadGetApi = "Account/{0}/Lead/{1}";
         public static string LeadAddApi = "Account/";
-        public static string LeadUpdateApi = "Account/{0}/Lead/{1}";
+        public static string LeadUpdateApi = "Account/";
         public static string LeadDeleteApi = "Account/";
         public static string LeadToggleApi = "Account/";
         #endregion

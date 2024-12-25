@@ -3,6 +3,7 @@ using Cardrly.Helpers;
 using Cardrly.Mode_s.Account;
 using Cardrly.Mode_s.Card;
 using Cardrly.Models.Home;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
@@ -45,8 +46,16 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task GetClick()
         {
-            await GetAllStatistics();
-            await GetAccData();
+            if (FromDate.Date >ToDate.Date)
+            {
+                var toast = Toast.Make("The To Date Must be greater Than From Date", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+            else
+            {
+                await GetAllStatistics();
+                await GetAccData();
+            }
         } 
         #endregion
 

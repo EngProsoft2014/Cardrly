@@ -20,6 +20,8 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
     readonly IGenericRepository Rep;
     readonly Services.Data.ServicesService _service;
     #endregion
+
+    #region Cons
     public CardOptionPopup(CardResponse _Card, IGenericRepository GenericRep, Services.Data.ServicesService service)
     {
         InitializeComponent();
@@ -29,9 +31,10 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
 
         // Initialize NFC Plugin
         CrossNFC.Current.StartListening();
-    }
+    } 
+    #endregion
 
-
+    #region Methods
     private async void TapGestureRecognizer_ShareCard(object sender, TappedEventArgs e)
     {
         await Share.RequestAsync(new ShareTextRequest
@@ -84,7 +87,8 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
     private async void TapGestureRecognizer_Cancel(object sender, EventArgs e)
     {
         await MopupService.Instance.PopAsync();
-    }
+    } 
+    #endregion
 
     public const string ALERT_TITLE = "NFC";
     public const string MIME_TYPE = "application/com.companyname.nfcsample";

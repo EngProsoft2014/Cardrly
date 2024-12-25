@@ -76,5 +76,6 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
     private async void TapGestureRecognizer_ShowComments(object sender, TappedEventArgs e)
     {
         await Navigation.PushAsync(new AllCommentPage(new AllCommentViewModel(Res,Rep,_service)));
+        await MopupService.Instance.PopAsync();
     }
 }

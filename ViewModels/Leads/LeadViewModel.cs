@@ -95,7 +95,7 @@ namespace Cardrly.ViewModels.Leads
             {
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
                 UserDialogs.Instance.ShowLoading();
-                var json = await Rep.GetAsync<ObservableCollection<LeadResponse>>($"{ApiConstants.CardGetAllApi}{AccId}/Lead", UserToken);
+                var json = await Rep.GetAsync<ObservableCollection<LeadResponse>>($"{ApiConstants.LeadGetAllApi}{AccId}/Lead", UserToken);
                 
                 if (json != null)
                 {

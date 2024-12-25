@@ -63,7 +63,7 @@
                                                 <Label Text="Card" TextColor="Gray" FontSize="13"></Label>
                                                 <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                                                     <Picker x:Name="CardPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding CardName}"
-                    SelectedItem="{Binding selectedCard}" ItemsSource="{Binding CardLst}"></Picker>
+                                                            SelectedItem="{Binding SelectedCard}" ItemsSource="{Binding CardLst}"></Picker>
                                                 </Border>
                                             </VerticalStackLayout>
                                         </StackLayout>
@@ -255,7 +255,7 @@
                                                                 <Grid HorizontalOptions="FillAndExpand">
                                                                     <VerticalStackLayout >
                                                                         <!--Profile Iamge-->
-                                                                        <Border StrokeShape="RoundRectangle 50" WidthRequest="85" HorizontalOptions="CenterAndExpand" TranslationY="-45" HeightRequest="85" BackgroundColor="Red">
+                                                                        <Border StrokeShape="RoundRectangle 50" WidthRequest="85" HorizontalOptions="CenterAndExpand" TranslationY="-45" HeightRequest="85">
                                                                             <Image  Source="{Binding UrlImgProfile}" Aspect="AspectFill" HeightRequest="85"></Image>
                                                                         </Border>
                                                                         <!--Card Data-->

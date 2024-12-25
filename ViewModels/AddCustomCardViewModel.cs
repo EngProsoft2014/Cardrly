@@ -80,7 +80,7 @@ namespace Cardrly.ViewModels
             {
                  page = new AddAttachmentsPopup(Request.ImgFileProfile);
             }
-            else if (!string.IsNullOrEmpty(Card.UrlImgProfile))
+            else if (!string.IsNullOrEmpty(Card.UrlImgProfile) && Card.UrlImgProfile != Utility.ServerUrl)
             {
                 UserDialogs.Instance.ShowLoading("Loading Image");
                 var bytes = await StaticMember.GetImageBase64FromUrlAsync(Card.UrlImgProfile);
@@ -112,7 +112,7 @@ namespace Cardrly.ViewModels
             {
                 page = new AddAttachmentsPopup(Request.ImgFileCover);
             }
-            else if (!string.IsNullOrEmpty(Card.UrlImgCover))
+            else if (!string.IsNullOrEmpty(Card.UrlImgCover) && Card.UrlImgCover != Utility.ServerUrl)
             {
                 UserDialogs.Instance.ShowLoading("Loading Image");
                 var bytes = await StaticMember.GetImageBase64FromUrlAsync(Card.UrlImgCover);
