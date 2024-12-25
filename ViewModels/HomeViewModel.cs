@@ -80,6 +80,10 @@ namespace Cardrly.ViewModels
                 UserDialogs.Instance.HideHud();
                 if (json != null)
                 {
+                    if (json.clickCardLinkSummariesOS.Count == 0)
+                    {
+                        json.clickCardLinkSummariesOS.Add(new ClickCardSummaryOSResponse { name = "Empty", value=1});
+                    }
                     BoardResponse = json;
                 }
             }

@@ -225,80 +225,83 @@
                                 </StackLayout>
                                 <!--Cards-->
                                 <RefreshView x:Name="RefView"  Refreshing="Cards_Refreshing" Margin="0,30,0,0">
-                                    <CollectionView ItemsSource="{Binding CardLst}" VerticalOptions="FillAndExpand" Margin="0,40,0,0" HorizontalOptions="FillAndExpand" >
-                                        <CollectionView.ItemsLayout>
-                                            <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="10"></GridItemsLayout>
-                                        </CollectionView.ItemsLayout>
-                                        <CollectionView.ItemTemplate>
-                                            <DataTemplate>
-                                                <StackLayout HorizontalOptions="FillAndExpand">
-                                                    <!--Qr code Iamge-->
-                                                    <Border StrokeShape="RoundRectangle 20" WidthRequest="200" Padding="10">
-                                                        <VerticalStackLayout Spacing="5">
+                                    <ScrollView VerticalOptions="FillAndExpand">
+                                        <CollectionView ItemsSource="{Binding CardLst}" VerticalOptions="FillAndExpand" Margin="0,40,0,0" HorizontalOptions="FillAndExpand" >
+                                            <CollectionView.ItemsLayout>
+                                                <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="10"></GridItemsLayout>
+                                            </CollectionView.ItemsLayout>
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackLayout HorizontalOptions="FillAndExpand">
+                                                        <!--Qr code Iamge-->
+                                                        <Border StrokeShape="RoundRectangle 20" WidthRequest="200" Padding="10">
+                                                            <VerticalStackLayout Spacing="5">
 
-                                                            <zxing:BarcodeGeneratorView
+                                                                <zxing:BarcodeGeneratorView
                                                                   HeightRequest="150"
                                                                   WidthRequest="150"
                                                                   ForegroundColor="#FF7F3E"
                                                                   Value="{Binding CardUrl}"
                                                                   Format="QrCode"/>
-                                                            <Label Text="Scan to share Card" TextColor="Black" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
-                                                        </VerticalStackLayout>
-                                                    </Border>
-                                                    <!--Card Data-->
-                                                    <Border StrokeShape="RoundRectangle 20" BackgroundColor="{Binding CardTheme}" StrokeThickness="0" Margin="0,30,0,0">
-                                                        <StackLayout Orientation="Horizontal" Spacing="15">
-                                                            <StackLayout HorizontalOptions="FillAndExpand" WidthRequest="{OnPlatform iOS=340}">
-                                                                <!--Cover Iamge-->
-                                                                <Image Source="{Binding UrlImgCover}" HeightRequest="100" HorizontalOptions="FillAndExpand" 
+                                                                <Label Text="Scan to share Card" TextColor="Black" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                            </VerticalStackLayout>
+                                                        </Border>
+                                                        <!--Card Data-->
+                                                        <Border StrokeShape="RoundRectangle 20" BackgroundColor="{Binding CardTheme}" StrokeThickness="0" Margin="0,30,0,0">
+                                                            
+                                                            <StackLayout Orientation="Horizontal" Spacing="15">
+                                                                <StackLayout HorizontalOptions="FillAndExpand" WidthRequest="{OnPlatform iOS=340}">
+                                                                    <!--Cover Iamge-->
+                                                                    <Image Source="{Binding UrlImgCover}" HeightRequest="100" HorizontalOptions="FillAndExpand" 
                                                                        Aspect="AspectFill"></Image>
-                                                                <Grid HorizontalOptions="FillAndExpand">
-                                                                    <VerticalStackLayout >
-                                                                        <!--Profile Iamge-->
-                                                                        <Border StrokeShape="RoundRectangle 50" WidthRequest="85" HorizontalOptions="CenterAndExpand" TranslationY="-45" HeightRequest="85">
-                                                                            <Image  Source="{Binding UrlImgProfile}" Aspect="AspectFill" HeightRequest="85"></Image>
-                                                                        </Border>
-                                                                        <!--Card Data-->
-                                                                        <VerticalStackLayout HorizontalOptions="CenterAndExpand" Margin="10,0,0,0" TranslationY="-35">
-                                                                            <Label Text="{Binding CardName}" TextColor="Black" FontSize="14" FontAttributes="Bold"></Label>
-                                                                            <Label Text="{Binding JobTitle}" TextColor="Gray" FontSize="12"></Label>
-                                                                        </VerticalStackLayout>
-                                                                        <!--Card Optiones-->
-                                                                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" 
+                                                                    <Grid HorizontalOptions="FillAndExpand">
+                                                                        <VerticalStackLayout >
+                                                                            <!--Profile Iamge-->
+                                                                            <Border StrokeShape="RoundRectangle 50" WidthRequest="85" HorizontalOptions="CenterAndExpand" TranslationY="-45" HeightRequest="85">
+                                                                                <Image  Source="{Binding UrlImgProfile}" Aspect="AspectFill" HeightRequest="85"></Image>
+                                                                            </Border>
+                                                                            <!--Card Data-->
+                                                                            <VerticalStackLayout HorizontalOptions="CenterAndExpand" Margin="10,0,0,0" TranslationY="-35">
+                                                                                <Label Text="{Binding CardName}" TextColor="Black" FontSize="14" FontAttributes="Bold"></Label>
+                                                                                <Label Text="{Binding JobTitle}" TextColor="Gray" FontSize="12"></Label>
+                                                                            </VerticalStackLayout>
+                                                                            <!--Card Optiones-->
+                                                                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" 
                                                                                  Margin="25,0" TranslationY="-25">
-                                                                            <!--Edit Card-->
-                                                                            <Button Text="Edit" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" CornerRadius="20"
+                                                                                <!--Edit Card-->
+                                                                                <Button Text="Edit" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" CornerRadius="20"
                                                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=EditCardClickCommand}"
                                                                                     CommandParameter="{Binding .}" WidthRequest="80"></Button>
-                                                                            <!--PreView-->
-                                                                            <Button Text="Preview" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" CornerRadius="20"
+                                                                                <!--PreView-->
+                                                                                <Button Text="Preview" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" CornerRadius="20"
                                                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=CardPreViewClickCommand}"
                                                                                     CommandParameter="{Binding .}" WidthRequest="80"></Button>
-                                                                            <!--More Optiions-->
-                                                                            <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="Gray" 
+                                                                                <!--More Optiions-->
+                                                                                <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="Gray" 
                                                                                     HorizontalOptions="FillAndExpand" WidthRequest="80">
-                                                                                <Image WidthRequest="25">
-                                                                                    <Image.Source>
-                                                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="15"></FontImageSource>
-                                                                                    </Image.Source>
-                                                                                    <Image.GestureRecognizers>
-                                                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=MoreOPtionsClickCommand}"
+                                                                                    <Image WidthRequest="25">
+                                                                                        <Image.Source>
+                                                                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="15"></FontImageSource>
+                                                                                        </Image.Source>
+                                                                                        <Image.GestureRecognizers>
+                                                                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=MoreOPtionsClickCommand}"
                                                                                                               CommandParameter="{Binding .}"></TapGestureRecognizer>
-                                                                                    </Image.GestureRecognizers>
-                                                                                </Image>
+                                                                                        </Image.GestureRecognizers>
+                                                                                    </Image>
 
-                                                                            </Border>
-                                                                        </StackLayout>
-                                                                    </VerticalStackLayout>
-                                                                </Grid>
+                                                                                </Border>
+                                                                            </StackLayout>
+                                                                        </VerticalStackLayout>
+                                                                    </Grid>
+                                                                </StackLayout>
                                                             </StackLayout>
-                                                        </StackLayout>
-                                                    </Border>
-                                                </StackLayout>
-                                            </DataTemplate>
-                                        </CollectionView.ItemTemplate>
+                                                        </Border>
+                                                    </StackLayout>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
 
-                                    </CollectionView>
+                                        </CollectionView>
+                                    </ScrollView>
                                 </RefreshView>
                             </StackLayout>
                         </ContentView>

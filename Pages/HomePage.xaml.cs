@@ -75,4 +75,5 @@ public partial class HomePage : Controls.CustomControl
     {
         LeadColc.ItemsSource = LeadViewModel.Leads.Where(a => a.FullName.Contains(e.NewTextValue));
     }
+
 }

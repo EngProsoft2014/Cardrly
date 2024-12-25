@@ -22,7 +22,6 @@
             <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
                 <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
                     <StackLayout  BackgroundColor="#FFFFFF" Spacing="3">
-                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
                         <!--Setup Card-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Label Text="Setup Card"

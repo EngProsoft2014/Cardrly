@@ -24,16 +24,6 @@
             <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
                 <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
                     <StackLayout  BackgroundColor="#FFFFFF">
-                        <Label Text="Add Photo"
-                           TextColor="#333333"
-                           FontSize="13"
-                           FontFamily="AlmaraiRegular"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           HorizontalOptions="CenterAndExpand"
-                           Padding="8"></Label>
-
-                        <Line X1="150"  HorizontalOptions="FillAndExpand" BackgroundColor="#212121"></Line>
 
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Label Text="Take Photo"
@@ -53,7 +43,7 @@
                         </StackLayout>
 
 
-                        <Line X1="150"  HorizontalOptions="FillAndExpand" BackgroundColor="#212121"></Line>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
 
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Label 
@@ -73,7 +63,7 @@
                             </StackLayout.GestureRecognizers>
                         </StackLayout>
 
-                        <Line X1="150"  HorizontalOptions="FillAndExpand" BackgroundColor="#212121"></Line>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
 
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Label 
