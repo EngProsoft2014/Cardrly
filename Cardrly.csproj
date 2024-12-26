@@ -78,6 +78,7 @@
 		<PackageReference Include="nor0x.Maui.ColorPicker" Version="2.0.4" />
 		<PackageReference Include="Plugin.NFC" Version="0.1.26" />
 		<PackageReference Include="Polly" Version="8.5.0" />
+		<PackageReference Include="Sentry.Maui" Version="5.0.0" />
 		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0" />
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="27.2.5" />
 		<PackageReference Include="Syncfusion.Maui.ImageEditor" Version="27.2.5" />
@@ -136,6 +137,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\MainPopups\QrCodePopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\MainPopups\ReadyToScanPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\MainPopups\ShareLeadPopup.xaml">

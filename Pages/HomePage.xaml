@@ -21,8 +21,8 @@
                         <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
                     </tabView:SfTabItem.ImageSource>
                     <tabView:SfTabItem.Content>
-                        <ContentView x:Name="HomeView">
-                            <StackLayout Margin="20" Spacing="20">
+                        <ContentView x:Name="HomeView" IsEnabled="{Binding IsEnable}" HorizontalOptions="FillAndExpand" Margin="20">
+                            <StackLayout Spacing="20">
                                 <!--Header-->
                                 <StackLayout Orientation="Horizontal">
                                     <Label Text="Home" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
@@ -208,8 +208,8 @@
                         <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
                     </tabView:SfTabItem.ImageSource>
                     <tabView:SfTabItem.Content>
-                        <ContentView x:Name="CardsView" IsEnabled="{Binding IsEnable}">
-                            <StackLayout Margin="20">
+                        <ContentView x:Name="CardsView" IsEnabled="{Binding IsEnable}" Margin="20">
+                            <StackLayout>
                                 <!--Header-->
                                 <StackLayout Orientation="Horizontal">
                                     <Label Text="Cards" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center"
@@ -309,8 +309,8 @@
                 </tabView:SfTabItem>
                 <!--Leads-->
                 <tabView:SfTabItem>
-                    <ContentView x:Name="ContactView">
-                        <StackLayout Margin="20" Spacing="20">
+                    <ContentView x:Name="ContactView" IsEnabled="{Binding IsEnable}" Margin="20">
+                        <StackLayout  Spacing="20">
                             <!--Header-->
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="Contact" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
@@ -390,8 +390,8 @@
                         <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
                     </tabView:SfTabItem.ImageSource>
                     <tabView:SfTabItem.Content>
-                        <ContentView x:Name="MoreView">
-                            <StackLayout Margin="20" Spacing="20">
+                        <ContentView x:Name="MoreView" IsEnabled="{Binding IsEnable}" Margin="20">
+                            <StackLayout Spacing="20">
                                 <Label Text="More" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                                        TextColor="Black"></Label>
                                 <VerticalStackLayout Margin="0,0,0,50">

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+             xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+             x:Class="Cardrly.Pages.MainPopups.ReadyToScanPopup"
+             CloseWhenBackgroundIsClicked="True"
+             NavigationPage.HasNavigationBar="False" 
+             BackgroundColor="#90000000"
+             Title="ReadyToScanPopup">
+    <mopups:PopupPage.Animation>
+        <mopupsanim:MoveAnimation
+DurationIn="700"
+EasingIn="BounceOut"
+PositionIn="Bottom"
+PositionOut="Center" />
+    </mopups:PopupPage.Animation>
+    <StackLayout VerticalOptions="EndAndExpand">
+        <Border Padding="10" Margin="20" BackgroundColor="Transparent" StrokeThickness="0">
+            <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
+                <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
+                    <StackLayout BackgroundColor="#FFFFFF" Spacing="10">
+                        <Label Text="Ready to Scan" HorizontalTextAlignment="Center" FontSize="20" TextColor="Black" FontAttributes="Bold"></Label>
+                        <Label Text="Hold your card to the very top of the back of your phone to activate it" HorizontalTextAlignment="Center" FontSize="12" Margin="20,0,20,20" TextColor="Gray"></Label>
+                        <Border StrokeShape="RoundRectangle 45" Stroke="#FF7F3E" Padding="15" WidthRequest="90" HeightRequest="90" HorizontalOptions="CenterAndExpand">
+                            <Image>
+                                <Image.Source>
+                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="60" Color="#FF7F3E"></FontImageSource>
+                                </Image.Source>
+                            </Image>
+                        </Border>
+                        <!--Cancel-->
+                        <Border StrokeShape="RoundRectangle 10" BackgroundColor="#FF7F3E" VerticalOptions="EndAndExpand" Margin="10,20,10,0" HorizontalOptions="FillAndExpand" Stroke="Transparent">
+                            <Button  FontAutoScalingEnabled="False" Text="Cancle" FontSize="16" FontAttributes="Bold" Clicked="Cancel_Clicked"
+                                     BackgroundColor="Transparent" TextColor="White" HorizontalOptions="FillAndExpand" Padding="20,0">
+                            </Button>
+                        </Border>
+                    </StackLayout>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12"></RoundRectangle>
+                    </Border.StrokeShape>
+                </Border>
+                
+            </StackLayout>
+        </Border>
+    </StackLayout>
+</mopups:PopupPage>

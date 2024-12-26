@@ -355,11 +355,14 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
             else
             {
                 CrossNFC.Current.PublishMessage(tagInfo, _makeReadOnly);
+                await MopupService.Instance.PopAsync();
             }
+            
         }
         catch (Exception ex)
         {
-            await ShowAlert(ex.Message);
+            await MopupService.Instance.PopAsync();
+            await App.Current!.MainPage!.DisplayAlert("Warning",ex.Message,"ok");
         }
     }
 
@@ -389,7 +392,12 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    async void Button_Clicked_StartWriting_Uri(object sender, System.EventArgs e) => await Publish(NFCNdefTypeFormat.Uri);
+    async void Button_Clicked_StartWriting_Uri(object sender, System.EventArgs e)
+    {
+        await MopupService.Instance.PopAsync();
+        await MopupService.Instance.PushAsync(new ReadyToScanPopup());
+        await Publish(NFCNdefTypeFormat.Uri);
+    }
 
 
     /// <summary>
@@ -421,11 +429,13 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
 
             if (type.HasValue) _type = type.Value;
             CrossNFC.Current.StartPublishing(!type.HasValue);
+            
         }
         catch (Exception ex)
         {
             await ShowAlert(ex.Message);
         }
+        
     }
 
     /// <summary>

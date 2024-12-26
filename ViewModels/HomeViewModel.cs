@@ -63,7 +63,10 @@ namespace Cardrly.ViewModels
         public async void Init()
         {
             await GetAllCards();
-            SelectedCard = CardLst[0];
+            if (CardLst.Count > 0)
+            {
+                SelectedCard = CardLst[0];
+            }
             await GetAllStatistics();
             await GetAccData();
         }
