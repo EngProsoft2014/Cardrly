@@ -26,42 +26,52 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
         _service = service;
         Res = res;
         //Init();
-    } 
+    }
     #endregion
 
+    #region Methods
     private async void Save_Clicked(object sender, EventArgs e)
     {
-        this.IsEnabled = false;
-        string UserToken = await _service.UserToken();
-        if (!string.IsNullOrEmpty(UserToken))
+        if (string.IsNullOrEmpty(CommEntr.Text))
         {
-            string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-            UserDialogs.Instance.ShowLoading();
-            LeadCommentRequest req = new LeadCommentRequest
-            {
-                Comment = CommEntr.Text,
-            };
-            var json =  await Rep.PostTRAsync<LeadCommentRequest,LeadCommentResponse>($"{ApiConstants.LeadCommentAddApi}{AccId}/Lead/{Res.Id}/LeadComment",req, UserToken);
-            if (json.Item1 != null)
-            {
-                var toast = Toast.Make("Successfully Add Comment.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                await toast.Show();
-                await MopupService.Instance.PopAsync();
-            }
-            else
-            {
-                var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                await toast.Show();
-                await MopupService.Instance.PopAsync();
-            }
-            UserDialogs.Instance.HideHud();
-            
+            var toast = Toast.Make("Require Field : Comment", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            await toast.Show();
         }
-        this.IsEnabled = true;
+        else
+        {
+            this.IsEnabled = false;
+            string UserToken = await _service.UserToken();
+            if (!string.IsNullOrEmpty(UserToken))
+            {
+                string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                UserDialogs.Instance.ShowLoading();
+                LeadCommentRequest req = new LeadCommentRequest
+                {
+                    Comment = CommEntr.Text,
+                };
+                var json = await Rep.PostTRAsync<LeadCommentRequest, LeadCommentResponse>($"{ApiConstants.LeadCommentAddApi}{AccId}/Lead/{Res.Id}/LeadComment", req, UserToken);
+                if (json.Item1 != null)
+                {
+                    var toast = Toast.Make("Successfully Add Comment.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                    await MopupService.Instance.PopAsync();
+                }
+                else
+                {
+                    var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                    await MopupService.Instance.PopAsync();
+                }
+                UserDialogs.Instance.HideHud();
+
+            }
+            this.IsEnabled = true;
+        }
     }
 
     private async void Cancel_Clicked(object sender, EventArgs e)
     {
         await MopupService.Instance.PopAsync();
-    }
+    } 
+    #endregion
 }

@@ -8,6 +8,7 @@ using Cardrly.Mode_s.Card;
 using Cardrly.Pages;
 using Cardrly.Pages.MainPopups;
 using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Alerts;
 
 namespace Cardrly.ViewModels
 {
@@ -44,10 +45,20 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task CardPreViewClick(CardResponse card)
         {
-            var vm = new CardPreViewViewModel(card);
-            var page = new CardPreViewPage(card);
-            page.BindingContext = vm;
-            await App.Current!.MainPage!.Navigation.PushAsync(page);
+            try
+            {
+                Uri uri = new Uri(card.CardUrl!);
+                await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+            }
+            catch (Exception ex)
+            {
+                var toast = Toast.Make($"{ex.Message}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+            //var vm = new CardPreViewViewModel(card);
+            //var page = new CardPreViewPage(card);
+            //page.BindingContext = vm;
+            //await App.Current!.MainPage!.Navigation.PushAsync(page);
         }
         [RelayCommand]
         async Task ShareCardClick()

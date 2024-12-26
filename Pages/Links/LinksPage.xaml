@@ -36,7 +36,7 @@
         </StackLayout>
         <!--Data-->
         <RefreshView x:Name="RefView" Refreshing="RefreshView_Refreshing">
-            <CollectionView x:Name="Calc" ItemsSource="{Binding CardDetails.CardLinks}" EmptyView="Sorry no aata here...." VerticalOptions="FillAndExpand">
+            <CollectionView x:Name="Calc" ItemsSource="{Binding CardDetails.CardLinks}" EmptyView="Sorry No Data here...." VerticalOptions="FillAndExpand">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
                 </CollectionView.ItemsLayout>

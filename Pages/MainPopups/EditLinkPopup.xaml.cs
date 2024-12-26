@@ -62,7 +62,18 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
 
     private async void Save_Clicked(object sender, EventArgs e)
     {
-        string valid = CheckStringType(ValueEn.Text);
+        string valid = "";
+        if (string.IsNullOrEmpty(ValueEn.Text))
+        {
+            var toast = Toast.Make("Require Field : Value", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            await toast.Show();
+            return;
+        }
+        else
+        {
+            valid = CheckStringType(ValueEn.Text);
+        }
+
         if (valid == "URL" && TypePicker.SelectedIndex == 0)
         {
             await SaveClick();

@@ -9,6 +9,7 @@ using Plugin.NFC;
 using System.Text;
 using Microsoft.Maui.ApplicationModel.DataTransfer;
 using System;
+using CommunityToolkit.Maui.Alerts;
 
 namespace Cardrly.Pages.MainPopups;
 
@@ -56,13 +57,16 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
 
     private async void TapGestureRecognizer_PreviewCard(object sender, TappedEventArgs e)
     {
-        this.IsEnabled = false;
-        var vm = new CardPreViewViewModel(Card);
-        var page = new CardPreViewPage(Card);
-        page.BindingContext = vm;
-        await App.Current!.MainPage!.Navigation.PushAsync(page);
-        await MopupService.Instance.PopAsync();
-        this.IsEnabled = true;
+        try
+        {
+            Uri uri = new Uri(Card.CardUrl!);
+            await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+        }
+        catch (Exception ex)
+        {
+            var toast = Toast.Make($"{ex.Message}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            await toast.Show();
+        }
     }
 
     private async void TapGestureRecognizer_DeleteCard(object sender, TappedEventArgs e)

@@ -18,7 +18,7 @@ namespace Cardrly.ViewModels.Leads
         [ObservableProperty]
         public LeadRequest? request = new LeadRequest();
         [ObservableProperty]
-        public LeadScanCardRequest ? scanCard = new LeadScanCardRequest();
+        public LeadScanCardRequest? scanCard = new LeadScanCardRequest();
         [ObservableProperty]
         LeadResponse? response = new LeadResponse();
         [ObservableProperty]
@@ -79,7 +79,7 @@ namespace Cardrly.ViewModels.Leads
                     Request.ImagefileProfile = ImageSource.FromStream(() => new MemoryStream(bytes));
                     Request.Extension = Path.GetExtension(imgPath);
                     IsProfileImageAdded = 2;
-                    
+
                 }
             };
             await MopupService.Instance.PushAsync(page);
@@ -88,70 +88,78 @@ namespace Cardrly.ViewModels.Leads
         [RelayCommand]
         async Task SaveClick()
         {
-            IsEnable = false;
-            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            if (string.IsNullOrEmpty(Request!.FullName))
             {
-                UserDialogs.Instance.ShowLoading();
-                string UserToken = await _service.UserToken();
-                string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
-                if (AddOrUpdate == 1)
-                {
-                    LeadRequestDto requestDto = new LeadRequestDto
-                    {
-                        FullName = Request!.FullName,
-                        Phone = Request.Phone,
-                        Address = Request.Address,
-                        Company = Request.Company,
-                        Extension = Request.Extension,
-                        Email = Request.Email,
-                        ImgFile = Request.ImgFile,
-                        Website = Request.Website
-                    };
-                    var json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadAddApi}{accid}/Lead", requestDto, UserToken);
-                    if (json.Item1 != null)
-                    {
-                        var toast = Toast.Make("Successfully Add Lead.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
-
-                    }
-                    else if (json.Item2 != null)
-                    {
-                        var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
-                    }
-                    UserDialogs.Instance.HideHud();
-                }
-                else if (AddOrUpdate == 2)
-                {
-                    LeadRequestDto requestDto = new LeadRequestDto
-                    {
-                        FullName = Request!.FullName,
-                        Phone = Request.Phone,
-                        Address = Request.Address,
-                        Company = Request.Company,
-                        Extension = Request.Extension,
-                        Email = Request.Email,
-                        ImgFile = Request.ImgFile,
-                        Website = Request.Website
-                    };
-                    var json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadUpdateApi}{accid}/Lead/{Response.Id}", requestDto, UserToken);
-                    UserDialogs.Instance.HideHud();
-                    if (json.Item1 != null)
-                    {
-                        var toast = Toast.Make("Successfully update Lead.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
-
-                    }
-                    else if (json.Item2 != null)
-                    {
-                        var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
-                    }
-                }
-
+                var toast = Toast.Make("Require Field : Full Name", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
             }
-            UserDialogs.Instance.HideHud();
-            IsEnable = true;
+            else
+            {
+                IsEnable = false;
+                if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+                {
+                    UserDialogs.Instance.ShowLoading();
+                    string UserToken = await _service.UserToken();
+                    string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
+                    if (AddOrUpdate == 1)
+                    {
+                        LeadRequestDto requestDto = new LeadRequestDto
+                        {
+                            FullName = Request!.FullName,
+                            Phone = Request.Phone,
+                            Address = Request.Address,
+                            Company = Request.Company,
+                            Extension = Request.Extension,
+                            Email = Request.Email,
+                            ImgFile = Request.ImgFile,
+                            Website = Request.Website
+                        };
+                        var json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadAddApi}{accid}/Lead", requestDto, UserToken);
+                        if (json.Item1 != null)
+                        {
+                            var toast = Toast.Make("Successfully Add Lead.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            await toast.Show();
+
+                        }
+                        else if (json.Item2 != null)
+                        {
+                            var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            await toast.Show();
+                        }
+                        UserDialogs.Instance.HideHud();
+                    }
+                    else if (AddOrUpdate == 2)
+                    {
+                        LeadRequestDto requestDto = new LeadRequestDto
+                        {
+                            FullName = Request!.FullName,
+                            Phone = Request.Phone,
+                            Address = Request.Address,
+                            Company = Request.Company,
+                            Extension = Request.Extension,
+                            Email = Request.Email,
+                            ImgFile = Request.ImgFile,
+                            Website = Request.Website
+                        };
+                        var json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadUpdateApi}{accid}/Lead/{Response.Id}", requestDto, UserToken);
+                        UserDialogs.Instance.HideHud();
+                        if (json.Item1 != null)
+                        {
+                            var toast = Toast.Make("Successfully update Lead.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            await toast.Show();
+
+                        }
+                        else if (json.Item2 != null)
+                        {
+                            var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            await toast.Show();
+                        }
+                    }
+
+                }
+                UserDialogs.Instance.HideHud();
+                IsEnable = true;
+            }
         }
 
         [RelayCommand]

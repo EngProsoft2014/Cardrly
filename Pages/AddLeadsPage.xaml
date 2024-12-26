@@ -56,7 +56,7 @@
                                 <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
                             </Image.Source>
                         </Image>
-                        <Label Text="Scan a Card or Badge" TextColor="Black" VerticalTextAlignment="Center" FontSize="14"></Label>
+                        <Label Text="Scan a Card" TextColor="Black" VerticalTextAlignment="Center" FontSize="14"></Label>
                     </HorizontalStackLayout>
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ScanClickCommand}"></TapGestureRecognizer>
