@@ -17,11 +17,6 @@ namespace Cardrly
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .UseMauiCommunityToolkit()
-                .UseUserDialogs()
-                .ConfigureMopups()
-                .ConfigureSyncfusionCore()
-                .UseSkiaSharp()
                 // Add this section anywhere on the builder:
                 .UseSentry(options => {
                     // The DSN is the only required setting.
@@ -40,6 +35,11 @@ namespace Cardrly
 
                     // Other Sentry options can be set here.
                 })
+                .UseMauiCommunityToolkit()
+                .UseUserDialogs()
+                .ConfigureMopups()
+                .ConfigureSyncfusionCore()
+                .UseSkiaSharp()
                 .UseBarcodeReader()
                 .ConfigureFonts(fonts =>
                 {
