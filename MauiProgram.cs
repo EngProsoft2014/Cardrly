@@ -25,7 +25,7 @@ namespace Cardrly
                 // Add this section anywhere on the builder:
                 .UseSentry(options => {
                     // The DSN is the only required setting.
-                    options.Dsn = "https://85844c8c0d12cfa4ab5ecf99e1986b75@o4508536170676224.ingest.us.sentry.io/4508536181096448";
+                    options.Dsn = "https://9ee0ad29572dd999c1bad55561fb2ba9@o4508535852302336.ingest.us.sentry.io/4508535857283072";
                     // Add this to the SDK initialization callback
                     options.AddExceptionFilterForType<OperationCanceledException>();
                     // Use debug mode if you want to see what the SDK is doing.
