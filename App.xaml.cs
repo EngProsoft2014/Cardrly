@@ -15,29 +15,34 @@ namespace Cardrly
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
         #endregion
-        [Obsolete]
         public App(IGenericRepository GenericRep, Services.Data.ServicesService service)
         {
-            Rep = GenericRep;
-            _service = service;
-
-            BlobCache.ApplicationName = "CardrlyDB";
-            BlobCache.EnsureInitialized();
-
-            InitializeComponent();
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(ApiConstants.syncFusionLicence);
-            string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
-
-            if (string.IsNullOrEmpty(AccountId))
+            try
             {
-                MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service)));
-            }
-            else
-            {
-                var page = new HomePage(new HomeViewModel(Rep, _service), Rep, _service);
-                MainPage = new NavigationPage(page);
-            }
+                Rep = GenericRep;
+                _service = service;
 
+                BlobCache.ApplicationName = "CardrlyDB";
+                BlobCache.EnsureInitialized();
+
+                InitializeComponent();
+                Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(ApiConstants.syncFusionLicence);
+                string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
+
+                if (string.IsNullOrEmpty(AccountId))
+                {
+                    MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service)));
+                }
+                else
+                {
+                    var page = new HomePage(new HomeViewModel(Rep, _service), Rep, _service);
+                    MainPage = new NavigationPage(page);
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
     }
 }
