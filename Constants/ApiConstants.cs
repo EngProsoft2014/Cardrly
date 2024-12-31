@@ -96,5 +96,15 @@
         public static string LeadCommentAddApi = "Account/";
         public static string LeadCommentDeleteApi = "Account/{0}/Lead/{1}/LeadComment/{2}/Delete";
         #endregion
+
+        #region LeadCategory 
+        public static string LeadCategoryAllApi = "Account/{0}/LeadCategory";
+        public static string LeadCategoryCurrentApi = "Account/";
+        public static string LeadCategoryInfoApi = "Account/{0}/LeadCategory/{1}";
+        public static string LeadCategoryAddApi = "Account/{0}/LeadCategory";
+        public static string LeadCategoryUpdateApi = "Account/{0}/LeadCategory/{1}";
+        public static string LeadCategoryDeleteApi = "Account/{0}/LeadCategory/{1}/Delete";
+        public static string LeadCategoryToggleActiveApi = "Account/{0}/LeadCategory/{1}/ToggleActive";
+        #endregion
     }
 }

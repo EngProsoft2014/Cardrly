@@ -112,7 +112,6 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                SentrySdk.CaptureException(e);
                 await Controls.StaticMember.ClearAllData(this);
                 return default(T);
             }

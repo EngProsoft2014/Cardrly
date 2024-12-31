@@ -23,7 +23,7 @@ PositionOut="Center" />
                         <Label Text="Ready to Scan" HorizontalTextAlignment="Center" FontSize="20" TextColor="Black" FontAttributes="Bold"></Label>
                         <Label Text="Hold your card to the very top of the back of your phone to activate it" HorizontalTextAlignment="Center" FontSize="12" Margin="20,0,20,20" TextColor="Gray"></Label>
                         <Border StrokeShape="RoundRectangle 45" Stroke="#FF7F3E" Padding="15" WidthRequest="90" HeightRequest="90" HorizontalOptions="CenterAndExpand">
-                            <Image>
+                            <Image x:Name="ReadyImg">
                                 <Image.Source>
                                     <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="60" Color="#FF7F3E"></FontImageSource>
                                 </Image.Source>

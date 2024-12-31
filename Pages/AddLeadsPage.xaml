@@ -116,6 +116,14 @@
                                Text="{Binding Request.Website}"></Entry>
                     </Border>
                 </VerticalStackLayout>
+                <!--Website-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
+                    <Label Text="LeadCategory" TextColor="Gray" FontSize="13"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                        <Picker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" ItemsSource="{Binding ListCategories}"
+                                SelectedItem="{Binding SelectedLeadCategory}" ItemDisplayBinding="{Binding Text}"></Picker>
+                    </Border>
+                </VerticalStackLayout>
                 <!--Save Button-->
                 <Button  FontAutoScalingEnabled="False" Text="Save" FontSize="16" FontAttributes="Bold" VerticalOptions="EndAndExpand"
                          BackgroundColor="#FF7F3E" TextColor="White" Command="{Binding SaveClickCommand}"

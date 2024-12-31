@@ -17,8 +17,24 @@ namespace Cardrly.Models.Lead
         private string? _phone = default!;
         private string? _company = default!;
         private string? _website = default!;
+        private string? _JobTitle = default!;
+        private string? _PersonName = default!;
+        private string? _UrlImgProfile = default!;
         private byte[]? _imgFile;
         private string? _extension = string.Empty;
+
+        public string? CardId { get; set; }
+        public string? LeadCategoryId { get; set; }
+        public string PersonName
+        {
+            get => _PersonName;
+            set => SetProperty(ref _PersonName, value);
+        }
+        public string UrlImgProfile
+        {
+            get => _UrlImgProfile;
+            set => SetProperty(ref _UrlImgProfile, value);
+        }
         public string FullName
         {
             get => _fullName;
@@ -48,6 +64,11 @@ namespace Cardrly.Models.Lead
         {
             get => _website;
             set => SetProperty(ref _website, value);
+        }
+        public string? JobTitle
+        {
+            get => _JobTitle;
+            set => SetProperty(ref _JobTitle, value);
         }
         public byte[]? ImgFile
         {

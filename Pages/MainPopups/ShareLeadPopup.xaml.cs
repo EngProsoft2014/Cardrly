@@ -73,7 +73,7 @@ public partial class ShareLeadPopup : Mopups.Pages.PopupPage
         }
         else
         {
-            await Add(Item.UserId);
+            await Add(Item.CardId!);
         }
     }
 
@@ -109,7 +109,7 @@ public partial class ShareLeadPopup : Mopups.Pages.PopupPage
             this.IsEnabled = false;
             string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
             UserDialogs.Instance.ShowLoading();
-            LeadAssignRequest assignRequest = new LeadAssignRequest() { UserId = LeadId};
+            LeadAssignRequest assignRequest = new LeadAssignRequest() { CardId = LeadId};
             var ressponse = await Rep.PostTRAsync<LeadAssignRequest,LeadAssignResponse>($"{ApiConstants.LeadAssignToggleApi}{AccId}/Lead/{leadResponse.Id}/LeadAssign",assignRequest, UserToken);
             if (ressponse.Item1 != null)
             {

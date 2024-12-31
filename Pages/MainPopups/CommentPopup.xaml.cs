@@ -72,6 +72,7 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
     private async void Cancel_Clicked(object sender, EventArgs e)
     {
         await MopupService.Instance.PopAsync();
-    } 
+    }
     #endregion
+
 }

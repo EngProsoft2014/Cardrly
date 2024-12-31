@@ -3,12 +3,14 @@ using Cardrly.Constants;
 using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Models.Lead;
+using Cardrly.Models.LeadCategory;
 using Cardrly.Pages.MainPopups;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
+using System.Collections.ObjectModel;
 
 namespace Cardrly.ViewModels.Leads
 {
@@ -25,6 +27,10 @@ namespace Cardrly.ViewModels.Leads
         public int isProfileImageAdded = 1;
         [ObservableProperty]
         int addOrUpdate = 0; // 1 - Add & 2 - update  
+        [ObservableProperty]
+        ObservableCollection<SelectListCategory> listCategories = new ObservableCollection<SelectListCategory>();
+        [ObservableProperty]
+        SelectListCategory selectedLeadCategory = new SelectListCategory();
         #endregion
 
         #region Service
@@ -112,7 +118,8 @@ namespace Cardrly.ViewModels.Leads
                             Extension = Request.Extension,
                             Email = Request.Email,
                             ImgFile = Request.ImgFile,
-                            Website = Request.Website
+                            Website = Request.Website,
+                            LeadCategoryId = SelectedLeadCategory.Value
                         };
                         var json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadAddApi}{accid}/Lead", requestDto, UserToken);
                         if (json.Item1 != null)
@@ -139,7 +146,8 @@ namespace Cardrly.ViewModels.Leads
                             Extension = Request.Extension,
                             Email = Request.Email,
                             ImgFile = Request.ImgFile,
-                            Website = Request.Website
+                            Website = Request.Website,
+                            LeadCategoryId = SelectedLeadCategory.Value
                         };
                         var json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadUpdateApi}{accid}/Lead/{Response.Id}", requestDto, UserToken);
                         UserDialogs.Instance.HideHud();
@@ -187,14 +195,16 @@ namespace Cardrly.ViewModels.Leads
         #endregion
 
         #region Mehtods
-        void Init(LeadResponse lead)
+        async void Init(LeadResponse lead)
         {
+            await GetAllCategories();
             Request.Website = lead.Website;
             Request.Address = lead.Address;
             Request.Company = lead.Company;
             Request.Email = lead.Email;
             Request.FullName = lead.FullName;
             Request.Phone = lead.Phone;
+            SelectedLeadCategory = ListCategories.FirstOrDefault(i => i.Value == lead.LeadCategoryId)!;
             if (!string.IsNullOrEmpty(lead.UrlImgProfile))
             {
                 Request.ImagefileProfile = ImageSource.FromUri(new Uri(lead.UrlImgProfile));
@@ -203,10 +213,11 @@ namespace Cardrly.ViewModels.Leads
 
         async Task UploadScanCard()
         {
+            UserDialogs.Instance.ShowLoading();
             IsEnable = false;
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                UserDialogs.Instance.ShowLoading();
+                
                 string UserToken = await _service.UserToken();
                 string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
                 var json = await Rep.PostTRAsync<LeadScanCardRequest, LeadResponse>($"{ApiConstants.LeadGetScanCardApi}{accid}/Lead/GetScanCard", ScanCard, UserToken);
@@ -222,8 +233,29 @@ namespace Cardrly.ViewModels.Leads
                     await toast.Show();
                 }
             }
-            UserDialogs.Instance.HideHud();
+            
             IsEnable = true;
+            UserDialogs.Instance.HideHud();
+        }
+
+        async Task GetAllCategories()
+        {
+            UserDialogs.Instance.ShowLoading();
+            IsEnable = false;
+            string UserToken = await _service.UserToken();
+            if (!string.IsNullOrEmpty(UserToken))
+            {
+                string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                
+                var json = await Rep.GetAsync<ObservableCollection<SelectListCategory>>($"{ApiConstants.LeadCategoryCurrentApi}{AccId}/LeadCategory/current", UserToken);
+
+                if (json != null)
+                {
+                    ListCategories = json;
+                }
+            }
+            IsEnable = true;
+            UserDialogs.Instance.HideHud();
         }
         #endregion
     }
