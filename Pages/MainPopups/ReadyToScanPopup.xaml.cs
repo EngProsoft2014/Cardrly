@@ -14,7 +14,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
         Card = _Card;
         // Initialize NFC Plugin
         CrossNFC.Current.StartListening();
-        Init();
+        Init().Wait();
     }
 
 
@@ -23,13 +23,30 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
         await MopupService.Instance.PopAsync();
     }
 
-    async void Init()
+    async Task Init()
     {
+        MainThread.BeginInvokeOnMainThread(async() =>
+        {
+            await StopListening();
+            await Publish();
+        });
+    }
+
+    protected async override void OnAppearingAnimationBegin()
+    {
+        base.OnAppearingAnimationBegin();
+        
         await Publish(NFCNdefTypeFormat.Uri);
     }
 
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        CrossNFC.Current.OnTagDiscovered -= Current_OnTagDiscovered;
+    }
+
     public const string ALERT_TITLE = "NFC";
-    public const string MIME_TYPE = "application/com.companyname.nfcsample";
+    public const string MIME_TYPE = "application/com.companyname.cardrly";
 
     NFCNdefTypeFormat _type;
     bool _makeReadOnly = false;
@@ -321,15 +338,15 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
             {
                 CrossNFC.Current.PublishMessage(tagInfo, _makeReadOnly);
                 ReadyImg.Source = new FontImageSource{ Glyph = "" , FontFamily = "FontIconSolid" , Size = 60 , Color = Color.FromHex("#FF7F3E") };
-                Task.Delay(1000).Wait();
+                Task.Delay(10000).Wait();
                 await MopupService.Instance.PopAsync();
             }
 
         }
         catch (Exception ex)
         {
-            await MopupService.Instance.PopAsync();
-            await App.Current!.MainPage!.DisplayAlert("Warning", ex.Message, "ok");
+            ////await MopupService.Instance.PopAsync();
+            //await App.Current!.MainPage!.DisplayAlert("Warning", ex.Message, "ok");
         }
     }
 
@@ -387,6 +404,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
     /// <returns>The task to be performed</returns>
     async Task Publish(NFCNdefTypeFormat? type = null)
     {
+        CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
         await StartListeningIfNotiOS();
         try
         {
