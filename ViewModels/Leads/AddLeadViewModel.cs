@@ -207,6 +207,7 @@ namespace Cardrly.ViewModels.Leads
             SelectedLeadCategory = ListCategories.FirstOrDefault(i => i.Value == lead.LeadCategoryId)!;
             if (!string.IsNullOrEmpty(lead.UrlImgProfile))
             {
+                IsProfileImageAdded = 2;
                 Request.ImagefileProfile = ImageSource.FromUri(new Uri(lead.UrlImgProfile));
             }
         }

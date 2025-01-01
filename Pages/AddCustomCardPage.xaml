@@ -22,7 +22,7 @@
                     <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
             </Image>
-            <Label Text="Add Custom Vcard" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+            <Label Text="Add Card" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
            TextColor="Black" VerticalOptions="CenterAndExpand" ></Label>
         </StackLayout>
         <!--Data-->

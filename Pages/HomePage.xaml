@@ -313,7 +313,7 @@
                         <StackLayout  Spacing="20">
                             <!--Header-->
                             <StackLayout Orientation="Horizontal">
-                                <Label Text="Contact" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                                <Label Text="Leads" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                                    TextColor="Black"></Label>
                                 <!--Add Lead Button-->
                                 <Image>
