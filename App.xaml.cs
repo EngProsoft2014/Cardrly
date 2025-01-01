@@ -24,7 +24,8 @@ namespace Cardrly
 
                 BlobCache.ApplicationName = "CardrlyDB";
                 BlobCache.EnsureInitialized();
-
+                // Register global exception handling
+                GlobalExceptionHandler.RegisterGlobalExceptionHandlers();
                 InitializeComponent();
                 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(ApiConstants.syncFusionLicence);
                 string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
@@ -44,5 +45,6 @@ namespace Cardrly
                 // Maui Team 
             }
         }
+
     }
 }

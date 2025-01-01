@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Content.Res;
 using Android.OS;
+using Android.Runtime;
 using Android.Views;
 using Plugin.NFC;
 
@@ -51,6 +52,13 @@ namespace Cardrly
             {
                 h.PlatformView.BackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
             });
+
+            // Handle uncaught exceptions
+            AndroidEnvironment.UnhandledExceptionRaiser += (sender, e) =>
+            {
+                Console.WriteLine($"Android Exception: {e.Exception.Message}");
+                e.Handled = true;
+            };
         }
 
         protected override void OnResume()
@@ -78,5 +86,6 @@ namespace Cardrly
             ApplyOverrideConfiguration(configuration);
             base.AttachBaseContext(@base);
         }
+
     }
 }

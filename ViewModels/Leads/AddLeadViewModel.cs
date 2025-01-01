@@ -126,7 +126,7 @@ namespace Cardrly.ViewModels.Leads
                         {
                             var toast = Toast.Make("Successfully Add Lead.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
-
+                            await App.Current!.MainPage!.Navigation.PopAsync();
                         }
                         else if (json.Item2 != null)
                         {

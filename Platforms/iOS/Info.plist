@@ -29,6 +29,11 @@
 		<key>XSAppIconAssets</key>
 		<string>Assets.xcassets/images.appiconset</string>
 		<key>NFCReaderUsageDescription</key>
+		<key>com.apple.developer.nfc.readersession.formats</key>
+		<array>
+			<string>NDEF</string>
+			<string>TAG</string>
+		</array>
 		<string>NFC tag to read NDEF messages into the application</string>
 		<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
 		<array>
@@ -41,5 +46,6 @@
 		<string>We require access to your gallery to allow you to use photos for your profile For example, you can use a picture to upload as your profile image</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>We require access to your gallery to allow you to use photos for your profile For example, you can use a picture to upload as your profile image</string>
+
 	</dict>
 </plist>

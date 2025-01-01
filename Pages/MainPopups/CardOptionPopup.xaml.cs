@@ -94,7 +94,6 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
     {
         await MopupService.Instance.PopAsync();
         await MopupService.Instance.PushAsync(new ReadyToScanPopup(Card));
-
     }
     #endregion
 

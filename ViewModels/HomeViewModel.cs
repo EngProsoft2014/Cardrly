@@ -62,6 +62,7 @@ namespace Cardrly.ViewModels
         #region Methodes
         public async void Init()
         {
+
             await GetAllCards();
             if (CardLst.Count > 0)
             {
@@ -78,7 +79,7 @@ namespace Cardrly.ViewModels
             if (!string.IsNullOrEmpty(UserToken))
             {
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-                UserDialogs.Instance.ShowLoading();
+                
                 var json = await Rep.GetAsync<CardDashBoardResponse>($"{ApiConstants.CardGetCardDashBoardApi}{AccId}/Card/{SelectedCard.Id}/{FromDate.ToString("yyyy-MM-dd")}/{ToDate.ToString("yyyy-MM-dd")}", UserToken);
                 UserDialogs.Instance.HideHud();
                 if (json != null)
