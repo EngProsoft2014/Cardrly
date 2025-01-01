@@ -41,7 +41,7 @@ namespace Cardrly
             }
             catch(Exception ex)
             {
-
+                // Maui Team 
             }
         }
     }
