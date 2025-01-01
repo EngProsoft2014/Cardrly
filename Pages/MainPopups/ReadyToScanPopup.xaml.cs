@@ -9,41 +9,19 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
 {
     CardResponse Card = new CardResponse();
     public ReadyToScanPopup(CardResponse _Card)
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
         Card = _Card;
         // Initialize NFC Plugin
         CrossNFC.Current.StartListening();
-        Init().Wait();
+        Publish(NFCNdefTypeFormat.Uri).Wait();
     }
-
 
     private async void Cancel_Clicked(object sender, EventArgs e)
     {
         await MopupService.Instance.PopAsync();
     }
 
-    async Task Init()
-    {
-        MainThread.BeginInvokeOnMainThread(async() =>
-        {
-            await StopListening();
-            await Publish();
-        });
-    }
-
-    protected async override void OnAppearingAnimationBegin()
-    {
-        base.OnAppearingAnimationBegin();
-        
-        await Publish(NFCNdefTypeFormat.Uri);
-    }
-
-    protected override void OnDisappearing()
-    {
-        base.OnDisappearing();
-        CrossNFC.Current.OnTagDiscovered -= Current_OnTagDiscovered;
-    }
 
     public const string ALERT_TITLE = "NFC";
     public const string MIME_TYPE = "application/com.companyname.cardrly";
@@ -110,8 +88,8 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
 
     protected override bool OnBackButtonPressed()
     {
-            Task.Run(() => StopListening());
-            return base.OnBackButtonPressed();
+        Task.Run(() => StopListening());
+        return base.OnBackButtonPressed();
     }
 
     /// <summary>
@@ -181,7 +159,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
         {
 
         }
-        
+
     }
 
     /// <summary>
@@ -205,7 +183,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
         {
 
         }
-        
+
     }
 
     /// <summary>
@@ -292,31 +270,9 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
               //$"LOGO:{Card.UrlImgProfile}\n" +
               "END:VCARD";
 
-
-        //string vCardData = "BEGIN:VCARD\n" +
-        //                  "VERSION:3.0\n" +
-        //                  "FN:Tarek Gaber\n" +
-        //                  "ORG:Engprosoft company\n" +
-        //                  "TEL:+18324686031\n" +
-        //                  "EMAIL:engprosoftcompany@gmail.com\n" +
-        //                  "END:VCARD";
-
-        //string vCardData = Card.ToString();
-
-
         try
         {
             NFCNdefRecord record = null;
-            //if (_type == NFCNdefTypeFormat.Mime)
-            //{
-            //    record = new NFCNdefRecord
-            //    {
-            //        TypeFormat = NFCNdefTypeFormat.Mime,
-            //        MimeType = "text/vcard",
-            //        Payload = NFCUtils.EncodeToByteArray(vCardData),
-            //        Uri = Card.CardUrl
-            //    };
-            //}
 
             if (_type == NFCNdefTypeFormat.Uri)
             {
@@ -337,7 +293,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
             else
             {
                 CrossNFC.Current.PublishMessage(tagInfo, _makeReadOnly);
-                ReadyImg.Source = new FontImageSource{ Glyph = "" , FontFamily = "FontIconSolid" , Size = 60 , Color = Color.FromHex("#FF7F3E") };
+                ReadyImg.Source = new FontImageSource { Glyph = "", FontFamily = "FontIconSolid", Size = 60, Color = Color.FromHex("#FF7F3E") };
                 Task.Delay(10000).Wait();
                 await MopupService.Instance.PopAsync();
             }
@@ -345,8 +301,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
         }
         catch (Exception ex)
         {
-            ////await MopupService.Instance.PopAsync();
-            //await App.Current!.MainPage!.DisplayAlert("Warning", ex.Message, "ok");
+
         }
     }
 
