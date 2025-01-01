@@ -14,17 +14,16 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
         Card = _Card;
         // Initialize NFC Plugin
         CrossNFC.Current.StartListening();
-        Publish(NFCNdefTypeFormat.Uri).Wait();
     }
 
     private async void Cancel_Clicked(object sender, EventArgs e)
     {
         await MopupService.Instance.PopAsync();
+        await Task.Run(() => StopListening());
     }
 
-
     public const string ALERT_TITLE = "NFC";
-    public const string MIME_TYPE = "application/com.companyname.cardrly";
+    public const string MIME_TYPE = "application/com.companyname.nfcsample";
 
     NFCNdefTypeFormat _type;
     bool _makeReadOnly = false;
@@ -49,7 +48,6 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
     private bool _nfcIsEnabled;
     public bool NfcIsEnabled
     {
-
         get => _nfcIsEnabled;
         set
         {
@@ -99,15 +97,8 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
     async Task AutoStartAsync()
     {
         // Some delay to prevent Java.Lang.IllegalStateException "Foreground dispatch can only be enabled when your activity is resumed" on Android
-        try
-        {
-            await Task.Delay(500);
-            await StartListeningIfNotiOS();
-        }
-        catch (Exception ex)
-        {
-
-        }
+        await Task.Delay(500);
+        await StartListeningIfNotiOS();
     }
 
     /// <summary>
@@ -115,26 +106,19 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
     /// </summary>
     void SubscribeEvents()
     {
-        try
-        {
-            if (_eventsAlreadySubscribed)
-                UnsubscribeEvents();
+        if (_eventsAlreadySubscribed)
+            UnsubscribeEvents();
 
-            _eventsAlreadySubscribed = true;
+        _eventsAlreadySubscribed = true;
 
-            CrossNFC.Current.OnMessageReceived += Current_OnMessageReceived;
-            CrossNFC.Current.OnMessagePublished += Current_OnMessagePublished;
-            CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
-            CrossNFC.Current.OnNfcStatusChanged += Current_OnNfcStatusChanged;
-            CrossNFC.Current.OnTagListeningStatusChanged += Current_OnTagListeningStatusChanged;
+        CrossNFC.Current.OnMessageReceived += Current_OnMessageReceived;
+        CrossNFC.Current.OnMessagePublished += Current_OnMessagePublished;
+        CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
+        CrossNFC.Current.OnNfcStatusChanged += Current_OnNfcStatusChanged;
+        CrossNFC.Current.OnTagListeningStatusChanged += Current_OnTagListeningStatusChanged;
 
-            if (_isDeviceiOS)
-                CrossNFC.Current.OniOSReadingSessionCancelled += Current_OniOSReadingSessionCancelled;
-        }
-        catch (Exception ex)
-        {
-
-        }
+        if (_isDeviceiOS)
+            CrossNFC.Current.OniOSReadingSessionCancelled += Current_OniOSReadingSessionCancelled;
     }
 
     /// <summary>
@@ -142,24 +126,16 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
     /// </summary>
     void UnsubscribeEvents()
     {
-        try
-        {
-            CrossNFC.Current.OnMessageReceived -= Current_OnMessageReceived;
-            CrossNFC.Current.OnMessagePublished -= Current_OnMessagePublished;
-            CrossNFC.Current.OnTagDiscovered -= Current_OnTagDiscovered;
-            CrossNFC.Current.OnNfcStatusChanged -= Current_OnNfcStatusChanged;
-            CrossNFC.Current.OnTagListeningStatusChanged -= Current_OnTagListeningStatusChanged;
+        CrossNFC.Current.OnMessageReceived -= Current_OnMessageReceived;
+        CrossNFC.Current.OnMessagePublished -= Current_OnMessagePublished;
+        CrossNFC.Current.OnTagDiscovered -= Current_OnTagDiscovered;
+        CrossNFC.Current.OnNfcStatusChanged -= Current_OnNfcStatusChanged;
+        CrossNFC.Current.OnTagListeningStatusChanged -= Current_OnTagListeningStatusChanged;
 
-            if (_isDeviceiOS)
-                CrossNFC.Current.OniOSReadingSessionCancelled -= Current_OniOSReadingSessionCancelled;
+        if (_isDeviceiOS)
+            CrossNFC.Current.OniOSReadingSessionCancelled -= Current_OniOSReadingSessionCancelled;
 
-            _eventsAlreadySubscribed = false;
-        }
-        catch (Exception ex)
-        {
-
-        }
-
+        _eventsAlreadySubscribed = false;
     }
 
     /// <summary>
@@ -174,16 +150,8 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
     /// <param name="isEnabled">NFC status</param>
     async void Current_OnNfcStatusChanged(bool isEnabled)
     {
-        try
-        {
-            NfcIsEnabled = isEnabled;
-            await ShowAlert($"NFC has been {(isEnabled ? "enabled" : "disabled")}");
-        }
-        catch (Exception ex)
-        {
-
-        }
-
+        NfcIsEnabled = isEnabled;
+        await ShowAlert($"NFC has been {(isEnabled ? "enabled" : "disabled")}");
     }
 
     /// <summary>
@@ -270,9 +238,31 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
               //$"LOGO:{Card.UrlImgProfile}\n" +
               "END:VCARD";
 
+
+        //string vCardData = "BEGIN:VCARD\n" +
+        //                  "VERSION:3.0\n" +
+        //                  "FN:Tarek Gaber\n" +
+        //                  "ORG:Engprosoft company\n" +
+        //                  "TEL:+18324686031\n" +
+        //                  "EMAIL:engprosoftcompany@gmail.com\n" +
+        //                  "END:VCARD";
+
+        //string vCardData = Card.ToString();
+
+
         try
         {
             NFCNdefRecord record = null;
+            //if (_type == NFCNdefTypeFormat.Mime)
+            //{
+            //    record = new NFCNdefRecord
+            //    {
+            //        TypeFormat = NFCNdefTypeFormat.Mime,
+            //        MimeType = "text/vcard",
+            //        Payload = NFCUtils.EncodeToByteArray(vCardData),
+            //        Uri = Card.CardUrl
+            //    };
+            //}
 
             if (_type == NFCNdefTypeFormat.Uri)
             {
@@ -293,15 +283,11 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
             else
             {
                 CrossNFC.Current.PublishMessage(tagInfo, _makeReadOnly);
-                ReadyImg.Source = new FontImageSource { Glyph = "", FontFamily = "FontIconSolid", Size = 60, Color = Color.FromHex("#FF7F3E") };
-                Task.Delay(10000).Wait();
-                await MopupService.Instance.PopAsync();
             }
-
         }
         catch (Exception ex)
         {
-
+            await ShowAlert(ex.Message);
         }
     }
 
@@ -331,10 +317,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    async void Button_Clicked_StartWriting_Uri(object sender, System.EventArgs e)
-    {
-        await Publish(NFCNdefTypeFormat.Uri);
-    }
+    async void Button_Clicked_StartWriting_Uri(object sender, System.EventArgs e) => await Publish(NFCNdefTypeFormat.Uri);
 
 
     /// <summary>
@@ -359,7 +342,6 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
     /// <returns>The task to be performed</returns>
     async Task Publish(NFCNdefTypeFormat? type = null)
     {
-        CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
         await StartListeningIfNotiOS();
         try
         {
@@ -367,13 +349,11 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
 
             if (type.HasValue) _type = type.Value;
             CrossNFC.Current.StartPublishing(!type.HasValue);
-
         }
         catch (Exception ex)
         {
             await ShowAlert(ex.Message);
         }
-
     }
 
     /// <summary>
@@ -465,4 +445,5 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
             await ShowAlert(ex.Message);
         }
     }
+
 }
