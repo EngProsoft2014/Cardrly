@@ -28,7 +28,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
     NFCNdefTypeFormat _type;
     bool _makeReadOnly = false;
     bool _eventsAlreadySubscribed = false;
-    bool _isDeviceiOS = false;
+    bool _isDeviceiOS = true;
 
     /// <summary>
     /// Property that tracks whether the Android device is still listening,
@@ -65,9 +65,6 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
 
         // In order to support Mifare Classic 1K tags (read/write), you must set legacy mode to true.
         CrossNFC.Legacy = false;
-
-        // Initialize NFC Plugin
-        CrossNFC.Current.StartListening();
 
         if (CrossNFC.IsSupported)
         {
