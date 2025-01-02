@@ -59,12 +59,6 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
-		<CreatePackage>false</CreatePackage>
-		<CodesignProvision>Cardrly Development Provisioning</CodesignProvision>
-		<CodesignKey>Apple Development: TAREK GABER (9RKU8MRSBH)</CodesignKey>
-	</PropertyGroup>
-
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\images.svg" />
 	  <None Remove="Resources\Splash\images.svg" />
