@@ -13,7 +13,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
         InitializeComponent();
         Card = _Card;
         // Initialize NFC Plugin
-        //CrossNFC.Current.StartListening();
+        CrossNFC.Current.StartListening();
     }
 
     private async void Cancel_Clicked(object sender, EventArgs e)
@@ -28,7 +28,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
     NFCNdefTypeFormat _type;
     bool _makeReadOnly = false;
     bool _eventsAlreadySubscribed = false;
-    bool _isDeviceiOS = true;
+    bool _isDeviceiOS = false;
 
     /// <summary>
     /// Property that tracks whether the Android device is still listening,
@@ -78,9 +78,11 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
             if (DeviceInfo.Platform == DevicePlatform.iOS)
                 _isDeviceiOS = true;
 
-            CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
+            //CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
 
             await AutoStartAsync().ConfigureAwait(false);
+
+            await Publish(NFCNdefTypeFormat.Uri);
         }
     }
 
