@@ -64,7 +64,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
         base.OnAppearing();
 
         // In order to support Mifare Classic 1K tags (read/write), you must set legacy mode to true.
-        CrossNFC.Legacy = false;
+        CrossNFC.Legacy = true;
 
         if (CrossNFC.IsSupported)
         {
@@ -220,7 +220,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
     /// <param name="format">Format the tag</param>
     async void Current_OnTagDiscovered(ITagInfo tagInfo, bool format)
     {
-        format = true;
+        //format = true;
 
         if (!CrossNFC.Current.IsWritingTagSupported)
         {
