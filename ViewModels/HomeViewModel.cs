@@ -122,9 +122,9 @@ namespace Cardrly.ViewModels
             if (!string.IsNullOrEmpty(UserToken))
             {
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-                UserDialogs.Instance.ShowLoading();
+                
                 var json = await Rep.GetAsync<ObservableCollection<CardResponse>>($"{ApiConstants.CardGetAllApi}{AccId}/Card", UserToken);
-                UserDialogs.Instance.HideHud();
+                
                 if (json != null)
                 {
                     foreach (CardResponse card in json)
