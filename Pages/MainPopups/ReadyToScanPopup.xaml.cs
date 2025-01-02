@@ -13,7 +13,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
         InitializeComponent();
         Card = _Card;
         // Initialize NFC Plugin
-        CrossNFC.Current.StartListening();
+        //CrossNFC.Current.StartListening();
     }
 
     private async void Cancel_Clicked(object sender, EventArgs e)
