@@ -66,24 +66,22 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
         // In order to support Mifare Classic 1K tags (read/write), you must set legacy mode to true.
         CrossNFC.Legacy = false;
 
-        if (CrossNFC.IsSupported)
-        {
-            if (!CrossNFC.Current.IsAvailable)
-                await ShowAlert("NFC is not available");
+        //if (CrossNFC.IsSupported)
+        //{
+        //    if (!CrossNFC.Current.IsAvailable)
+        //        await ShowAlert("NFC is not available");
 
-            NfcIsEnabled = CrossNFC.Current.IsEnabled;
-            if (!NfcIsEnabled)
-                await ShowAlert("NFC is disabled");
+        //    NfcIsEnabled = CrossNFC.Current.IsEnabled;
+        //    if (!NfcIsEnabled)
+        //        await ShowAlert("NFC is disabled");
 
-            if (DeviceInfo.Platform == DevicePlatform.iOS)
-                _isDeviceiOS = true;
+        //    if (DeviceInfo.Platform == DevicePlatform.iOS)
+        //        _isDeviceiOS = true;
 
-            //CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
+        //    //CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
 
-            await AutoStartAsync().ConfigureAwait(false);
-
-            await Publish(NFCNdefTypeFormat.Uri);
-        }
+        //    await AutoStartAsync().ConfigureAwait(false);
+        //}
     }
 
     protected override bool OnBackButtonPressed()
