@@ -144,9 +144,6 @@
 	  <MauiXaml Update="Pages\MainPopups\QrCodePopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\MainPopups\ReadyToScanPopup.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Pages\MainPopups\ShareLeadPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
