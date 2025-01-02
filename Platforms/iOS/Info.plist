@@ -29,22 +29,10 @@
 		<key>XSAppIconAssets</key>
 		<string>Assets.xcassets/images.appiconset</string>
 
-		<key>com.apple.developer.nfc.readersession.formats</key>
-		<array>
-			<string>NDEF</string>
-			<string>TAG</string>
-		</array>
 		<key>NFCReaderUsageDescription</key>
-		<string>NFC tag to read NDEF messages into the application</string>
-		<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
-		<string>com.apple.developer.nfc.readersession.iso7816.select-identifiers</string>
-		<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
-		<array>
-			<string>com.apple.developer.nfc.readersession.iso7816.select-identifiers</string>
-			<string>D2760000850100</string>
-		</array>
-		
-		
+		<string>Your app needs NFC access to write to tags.</string>
+
+
 		<key>NSCameraUsageDescription</key>
 		<string>We require access to your camera to allow you to capture photos for your profile For example, you can use a picture to upload as your profile image</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
