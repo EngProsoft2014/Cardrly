@@ -220,6 +220,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
     /// <param name="format">Format the tag</param>
     async void Current_OnTagDiscovered(ITagInfo tagInfo, bool format)
     {
+        format = true;
 
         if (!CrossNFC.Current.IsWritingTagSupported)
         {
@@ -290,6 +291,48 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
             await ShowAlert(ex.Message);
         }
     }
+
+    //Test
+    //private void Current_OnTagDiscovered(ITagInfo tagInfo, bool isMessageWritable)
+    //{
+    //    if (!isMessageWritable)
+    //    {
+    //        DisplayAlert("Error", "Tag is not writable", "OK");
+    //        return;
+    //    }
+
+    //    // Write a URI to the tag
+    //    var ndefRecord = new NFCNdefRecord
+    //    {
+    //        TypeFormat = NFCNdefTypeFormat.WellKnown,
+    //        Payload = NFCUtils.EncodeToByteArray("https://example.com"),
+    //        MimeType = "text/uri-list",
+    //        LanguageCode = "en"
+    //    };
+
+    //    var ndefMessage = new NFCNdefMessage { Records = new List<NFCNdefRecord> { ndefRecord } };
+
+    //    if (!isMessageWritable && ndefRecord == null)
+    //        throw new Exception("Record can't be null.");
+
+    //    tagInfo.Records = new[] { ndefRecord };
+
+    //    if (isMessageWritable)
+    //        CrossNFC.Current.ClearMessage(tagInfo);
+    //    else
+    //    {
+    //        CrossNFC.Current.PublishMessage(tagInfo, _makeReadOnly);
+    //    }
+
+    //    try
+    //    {
+    //        CrossNFC.Current.PublishMessage(ndefMessage);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        DisplayAlert("Error", $"Failed to write message: {ex.Message}", "OK");
+    //    }
+    //}
 
     /// <summary>
     /// Start listening for NFC Tags when "READ TAG" button is clicked
