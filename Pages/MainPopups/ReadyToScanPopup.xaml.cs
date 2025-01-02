@@ -16,11 +16,12 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
         CrossNFC.Current.StartListening();
     }
 
-    private async void Cancel_Clicked(object sender, EventArgs e)
-    {
-        await MopupService.Instance.PopAsync();
-        await Task.Run(() => StopListening());
-    }
+    //private async void Cancel_Clicked(object sender, EventArgs e)
+    //{
+    //    await MopupService.Instance.PopAsync();
+    //    await Task.Run(() => StopListening());
+    //}
+
 
     public const string ALERT_TITLE = "NFC";
     public const string MIME_TYPE = "application/com.companyname.nfcsample";
@@ -66,23 +67,25 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
         // In order to support Mifare Classic 1K tags (read/write), you must set legacy mode to true.
         CrossNFC.Legacy = false;
 
-        //if (CrossNFC.IsSupported)
-        //{
-        //    if (!CrossNFC.Current.IsAvailable)
-        //        await ShowAlert("NFC is not available");
+        if (CrossNFC.IsSupported)
+        {
+            if (!CrossNFC.Current.IsAvailable)
+                await ShowAlert("NFC is not available");
 
-        //    NfcIsEnabled = CrossNFC.Current.IsEnabled;
-        //    if (!NfcIsEnabled)
-        //        await ShowAlert("NFC is disabled");
+            NfcIsEnabled = CrossNFC.Current.IsEnabled;
+            if (!NfcIsEnabled)
+                await ShowAlert("NFC is disabled");
 
-        //    if (DeviceInfo.Platform == DevicePlatform.iOS)
-        //        _isDeviceiOS = true;
+            if (DeviceInfo.Platform == DevicePlatform.iOS)
+                _isDeviceiOS = true;
 
-        //    //CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
+            CrossNFC.Current.OnTagDiscovered += Current_OnTagDiscovered;
 
-        //    await AutoStartAsync().ConfigureAwait(false);
-        //}
+            await AutoStartAsync().ConfigureAwait(false);
+        }
     }
+
+
 
     protected override bool OnBackButtonPressed()
     {
@@ -220,7 +223,6 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
     /// <param name="format">Format the tag</param>
     async void Current_OnTagDiscovered(ITagInfo tagInfo, bool format)
     {
-        format = true;
 
         if (!CrossNFC.Current.IsWritingTagSupported)
         {
@@ -291,48 +293,6 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
             await ShowAlert(ex.Message);
         }
     }
-
-    //Test
-    //private void Current_OnTagDiscovered(ITagInfo tagInfo, bool isMessageWritable)
-    //{
-    //    if (!isMessageWritable)
-    //    {
-    //        DisplayAlert("Error", "Tag is not writable", "OK");
-    //        return;
-    //    }
-
-    //    // Write a URI to the tag
-    //    var ndefRecord = new NFCNdefRecord
-    //    {
-    //        TypeFormat = NFCNdefTypeFormat.WellKnown,
-    //        Payload = NFCUtils.EncodeToByteArray("https://example.com"),
-    //        MimeType = "text/uri-list",
-    //        LanguageCode = "en"
-    //    };
-
-    //    var ndefMessage = new NFCNdefMessage { Records = new List<NFCNdefRecord> { ndefRecord } };
-
-    //    if (!isMessageWritable && ndefRecord == null)
-    //        throw new Exception("Record can't be null.");
-
-    //    tagInfo.Records = new[] { ndefRecord };
-
-    //    if (isMessageWritable)
-    //        CrossNFC.Current.ClearMessage(tagInfo);
-    //    else
-    //    {
-    //        CrossNFC.Current.PublishMessage(tagInfo, _makeReadOnly);
-    //    }
-
-    //    try
-    //    {
-    //        CrossNFC.Current.PublishMessage(ndefMessage);
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        DisplayAlert("Error", $"Failed to write message: {ex.Message}", "OK");
-    //    }
-    //}
 
     /// <summary>
     /// Start listening for NFC Tags when "READ TAG" button is clicked
@@ -460,7 +420,7 @@ public partial class ReadyToScanPopup : Mopups.Pages.PopupPage
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 SubscribeEvents();
-                //CrossNFC.Current.StartListening();
+                CrossNFC.Current.StartListening();
             });
         }
         catch (Exception ex)

@@ -29,9 +29,9 @@ PositionOut="Center" />
                                 </Image.Source>
                             </Image>
                         </Border>
-                        <!--Cancel-->
+                        <!--Setup Now-->
                         <Border StrokeShape="RoundRectangle 10" BackgroundColor="#FF7F3E" VerticalOptions="EndAndExpand" Margin="10,20,10,0" HorizontalOptions="FillAndExpand" Stroke="Transparent">
-                            <Button  FontAutoScalingEnabled="False" Text="Cancle" FontSize="16" FontAttributes="Bold" Clicked="Cancel_Clicked"
+                            <Button  FontAutoScalingEnabled="False" Text="Setup Now" FontSize="16" FontAttributes="Bold" Clicked="Button_Clicked_StartWriting_Uri"
                                      BackgroundColor="Transparent" TextColor="White" HorizontalOptions="FillAndExpand" Padding="20,0">
                             </Button>
                         </Border>
