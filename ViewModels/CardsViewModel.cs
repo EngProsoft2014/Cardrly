@@ -60,11 +60,6 @@ namespace Cardrly.ViewModels
             //page.BindingContext = vm;
             //await App.Current!.MainPage!.Navigation.PushAsync(page);
         }
-        [RelayCommand]
-        async Task ShareCardClick()
-        {
-            await MopupService.Instance.PushAsync(new QrCodePopup());
-        }
 
         [RelayCommand]
         async Task MoreOPtionsClick(CardResponse card)

@@ -33,7 +33,7 @@ namespace Cardrly.ViewModels.Links
         [RelayCommand]
         async Task SelectClick(AccountLinkResponse res)
         {
-            var page = new EditLinkPopup(1,res.Id,CardId,Rep,_service);
+            var page = new EditLinkPopup(1,res,CardId,Rep,_service);
             await MopupService.Instance.PushAsync(page);
         }
 

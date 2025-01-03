@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
              xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
              x:Class="Cardrly.Pages.MainPopups.CardOptionPopup"
              CloseWhenBackgroundIsClicked="True"
              NavigationPage.HasNavigationBar="False" 
@@ -18,10 +19,23 @@
 
     <StackLayout VerticalOptions="EndAndExpand">
 
-        <Border Padding="10" Margin="20" BackgroundColor="Transparent" StrokeThickness="0">
+        <Border Padding="10" Margin="0" BackgroundColor="Transparent" StrokeThickness="0">
             <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
                 <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
                     <StackLayout  BackgroundColor="#FFFFFF" Spacing="3">
+                        <!--Qr code Iamge-->
+                        <Border StrokeShape="RoundRectangle 20" WidthRequest="200" HeightRequest="200">
+                            <VerticalStackLayout Spacing="5">
+                                <zxing:BarcodeGeneratorView
+                                    x:Name="QRCodeImage"
+                                    VerticalOptions="FillAndExpand"
+                                    HeightRequest="200"
+                                    BackgroundColor="Transparent"
+                                    WidthRequest="200"
+                                    ForegroundColor="Black"
+                                    Format="QrCode"/>
+                            </VerticalStackLayout>
+                        </Border>
                         <!--Setup Card-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Label Text="Setup Card"
@@ -40,9 +54,9 @@
                             </StackLayout.GestureRecognizers>
                         </StackLayout>
                         <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
-                        <!--Share Card-->
+                        <!--Share Card Link-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
-                            <Label Text="Share Card"
+                            <Label Text="Share Card Link"
                                    TextColor="#FF7F3E"
                                    FontSize="16"
                                    FontFamily="AlmaraiBold"
@@ -55,6 +69,44 @@
 
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="TapGestureRecognizer_ShareCard"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Share Offline Card-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Grid HorizontalOptions="FillAndExpand">
+                                <Label Text="Share Offline Card"
+                                   TextColor="#FF7F3E"
+                                   FontSize="16"
+                                   FontFamily="AlmaraiBold"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="CenterAndExpand" 
+                                   Padding="8">
+                                </Label>
+                                <CheckBox CheckedChanged="CheckBox_ShareOfflineCard" HorizontalOptions="EndAndExpand" Color="#FF7F3E"></CheckBox>
+                            </Grid>
+
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_ShareOfflineCard"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Share VCard-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="Share VCard"
+                                    TextColor="#FF7F3E"
+                                    FontSize="16"
+                                    FontFamily="AlmaraiBold"
+                                    HorizontalTextAlignment="Center"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalOptions="CenterAndExpand" 
+                                    Padding="8">
+
+                            </Label>
+
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_ShareVcard"></TapGestureRecognizer>
                             </StackLayout.GestureRecognizers>
                         </StackLayout>
                         <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
@@ -116,11 +168,11 @@
                         <RoundRectangle CornerRadius="25"></RoundRectangle>
                     </Border.StrokeShape>
                 </Border>
-                <!--Cancle-->
+                <!--Cancel-->
                 <Border Padding="10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
 
 
-                    <Label Text="Cancle"
+                    <Label Text="Cancel"
                        TextColor="#FF7F3E"
                        FontSize="14"
                        FontFamily="AlmaraiBold"

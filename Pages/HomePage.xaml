@@ -41,25 +41,22 @@
                                     <StackLayout Spacing="20">
                                         <!--Data Menu-->
                                         <StackLayout Orientation="Horizontal" Spacing="10"  HorizontalOptions="FillAndExpand">
-                                            <!--From-->
+                                            <!--Range Data-->
                                             <VerticalStackLayout Spacing="5">
-                                                <Label Text="From" TextColor="Gray" FontSize="13"></Label>
-                                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                                                    <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
-                        Date="{Binding FromDate}"></DatePicker>
-                                                </Border>
-
-                                            </VerticalStackLayout>
-                                            <!--To-->
-                                            <VerticalStackLayout Spacing="5">
-                                                <Label Text="To" TextColor="Gray" FontSize="13"></Label>
-                                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                                                    <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
-                        Date="{Binding ToDate}"></DatePicker>
+                                                <Label Text="Range Data" TextColor="Gray" FontSize="13"></Label>
+                                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40" Padding="10">
+                                                    <HorizontalStackLayout Spacing="5" Margin="0,0,20,0">
+                                                        <Label Text="{Binding FromDate ,StringFormat='{}{0:yyyy-MM-dd}'}" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></Label>
+                                                        <Label Text="-" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></Label>
+                                                        <Label Text="{Binding ToDate ,StringFormat='{}{0:yyyy-MM-dd}'}" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" ></Label>
+                                                    </HorizontalStackLayout>
+                                                    <Border.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding SelectedDateCommand}"></TapGestureRecognizer>
+                                                    </Border.GestureRecognizers>
                                                 </Border>
                                             </VerticalStackLayout>
                                             <!--Select Card-->
-                                            <VerticalStackLayout Spacing="5" HorizontalOptions="EndAndExpand">
+                                            <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
                                                 <Label Text="Card" TextColor="Gray" FontSize="13"></Label>
                                                 <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                                                     <Picker x:Name="CardPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding CardName}"
@@ -238,7 +235,7 @@
                                                             <VerticalStackLayout Spacing="5">
 
                                                                 <zxing:BarcodeGeneratorView
-                                                                  HeightRequest="150"
+                                                                  HeightRequest="150" BackgroundColor="Transparent"
                                                                   WidthRequest="150"
                                                                   ForegroundColor="#FF7F3E"
                                                                   Value="{Binding CardUrl}"
@@ -247,8 +244,7 @@
                                                             </VerticalStackLayout>
                                                         </Border>
                                                         <!--Card Data-->
-                                                        <Border StrokeShape="RoundRectangle 20" BackgroundColor="{Binding CardTheme}" StrokeThickness="0" Margin="0,30,0,0">
-                                                            
+                                                        <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="{Binding CardTheme}" Margin="0,30,0,0">
                                                             <StackLayout Orientation="Horizontal" Spacing="15">
                                                                 <StackLayout HorizontalOptions="FillAndExpand" WidthRequest="{OnPlatform iOS=340}">
                                                                     <!--Cover Iamge-->
@@ -269,15 +265,15 @@
                                                                             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" 
                                                                                  Margin="25,0" TranslationY="-25">
                                                                                 <!--Edit Card-->
-                                                                                <Button Text="Edit" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" CornerRadius="20"
+                                                                                <Button Text="Edit" HorizontalOptions="FillAndExpand" BackgroundColor="#FF7F3E" CornerRadius="14"
                                                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=EditCardClickCommand}"
                                                                                     CommandParameter="{Binding .}" WidthRequest="80"></Button>
                                                                                 <!--PreView-->
-                                                                                <Button Text="Preview" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" CornerRadius="20"
+                                                                                <Button Text="Preview" HorizontalOptions="FillAndExpand" BackgroundColor="#FF7F3E" CornerRadius="14"
                                                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=CardPreViewClickCommand}"
                                                                                     CommandParameter="{Binding .}" WidthRequest="80"></Button>
                                                                                 <!--More Optiions-->
-                                                                                <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="Gray" 
+                                                                                <Border StrokeShape="RoundRectangle 14" StrokeThickness="0" BackgroundColor="#FF7F3E" 
                                                                                     HorizontalOptions="FillAndExpand" WidthRequest="80">
                                                                                     <Image WidthRequest="25">
                                                                                         <Image.Source>
@@ -295,11 +291,13 @@
                                                                     </Grid>
                                                                 </StackLayout>
                                                             </StackLayout>
+                                                            <Border.Shadow>
+                                                                <Shadow Offset="0,10" Brush="{OnPlatform Android=LightGray,iOS=LightGray}" Radius="10"></Shadow>
+                                                            </Border.Shadow>
                                                         </Border>
                                                     </StackLayout>
                                                 </DataTemplate>
                                             </CollectionView.ItemTemplate>
-
                                         </CollectionView>
                                     </ScrollView>
                                 </RefreshView>
@@ -413,10 +411,10 @@
                                     <HorizontalStackLayout Spacing="10">
                                         <Image WidthRequest="20" HeightRequest="20">
                                             <Image.Source>
-                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
+                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Red"></FontImageSource>
                                             </Image.Source>
                                         </Image>
-                                        <Label Text="Exit" FontAutoScalingEnabled="False" TextColor="Gray" FontSize="14" VerticalTextAlignment="Start" FontAttributes="Bold"></Label>
+                                        <Label Text="Exit" FontAutoScalingEnabled="False" TextColor="Red" FontSize="14" VerticalTextAlignment="Start" FontAttributes="Bold"></Label>
                                         <HorizontalStackLayout.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding ExitClickCommand}"></TapGestureRecognizer>
                                         </HorizontalStackLayout.GestureRecognizers>

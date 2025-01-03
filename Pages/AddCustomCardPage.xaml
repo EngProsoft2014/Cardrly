@@ -28,123 +28,111 @@
         <!--Data-->
         <ScrollView VerticalOptions="FillAndExpand">
             <StackLayout Margin="0,30,0,0">
-                <!--Cover Image & Profile Image-->
-                <StackLayout Orientation="Horizontal" Spacing="20">
-                    <!--Profile Image-->
-                    <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="Profile Image" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                        <Border StrokeShape="RoundRectangle 20" HeightRequest="100" HorizontalOptions="FillAndExpand">
-                            <Image>
-                                <Image.Triggers>
-                                    <DataTrigger Binding="{Binding IsProfileImageAdded}" TargetType="Image" Value="1">
-                                        <Setter Property="Source">
-                                            <Setter.Value>                                                                                                                                                                                                    
-                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Setter Property="WidthRequest" Value="20"></Setter>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsProfileImageAdded}" TargetType="Image" Value="2">
-                                        <Setter Property="Source" Value="{Binding Request.ImgProfileFile}"></Setter>
-                                        <Setter Property="Aspect" Value="AspectFill"></Setter>
-                                    </DataTrigger>
-                                </Image.Triggers>
-                            </Image>
-                        </Border>
-                        <VerticalStackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding AddProfileImageClickCommand}"></TapGestureRecognizer>
-                        </VerticalStackLayout.GestureRecognizers>
-                    </VerticalStackLayout>
-                    <!--Cover Image-->
-                    <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="Cover Image" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                        <Border StrokeShape="RoundRectangle 20" HeightRequest="100" HorizontalOptions="FillAndExpand">
-                            <Image>
-                                <Image.Triggers>
-                                    <DataTrigger Binding="{Binding IsCoverImageAdded}" TargetType="Image" Value="1">
-                                        <Setter Property="Source">
-                                            <Setter.Value>
-                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Setter Property="WidthRequest" Value="20"></Setter>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsCoverImageAdded}" TargetType="Image" Value="2">
-                                        <Setter Property="Source" Value="{Binding Request.ImgCoverFile}"></Setter>
-                                        <Setter Property="Aspect" Value="AspectFill"></Setter>
-                                    </DataTrigger>
-                                </Image.Triggers>
-                            </Image>
-                        </Border>
-                        <VerticalStackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding AddCoverImageClickCommand}"></TapGestureRecognizer>
-                        </VerticalStackLayout.GestureRecognizers>
-                    </VerticalStackLayout>
-                </StackLayout>
-                <!--Email & Password-->
-                <StackLayout Orientation="Horizontal" Spacing="35">
-                    <!--Email-->
-                    <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="Email" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                            <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
-                   Text="{Binding Request.Email}"></Entry>
-                        </Border>
-                    </VerticalStackLayout>
-                    <!--Password-->
-                    <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="Password" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                            <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
-                                   Text="{Binding Request.Password}"></Entry>
-                        </Border>
-                    </VerticalStackLayout>
-                    <StackLayout.Triggers>
-                        <DataTrigger TargetType="StackLayout" Binding="{Binding AddOrUpdate}" Value="2">
+                <!--Cover Image-->
+                <Border StrokeShape="RoundRectangle 15" HeightRequest="150" HorizontalOptions="FillAndExpand">
+                    <Image>
+                        <Image.Triggers>
+                            <DataTrigger Binding="{Binding IsCoverImageAdded}" TargetType="Image" Value="1">
+                                <Setter Property="Source">
+                                    <Setter.Value>
+                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="WidthRequest" Value="20"></Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsCoverImageAdded}" TargetType="Image" Value="2">
+                                <Setter Property="Source" Value="{Binding Request.ImgCoverFile}"></Setter>
+                                <Setter Property="Aspect" Value="AspectFill"></Setter>
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AddCoverImageClickCommand}"></TapGestureRecognizer>
+                    </Border.GestureRecognizers>
+                </Border>
+                <!--Profile Image-->
+                <Border StrokeShape="RoundRectangle 50" HeightRequest="100" WidthRequest="100" HorizontalOptions="FillAndExpand" 
+                        StrokeThickness="2" TranslationY="-50">
+                    <Image>
+                        <Image.Triggers>
+                            <DataTrigger Binding="{Binding IsProfileImageAdded}" TargetType="Image" Value="1">
+                                <Setter Property="Source">
+                                    <Setter.Value>
+                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="WidthRequest" Value="20"></Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsProfileImageAdded}" TargetType="Image" Value="2">
+                                <Setter Property="Source" Value="{Binding Request.ImgProfileFile}"></Setter>
+                                <Setter Property="Aspect" Value="AspectFill"></Setter>
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AddProfileImageClickCommand}"></TapGestureRecognizer>
+                    </Border.GestureRecognizers>
+                </Border>
+                <!--Email-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" TranslationY="-50">
+                    <Label Text="Email" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                               Text="{Binding Request.Email}"></Entry>
+                    </Border>
+                    <VerticalStackLayout.Triggers>
+                        <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding AddOrUpdate}" Value="2">
                             <Setter Property="IsVisible" Value="False"></Setter>
                         </DataTrigger>
-                    </StackLayout.Triggers>
-                </StackLayout>
-                <!--Card Name & location-->
-                <StackLayout Orientation="Horizontal" Spacing="35">
-                    <!--Card Name-->
-                    <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="Card Name" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                            <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                    </VerticalStackLayout.Triggers>
+                </VerticalStackLayout>
+                <!--Password-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" TranslationY="-50">
+                    <Label Text="Password" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+               Text="{Binding Request.Password}"></Entry>
+                    </Border>
+                    <VerticalStackLayout.Triggers>
+                        <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding AddOrUpdate}" Value="2">
+                            <Setter Property="IsVisible" Value="False"></Setter>
+                        </DataTrigger>
+                    </VerticalStackLayout.Triggers>
+                </VerticalStackLayout>
+                <!--Card Name-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" TranslationY="-50">
+                    <Label Text="Card Name" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                    Text="{Binding Request.CardName}"></Entry>
-                        </Border>
-                    </VerticalStackLayout>
-                    <!--location-->
-                    <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="Location" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                            <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                    </Border>
+                </VerticalStackLayout>
+                <!--location-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" TranslationY="-50">
+                    <Label Text="Location" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                    Text="{Binding Request.location}"></Entry>
-                        </Border>
-                    </VerticalStackLayout>
-                </StackLayout>
-                <!--Person Name & Person Nike Name-->
-                <StackLayout Orientation="Horizontal" Spacing="35">
-                    <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <!--Person Name-->
-                        <Label Text="Person Name" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                            <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                    </Border>
+                </VerticalStackLayout>
+                <!--Person Name-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" TranslationY="-50">
+                    <Label Text="Person Name" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                    Text="{Binding Request.PersonName}"></Entry>
-                        </Border>
-                    </VerticalStackLayout>
-                    <!--Person Nike Name-->
-                    <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="Person Nike Name" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                            <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                    </Border>
+                </VerticalStackLayout>
+                <!--Person Nike Name-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" TranslationY="-50">
+                    <Label Text="Person Nike Name" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                    Text="{Binding Request.PersonNikeName}"></Entry>
-                        </Border>
-                    </VerticalStackLayout>
-                </StackLayout>
+                    </Border>
+                </VerticalStackLayout>
                 <!--Job Title-->
-                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" TranslationY="-50">
                     <Label Text="Job Title" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                     <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
@@ -152,7 +140,7 @@
                     </Border>
                 </VerticalStackLayout>
                 <!--Link Color & Card Theme-->
-                <StackLayout Orientation="Horizontal" Spacing="35">
+                <StackLayout Orientation="Horizontal" Spacing="35" TranslationY="-50">
                     <!--Link Color-->
                     <VerticalStackLayout HorizontalOptions="FillAndExpand">
                         <Label Text="Link Color" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
@@ -169,7 +157,7 @@
                     </VerticalStackLayout>
                 </StackLayout>
                 <!--Bio-->
-                <VerticalStackLayout HorizontalOptions="FillAndExpand" HeightRequest="100" Margin="0,15,0,10">
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" HeightRequest="100" Margin="0,15,0,10" TranslationY="-50">
                     <Label Text="Bio" TextColor="Gray" FontSize="13"></Label>
                     <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="80">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"

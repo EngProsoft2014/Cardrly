@@ -7,6 +7,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
+using Mopups.Services;
 using System.Collections.ObjectModel;
 
 namespace Cardrly.ViewModels
@@ -53,27 +54,51 @@ namespace Cardrly.ViewModels
             }
             else
             {
+                UserDialogs.Instance.ShowLoading();
+                await GetAllCards();
                 await GetAllStatistics();
                 await GetAccData();
+                UserDialogs.Instance.HideHud();
             }
-        } 
+        }
+
+        [RelayCommand]
+        async Task SelectedDate()
+        {
+            IsEnable = false;
+            var popupView = new Pages.MainPopups.DatePopup();
+            popupView.RangeClose += (calendar) =>
+            {
+                UserDialogs.Instance.ShowLoading();
+                calendar.StartDate.Value.ToString("MM-dd-yyyy");
+                calendar.EndDate.Value.ToString("MM-dd-yyyy");
+                FromDate = calendar.StartDate.Value;
+                ToDate = calendar.EndDate.Value;
+                UserDialogs.Instance.HideHud();
+            };
+
+            await MopupService.Instance.PushAsync(popupView);
+            IsEnable = true;
+        }
         #endregion
 
         #region Methodes
         public async void Init()
         {
-
             await GetAllCards();
             if (CardLst.Count > 0)
             {
                 SelectedCard = CardLst[0];
             }
+            UserDialogs.Instance.ShowLoading();
             await GetAllStatistics();
             await GetAccData();
+            UserDialogs.Instance.HideHud();
         }
 
         async Task GetAllStatistics()
         {
+            
             IsEnable = false;
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
@@ -92,10 +117,12 @@ namespace Cardrly.ViewModels
                 }
             }
             IsEnable = true;
+            
         }
 
         async Task GetAccData()
         {
+            
             IsEnable = false;
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
@@ -113,6 +140,7 @@ namespace Cardrly.ViewModels
                 }
             }
             IsEnable = true;
+            
         }
 
         async Task GetAllCards()

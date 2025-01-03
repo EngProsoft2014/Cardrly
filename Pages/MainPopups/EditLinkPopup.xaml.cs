@@ -1,6 +1,7 @@
 using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Mode_s.CardLink;
+using Cardrly.Models.AccountLinks;
 using CommunityToolkit.Maui.Alerts;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
@@ -22,27 +23,32 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
     public EditLinkPopup(CardLinkResponse cardLink, IGenericRepository GenericRep, Services.Data.ServicesService service)
 	{
 		InitializeComponent();
+        this.BindingContext = cardLink;
         Rep = GenericRep;
         _service = service;
         CardLink = new CardLinkResponse()
         {
             ValueOf = cardLink.ValueOf,
             CardLinkType = cardLink.CardLinkType,
+            AccountLinkUrlImgName = cardLink.AccountLinkUrlImgName,
+            AccountLinkTitle = cardLink.AccountLinkTitle,
         };
         CardLinkRef = cardLink;
         ValueEn.Text = CardLink.ValueOf;
         LoadData();
     }
 
-    public EditLinkPopup(int isUpdate,string accountLinkId,string cardId, IGenericRepository GenericRep, Services.Data.ServicesService service)
+    public EditLinkPopup(int isUpdate, AccountLinkResponse res,string cardId, IGenericRepository GenericRep, Services.Data.ServicesService service)
     {
         InitializeComponent();
+        CardLink.AccountLinkUrlImgName = res.UrlImgName;
+        CardLink.AccountLinkTitle = res.Title;
+        this.BindingContext = CardLink;
         Rep = GenericRep;
         _service = service;
         IsUpdat = isUpdate;
-        CardLinkRef.AccountLinkId = accountLinkId;
+        CardLinkRef.AccountLinkId = res.Id;
         CardLinkRef.CardId = cardId;
-        hdrlbl.Text = "Add Link";
         LoadData();
     }
 

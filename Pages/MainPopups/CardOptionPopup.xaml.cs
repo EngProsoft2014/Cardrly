@@ -10,12 +10,14 @@ using System.Text;
 using Microsoft.Maui.ApplicationModel.DataTransfer;
 using System;
 using CommunityToolkit.Maui.Alerts;
+using Cardrly.Services;
 
 namespace Cardrly.Pages.MainPopups;
 
 public partial class CardOptionPopup : Mopups.Pages.PopupPage
 {
     CardResponse Card = new CardResponse();
+    string vCard = "";
 
     #region Service
     readonly IGenericRepository Rep;
@@ -29,6 +31,52 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
         Rep = GenericRep;
         _service = service;
         Card = _Card;
+        // Define vCard content
+        vCard = "BEGIN:VCARD\n" +
+                "VERSION:3.0\n" +
+                $"FN:{Card.PersonName + " " + Card.PersonNikeName}\n" +
+                $"ADR:{Card.location}\n" +
+                $"URL:{Card.CardUrl}\n" +
+                "END:VCARD";
+
+
+        // Assign the vCard content to the QR code
+        QRCodeImage.Value = vCard;
+    }
+
+    public static string EscapeValue(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return string.Empty;
+
+        return value
+            .Replace("\\", "\\\\") // Escape backslashes
+            .Replace(";", "\\;")   // Escape semicolons
+            .Replace(",", "\\,")   // Escape commas
+            .Replace("\n", "\\n")  // Escape newlines
+            .Replace("\r", "\\n"); // Normalize line endings
+    }
+
+    private void CheckBox_ShareOfflineCard(object sender, CheckedChangedEventArgs e)
+    {
+        if (e.Value)
+        {
+            vCard = "BEGIN:VCARD\n" +
+                "VERSION:3.0\n" +
+                $"FN:{Card.PersonName + " " + Card.PersonNikeName}\n" +
+                $"ADR:{Card.location}\n" +
+                $"URL:{Card.CardUrl}\n" +
+                "END:VCARD";
+
+
+            // Assign the vCard content to the QR code
+            QRCodeImage.Value = vCard;
+        }
+        else
+        {
+            // Assign the vCard content to the QR code
+            QRCodeImage.Value = Card.CardUrl;
+        }
     }
     #endregion
 
@@ -90,8 +138,28 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
         await MopupService.Instance.PopAsync();
     }
 
+    private async void TapGestureRecognizer_ShareOfflineCard(object sender, TappedEventArgs e)
+    {
+        
+    }
+
+    private async void TapGestureRecognizer_ShareVcard(object sender, TappedEventArgs e)
+    {
+        string fn = "contact.vcf";
+        string vCardContent = VCardHelper.GenerateVCard(Card);
+        string file = Path.Combine(FileSystem.CacheDirectory, fn);
+
+        File.WriteAllText(file, $"{vCardContent}");
+
+        await Share.Default.RequestAsync(new ShareFileRequest
+        {
+            Title = "Share text file",
+            File = new ShareFile(file)
+        });
+    }
     #endregion
 
+    #region Nfc Setup
     public const string ALERT_TITLE = "NFC";
     public const string MIME_TYPE = "application/com.companyname.nfcsample";
 
@@ -517,4 +585,6 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
             await ShowAlert(ex.Message);
         }
     }
+
+    #endregion
 }

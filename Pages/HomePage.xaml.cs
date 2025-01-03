@@ -1,6 +1,9 @@
 using Cardrly.Helpers;
 using Cardrly.ViewModels;
 using Cardrly.ViewModels.Leads;
+using CommunityToolkit.Mvvm.Input;
+using Controls.UserDialogs.Maui;
+using Mopups.Services;
 
 namespace Cardrly.Pages;
 
@@ -75,5 +78,6 @@ public partial class HomePage : Controls.CustomControl
     {
         LeadColc.ItemsSource = LeadViewModel.Leads.Where(a => a.FullName.Contains(e.NewTextValue));
     }
+
 
 }

@@ -4,6 +4,6 @@
              x:Class="Cardrly.Controls.CustomControl"
              Title="CustomPage"
              NavigationPage.HasNavigationBar="False"
-             BackgroundColor="White">
+             BackgroundColor="GhostWhite">
 
 </ContentPage>
