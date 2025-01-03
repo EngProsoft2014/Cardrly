@@ -41,18 +41,21 @@
                                     <StackLayout Spacing="20">
                                         <!--Data Menu-->
                                         <StackLayout Orientation="Horizontal" Spacing="10"  HorizontalOptions="FillAndExpand">
-                                            <!--Range Data-->
+                                            <!--From-->
                                             <VerticalStackLayout Spacing="5">
-                                                <Label Text="Range Data" TextColor="Gray" FontSize="13"></Label>
-                                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40" Padding="10">
-                                                    <HorizontalStackLayout Spacing="5" Margin="0,0,20,0">
-                                                        <Label Text="{Binding FromDate ,StringFormat='{}{0:yyyy-MM-dd}'}" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></Label>
-                                                        <Label Text="-" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></Label>
-                                                        <Label Text="{Binding ToDate ,StringFormat='{}{0:yyyy-MM-dd}'}" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" ></Label>
-                                                    </HorizontalStackLayout>
-                                                    <Border.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding SelectedDateCommand}"></TapGestureRecognizer>
-                                                    </Border.GestureRecognizers>
+                                                <Label Text="From" TextColor="Gray" FontSize="13"></Label>
+                                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                                                    <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
+                                                                Date="{Binding FromDate}"></DatePicker>
+                                                </Border>
+
+                                            </VerticalStackLayout>
+                                            <!--To-->
+                                            <VerticalStackLayout Spacing="5">
+                                                <Label Text="To" TextColor="Gray" FontSize="13"></Label>
+                                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                                                    <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
+                                                                Date="{Binding ToDate}"></DatePicker>
                                                 </Border>
                                             </VerticalStackLayout>
                                             <!--Select Card-->

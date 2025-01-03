@@ -62,24 +62,6 @@ namespace Cardrly.ViewModels
             }
         }
 
-        [RelayCommand]
-        async Task SelectedDate()
-        {
-            IsEnable = false;
-            var popupView = new Pages.MainPopups.DatePopup();
-            popupView.RangeClose += (calendar) =>
-            {
-                UserDialogs.Instance.ShowLoading();
-                calendar.StartDate.Value.ToString("MM-dd-yyyy");
-                calendar.EndDate.Value.ToString("MM-dd-yyyy");
-                FromDate = calendar.StartDate.Value;
-                ToDate = calendar.EndDate.Value;
-                UserDialogs.Instance.HideHud();
-            };
-
-            await MopupService.Instance.PushAsync(popupView);
-            IsEnable = true;
-        }
         #endregion
 
         #region Methodes

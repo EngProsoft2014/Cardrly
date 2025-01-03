@@ -144,9 +144,6 @@
 	  <MauiXaml Update="Pages\MainPopups\CommentPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\MainPopups\DatePopup.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Pages\MainPopups\EditLinkPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
