@@ -15,39 +15,31 @@
    PositionIn="Bottom"
    PositionOut="Center" />
     </mopups:PopupPage.Animation>
-    <ScrollView VerticalOptions="FillAndExpand">
-        <StackLayout VerticalOptions="EndAndExpand">
-            <Border Padding="10" BackgroundColor="Transparent" StrokeThickness="0">
-                <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
-                    <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
-                        <StackLayout  BackgroundColor="#FFFFFF" Spacing="10">
-                            <!--Comment-->
-                            <StackLayout Orientation="Vertical" Spacing="3" Padding="20,0,20,0">
-                                <Label Text="Comment" TextColor="Gray" FontSize="13"></Label>
-                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="120">
-                                    <Editor x:Name="CommEntr" Keyboard="Text" TextColor="Black" FontSize="14" VerticalOptions="FillAndExpand"
+    <StackLayout VerticalOptions="CenterAndExpand">
+        <Border Padding="10" BackgroundColor="Transparent" StrokeThickness="0">
+            <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
+                <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
+                    <StackLayout  BackgroundColor="#FFFFFF" Spacing="10">
+                        <!--Comment-->
+                        <StackLayout Orientation="Vertical" Spacing="3" Padding="20,0,20,0">
+                            <Label Text="Comment" TextColor="Gray" FontSize="13"></Label>
+                            <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="120">
+                                <Editor x:Name="CommEntr" Keyboard="Text" TextColor="Black" FontSize="14" VerticalOptions="FillAndExpand"
                                            VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand"></Editor>
-                                </Border>
-                            </StackLayout>
-                            <!--Save Button  & Cancel-->
-                            <StackLayout Orientation="Horizontal" Spacing="10" Padding="10,0,10,0" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
-                                <!--Save Button-->
-                                <Button  FontAutoScalingEnabled="False" Text="Save" FontSize="16" FontAttributes="Bold" Clicked="Save_Clicked"
-                                         BackgroundColor="#FF7F3E" TextColor="White" HorizontalOptions="FillAndExpand"></Button>
-                                <!--Cancel-->
-                                <Border StrokeShape="RoundRectangle 10" VerticalOptions="End" Stroke="#FF7F3E">
-                                    <Button  FontAutoScalingEnabled="False" Text="Cancle" FontSize="16" FontAttributes="Bold" Clicked="Cancel_Clicked"
-                                             BackgroundColor="Transparent" TextColor="Black" HorizontalOptions="FillAndExpand" Padding="20,0">
-                                    </Button>
-                                </Border>
-                            </StackLayout>
+                            </Border>
                         </StackLayout>
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="12"></RoundRectangle>
-                        </Border.StrokeShape>
-                    </Border>
-                </StackLayout>
-            </Border>
-        </StackLayout>
-    </ScrollView>
+                        <!--Save Button-->
+                        <StackLayout Orientation="Horizontal" Spacing="10" Padding="10,0,10,0" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
+                            <!--Save Button-->
+                            <Button  FontAutoScalingEnabled="False" Text="Save" FontSize="16" FontAttributes="Bold" Clicked="Save_Clicked"
+                                         BackgroundColor="#FF7F3E" TextColor="White" HorizontalOptions="FillAndExpand"></Button>
+                        </StackLayout>
+                    </StackLayout>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12"></RoundRectangle>
+                    </Border.StrokeShape>
+                </Border>
+            </StackLayout>
+        </Border>
+    </StackLayout>
 </mopups:PopupPage>
