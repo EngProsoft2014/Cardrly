@@ -62,7 +62,7 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
                     {
                         var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
-                        await MopupService.Instance.PopAsync();
+                        //await MopupService.Instance.PopAsync();
                     }
                     UserDialogs.Instance.HideHud();
 
