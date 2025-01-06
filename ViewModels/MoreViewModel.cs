@@ -27,8 +27,6 @@ namespace Cardrly.ViewModels
         }
         #endregion
 
-       
-
         #region RelayCommand
         [RelayCommand]
         async Task ProfileClick()
@@ -40,7 +38,6 @@ namespace Cardrly.ViewModels
         }
 
         [RelayCommand]
-        [Obsolete]
         Task ExitClick()
         {
             Action action = async () =>
@@ -55,6 +52,13 @@ namespace Cardrly.ViewModels
             };
             Controls.StaticMember.ShowSnackBar("Do you want to Logout", Controls.StaticMember.SnackBarColor, Controls.StaticMember.SnackBarTextColor, action);
             return Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        async Task ActiveDevice()
+        {
+            var page = new ActiveDevicePage(new ActiveDeviceViewModel(Rep,_service));
+            await App.Current!.MainPage!.Navigation.PushAsync(page);
         }
         #endregion
     }

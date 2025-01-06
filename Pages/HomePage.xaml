@@ -392,34 +392,84 @@
                             <StackLayout Spacing="20">
                                 <Label Text="More" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                                        TextColor="Black"></Label>
-                                <VerticalStackLayout Margin="0,0,0,50">
-                                    <!--Profile-->
-                                    <HorizontalStackLayout Spacing="8">
-                                        <Image WidthRequest="20" HeightRequest="20">
-                                            <Image.Source>
-                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
-                                            </Image.Source>
-                                        </Image>
-                                        <Label Text="Profile" FontAutoScalingEnabled="False" TextColor="Gray" FontSize="14" VerticalTextAlignment="Start" FontAttributes="Bold"></Label>
-                                        <HorizontalStackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding ProfileClickCommand}"></TapGestureRecognizer>
-                                        </HorizontalStackLayout.GestureRecognizers>
-                                    </HorizontalStackLayout>
-                                </VerticalStackLayout>
-                                <VerticalStackLayout>
+                                <!--Activate a Cardrly Device & My Devices-->
+                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="Black" Padding="10">
+                                    <VerticalStackLayout Spacing="15">
+                                        <!--Activate a Cardrly Device-->
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="Activate a Cardrly Device" FontAutoScalingEnabled="False" TextColor="White"
+                                                   FontSize="14" VerticalTextAlignment="Start"></Label>
+                                            <Image HorizontalOptions="EndAndExpand">
+                                                <Image.Source>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="20"></FontImageSource>
+                                                </Image.Source>
+                                            </Image>
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding ActiveDeviceCommand}"></TapGestureRecognizer>
+                                            </StackLayout.GestureRecognizers>
+                                        </StackLayout>
+                                        <!--My Devices-->
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="My Devices" FontAutoScalingEnabled="False" TextColor="White"
+                                                   FontSize="14" VerticalTextAlignment="Start"></Label>
+                                            <Label Text="2" FontAutoScalingEnabled="False" TextColor="White" HorizontalOptions="EndAndExpand"
+                                                   FontSize="14" VerticalTextAlignment="Start" FontAttributes="Bold"></Label>
+                                        </StackLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                                <!--Help & Support & FAQ-->
+                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="Black" Padding="10">
+                                    <VerticalStackLayout Spacing="15">
+                                        <!--Help &amp; Support-->
+                                        <StackLayout Orientation="Horizontal" Spacing="7">
+                                            <Label Text="Help &amp; Support" FontAutoScalingEnabled="False" TextColor="White"
+                                                   FontSize="14" VerticalTextAlignment="Start"></Label>
+                                            <Image HorizontalOptions="EndAndExpand">
+                                                <Image.Source>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="20"></FontImageSource>
+                                                </Image.Source>
+                                            </Image>
+                                        </StackLayout>
+                                        <!--FAQ-->
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="FAQ" FontAutoScalingEnabled="False" TextColor="White"
+                                                   FontSize="14" VerticalTextAlignment="Start"></Label>
+                                            <Image HorizontalOptions="EndAndExpand">
+                                                <Image.Source>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="20"></FontImageSource>
+                                                </Image.Source>
+                                            </Image>
+                                        </StackLayout>
+                                        <!--FAQ-->
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="Language" FontAutoScalingEnabled="False" TextColor="White"
+                                                   FontSize="14" VerticalTextAlignment="Start"></Label>
+                                            <Image HorizontalOptions="EndAndExpand">
+                                                <Image.Source>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="20"></FontImageSource>
+                                                </Image.Source>
+                                            </Image>
+                                        </StackLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                                <!--Exit-->
+                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="Black" Padding="10">
                                     <!--Exit-->
-                                    <HorizontalStackLayout Spacing="10">
-                                        <Image WidthRequest="20" HeightRequest="20">
-                                            <Image.Source>
-                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Red"></FontImageSource>
-                                            </Image.Source>
-                                        </Image>
-                                        <Label Text="Exit" FontAutoScalingEnabled="False" TextColor="Red" FontSize="14" VerticalTextAlignment="Start" FontAttributes="Bold"></Label>
-                                        <HorizontalStackLayout.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding ExitClickCommand}"></TapGestureRecognizer>
-                                        </HorizontalStackLayout.GestureRecognizers>
-                                    </HorizontalStackLayout>
-                                </VerticalStackLayout>
+                                    <VerticalStackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="Exit" FontAutoScalingEnabled="False" TextColor="Red" FontSize="14" VerticalTextAlignment="Start" FontAttributes="Bold"></Label>
+                                            <Image HorizontalOptions="EndAndExpand">
+                                                <Image.Source>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Red" Size="20"></FontImageSource>
+                                                </Image.Source>
+                                            </Image>
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding ExitClickCommand}"></TapGestureRecognizer>
+                                            </StackLayout.GestureRecognizers>
+                                        </StackLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                                
                             </StackLayout>
                         </ContentView>
                     </tabView:SfTabItem.Content>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Controls="clr-namespace:Cardrly.Controls"
+             x:Class="Cardrly.Pages.ActiveDevicePage"
+             Title="ActiveDevicePage">
+    <ScrollView VerticalOptions="FillAndExpand">
+        <StackLayout Margin="20" Spacing="5">
+            <!--Header-->
+            <Image HorizontalOptions="StartAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="Activate a Cardrly Device" FontAutoScalingEnabled="False" TextColor="Black" FontAttributes="Bold" Margin="0,15,0,0"
+               FontSize="22"></Label>
+            <Label Text="Choose the Device you are activating" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14"></Label>
+            <CollectionView ItemsSource="{Binding DeviceModels}" Margin="0,20,0,0" VerticalOptions="FillAndExpand">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="15" Span="2" HorizontalItemSpacing="30"></GridItemsLayout>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border StrokeShape="RoundRectangle 20" Padding="0,20" StrokeThickness="0" BackgroundColor="Black">
+                            <VerticalStackLayout Spacing="10">
+                                <Image>
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{Binding Image}" FontFamily="{Binding Type}" Size="40" Color="White"></FontImageSource>
+                                    </Image.Source>
+                                </Image>
+                                <Label Text="{Binding Name}" FontAutoScalingEnabled="False" TextColor="White" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                                   FontSize="14"></Label>
+                            </VerticalStackLayout>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Button_Clicked_StartWriting_Uri"></TapGestureRecognizer>
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
+</Controls:CustomControl>

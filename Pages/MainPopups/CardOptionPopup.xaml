@@ -36,24 +36,6 @@
                                     Format="QrCode"/>
                             </VerticalStackLayout>
                         </Border>
-                        <!--Setup Card-->
-                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
-                            <Label Text="Setup Card"
-                               TextColor="#FF7F3E"
-                               FontSize="16"
-                               FontFamily="AlmaraiBold"
-                               HorizontalTextAlignment="Center"
-                               VerticalTextAlignment="Center"
-                               HorizontalOptions="CenterAndExpand" 
-                               Padding="8">
-
-                            </Label>
-
-                            <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="Button_Clicked_StartWriting_Uri"></TapGestureRecognizer>
-                            </StackLayout.GestureRecognizers>
-                        </StackLayout>
-                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
                         <!--Share Card Link-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Label Text="Share Card Link"

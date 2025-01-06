@@ -43,11 +43,11 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\images.svg" Color="#FFFFFF" ForegroundScale="0.65" />
+		<MauiIcon Include="Resources\AppIcon\images.svg" Color="#FFFFFF" BaseSize="128,128"/>
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\images.svg" Color="White" />
-
+		<MauiSplashScreen Include="Resources\Splash\images.png" Color="White" />
+		
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
@@ -109,6 +109,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Controls\CustomControl.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\ActiveDevicePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\AddCustomCardPage.xaml">
