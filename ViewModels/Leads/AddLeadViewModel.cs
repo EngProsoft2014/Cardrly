@@ -204,7 +204,14 @@ namespace Cardrly.ViewModels.Leads
             Request.Email = lead.Email;
             Request.FullName = lead.FullName;
             Request.Phone = lead.Phone;
-            SelectedLeadCategory = ListCategories.FirstOrDefault(i => i.Value == lead.LeadCategoryId)!;
+            if (ListCategories.Count > 0)
+            {
+                SelectedLeadCategory = ListCategories.FirstOrDefault(i => i.Value == lead.LeadCategoryId)!;
+            }
+            else
+            {
+                SelectedLeadCategory = new SelectListCategory();
+            }
             if (!string.IsNullOrEmpty(lead.UrlImgProfile))
             {
                 IsProfileImageAdded = 2;
