@@ -15,6 +15,7 @@
    PositionIn="Bottom"
    PositionOut="Center" />
     </mopups:PopupPage.Animation>
+    
     <StackLayout VerticalOptions="CenterAndExpand">
         <Border Padding="10" BackgroundColor="Transparent" StrokeThickness="0">
             <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">

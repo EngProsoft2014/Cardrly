@@ -42,6 +42,7 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
 
         // Assign the vCard content to the QR code
         QRCodeImage.Value = vCard;
+        chkoffline.IsChecked = true;
     }
 
     public static string EscapeValue(string value)

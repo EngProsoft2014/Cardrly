@@ -84,7 +84,7 @@
                                    HorizontalOptions="CenterAndExpand" 
                                    Padding="8">
                                 </Label>
-                                <CheckBox CheckedChanged="CheckBox_ShareOfflineCard" HorizontalOptions="EndAndExpand" Color="#FF7F3E"></CheckBox>
+                                <CheckBox x:Name="chkoffline" CheckedChanged="CheckBox_ShareOfflineCard" HorizontalOptions="EndAndExpand" Color="#FF7F3E"></CheckBox>
                             </Grid>
 
                             <StackLayout.GestureRecognizers>
