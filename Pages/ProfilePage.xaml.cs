@@ -6,10 +6,9 @@ namespace Cardrly.Pages;
 
 public partial class ProfilePage : Controls.CustomControl
 {
-    ProfileViewModel Model;
     public ProfilePage(ProfileViewModel model)
     {
         InitializeComponent();
-        Model = model;
+        this.BindingContext = model;
     }
 }

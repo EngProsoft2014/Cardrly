@@ -42,7 +42,7 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border StrokeShape="RoundRectangle 20" Padding="10">
+                        <Border StrokeShape="RoundRectangle 20" Padding="10" BackgroundColor="White">
                             <StackLayout Orientation="Horizontal" Spacing="10">
                                 <!--Icon-->
                                 <Border StrokeShape="RoundRectangle 50" StrokeThickness="0" HeightRequest="60" WidthRequest="60">

@@ -1,9 +1,4 @@
 ﻿using Cardrly.Mode_s.Account;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cardrly.Mode_s.ApplicationUser
 {
@@ -19,7 +14,6 @@ namespace Cardrly.Mode_s.ApplicationUser
         public int ExpiresIn { get; set; }
         public bool IsDisabled { get; set; }
         public bool EmailConfirmed { get; set; }
-        //public List<PermissionsValues> Permissions { get; set; } = [];
         public string AccountId { get; set; } = string.Empty;
         public AccountResponse? Account { get; set; }
     }

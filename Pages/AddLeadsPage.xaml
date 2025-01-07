@@ -27,7 +27,7 @@
         <ScrollView VerticalOptions="FillAndExpand">
             <StackLayout Margin="0,30,0,20" Spacing="15">
                 <!--Profile Image-->
-                <Border StrokeShape="RoundRectangle 50" HeightRequest="100" WidthRequest="100" HorizontalOptions="CenterAndExpand">
+                <Border StrokeShape="RoundRectangle 50" HeightRequest="100" WidthRequest="100" HorizontalOptions="CenterAndExpand" Stroke="#FF7F3E">
                     <Image>
                         <Image.Triggers>
                             <DataTrigger Binding="{Binding IsProfileImageAdded}" TargetType="Image" Value="1">
@@ -49,7 +49,7 @@
                     </Border.GestureRecognizers>
                 </Border>
                 <!--Scan Card-->
-                <Border StrokeShape="RoundRectangle 10" Padding="10" Stroke="#FF7F3E">
+                <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="10" Stroke="Black">
                     <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="7">
                         <Image>
                             <Image.Source>
@@ -71,7 +71,7 @@
                 <!--Full Name-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
                     <Label Text="Full Name" TextColor="Gray" FontSize="13"></Label>
-                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                Text="{Binding Request.FullName}"></Entry>
                     </Border>
@@ -79,15 +79,15 @@
                 <!--Email-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
                     <Label Text="Email" TextColor="Gray" FontSize="13"></Label>
-                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                         <Entry Keyboard="Email" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                    Text="{Binding Request.Email}"></Entry>
                     </Border>
                 </VerticalStackLayout>
-                <!--Address -->
+                <!--Address-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
                     <Label Text="Address " TextColor="Gray" FontSize="13"></Label>
-                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                    Text="{Binding Request.Address}"></Entry>
                     </Border>
@@ -95,7 +95,7 @@
                 <!--Phone-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
                     <Label Text="Phone" TextColor="Gray" FontSize="13"></Label>
-                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                         <Entry Keyboard="Numeric" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                    Text="{Binding Request.Phone}"></Entry>
                     </Border>
@@ -103,7 +103,7 @@
                 <!--Company-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
                     <Label Text="Company" TextColor="Gray" FontSize="13"></Label>
-                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                    Text="{Binding Request.Company}"></Entry>
                     </Border>
@@ -111,7 +111,7 @@
                 <!--Website-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
                     <Label Text="Website" TextColor="Gray" FontSize="13"></Label>
-                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                         <Entry Keyboard="Url" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                Text="{Binding Request.Website}"></Entry>
                     </Border>
@@ -119,7 +119,7 @@
                 <!--Website-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
                     <Label Text="LeadCategory" TextColor="Gray" FontSize="13"></Label>
-                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                         <Picker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" ItemsSource="{Binding ListCategories}"
                                 SelectedItem="{Binding SelectedLeadCategory}" ItemDisplayBinding="{Binding Text}"></Picker>
                     </Border>

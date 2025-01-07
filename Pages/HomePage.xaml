@@ -44,7 +44,7 @@
                                             <!--From-->
                                             <VerticalStackLayout Spacing="5">
                                                 <Label Text="From" TextColor="Gray" FontSize="13"></Label>
-                                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
                                                     <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
                                                                 Date="{Binding FromDate}"></DatePicker>
                                                 </Border>
@@ -53,7 +53,7 @@
                                             <!--To-->
                                             <VerticalStackLayout Spacing="5">
                                                 <Label Text="To" TextColor="Gray" FontSize="13"></Label>
-                                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
                                                     <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
                                                                 Date="{Binding ToDate}"></DatePicker>
                                                 </Border>
@@ -61,7 +61,7 @@
                                             <!--Select Card-->
                                             <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
                                                 <Label Text="Card" TextColor="Gray" FontSize="13"></Label>
-                                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                                                <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
                                                     <Picker x:Name="CardPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding CardName}"
                                                             SelectedItem="{Binding SelectedCard}" ItemsSource="{Binding CardLst}"></Picker>
                                                 </Border>
@@ -104,7 +104,7 @@
                                         <!--Statistics Data-->
                                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20">
                                             <!--Leads Register-->
-                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand">
+                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" BackgroundColor="White">
                                                 <StackLayout Orientation="Horizontal" Spacing="10">
                                                     <!--Image-->
                                                     <Image Aspect="AspectFill">
@@ -118,7 +118,7 @@
                                                 </StackLayout>
                                             </Border>
                                             <!--Card Views-->
-                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand">
+                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" BackgroundColor="White">
                                                 <StackLayout Orientation="Horizontal" Spacing="10">
                                                     <!--Image-->
                                                     <Image Aspect="AspectFill">
@@ -134,7 +134,7 @@
                                         </StackLayout>
                                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20">
                                             <!--Link Taps-->
-                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand">
+                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" BackgroundColor="White">
                                                 <StackLayout Orientation="Horizontal" Spacing="10">
                                                     <!--Image-->
                                                     <Image Aspect="AspectFill">
@@ -148,7 +148,7 @@
                                                 </StackLayout>
                                             </Border>
                                             <!--Save Contacts-->
-                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand">
+                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" BackgroundColor="White">
                                                 <StackLayout Orientation="Horizontal" Spacing="10">
                                                     <!--Image-->
                                                     <Image Aspect="AspectFill">
@@ -324,8 +324,8 @@
                                 </Image>
                             </StackLayout>
                             <!--SearchBar-->
-                            <Border StrokeShape="RoundRectangle 20" HeightRequest="40">
-                                <SearchBar Placeholder="Search" TextColor="Black" BackgroundColor="White" FontSize="14" TextChanged="SearchBar_Lead"></SearchBar>
+                            <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" HeightRequest="40">
+                                <SearchBar Placeholder="Search" TextColor="Black" FontSize="14" TextChanged="SearchBar_Lead"></SearchBar>
                             </Border>
                             <!--Data-->
                             <RefreshView x:Name="LeadRef" VerticalOptions="FillAndExpand" Refreshing="Lead_Refreshing">
@@ -336,7 +336,7 @@
                                     </CollectionView.ItemsLayout>
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate>
-                                            <Border StrokeShape="RoundRectangle 20" Padding="10">
+                                            <Border StrokeShape="RoundRectangle 20" Padding="10" BackgroundColor="White">
                                                 <StackLayout Orientation="Horizontal" Spacing="10" >
                                                     <!--Image Profile-->
                                                     <Border StrokeShape="RoundRectangle 50" HeightRequest="60" WidthRequest="60">
@@ -393,67 +393,71 @@
                                 <Label Text="More" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                                        TextColor="Black"></Label>
                                 <!--Activate a Cardrly Device & My Devices-->
-                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="Black" Padding="10">
+                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
                                     <VerticalStackLayout Spacing="15">
                                         <!--Activate a Cardrly Device-->
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="Activate a Cardrly Device" FontAutoScalingEnabled="False" TextColor="White"
+                                            <Label Text="Activate a Cardrly Device" FontAutoScalingEnabled="False" TextColor="Black"
                                                    FontSize="14" VerticalTextAlignment="Start"></Label>
                                             <Image HorizontalOptions="EndAndExpand">
                                                 <Image.Source>
-                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="20"></FontImageSource>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
                                                 </Image.Source>
                                             </Image>
                                             <StackLayout.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding ActiveDeviceCommand}"></TapGestureRecognizer>
+                                                <TapGestureRecognizer Command="{Binding ActiveDeviceClickCommand}"></TapGestureRecognizer>
                                             </StackLayout.GestureRecognizers>
                                         </StackLayout>
                                         <!--My Devices-->
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="My Devices" FontAutoScalingEnabled="False" TextColor="White"
+                                            <Label Text="My Devices" FontAutoScalingEnabled="False" TextColor="Black"
                                                    FontSize="14" VerticalTextAlignment="Start"></Label>
-                                            <Label Text="2" FontAutoScalingEnabled="False" TextColor="White" HorizontalOptions="EndAndExpand"
-                                                   FontSize="14" VerticalTextAlignment="Start" FontAttributes="Bold"></Label>
+                                            <Image HorizontalOptions="EndAndExpand">
+                                                <Image.Source>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                </Image.Source>
+                                            </Image>
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding DeviceClickCommand}"></TapGestureRecognizer>
+                                            </StackLayout.GestureRecognizers>
                                         </StackLayout>
                                     </VerticalStackLayout>
                                 </Border>
                                 <!--Help & Support & FAQ-->
-                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="Black" Padding="10">
+                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
                                     <VerticalStackLayout Spacing="15">
                                         <!--Help &amp; Support-->
                                         <StackLayout Orientation="Horizontal" Spacing="7">
-                                            <Label Text="Help &amp; Support" FontAutoScalingEnabled="False" TextColor="White"
+                                            <Label Text="Help &amp; Support" FontAutoScalingEnabled="False" TextColor="Black"
                                                    FontSize="14" VerticalTextAlignment="Start"></Label>
                                             <Image HorizontalOptions="EndAndExpand">
                                                 <Image.Source>
-                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="20"></FontImageSource>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
                                                 </Image.Source>
                                             </Image>
                                         </StackLayout>
                                         <!--FAQ-->
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="FAQ" FontAutoScalingEnabled="False" TextColor="White"
-                                                   FontSize="14" VerticalTextAlignment="Start"></Label>
+                                            <Label Text="FAQ" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
                                             <Image HorizontalOptions="EndAndExpand">
                                                 <Image.Source>
-                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="20"></FontImageSource>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
                                                 </Image.Source>
                                             </Image>
                                         </StackLayout>
                                         <!--FAQ-->
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="Language" FontAutoScalingEnabled="False" TextColor="White"
-                                                   FontSize="14" VerticalTextAlignment="Start"></Label>
+                                            <Label Text="Language" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
                                             <Image HorizontalOptions="EndAndExpand">
                                                 <Image.Source>
-                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="20"></FontImageSource>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
                                                 </Image.Source>
                                             </Image>
                                         </StackLayout>
                                     </VerticalStackLayout>
                                 </Border>
                                 <!--Exit-->
-                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="Black" Padding="10">
+                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
                                     <!--Exit-->
                                     <VerticalStackLayout>
                                         <StackLayout Orientation="Horizontal">
@@ -469,7 +473,6 @@
                                         </StackLayout>
                                     </VerticalStackLayout>
                                 </Border>
-                                
                             </StackLayout>
                         </ContentView>
                     </tabView:SfTabItem.Content>
@@ -477,5 +480,4 @@
             </tabView:SfTabView.Items>
         </tabView:SfTabView>
     </StackLayout>
-
 </Controls:CustomControl>

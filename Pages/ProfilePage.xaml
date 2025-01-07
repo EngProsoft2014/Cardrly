@@ -25,7 +25,6 @@
                    TextColor="Black" VerticalOptions="CenterAndExpand" ></Label>
         </StackLayout>
         <!--Data-->
-
         <Grid VerticalOptions="CenterAndExpand">
             <Border StrokeShape="RoundRectangle 10" Margin="30,0,30,0" StrokeThickness="1"
                 BackgroundColor="#FF7F3E">

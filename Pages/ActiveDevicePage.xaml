@@ -23,20 +23,20 @@
             <Label Text="Activate a Cardrly Device" FontAutoScalingEnabled="False" TextColor="Black" FontAttributes="Bold" Margin="0,15,0,0"
                FontSize="22"></Label>
             <Label Text="Choose the Device you are activating" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14"></Label>
-            <CollectionView ItemsSource="{Binding DeviceModels}" Margin="0,20,0,0" VerticalOptions="FillAndExpand">
+            <CollectionView ItemsSource="{Binding DeviceModels}" Margin="20,20,20,0" VerticalOptions="FillAndExpand">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="15" Span="2" HorizontalItemSpacing="30"></GridItemsLayout>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border StrokeShape="RoundRectangle 20" Padding="0,20" StrokeThickness="0" BackgroundColor="Black">
+                        <Border StrokeShape="RoundRectangle 20" Padding="0,20" StrokeThickness="0" BackgroundColor="White">
                             <VerticalStackLayout Spacing="10">
                                 <Image>
                                     <Image.Source>
-                                        <FontImageSource Glyph="{Binding Image}" FontFamily="{Binding Type}" Size="40" Color="White"></FontImageSource>
+                                        <FontImageSource Glyph="{Binding Image}" FontFamily="{Binding Type}" Size="40" Color="Black"></FontImageSource>
                                     </Image.Source>
                                 </Image>
-                                <Label Text="{Binding Name}" FontAutoScalingEnabled="False" TextColor="White" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                                <Label Text="{Binding Name}" FontAutoScalingEnabled="False" TextColor="Black" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                                    FontSize="14"></Label>
                             </VerticalStackLayout>
                             <Border.GestureRecognizers>
@@ -45,7 +45,6 @@
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-
             </CollectionView>
         </StackLayout>
     </ScrollView>

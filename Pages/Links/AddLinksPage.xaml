@@ -31,7 +31,7 @@
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Border StrokeShape="RoundRectangle 10" Padding="10">
+                    <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="White">
                         <StackLayout Orientation="Horizontal" Spacing="10">
                             <!--Image-->
                             <Image Source="{Binding UrlImgName}"

@@ -55,6 +55,7 @@
 
         #region Cards
         public static string CardGetAllApi = "Account/";
+        public static string CardGetByUserApi = "Account/";
         public static string CardGetApi = "Account/{0}/Card/{1}";
         public static string CardGetCardDashBoardApi = "Account/";
         public static string LeadGetScanCardApi = "Account/";
@@ -105,6 +106,12 @@
         public static string LeadCategoryUpdateApi = "Account/{0}/LeadCategory/{1}";
         public static string LeadCategoryDeleteApi = "Account/{0}/LeadCategory/{1}/Delete";
         public static string LeadCategoryToggleActiveApi = "Account/{0}/LeadCategory/{1}/ToggleActive";
+        #endregion
+
+        #region Devices
+        public static string DevicesGetByCardApi = "Account/";
+        public static string DevicesAddApi = "Account/{0}/Card/{1}/Devices";
+        public static string DevicesDeleteApi = "Account/"; 
         #endregion
     }
 }

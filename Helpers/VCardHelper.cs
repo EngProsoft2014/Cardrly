@@ -1,15 +1,10 @@
 ﻿using Cardrly.Mode_s.Card;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cardrly.Helpers
 {
     public static class VCardHelper
     {
-        public static string GenerateVCard(CardResponse Card)
+        public static string GenerateVCard(CardDetailsResponse Card)
         {
             return "BEGIN:VCARD\n" +
                 "VERSION:3.0\n" +

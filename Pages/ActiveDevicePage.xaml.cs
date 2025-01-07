@@ -7,11 +7,14 @@ namespace Cardrly.Pages;
 
 public partial class ActiveDevicePage : Controls.CustomControl
 {
-    CardResponse Card = new CardResponse();
+    CardDetailsResponse Card = new CardDetailsResponse();
+    ActiveDeviceViewModel Model;
     public ActiveDevicePage(ActiveDeviceViewModel model)
     {
         InitializeComponent();
         this.BindingContext = model;
+        Card = model.DetailsResponse;
+        Model = model;
     }
 
     #region Nfc Setup
@@ -76,8 +79,6 @@ public partial class ActiveDevicePage : Controls.CustomControl
             await AutoStartAsync().ConfigureAwait(false);
         }
     }
-
-
 
     protected override bool OnBackButtonPressed()
     {
@@ -278,6 +279,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
             else
             {
                 CrossNFC.Current.PublishMessage(tagInfo, _makeReadOnly);
+                await Model.DeviceClick();
             }
         }
         catch (Exception ex)

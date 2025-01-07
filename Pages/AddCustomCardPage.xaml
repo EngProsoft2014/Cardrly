@@ -100,17 +100,17 @@
                     </VerticalStackLayout.Triggers>
                 </VerticalStackLayout>
                 <!--Card Name-->
-                <VerticalStackLayout HorizontalOptions="FillAndExpand" TranslationY="-50">
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" TranslationY="-50" >
                     <Label Text="Card Name" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
-                                   Text="{Binding Request.CardName}"></Entry>
+                                   Text="{Binding Request.CardName}" ></Entry>
                     </Border>
                 </VerticalStackLayout>
                 <!--location-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" TranslationY="-50">
                     <Label Text="Location" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                    Text="{Binding Request.location}"></Entry>
                     </Border>
@@ -118,15 +118,15 @@
                 <!--Person Name-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" TranslationY="-50">
                     <Label Text="Person Name" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                    Text="{Binding Request.PersonName}"></Entry>
                     </Border>
                 </VerticalStackLayout>
                 <!--Person Nike Name-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" TranslationY="-50">
-                    <Label Text="Person Nike Name" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                    <Label Text="Person Nike Name" TextColor="Gray"  FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                    Text="{Binding Request.PersonNikeName}"></Entry>
                     </Border>
@@ -134,7 +134,7 @@
                 <!--Job Title-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" TranslationY="-50">
                     <Label Text="Job Title" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                Text="{Binding Request.JobTitle}"></Entry>
                     </Border>
@@ -159,7 +159,7 @@
                 <!--Bio-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" HeightRequest="100" Margin="0,15,0,10" TranslationY="-50">
                     <Label Text="Bio" TextColor="Gray" FontSize="13"></Label>
-                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="80">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="80">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                Text="{Binding Request.Bio}" HorizontalOptions="FillAndExpand"></Entry>
                     </Border>
@@ -171,7 +171,7 @@
                             BackgroundColor="#FF7F3E" TextColor="White" Command="{Binding SaveClickCommand}"
                              HorizontalOptions="FillAndExpand"></Button>
                     <!--Edit Links-->
-                    <Border StrokeShape="RoundRectangle 10" VerticalOptions="End" Stroke="#FF7F3E" IsVisible="False">
+                    <Border StrokeShape="RoundRectangle 10" VerticalOptions="End" BackgroundColor="White" Stroke="#FF7F3E" IsVisible="False">
                         <Button  FontAutoScalingEnabled="False" Text="Edit Links" FontSize="16" FontAttributes="Bold" Command="{Binding EditLinksClickCommand}" 
                                  BackgroundColor="Transparent" TextColor="Black" HorizontalOptions="FillAndExpand" Padding="20,0">
                         </Button>

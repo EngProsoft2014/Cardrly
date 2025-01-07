@@ -57,7 +57,6 @@ namespace Cardrly.ViewModels.Links
                 {
                     foreach (AccountLinkResponse res in json)
                     {
-                        
                         res.UrlImgName = Utility.ServerUrl + res.UrlImgName;
                     }
                     AccountLinks.Add(new LinksGroup("Contact", json.Where(a => a.TypeLink == Enums.EnumTypeLink.Contact).ToList()));

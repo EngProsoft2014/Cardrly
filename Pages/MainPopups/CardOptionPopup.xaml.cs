@@ -4,19 +4,18 @@ using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Mode_s.Card;
 using Cardrly.ViewModels;
-using System.Collections.ObjectModel;
 using Plugin.NFC;
 using System.Text;
-using Microsoft.Maui.ApplicationModel.DataTransfer;
-using System;
 using CommunityToolkit.Maui.Alerts;
-using Cardrly.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Cardrly.Mode_s.CardLink;
 
 namespace Cardrly.Pages.MainPopups;
 
 public partial class CardOptionPopup : Mopups.Pages.PopupPage
 {
     CardResponse Card = new CardResponse();
+    CardDetailsResponse CardDetails = new CardDetailsResponse();
     string vCard = "";
 
     #region Service
@@ -147,7 +146,7 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
     private async void TapGestureRecognizer_ShareVcard(object sender, TappedEventArgs e)
     {
         string fn = "contact.vcf";
-        string vCardContent = VCardHelper.GenerateVCard(Card);
+        string vCardContent = VCardHelper.GenerateVCard(CardDetails);
         string file = Path.Combine(FileSystem.CacheDirectory, fn);
 
         File.WriteAllText(file, $"{vCardContent}");
@@ -157,6 +156,29 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
             Title = "Share text file",
             File = new ShareFile(file)
         });
+    }
+
+    async Task GetCardsDetaikes()
+    {
+        this.IsEnabled = false;
+        string UserToken = await _service.UserToken();
+        if (!string.IsNullOrEmpty(UserToken))
+        {
+            string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+            UserDialogs.Instance.ShowLoading();
+            var json = await Rep.GetAsync<CardDetailsResponse>($"{ApiConstants.CardGetDetailsAllApi}{Card.Id}", UserToken);
+
+            if (json != null)
+            {
+                foreach (CardLinkResponse cardLink in json.CardLinks)
+                {
+                    cardLink.AccountLinkUrlImgName = Utility.ServerUrl + cardLink.AccountLinkUrlImgName;
+                }
+                CardDetails = json;
+            }
+            UserDialogs.Instance.HideHud();
+        }
+        this.IsEnabled = true;
     }
     #endregion
 

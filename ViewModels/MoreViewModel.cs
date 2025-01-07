@@ -31,10 +31,7 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task ProfileClick()
         {
-            var vm = new ProfileViewModel(Rep,_service);
-            var page = new ProfilePage(vm);
-            page.BindingContext = vm;
-            await App.Current!.MainPage!.Navigation.PushAsync(page);
+            await App.Current!.MainPage!.Navigation.PushAsync(new ProfilePage(new ProfileViewModel(Rep, _service)));
         }
 
         [RelayCommand]
@@ -55,10 +52,14 @@ namespace Cardrly.ViewModels
         }
 
         [RelayCommand]
-        async Task ActiveDevice()
+        async Task ActiveDeviceClick()
         {
-            var page = new ActiveDevicePage(new ActiveDeviceViewModel(Rep,_service));
-            await App.Current!.MainPage!.Navigation.PushAsync(page);
+            await App.Current!.MainPage!.Navigation.PushAsync(new ActiveDevicePage(new ActiveDeviceViewModel(Rep, _service)));
+        }
+        [RelayCommand]
+        async Task DeviceClick()
+        {
+            await App.Current!.MainPage!.Navigation.PushAsync(new DevicesPage(new DevicesViewModel(Rep, _service)));
         }
         #endregion
     }

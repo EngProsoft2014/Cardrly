@@ -61,8 +61,6 @@ namespace Cardrly.Mode_s.Account
             }
         }
 
-
-
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
