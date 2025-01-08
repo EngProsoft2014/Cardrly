@@ -25,7 +25,6 @@ namespace Cardrly.Models.Lead
         public string? UrlImgProfile { get; set; } = default!;
         public bool Active { get; set; } = default!;
         public bool? IsShareToUsers { get; set; } = default!;
-
-
+        public DateTime CreatedDate { get; set; }
     }
 }

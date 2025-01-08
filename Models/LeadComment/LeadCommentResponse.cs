@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Cardrly.Models.LeadComment
 {
     public class LeadCommentResponse
@@ -16,8 +11,6 @@ namespace Cardrly.Models.LeadComment
         public string? CardUrlImgProfile { get; set; } = default!;
         public string Comment { get; set; } = default!;
         public bool ActiveDelete { get; set; } = default!;
-        public DateTime CreatedDate { get; set; } = default!;
-
-
+        public DateTime CreatedDate { get; set; } 
     }
 }
