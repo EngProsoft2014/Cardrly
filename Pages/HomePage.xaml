@@ -67,44 +67,49 @@
                                                 </Border>
                                             </VerticalStackLayout>
                                         </StackLayout>
-                                        <!--progressBar For Card-->
-                                        <VerticalStackLayout Spacing="10">
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="Card" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                <Label Text="{Binding AccResponse.CurrentCountCards}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
-                                                <Label Text=" From " FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                <Label Text="{Binding AccResponse.CountCards}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                            </StackLayout>
-                                            <progressBar:SfLinearProgressBar Progress="{Binding AccResponse.CardProgress}" AnimationEasing="{x:Static Easing.SpringOut}"
+                                        <!--progressBars-->
+                                        <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
+                                            <VerticalStackLayout Spacing="20">
+                                                <!--progressBar For Card-->
+                                                <VerticalStackLayout Spacing="10">
+                                                    <StackLayout Orientation="Horizontal">
+                                                        <Label Text="Card" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                        <Label Text="{Binding AccResponse.CurrentCountCards}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
+                                                        <Label Text=" From " FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                        <Label Text="{Binding AccResponse.CountCards}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                    </StackLayout>
+                                                    <progressBar:SfLinearProgressBar Progress="{Binding AccResponse.CardProgress}" AnimationEasing="{x:Static Easing.SpringOut}"
                                                                              SecondaryAnimationDuration="100"/>
-                                        </VerticalStackLayout>
-                                        <!--progressBar For users-->
-                                        <VerticalStackLayout Spacing="10">
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="Users" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                <Label Text="{Binding AccResponse.CurrentCountUsers}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
-                                                <Label Text=" From " FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                <Label Text="{Binding AccResponse.CountUsers}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                            </StackLayout>
-                                            <progressBar:SfLinearProgressBar Progress="{Binding AccResponse.UsersProgress}" AnimationEasing="{x:Static Easing.SpringOut}"
+                                                </VerticalStackLayout>
+                                                <!--progressBar For users-->
+                                                <VerticalStackLayout Spacing="10">
+                                                    <StackLayout Orientation="Horizontal">
+                                                        <Label Text="Users" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                        <Label Text="{Binding AccResponse.CurrentCountUsers}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
+                                                        <Label Text=" From " FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                        <Label Text="{Binding AccResponse.CountUsers}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                    </StackLayout>
+                                                    <progressBar:SfLinearProgressBar Progress="{Binding AccResponse.UsersProgress}" AnimationEasing="{x:Static Easing.SpringOut}"
                                                                              SecondaryAnimationDuration="100"/>
-                                        </VerticalStackLayout>
-                                        <!--progressBar for Expire-->
-                                        <VerticalStackLayout Spacing="10" >
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="Expire" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                <Label Text="{Binding AccResponse.DayOperationExpireAcc}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
-                                                <Label Text=" From " FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                <Label Text="{Binding AccResponse.DayOperationAcc}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                            </StackLayout>
+                                                </VerticalStackLayout>
+                                                <!--progressBar for Expire-->
+                                                <VerticalStackLayout Spacing="10" >
+                                                    <StackLayout Orientation="Horizontal">
+                                                        <Label Text="Expire" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                        <Label Text="{Binding AccResponse.DayOperationExpireAcc}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
+                                                        <Label Text=" From " FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                        <Label Text="{Binding AccResponse.DayOperationAcc}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                    </StackLayout>
 
-                                            <progressBar:SfLinearProgressBar  Progress="{Binding AccResponse.ExpireProgress}" AnimationEasing="{x:Static Easing.SpringOut}"
+                                                    <progressBar:SfLinearProgressBar  Progress="{Binding AccResponse.ExpireProgress}" AnimationEasing="{x:Static Easing.SpringOut}"
                                                                              SecondaryAnimationDuration="100"/>
-                                        </VerticalStackLayout>
+                                                </VerticalStackLayout>
+                                            </VerticalStackLayout>
+                                        </Border>
                                         <!--Statistics Data-->
                                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20">
                                             <!--Leads Register-->
-                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" BackgroundColor="White">
+                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
                                                 <StackLayout Orientation="Horizontal" Spacing="10">
                                                     <!--Image-->
                                                     <Image Aspect="AspectFill">
@@ -118,7 +123,7 @@
                                                 </StackLayout>
                                             </Border>
                                             <!--Card Views-->
-                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" BackgroundColor="White">
+                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
                                                 <StackLayout Orientation="Horizontal" Spacing="10">
                                                     <!--Image-->
                                                     <Image Aspect="AspectFill">
@@ -134,7 +139,7 @@
                                         </StackLayout>
                                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20">
                                             <!--Link Taps-->
-                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" BackgroundColor="White">
+                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
                                                 <StackLayout Orientation="Horizontal" Spacing="10">
                                                     <!--Image-->
                                                     <Image Aspect="AspectFill">
@@ -148,7 +153,7 @@
                                                 </StackLayout>
                                             </Border>
                                             <!--Save Contacts-->
-                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" BackgroundColor="White">
+                                            <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
                                                 <StackLayout Orientation="Horizontal" Spacing="10">
                                                     <!--Image-->
                                                     <Image Aspect="AspectFill">
@@ -163,39 +168,43 @@
                                             </Border>
                                         </StackLayout>
                                         <!--Total Clicks Chart-->
-                                        <chart:SfCartesianChart HeightRequest="250">
-                                            <chart:SfCartesianChart.XAxes>
-                                                <chart:CategoryAxis>
+                                        <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
+                                            <chart:SfCartesianChart HeightRequest="250">
+                                                <chart:SfCartesianChart.XAxes>
+                                                    <chart:CategoryAxis>
 
-                                                </chart:CategoryAxis>
-                                            </chart:SfCartesianChart.XAxes>
-                                            <chart:SfCartesianChart.YAxes>
-                                                <chart:NumericalAxis>
+                                                    </chart:CategoryAxis>
+                                                </chart:SfCartesianChart.XAxes>
+                                                <chart:SfCartesianChart.YAxes>
+                                                    <chart:NumericalAxis>
 
-                                                </chart:NumericalAxis>
-                                            </chart:SfCartesianChart.YAxes>
-                                            <chart:SfCartesianChart.Title>
-                                                <Label Text="Total Clicks" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
-                                            </chart:SfCartesianChart.Title>
-                                            <chart:FastLineSeries ItemsSource="{Binding BoardResponse.clickCardSummaries}" EnableTooltip="True" EnableAnimation="True" XBindingPath="DateClick" 
+                                                    </chart:NumericalAxis>
+                                                </chart:SfCartesianChart.YAxes>
+                                                <chart:SfCartesianChart.Title>
+                                                    <Label Text="Total Clicks" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                </chart:SfCartesianChart.Title>
+                                                <chart:FastLineSeries ItemsSource="{Binding BoardResponse.clickCardSummaries}" EnableTooltip="True" EnableAnimation="True" XBindingPath="DateClick" 
                                                                   YBindingPath="CountClickCard"/>
-                                        </chart:SfCartesianChart>
+                                            </chart:SfCartesianChart>
+                                        </Border>
                                         <!--DoughnutSeries-->
-                                        <chart:SfCircularChart>
-                                            <chart:DoughnutSeries ItemsSource="{Binding BoardResponse.clickCardLinkSummariesOS}" XBindingPath="name" YBindingPath="value" 
+                                        <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
+                                            <chart:SfCircularChart>
+                                                <chart:DoughnutSeries ItemsSource="{Binding BoardResponse.clickCardLinkSummariesOS}" XBindingPath="name" YBindingPath="value" 
                                                                   ExplodeOnTouch="True" EnableAnimation="True" EnableTooltip="True"/>
-                                            <chart:SfCircularChart.Legend>
-                                                <chart:ChartLegend >
-                                                    <chart:ChartLegend.LabelStyle>
-                                                        <chart:ChartLegendLabelStyle TextColor="Black" Margin="5" FontSize="14" FontAttributes="Bold" 
+                                                <chart:SfCircularChart.Legend>
+                                                    <chart:ChartLegend >
+                                                        <chart:ChartLegend.LabelStyle>
+                                                            <chart:ChartLegendLabelStyle TextColor="Black" Margin="5" FontSize="14" FontAttributes="Bold" 
                                                                                      FontFamily="PlaywriteAR-Regular"/>
-                                                    </chart:ChartLegend.LabelStyle>
-                                                </chart:ChartLegend>
-                                            </chart:SfCircularChart.Legend>
-                                            <chart:SfCircularChart.Title>
-                                                <Label Text="Total Count by Device System" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
-                                            </chart:SfCircularChart.Title>
-                                        </chart:SfCircularChart>
+                                                        </chart:ChartLegend.LabelStyle>
+                                                    </chart:ChartLegend>
+                                                </chart:SfCircularChart.Legend>
+                                                <chart:SfCircularChart.Title>
+                                                    <Label Text="Total Count by Device System" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                </chart:SfCircularChart.Title>
+                                            </chart:SfCircularChart>
+                                        </Border>
                                     </StackLayout>
                                 </ScrollView>
                             </StackLayout>
