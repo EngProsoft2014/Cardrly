@@ -199,7 +199,10 @@ public partial class ActiveDevicePage : Controls.CustomControl
             if (tagInfo.IsEmpty)
                 await ShowAlert("Formatting tag operation successful");
             else
+            {
+                await Model.DeviceClick();
                 await ShowAlert("Writing tag operation successful");
+            }  
         }
         catch (Exception ex)
         {
@@ -277,7 +280,8 @@ public partial class ActiveDevicePage : Controls.CustomControl
             else
             {
                 CrossNFC.Current.PublishMessage(tagInfo, _makeReadOnly);
-                await Model.DeviceClick();
+                
+                
             }
         }
         catch (Exception ex)
