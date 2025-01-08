@@ -26,7 +26,6 @@ namespace Cardrly.Mode_s.Card
         public string? FontStyle { get; set; } = default!;
         public string? CardUrl { get; set; } = default!;
         public bool? Active { get; set; }
-
         public List<CardLinkResponse>? CardLinks { get; set; }
     }
 }

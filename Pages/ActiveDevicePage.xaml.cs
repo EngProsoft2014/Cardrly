@@ -7,13 +7,11 @@ namespace Cardrly.Pages;
 
 public partial class ActiveDevicePage : Controls.CustomControl
 {
-    CardDetailsResponse Card = new CardDetailsResponse();
     ActiveDeviceViewModel Model;
     public ActiveDevicePage(ActiveDeviceViewModel model)
     {
         InitializeComponent();
         this.BindingContext = model;
-        Card = model.DetailsResponse;
         Model = model;
     }
 
@@ -225,12 +223,12 @@ public partial class ActiveDevicePage : Controls.CustomControl
 
         string vCardData = "BEGIN:VCARD\n" +
               "VERSION:3.0\n" +
-              $"FN:{Card.PersonName + " " + Card.PersonNikeName}\n" +
+              $"FN:{Model.DetailsResponse.PersonName + " " + Model.DetailsResponse.PersonNikeName}\n" +
               "ORG:Engprosoft company\n" +
               "TEL:+18324686031\n" +
               "EMAIL:engprosoftcompany@gmail.com\n" +
-              $"ADR:{Card.location}\n" +
-              $"URL:{Card.CardUrl}\n" +
+              $"ADR:{Model.DetailsResponse.location}\n" +
+              $"URL:{Model.DetailsResponse.CardUrl}\n" +
               //$"LOGO:{Card.UrlImgProfile}\n" +
               "END:VCARD";
 
@@ -265,7 +263,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
                 record = new NFCNdefRecord
                 {
                     TypeFormat = NFCNdefTypeFormat.Uri,
-                    Payload = NFCUtils.EncodeToByteArray(Card.CardUrl)
+                    Payload = NFCUtils.EncodeToByteArray(Model.DetailsResponse.CardUrl)
                 };
             }
 

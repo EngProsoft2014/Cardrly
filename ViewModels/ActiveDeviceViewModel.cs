@@ -85,7 +85,6 @@ namespace Cardrly.ViewModels
         }
         public async Task DeviceClick()
         {
-            UserDialogs.Instance.ShowLoading();
             IsEnable = false;
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
@@ -110,7 +109,6 @@ namespace Cardrly.ViewModels
                     }
                 }
                 IsEnable = true;
-                UserDialogs.Instance.HideHud();
             }
         }
         #endregion

@@ -110,7 +110,7 @@
 
         #region Devices
         public static string DevicesGetByCardApi = "Account/";
-        public static string DevicesAddApi = "Account/{0}/Card/{1}/Devices";
+        public static string DevicesAddApi = "Account/";
         public static string DevicesDeleteApi = "Account/"; 
         #endregion
     }
