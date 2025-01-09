@@ -11,6 +11,8 @@ using Cardrly.Models.Card;
 using Cardrly.Pages.Links;
 using Cardrly.ViewModels.Links;
 using Cardrly.Controls;
+using System.Collections.ObjectModel;
+using Cardrly.Models;
 
 namespace Cardrly.ViewModels
 {
@@ -19,6 +21,10 @@ namespace Cardrly.ViewModels
         #region Prop
         [ObservableProperty]
         public CardRequest request = new CardRequest();
+        [ObservableProperty]
+        ObservableCollection<ColorModel> linkColor = new ObservableCollection<ColorModel>();
+        [ObservableProperty]
+        ObservableCollection<ColorModel> themColor = new ObservableCollection<ColorModel>();
         [ObservableProperty]
         public int isProfileImageAdded = 1;
         [ObservableProperty]
@@ -54,6 +60,7 @@ namespace Cardrly.ViewModels
         #region Methods
         void Init(CardResponse card)
         {
+            #region Map Data
             Request.CardName = card.CardName;
             Request.Cardlayout = card.Cardlayout;
             Request.Bio = card.Bio;
@@ -68,6 +75,31 @@ namespace Cardrly.ViewModels
             IsProfileImageAdded = 2;
             Request.ImgCoverFile = ImageSource.FromUri(new Uri(card.UrlImgCover!));
             IsCoverImageAdded = 2;
+            #endregion
+
+            // Add Colors To Lists
+            LinkColor = new ObservableCollection<ColorModel>() {
+                new ColorModel { Name = "Purple", HexCode = "#673AB7" },
+                new ColorModel { Name = "Green", HexCode = "#4CAF50" },
+                new ColorModel { Name = "Red", HexCode = "#F44336" },
+                new ColorModel { Name = "Amber", HexCode = "#FFC107" },
+                new ColorModel { Name = "Blue", HexCode = "#2196F3" },
+                new ColorModel { Name = "Navy", HexCode = "#0D47A1" },
+            };
+            ThemColor = new ObservableCollection<ColorModel>() {
+                new ColorModel { Name = "Purple", HexCode = "#673AB7" },
+                new ColorModel { Name = "Green", HexCode = "#4CAF50" },
+                new ColorModel { Name = "Red", HexCode = "#F44336" },
+                new ColorModel { Name = "Amber", HexCode = "#FFC107" },
+                new ColorModel { Name = "Blue", HexCode = "#2196F3" },
+                new ColorModel { Name = "Navy", HexCode = "#0D47A1" },
+            };
+            // Select Initial Link Colors
+            LinkColor.FirstOrDefault()!.IsSelected = true;
+            Request.LinkColor = LinkColor.FirstOrDefault()!.HexCode;
+            // Select Initial Card Theme Colors
+            ThemColor.LastOrDefault()!.IsSelected = true;
+            Request.LinkColor = ThemColor.LastOrDefault()!.HexCode;
         }
         #endregion
 
@@ -199,7 +231,7 @@ namespace Cardrly.ViewModels
                             await toast.Show();
                         }
                     }
-                    
+
                 }
                 else if (AddOrUpdate == 2)
                 {
@@ -247,6 +279,28 @@ namespace Cardrly.ViewModels
             var page = new LinksPage(vm);
             page.BindingContext = vm;
             await App.Current!.MainPage!.Navigation.PushAsync(page);
+        }
+
+        [RelayCommand]
+        void LinkColorClick(ColorModel model)
+        {
+            foreach (var item in LinkColor)
+            {
+                item.IsSelected = false;
+            }
+            LinkColor.FirstOrDefault(c => c.Name == model.Name)!.IsSelected = true;
+            Request.LinkColor = model.HexCode;
+        }
+
+        [RelayCommand]
+        void ThemeColorClick(ColorModel model)
+        {
+            foreach (var item in ThemColor)
+            {
+                item.IsSelected = false;
+            }
+            ThemColor.FirstOrDefault(c => c.Name == model.Name)!.IsSelected = true;
+            Request.CardTheme = model.HexCode;
         }
         #endregion
     }

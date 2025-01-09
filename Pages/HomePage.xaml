@@ -395,6 +395,49 @@
                         <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
                     </tabView:SfTabItem.ImageSource>
                 </tabView:SfTabItem>
+                <!--Calendar-->
+                <tabView:SfTabItem>
+                    <tabView:SfTabItem.ImageSource>
+                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
+                    </tabView:SfTabItem.ImageSource>
+                    <tabView:SfTabItem.Content>
+                        <ContentView x:Name="CalendarView" IsEnabled="{Binding IsEnable}" Margin="20">
+                            <StackLayout Spacing="20">
+                                <!--Header-->
+                                <Label Text="Calendar" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                                       TextColor="Black"></Label>
+                                <!--Data View-->
+                                <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Stroke="Black">
+                                    <StackLayout>
+                                        <!--Meeting Data-->
+                                        <HorizontalStackLayout BackgroundColor="Black" Padding="10" Spacing="3">
+                                            <Label Text="Monday" FontSize="14" TextColor="White"></Label>
+                                            <Label Text="," FontSize="14" TextColor="White"></Label>
+                                            <Label Text="1/1/2025" FontSize="14" TextColor="White"></Label>
+                                        </HorizontalStackLayout>
+                                        <!--Meeting Date-->
+                                        <StackLayout Orientation="Horizontal" Padding="10" Spacing="3">
+                                            <VerticalStackLayout Spacing="5">
+                                                <HorizontalStackLayout>
+                                                    <Label Text="8:30 AM" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                    <Label Text="-" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                    <Label Text="9:30 AM" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                </HorizontalStackLayout>
+                                                <HorizontalStackLayout Spacing="3">
+                                                    <Label Text="Event Type" FontSize="14" TextColor="Black"></Label>
+                                                    <Label Text=":" FontSize="14" TextColor="Black"></Label>
+                                                    <Label Text="30 Minute Meeting" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                </HorizontalStackLayout>
+                                            </VerticalStackLayout>
+                                            <Label Text="Abdullah AKl" FontSize="14" TextColor="Black" FontAttributes="Bold"
+                                                   HorizontalOptions="EndAndExpand"></Label>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Border>
+                            </StackLayout>
+                        </ContentView>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
                 <!--More-->
                 <tabView:SfTabItem>
                     <tabView:SfTabItem.ImageSource>

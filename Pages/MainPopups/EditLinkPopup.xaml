@@ -21,7 +21,7 @@
             <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
                 <StackLayout  BackgroundColor="#FFFFFF" Spacing="3" Padding="10">
                     <!--Profile Image-->
-                    <Border StrokeShape="RoundRectangle 50" HeightRequest="80" WidthRequest="80" HorizontalOptions="CenterAndExpand">
+                    <Border StrokeShape="RoundRectangle 20" HeightRequest="60" WidthRequest="60" StrokeThickness="0" HorizontalOptions="CenterAndExpand">
                         <Image Source="{Binding AccountLinkUrlImgName}" Aspect="AspectFill"></Image>
                     </Border>
                     <Label Text="{Binding AccountLinkTitle}"
@@ -60,7 +60,6 @@
                     <RoundRectangle CornerRadius="25"></RoundRectangle>
                 </Border.StrokeShape>
             </Border>
-            
         </StackLayout>
     </Border>
 </mopups:PopupPage>

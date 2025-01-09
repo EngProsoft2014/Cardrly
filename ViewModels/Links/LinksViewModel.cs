@@ -3,13 +3,16 @@ using Cardrly.Enums;
 using Cardrly.Helpers;
 using Cardrly.Mode_s.Card;
 using Cardrly.Mode_s.CardLink;
+using Cardrly.Models.Lead;
 using Cardrly.Pages.Links;
 using Cardrly.Pages.MainPopups;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
+using Microsoft.AspNet.SignalR.Client.Http;
 using Mopups.Services;
+using System.Text;
 
 namespace Cardrly.ViewModels.Links
 {
@@ -18,6 +21,7 @@ namespace Cardrly.ViewModels.Links
         [ObservableProperty]
         CardDetailsResponse cardDetails = new CardDetailsResponse();
         public string CardId;
+
         #region Service
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
@@ -126,7 +130,28 @@ namespace Cardrly.ViewModels.Links
             }
             IsEnable = true;
         }
-        
+
+        public async Task OrderList()
+        {
+            UserDialogs.Instance.ShowLoading();
+            string UserToken = await _service.UserToken();
+            if (UserToken != null)
+            {
+                string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
+                var json = await Rep.PostTRAsync<CardDetailsResponse, LeadResponse>($"{ApiConstants.LeadUpdateApi}{accid}/Lead/", CardDetails, UserToken);
+                UserDialogs.Instance.HideHud();
+                if (json.Item1 != null)
+                {
+                    var toast = Toast.Make("Successfully Change Arranged.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
+                else if (json.Item2 != null)
+                {
+                    var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
+            }
+        }
         #endregion
     }
 }

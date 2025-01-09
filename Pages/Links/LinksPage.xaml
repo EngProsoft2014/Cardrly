@@ -36,7 +36,8 @@
         </StackLayout>
         <!--Data-->
         <RefreshView x:Name="RefView" Refreshing="RefreshView_Refreshing">
-            <CollectionView x:Name="Calc" ItemsSource="{Binding CardDetails.CardLinks}" EmptyView="Sorry No Data here...." VerticalOptions="FillAndExpand">
+            <CollectionView x:Name="Calc" ItemsSource="{Binding CardDetails.CardLinks}" EmptyView="Sorry No Data here...." VerticalOptions="FillAndExpand"
+                            CanReorderItems="True" ReorderCompleted="Calc_ReorderCompleted">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
                 </CollectionView.ItemsLayout>
@@ -44,18 +45,19 @@
                     <DataTemplate>
                         <Border StrokeShape="RoundRectangle 20" Padding="10" BackgroundColor="White">
                             <StackLayout Orientation="Horizontal" Spacing="10">
+                                <Image>
+                                    <Image.Source>
+                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="25"></FontImageSource>
+                                    </Image.Source>
+                                </Image>
                                 <!--Icon-->
-                                <Border StrokeShape="RoundRectangle 50" StrokeThickness="0" HeightRequest="60" WidthRequest="60">
+                                <Border StrokeShape="RoundRectangle 8" StrokeThickness="0" HeightRequest="50" WidthRequest="50">
                                     <Image Source="{Binding AccountLinkUrlImgName}" Aspect="AspectFill"></Image>
                                 </Border>
-                                <VerticalStackLayout Margin="0,7,0,0" HorizontalOptions="FillAndExpand" Spacing="7">
-                                    <!--Titel-->
-                                    <Label Text="{Binding AccountLinkTitle}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
-                                    <!--TypeLink-->
-                                    <Label Text="{Binding ValueOf}" FontSize="12" TextColor="Gray" FontAttributes="Bold"></Label>
-                                </VerticalStackLayout>
+                                <!--Titel-->
+                                <Label Text="{Binding AccountLinkTitle}" FontSize="16" TextColor="Black" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
                                 <!--Delete Icon-->
-                                <Image >
+                                <Image HorizontalOptions="EndAndExpand">
                                     <Image.Source>
                                         <FontImageSource Glyph="" FontFamily="FontIcon" Color="Gray" Size="20"></FontImageSource>
                                     </Image.Source>

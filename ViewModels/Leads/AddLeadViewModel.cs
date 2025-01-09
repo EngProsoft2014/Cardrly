@@ -1,5 +1,4 @@
-﻿
-using Cardrly.Constants;
+﻿using Cardrly.Constants;
 using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Models.Lead;
@@ -163,7 +162,6 @@ namespace Cardrly.ViewModels.Leads
                             await toast.Show();
                         }
                     }
-
                 }
                 UserDialogs.Instance.HideHud();
                 IsEnable = true;
