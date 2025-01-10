@@ -74,6 +74,7 @@
         public static string CardLinkUpdateApi = "Account/";
         public static string CardLinkDeleteApi = "Account/";
         public static string CardLinkToggleApi = "Account/";
+        public static string CardLinkSortApi = "Account/";
         #endregion
 
         #region Leads

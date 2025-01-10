@@ -4,43 +4,49 @@
              xmlns:Controls="clr-namespace:Cardrly.Controls"
              x:Class="Cardrly.Pages.AllCommentPage"
              Title="AllCommentPage">
-    <StackLayout Margin="20" Spacing="20">
-        <!--Header-->
-        <StackLayout Orientation="Horizontal">
-            <Image VerticalOptions="CenterAndExpand">
-                <Image.Source>
-                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
-                </Image.Source>
-                <Image.Triggers>
-                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
-                        <Setter Property="Rotation" Value="180"></Setter>
-                    </DataTrigger>
-                </Image.Triggers>
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
-                </Image.GestureRecognizers>
-            </Image>
-            <Label Text="Comments" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+    <ScrollView VerticalOptions="FillAndExpand">
+        <StackLayout Margin="20" Spacing="20">
+            <!--Header-->
+            <StackLayout Orientation="Horizontal">
+                <Image VerticalOptions="CenterAndExpand">
+                    <Image.Source>
+                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                    </Image.Source>
+                    <Image.Triggers>
+                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                            <Setter Property="Rotation" Value="180"></Setter>
+                        </DataTrigger>
+                    </Image.Triggers>
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Label Text="Comments" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
            TextColor="Black" VerticalOptions="CenterAndExpand" ></Label>
-        </StackLayout>
-        <!--Data-->
-        <CollectionView ItemsSource="{Binding LeadComments}">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Spacing="5">
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding CardPersonName}" FontSize="12" TextColor='Black' FontAttributes="Bold"></Label>
-                            <Label Text="{Binding CreatedDate}" FontSize="12" TextColor='Gray' FontAttributes="Italic" HorizontalOptions="EndAndExpand"></Label>
+            </StackLayout>
+            <!--Data-->
+            <CollectionView ItemsSource="{Binding LeadComments}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="5"></GridItemsLayout>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+
+                                <Label Text="{Binding CreatedDate}" FontSize="12" TextColor='Gray' FontAttributes="Italic" HorizontalOptions="EndAndExpand"></Label>
+                            </StackLayout>
+                            <Border StrokeShape="RoundRectangle 10,10,0,10" Padding="10" BackgroundColor="White" Stroke="Black">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="{Binding CardPersonName}" FontSize="13" TextColor='#FF7F3E' FontAttributes="Bold"></Label>
+                                    <Label Text="{Binding Comment}" FontSize="12" TextColor='Gray'></Label>
+                                </VerticalStackLayout>
+                            </Border>
                         </StackLayout>
-                        <Border StrokeShape="RoundRectangle 10" Padding="10">
-                            <Label Text="{Binding Comment}" FontSize="13" TextColor='Gray'></Label>
-                        </Border>
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
+
 </Controls:CustomControl>

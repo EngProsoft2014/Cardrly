@@ -16,10 +16,10 @@
    PositionOut="Center" />
     </mopups:PopupPage.Animation>
     
-    <StackLayout VerticalOptions="CenterAndExpand">
-        <Border Padding="10" BackgroundColor="Transparent" StrokeThickness="0">
-            <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
-                <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
+    <StackLayout VerticalOptions="CenterAndExpand" Spacing="5">
+        <Border Padding="10" StrokeThickness="0">
+            <StackLayout HorizontalOptions="FillAndExpand" Spacing="10">
+                <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" >
                     <StackLayout  BackgroundColor="#FFFFFF" Spacing="10">
                         <!--Comment-->
                         <StackLayout Orientation="Vertical" Spacing="3" Padding="20,0,20,0">
@@ -41,6 +41,9 @@
                     </Border.StrokeShape>
                 </Border>
             </StackLayout>
+            <Border.Shadow>
+                <Shadow Offset="5,10" Brush="{OnPlatform Android=LightGray,iOS=LightGray}" Radius="10"></Shadow>
+            </Border.Shadow>
         </Border>
     </StackLayout>
 </mopups:PopupPage>

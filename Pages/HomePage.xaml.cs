@@ -20,7 +20,7 @@ public partial class HomePage : Controls.CustomControl
 	{
 		InitializeComponent();
         homeViewModel = model;
-        CardPicker.SelectedIndex = 0;
+        //CardPicker.SelectedIndex = 0;
         Rep = GenericRep;
         _service = service;
         HomeView.BindingContext = model;
@@ -78,6 +78,4 @@ public partial class HomePage : Controls.CustomControl
     {
         LeadColc.ItemsSource = LeadViewModel.Leads.Where(a => a.FullName.Contains(e.NewTextValue));
     }
-
-
 }

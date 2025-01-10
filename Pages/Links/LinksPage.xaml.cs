@@ -1,3 +1,5 @@
+using Cardrly.Mode_s.CardLink;
+using Cardrly.Models.CardLink;
 using Cardrly.ViewModels.Links;
 
 namespace Cardrly.Pages.Links;
@@ -18,9 +20,19 @@ public partial class LinksPage : Controls.CustomControl
         RefView.IsRefreshing = false;
     }
 
-    private void Calc_ReorderCompleted(object sender, EventArgs e)
+    private async void Calc_ReorderCompleted(object sender, EventArgs e)
     {
-        var items = Calc.ItemsSource;
-        //await Model.OrderList();
+        List<CardLinkSortRequest> sortRequests = new List<CardLinkSortRequest>();
+        List<CardLinkResponse> items = (List<CardLinkResponse>) Calc.ItemsSource;
+        foreach (CardLinkResponse item in Calc.ItemsSource)
+        {
+            var oldIndex = Model.CardOrder.IndexOf((CardLinkResponse)item);
+            var newIndex = items.IndexOf((CardLinkResponse)item);
+            if (oldIndex != newIndex)
+            {
+                sortRequests.Add(new CardLinkSortRequest { Id = item.Id , SortNumber = newIndex });
+            }
+        }
+        await Model.OrderList(Model.CardDetails.Id, sortRequests);
     }
 }

@@ -11,7 +11,6 @@ namespace Cardrly.Pages.MainPopups;
 public partial class CommentPopup : Mopups.Pages.PopupPage
 {
     LeadResponse Res = new LeadResponse();
-    LeadCommentResponse CommentRes = new LeadCommentResponse();
 
     #region Service
     readonly IGenericRepository Rep;
@@ -75,8 +74,6 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
             var toast = Toast.Make($"{ex.Message}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
         }
-
-
     }
 
     private async void Cancel_Clicked(object sender, EventArgs e)

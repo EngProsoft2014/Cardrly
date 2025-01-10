@@ -27,5 +27,10 @@ namespace Cardrly.Mode_s.Card
         public string? CardUrl { get; set; } = default!;
         public bool? Active { get; set; }
         public List<CardLinkResponse>? CardLinks { get; set; }
+
+        public static implicit operator CardDetailsResponse(List<CardLinkResponse> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

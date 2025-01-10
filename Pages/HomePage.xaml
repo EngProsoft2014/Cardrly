@@ -11,6 +11,7 @@
              x:Class="Cardrly.Pages.HomePage"
              Title="HomePage"
              IsEnabled="{Binding IsEnable}">
+    
     <StackLayout>
         <tabView:SfTabView IndicatorPlacement="Top" TabBarPlacement="Bottom" IndicatorBackground="#FF7F3E" FlowDirection="LeftToRight"
                            VerticalOptions="FillAndExpand" Margin="0,0,0,10" ContentTransitionDuration="300" SelectionChanged="SfTabView_SelectionChanged">
@@ -233,7 +234,7 @@
                                     </Image>
                                 </StackLayout>
                                 <!--Cards-->
-                                <RefreshView x:Name="RefView"  Refreshing="Cards_Refreshing" Margin="0,30,0,0">
+                                <RefreshView x:Name="RefView" Refreshing="Cards_Refreshing" Margin="0,30,0,0">
                                     <ScrollView VerticalOptions="FillAndExpand">
                                         <CollectionView ItemsSource="{Binding CardLst}" VerticalOptions="FillAndExpand" Margin="0,40,0,0" HorizontalOptions="FillAndExpand" >
                                             <CollectionView.ItemsLayout>
@@ -245,7 +246,6 @@
                                                         <!--Qr code Iamge-->
                                                         <Border StrokeShape="RoundRectangle 20" WidthRequest="200" Padding="10">
                                                             <VerticalStackLayout Spacing="5">
-
                                                                 <zxing:BarcodeGeneratorView
                                                                   HeightRequest="150" BackgroundColor="Transparent" WidthRequest="150"
                                                                   ForegroundColor="#FF7F3E" Value="{Binding CardUrl}" Format="QrCode"></zxing:BarcodeGeneratorView>

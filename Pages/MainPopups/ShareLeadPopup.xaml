@@ -16,23 +16,13 @@ PositionIn="Bottom"
 PositionOut="Center" />
     </mopups:PopupPage.Animation>
 
-    <StackLayout VerticalOptions="CenterAndExpand">
-
-        <Border Padding="10" BackgroundColor="Transparent" StrokeThickness="0">
+    <StackLayout VerticalOptions="CenterAndExpand" Padding="10">
+        <Border Padding="10" BackgroundColor="Transparent" StrokeThickness="0" >
             <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
-                <Border Padding="5,10,5,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
+                <Border Padding="5,10,10,5" BackgroundColor="#FFFFFF" VerticalOptions="Center">
                     <StackLayout Spacing="5">
-                        <!--Header-->
-                        <Label Text="Shear Lead"
-                               TextColor="#333333"
-                               FontSize="13"
-                               FontFamily="AlmaraiRegular"
-                               HorizontalTextAlignment="Center"
-                               VerticalTextAlignment="Center"
-                               HorizontalOptions="CenterAndExpand"
-                               Padding="8"></Label>
                         <!--Header of Table-->
-                        <Grid ColumnDefinitions="*,*,*">
+                        <Grid ColumnDefinitions="*,*,*" Margin="0,20,0,0">
                             <Label Text="Name" FontSize="12" FontAttributes="Bold" TextColor="Black"></Label>
                             <Label Text="Add/Remove" FontSize="12" FontAttributes="Bold" TextColor="Black" Grid.Column="1"></Label>
                             <Label Text="Is Share To Users" FontSize="12" FontAttributes="Bold" TextColor="Black" Grid.Column="2"></Label>
@@ -71,6 +61,9 @@ PositionOut="Center" />
                 </Border>
 
             </StackLayout>
+            <Border.Shadow>
+                <Shadow Offset="5,10" Brush="{OnPlatform Android=LightGray,iOS=LightGray}" Radius="10"></Shadow>
+            </Border.Shadow>
         </Border>
     </StackLayout>
 </mopups:PopupPage>

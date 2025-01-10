@@ -1,26 +1,28 @@
 ﻿using Cardrly.Constants;
-using Cardrly.Enums;
 using Cardrly.Helpers;
 using Cardrly.Mode_s.Card;
 using Cardrly.Mode_s.CardLink;
-using Cardrly.Models.Lead;
+using Cardrly.Models.CardLink;
 using Cardrly.Pages.Links;
 using Cardrly.Pages.MainPopups;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
-using Microsoft.AspNet.SignalR.Client.Http;
 using Mopups.Services;
-using System.Text;
-
 namespace Cardrly.ViewModels.Links
 {
     public partial class LinksViewModel : BaseViewModel
     {
+        #region Prop
+        // Main List
         [ObservableProperty]
-        CardDetailsResponse cardDetails = new CardDetailsResponse();
-        public string CardId;
+        public CardDetailsResponse cardDetails = new CardDetailsResponse();
+        // Just For order
+        [ObservableProperty]
+        public List<CardLinkResponse> cardOrder = new List<CardLinkResponse>();
+        public string CardId; 
+        #endregion
 
         #region Service
         readonly IGenericRepository Rep;
@@ -116,8 +118,7 @@ namespace Cardrly.ViewModels.Links
             {
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
                 UserDialogs.Instance.ShowLoading();
-                var json = await Rep.GetAsync<CardDetailsResponse>($"{ApiConstants.CardGetDetailsAllApi}{CardId}", UserToken);
-                
+                var json = await Rep.GetAsync<CardDetailsResponse>($"{ApiConstants.CardGetDetailsAllApi}{CardId}", UserToken);     
                 if (json != null)
                 {
                     foreach (CardLinkResponse cardLink in json.CardLinks)
@@ -125,24 +126,26 @@ namespace Cardrly.ViewModels.Links
                         cardLink.AccountLinkUrlImgName = Utility.ServerUrl + cardLink.AccountLinkUrlImgName;
                     }
                     CardDetails = json;
+                    CardOrder = new List<CardLinkResponse>(json.CardLinks);
                 }
                 UserDialogs.Instance.HideHud();
             }
             IsEnable = true;
         }
 
-        public async Task OrderList()
+        public async Task OrderList(string CardId, List<CardLinkSortRequest> sortRequest)
         {
+            IsEnable = false;
             UserDialogs.Instance.ShowLoading();
             string UserToken = await _service.UserToken();
             if (UserToken != null)
             {
                 string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
-                var json = await Rep.PostTRAsync<CardDetailsResponse, LeadResponse>($"{ApiConstants.LeadUpdateApi}{accid}/Lead/", CardDetails, UserToken);
-                UserDialogs.Instance.HideHud();
+                var json = await Rep.PostTRAsync<List<CardLinkSortRequest>, List<CardLinkResponse>>($"{ApiConstants.CardLinkSortApi}{accid}/Card/{CardId}/CardLink/Resort", sortRequest, UserToken);
                 if (json.Item1 != null)
                 {
-                    var toast = Toast.Make("Successfully Change Arranged.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    CardOrder = json.Item1;
+                    var toast = Toast.Make("Successfully Reordered.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
                 else if (json.Item2 != null)
@@ -151,6 +154,8 @@ namespace Cardrly.ViewModels.Links
                     await toast.Show();
                 }
             }
+            UserDialogs.Instance.HideHud();
+            IsEnable = true;
         }
         #endregion
     }
