@@ -4,7 +4,7 @@
              xmlns:Controls="clr-namespace:Cardrly.Controls"
              x:Class="Cardrly.Pages.AllCommentPage"
              Title="AllCommentPage">
-    <ScrollView VerticalOptions="FillAndExpand">
+    
         <StackLayout Margin="20" Spacing="20">
             <!--Header-->
             <StackLayout Orientation="Horizontal">
@@ -24,6 +24,7 @@
                 <Label Text="Comments" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
            TextColor="Black" VerticalOptions="CenterAndExpand" ></Label>
             </StackLayout>
+        <ScrollView VerticalOptions="FillAndExpand">
             <!--Data-->
             <CollectionView ItemsSource="{Binding LeadComments}">
                 <CollectionView.ItemsLayout>
@@ -46,7 +47,8 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </StackLayout>
-    </ScrollView>
+        </ScrollView>
+    </StackLayout>
+    
 
 </Controls:CustomControl>

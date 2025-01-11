@@ -146,7 +146,7 @@ Text="{Binding Request.Password}"></Entry>
                         <!--Link Color-->
                         <StackLayout HorizontalOptions="FillAndExpand">
                             <Label Text="Link Color" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                            <CollectionView VerticalOptions="Start" ItemsSource="{Binding LinkColor}">
+                            <CollectionView HeightRequest="40" ItemsSource="{Binding LinkColor}">
                                 <CollectionView.ItemsLayout>
                                     <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="10"></GridItemsLayout>
                                 </CollectionView.ItemsLayout>
@@ -171,7 +171,7 @@ Text="{Binding Request.Password}"></Entry>
                         <!--Card Theme-->
                         <StackLayout HorizontalOptions="FillAndExpand">
                             <Label Text="Card Theme" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                            <CollectionView VerticalOptions="Start" ItemsSource="{Binding ThemColor}">
+                            <CollectionView HeightRequest="40" ItemsSource="{Binding ThemColor}">
                                 <CollectionView.ItemsLayout>
                                     <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="10"></GridItemsLayout>
                                 </CollectionView.ItemsLayout>
