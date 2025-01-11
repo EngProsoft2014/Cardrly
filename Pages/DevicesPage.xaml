@@ -26,6 +26,9 @@
         </StackLayout>
         <!--Data-->
         <CollectionView ItemsSource="{Binding Devices}" EmptyView="No Data Here..." VerticalOptions="FillAndExpand" Margin="0,20,0,0">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="20"></GridItemsLayout>
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Border StrokeShape="RoundRectangle 10" Padding="20" StrokeThickness="0" BackgroundColor="White" Margin="0,30,0,0">

@@ -45,6 +45,7 @@ namespace Cardrly.ViewModels
         {
             Rep = GenericRep;
             _service = service;
+            Init();
             AddOrUpdate = 1;
         }
         public AddCustomCardViewModel(CardResponse _card, IGenericRepository GenericRep, Services.Data.ServicesService service)
@@ -58,6 +59,32 @@ namespace Cardrly.ViewModels
         #endregion
 
         #region Methods
+        void Init()
+        {
+            // Add Colors To Lists
+            LinkColor = new ObservableCollection<ColorModel>() {
+                new ColorModel { Name = "Purple", HexCode = "#673AB7" },
+                new ColorModel { Name = "Green", HexCode = "#4CAF50" },
+                new ColorModel { Name = "Red", HexCode = "#F44336" },
+                new ColorModel { Name = "Amber", HexCode = "#FFC107" },
+                new ColorModel { Name = "Blue", HexCode = "#2196F3" },
+                new ColorModel { Name = "Navy", HexCode = "#0D47A1" },
+            };
+            ThemColor = new ObservableCollection<ColorModel>() {
+                new ColorModel { Name = "Purple", HexCode = "#673AB7" },
+                new ColorModel { Name = "Green", HexCode = "#4CAF50" },
+                new ColorModel { Name = "Red", HexCode = "#F44336" },
+                new ColorModel { Name = "Amber", HexCode = "#FFC107" },
+                new ColorModel { Name = "Blue", HexCode = "#2196F3" },
+                new ColorModel { Name = "Navy", HexCode = "#0D47A1" },
+            };
+            // Select Initial Link Colors
+            LinkColor.FirstOrDefault()!.IsSelected = true;
+            Request.LinkColor = LinkColor.FirstOrDefault()!.HexCode;
+            // Select Initial Card Theme Colors
+            ThemColor.LastOrDefault()!.IsSelected = true;
+            Request.LinkColor = ThemColor.LastOrDefault()!.HexCode;
+        }
         void Init(CardResponse card)
         {
             #region Map Data

@@ -248,7 +248,7 @@
                                                             <VerticalStackLayout Spacing="5">
                                                                 <zxing:BarcodeGeneratorView
                                                                   HeightRequest="150" BackgroundColor="Transparent" WidthRequest="150"
-                                                                  ForegroundColor="#FF7F3E" Value="{Binding CardUrl}" Format="QrCode"></zxing:BarcodeGeneratorView>
+                                                                  ForegroundColor="Black" Value="{Binding CardUrl}" Format="QrCode"></zxing:BarcodeGeneratorView>
                                                                 <Label Text="Scan to share Card" TextColor="Black" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
                                                             </VerticalStackLayout>
                                                         </Border>

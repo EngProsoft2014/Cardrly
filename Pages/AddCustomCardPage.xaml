@@ -144,9 +144,9 @@ Text="{Binding Request.Password}"></Entry>
                             </Border>
                         </VerticalStackLayout>
                         <!--Link Color-->
-                        <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                        <StackLayout HorizontalOptions="FillAndExpand">
                             <Label Text="Link Color" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                            <CollectionView ItemsSource="{Binding LinkColor}">
+                            <CollectionView VerticalOptions="Start" ItemsSource="{Binding LinkColor}">
                                 <CollectionView.ItemsLayout>
                                     <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="10"></GridItemsLayout>
                                 </CollectionView.ItemsLayout>
@@ -167,11 +167,11 @@ Text="{Binding Request.Password}"></Entry>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
-                        </VerticalStackLayout>
+                        </StackLayout>
                         <!--Card Theme-->
-                        <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                        <StackLayout HorizontalOptions="FillAndExpand">
                             <Label Text="Card Theme" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                            <CollectionView ItemsSource="{Binding ThemColor}">
+                            <CollectionView VerticalOptions="Start" ItemsSource="{Binding ThemColor}">
                                 <CollectionView.ItemsLayout>
                                     <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="10"></GridItemsLayout>
                                 </CollectionView.ItemsLayout>
@@ -192,7 +192,7 @@ Text="{Binding Request.Password}"></Entry>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
-                        </VerticalStackLayout>
+                        </StackLayout>
                         <!--Bio-->
                         <VerticalStackLayout HorizontalOptions="FillAndExpand" HeightRequest="100" Margin="0,15,0,0" >
                             <Label Text="Bio" TextColor="Gray" FontSize="13"></Label>

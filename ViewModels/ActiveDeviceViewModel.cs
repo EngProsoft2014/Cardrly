@@ -63,7 +63,6 @@ namespace Cardrly.ViewModels
             });
             await GetAccountCard();
         }
-
         async Task GetAccountCard()
         {
             IsEnable = false;
