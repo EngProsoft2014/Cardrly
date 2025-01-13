@@ -1,0 +1,16 @@
+{
+  "formatVersion": 10,
+  "passTypeIdentifier": "pass.com.companyname.cardrly",
+  "teamIdentifier": "YZWTVALFLW",
+  "serialNumber": "12345688",
+  "organizationName": "Engprosoft1",
+  "description": "Business Card",
+  "logoText": "John Doe",
+  "backgroundColor": "rgb(255,255,255)",
+  "foregroundColor": "rgb(0,0,0)",
+  "barcode": {
+    "format": "PKBarcodeFormatQR",
+    "message": "BEGIN:VCARD\nVERSION:3.0\nFN:John Doe\nORG:Example Org\nTITLE:Developer\nTEL:+123456789\nEMAIL:john@example.com\nEND:VCARD",
+    "messageEncoding": "iso-8859-1"
+  }
+}

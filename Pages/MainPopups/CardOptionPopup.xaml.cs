@@ -9,6 +9,8 @@ using System.Text;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Cardrly.Mode_s.CardLink;
+using System.Text.Json;
+using System.IO.Compression;
 
 namespace Cardrly.Pages.MainPopups;
 
@@ -179,6 +181,103 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
             UserDialogs.Instance.HideHud();
         }
         this.IsEnabled = true;
+    }
+
+    public async Task AddCardToWalletAsync()
+    {
+#if IOS
+        string passFolderPath = Path.Combine(FileSystem.Current.AppDataDirectory, "PassKit");
+        string iconPath = Path.Combine(passFolderPath, "icon.png");
+        string logoPath = Path.Combine(passFolderPath, "logo.png");
+
+        // Ensure the directory exists
+        Directory.CreateDirectory(passFolderPath);
+
+        // Create the pass.json file
+        string passJsonContent = @"
+    {
+        ""formatVersion"": 1,
+        ""passTypeIdentifier"": ""pass.com.companyname.cardrly"",
+        ""teamIdentifier"": ""YZWTVALFLW"",
+        ""serialNumber"": ""123456"",
+        ""organizationName"": ""Engprosoft"",
+        ""description"": ""Business Card"",
+        ""logoText"": ""John Doe"",
+        ""backgroundColor"": ""rgb(255,255,255)"",
+        ""foregroundColor"": ""rgb(0,0,0)"",
+        ""barcode"": {
+            ""format"": ""PKBarcodeFormatQR"",
+            ""message"": ""BEGIN:VCARD\nVERSION:3.0\nFN:John Doe\nORG:Example Org\nTITLE:Developer\nTEL:+123456789\nEMAIL:john@example.com\nEND:VCARD"",
+            ""messageEncoding"": ""iso-8859-1""
+        }
+    }";
+
+        // Write the pass.json file
+        await File.WriteAllTextAsync(Path.Combine(passFolderPath, "pass.json"), passJsonContent);
+
+        // Add your images (icon and logo) to the PassKit folder
+        // For demonstration, copy icon.png and logo.png from the Resources folder to PassKit directory
+        // Here, you should have already set your images in the Resources/PassKit folder
+
+        // Create a manifest.json file with SHA-1 hashes of files
+        var files = new string[] { "pass.json", "icon.png" };
+        var manifest = new Dictionary<string, string>();
+
+        foreach (var file in files)
+        {
+            var filePath = Path.Combine(passFolderPath, file);
+            using var sha1 = System.Security.Cryptography.SHA1.Create();
+            var hash = sha1.ComputeHash(File.ReadAllBytes(filePath));
+            manifest[file] = BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+        }
+
+        await File.WriteAllTextAsync(Path.Combine(passFolderPath, "manifest.json"), JsonSerializer.Serialize(manifest));
+
+        //// Sign the pass (here, you need your .p12 certificate for PassKit)
+        //string passCertificatePath = "path/to/your/certificate.p12"; // Path to your .p12 certificate
+        //string passCertificatePassword = "your_certificate_password"; // Certificate password
+
+        var passPackagePath = Path.Combine(passFolderPath, "pass.pkpass");
+
+        // Create a zip file for the pass package
+        using (var zip = ZipFile.Open(passPackagePath, ZipArchiveMode.Create))
+        {
+            zip.CreateEntryFromFile(Path.Combine(passFolderPath, "pass.json"), "pass.json");
+            zip.CreateEntryFromFile(Path.Combine(passFolderPath, "icon.png"), "icon.png");
+            zip.CreateEntryFromFile(Path.Combine(passFolderPath, "manifest.json"), "manifest.json");
+
+            // Add signature logic here using your .p12 certificate and password
+            // The signature is required for the `.pkpass` file to be valid.
+            // (You can use libraries like BouncyCastle to sign the pass file, or use Apple's tools)
+
+        }
+
+        // Present the pass to the user for adding to Wallet
+        string pkpassFilePath = passPackagePath;
+        var passData = Foundation.NSData.FromFile(pkpassFilePath);
+        Foundation.NSError error;
+
+        var pass = new PassKit.PKPass(passData, out error);
+
+        if (error != null)
+        {
+            Console.WriteLine($"Error loading pass: {error.LocalizedDescription}");
+            return;
+        }
+
+        var passLibrary = new PassKit.PKPassLibrary();
+        if (!passLibrary.Contains(pass))
+        {
+            var addPassViewController = new PassKit.PKAddPassesViewController(pass);
+            var rootViewController = UIKit.UIApplication.SharedApplication.KeyWindow.RootViewController;
+
+            rootViewController.PresentViewController(addPassViewController, true, null);
+        }
+        else
+        {
+            Console.WriteLine("Pass is already added to the Wallet.");
+        }
+#endif
     }
     #endregion
 
