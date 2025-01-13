@@ -61,7 +61,6 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\images.svg" />
-	  <None Remove="Resources\PassKit\icon.png" />
 	</ItemGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
@@ -77,10 +76,6 @@
 		<CodesignKey>Apple Distribution: ENG PRO SOFT, LLC (YZWTVALFLW)</CodesignKey>
 		<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <Content Include="Resources\PassKit\icon.png" />
-	</ItemGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="akavache" Version="10.1.6" />
