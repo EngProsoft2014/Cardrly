@@ -512,12 +512,12 @@
                                         </StackLayout>
                                     </VerticalStackLayout>
                                 </Border>
-                                <!--Exit-->
+                                <!--logout-->
                                 <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
-                                    <!--Exit-->
+                                    <!--logout-->
                                     <VerticalStackLayout>
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="Exit" FontAutoScalingEnabled="False" TextColor="Red" FontSize="14" VerticalTextAlignment="Start" FontAttributes="Bold"></Label>
+                                            <Label Text="Logout" FontAutoScalingEnabled="False" TextColor="Red" FontSize="14" VerticalTextAlignment="Start" FontAttributes="Bold"></Label>
                                             <Image HorizontalOptions="EndAndExpand">
                                                 <Image.Source>
                                                     <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Red" Size="20"></FontImageSource>

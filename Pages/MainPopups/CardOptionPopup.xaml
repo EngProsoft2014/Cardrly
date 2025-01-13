@@ -68,10 +68,6 @@
                                 </Label>
                                 <CheckBox x:Name="chkoffline" CheckedChanged="CheckBox_ShareOfflineCard" HorizontalOptions="EndAndExpand" Color="#FF7F3E"></CheckBox>
                             </Grid>
-
-                            <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="TapGestureRecognizer_ShareOfflineCard"></TapGestureRecognizer>
-                            </StackLayout.GestureRecognizers>
                         </StackLayout>
                         <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
                         <!--Share VCard-->

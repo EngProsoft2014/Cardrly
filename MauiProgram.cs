@@ -38,10 +38,8 @@ namespace Cardrly
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-            builder.Services.AddSingleton<ServicesService>();
-            builder.Services.AddScoped<IGenericRepository, GenericRepository>();
-            // Add this to the SDK initialization callback
-            
+            builder.Services.AddDependencies();
+
             return builder.Build();
         }
 
