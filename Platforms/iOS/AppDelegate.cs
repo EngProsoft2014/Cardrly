@@ -15,6 +15,8 @@ namespace Cardrly
                 Console.WriteLine($"iOS Exception: {e.ExceptionObject}");
             };
 
+            var result = base.FinishedLaunching(application, launchOptions);
+
             // Get the main window
             var window = UIApplication.SharedApplication.KeyWindow;
 
@@ -31,7 +33,7 @@ namespace Cardrly
                 window.AddGestureRecognizer(tapRecognizer);
             }
 
-            return base.FinishedLaunching(application, launchOptions);
+            return result;
         }
     }
 }
