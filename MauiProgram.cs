@@ -40,6 +40,8 @@ namespace Cardrly
 #endif
             builder.Services.AddDependencies();
 
+            DependencyInjection.ControlsBackground();
+
             return builder.Build();
         }
 
