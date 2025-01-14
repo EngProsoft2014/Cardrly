@@ -46,8 +46,8 @@
 		<MauiIcon Include="Resources\AppIcon\images.svg" Color="#FFFFFF" ForegroundScale="0.65" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\images.png" Color="White" />
-		
+		<MauiSplashScreen Include="Resources\Splash\images.svg" Color="White" />
+			
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
@@ -61,6 +61,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\images.svg" />
+	  <None Remove="Resources\Splash\images.svg" />
 	</ItemGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
@@ -76,6 +77,10 @@
 		<CodesignKey>Apple Distribution: ENG PRO SOFT, LLC (YZWTVALFLW)</CodesignKey>
 		<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <MauiSplashScreen Include="Resources\Splash\images.svg" />
+	</ItemGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="akavache" Version="10.1.6" />
