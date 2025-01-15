@@ -1,4 +1,3 @@
-using Android.Bluetooth;
 using Cardrly.Helpers;
 using CommunityToolkit.Maui.Alerts;
 using Mopups.Services;
