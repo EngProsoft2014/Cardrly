@@ -61,9 +61,34 @@ namespace Cardrly.ViewModels
                 Image = "",
                 Type = "FontIconSolid"
             });
+            DeviceModels.Add(new ActivateDeviceModel
+            {
+                Name = "Google stand",
+                Image = "",
+                Type = "FontIconSolid"
+            });
             await GetAccountCard();
         }
         async Task GetAccountCard()
+        {
+            IsEnable = false;
+            string UserToken = await _service.UserToken();
+            if (!string.IsNullOrEmpty(UserToken))
+            {
+                string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                string UserId = Preferences.Default.Get(ApiConstants.userid, "");
+                UserDialogs.Instance.ShowLoading();
+                var json = await Rep.GetAsync<CardDetailsResponse>($"{ApiConstants.CardGetByUserApi}{AccId}/Card/User/{UserId}", UserToken);
+                UserDialogs.Instance.HideHud();
+                if (json != null)
+                {
+                    DetailsResponse = json;
+                    DetailsResponse.CardUrl = $"https://app.cardrly.com/profile/{json.Id}";
+                }
+            }
+            IsEnable = true;
+        }
+        async Task GetDevices()
         {
             IsEnable = false;
             string UserToken = await _service.UserToken();

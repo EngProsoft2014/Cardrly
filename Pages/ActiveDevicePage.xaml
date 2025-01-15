@@ -7,19 +7,27 @@
     <ScrollView VerticalOptions="FillAndExpand">
         <StackLayout Margin="20" Spacing="5">
             <!--Header-->
-            <Image HorizontalOptions="StartAndExpand">
-                <Image.Source>
-                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
-                </Image.Source>
-                <Image.Triggers>
-                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
-                        <Setter Property="Rotation" Value="180"></Setter>
-                    </DataTrigger>
-                </Image.Triggers>
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
-                </Image.GestureRecognizers>
-            </Image>
+            <StackLayout Orientation="Horizontal">
+                <Image HorizontalOptions="StartAndExpand">
+                    <Image.Source>
+                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                    </Image.Source>
+                    <Image.Triggers>
+                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                            <Setter Property="Rotation" Value="180"></Setter>
+                        </DataTrigger>
+                    </Image.Triggers>
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Label Text="Clear Card Data" FontAutoScalingEnabled="False" TextColor="Red" FontSize="14" FontAttributes="Bold">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Button_Clicked_FormatTag"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+
             <Label Text="Activate a Cardrly Device" FontAutoScalingEnabled="False" TextColor="Black" FontAttributes="Bold" Margin="0,15,0,0"
                FontSize="22"></Label>
             <Label Text="Choose the Device you are activating" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14"></Label>
@@ -40,7 +48,7 @@
                                    FontSize="14"></Label>
                             </VerticalStackLayout>
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="Button_Clicked_StartWriting_Uri"></TapGestureRecognizer>
+                                <TapGestureRecognizer Tapped="Button_Clicked_StartWriting_Uri" CommandParameter="{Binding .}"></TapGestureRecognizer>
                             </Border.GestureRecognizers>
                         </Border>
                     </DataTemplate>

@@ -1,5 +1,9 @@
 using Cardrly.Mode_s.Card;
+using Cardrly.Models;
+using Cardrly.Pages.MainPopups;
 using Cardrly.ViewModels;
+using CommunityToolkit.Maui;
+using Mopups.Services;
 using Plugin.NFC;
 using System.Text;
 
@@ -8,6 +12,7 @@ namespace Cardrly.Pages;
 public partial class ActiveDevicePage : Controls.CustomControl
 {
     ActiveDeviceViewModel Model;
+    string SetupUri = "";
     public ActiveDevicePage(ActiveDeviceViewModel model)
     {
         InitializeComponent();
@@ -266,7 +271,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
                 record = new NFCNdefRecord
                 {
                     TypeFormat = NFCNdefTypeFormat.Uri,
-                    Payload = NFCUtils.EncodeToByteArray(Model.DetailsResponse.CardUrl)
+                    Payload = NFCUtils.EncodeToByteArray(SetupUri)
                 };
             }
 
@@ -316,9 +321,25 @@ public partial class ActiveDevicePage : Controls.CustomControl
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    async void Button_Clicked_StartWriting_Uri(object sender, System.EventArgs e) => await Publish(NFCNdefTypeFormat.Uri);
-
-
+    async void Button_Clicked_StartWriting_Uri(object sender, TappedEventArgs e)
+    {
+        var Item = e.Parameter as ActivateDeviceModel;
+        if (Item!.Name == "Google stand")
+        {
+            var page = new InsertDevicePopup();
+            page.DeviceClose += async (Uri) =>
+            {
+                SetupUri = Uri;
+                await MopupService.Instance.PopAsync(true);
+            };
+            await MopupService.Instance.PushAsync(page,true);
+        }
+        else
+        {
+            SetupUri = Model.DetailsResponse.CardUrl!;
+            await Publish(NFCNdefTypeFormat.Uri);
+        }
+    } 
     /// <summary>
     /// Start publish operation to write the tag (CUSTOM) when <see cref="Current_OnTagDiscovered(ITagInfo, bool)"/> event will be raised
     /// </summary>
@@ -444,6 +465,5 @@ public partial class ActiveDevicePage : Controls.CustomControl
             await ShowAlert(ex.Message);
         }
     }
-
     #endregion
 }
