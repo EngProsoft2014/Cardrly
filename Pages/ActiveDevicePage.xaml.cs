@@ -1,5 +1,6 @@
 using Cardrly.Mode_s.Card;
 using Cardrly.Models;
+using Cardrly.Models.Devices;
 using Cardrly.Pages.MainPopups;
 using Cardrly.ViewModels;
 using CommunityToolkit.Maui;
@@ -13,6 +14,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
 {
     ActiveDeviceViewModel Model;
     string SetupUri = "";
+    int DeviceId ;
     public ActiveDevicePage(ActiveDeviceViewModel model)
     {
         InitializeComponent();
@@ -205,7 +207,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
                 await ShowAlert("Formatting tag operation successful");
             else
             {
-                await Model.DeviceClick();
+                await Model.DeviceClick(SetupUri,DeviceId);
                 await ShowAlert("Writing tag operation successful");
             }  
         }
@@ -323,20 +325,23 @@ public partial class ActiveDevicePage : Controls.CustomControl
     /// <param name="e"></param>
     async void Button_Clicked_StartWriting_Uri(object sender, TappedEventArgs e)
     {
-        var Item = e.Parameter as ActivateDeviceModel;
-        if (Item!.Name == "Google stand")
+        var Item = e.Parameter as DevicesTypeModel;
+        if (Item!.DeviceName == "QR")
         {
             var page = new InsertDevicePopup();
             page.DeviceClose += async (Uri) =>
             {
                 SetupUri = Uri;
+                DeviceId = Item.DeviceNumber;
                 await MopupService.Instance.PopAsync(true);
+                await Publish(NFCNdefTypeFormat.Uri);
             };
             await MopupService.Instance.PushAsync(page,true);
         }
         else
         {
             SetupUri = Model.DetailsResponse.CardUrl!;
+            DeviceId = Item.DeviceNumber;
             await Publish(NFCNdefTypeFormat.Uri);
         }
     } 

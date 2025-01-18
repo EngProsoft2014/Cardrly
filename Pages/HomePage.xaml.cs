@@ -40,7 +40,7 @@ public partial class HomePage : Controls.CustomControl
 		{
 			ContactView.BindingContext = LeadViewModel = new LeadViewModel(Rep,_service);
 		}
-		else if (e.NewIndex == 3)
+		else if (e.NewIndex == 4)
 		{
 			MoreView.BindingContext = new MoreViewModel(Rep,_service);
 		} 

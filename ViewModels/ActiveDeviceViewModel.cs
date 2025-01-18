@@ -15,7 +15,7 @@ namespace Cardrly.ViewModels
     {
         #region Prop
         [ObservableProperty]
-        ObservableCollection<ActivateDeviceModel> deviceModels = new ObservableCollection<ActivateDeviceModel>();
+        ObservableCollection<DevicesTypeModel> deviceModels = new ObservableCollection<DevicesTypeModel>();
         [ObservableProperty]
         public CardDetailsResponse detailsResponse = new CardDetailsResponse(); 
         #endregion
@@ -37,37 +37,8 @@ namespace Cardrly.ViewModels
         #region Methods
         async void Init()
         {
-            DeviceModels.Add(new ActivateDeviceModel
-            {
-                Name = "Card",
-                Image = "",
-                Type = "FontIconBrand"
-            });
-            DeviceModels.Add(new ActivateDeviceModel
-            {
-                Name = "Band",
-                Image = "",
-                Type = "FontIconSolid"
-            });
-            DeviceModels.Add(new ActivateDeviceModel
-            {
-                Name = "Display",
-                Image = "",
-                Type = "FontIconSolid"
-            });
-            DeviceModels.Add(new ActivateDeviceModel
-            {
-                Name = "KeyChain",
-                Image = "",
-                Type = "FontIconSolid"
-            });
-            DeviceModels.Add(new ActivateDeviceModel
-            {
-                Name = "Google stand",
-                Image = "",
-                Type = "FontIconSolid"
-            });
             await GetAccountCard();
+            await GetDevices();
         }
         async Task GetAccountCard()
         {
@@ -97,17 +68,24 @@ namespace Cardrly.ViewModels
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
                 string UserId = Preferences.Default.Get(ApiConstants.userid, "");
                 UserDialogs.Instance.ShowLoading();
-                var json = await Rep.GetAsync<CardDetailsResponse>($"{ApiConstants.CardGetByUserApi}{AccId}/Card/User/{UserId}", UserToken);
+                var json = await Rep.GetAsync<ObservableCollection<DevicesTypeModel>>($"{ApiConstants.DevicesGetAllApi}{AccId}/Card/{DetailsResponse.Id}/Devices/LstDevices", UserToken);
                 UserDialogs.Instance.HideHud();
                 if (json != null)
                 {
-                    DetailsResponse = json;
-                    DetailsResponse.CardUrl = $"https://app.cardrly.com/profile/{json.Id}";
+                    foreach (DevicesTypeModel item in json)
+                    {
+                        if (!string.IsNullOrEmpty(item.DeviceImgUrl))
+                        {
+                            item.DeviceImgUrl = $"https://app.cardrly.com/{item.DeviceImgUrl}";
+                        }
+                    }
+                    DeviceModels = json;
+                    
                 }
             }
             IsEnable = true;
         }
-        public async Task DeviceClick()
+        public async Task DeviceClick(string uri,int deviceType)
         {
             IsEnable = false;
             string UserToken = await _service.UserToken();
@@ -116,8 +94,8 @@ namespace Cardrly.ViewModels
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
                 var reqdto = new DevicesRequest
                 {
-                    DeviceType = Enums.EnumDeviceType.Band,
-                    RedirectUrl = DetailsResponse.CardUrl!,
+                    DeviceType = deviceType,
+                    RedirectUrl = uri,
                     DeviceId = "12348957890ABCDEF"
                 };
                 var res = await Rep.PostTRAsync<DevicesRequest, DevicesResponse>($"{ApiConstants.DevicesAddApi}{AccId}/Card/{DetailsResponse.Id}/Devices", reqdto, UserToken);

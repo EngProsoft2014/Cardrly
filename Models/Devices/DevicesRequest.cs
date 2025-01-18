@@ -6,7 +6,7 @@ namespace Cardrly.Models.Devices
     {
         public string DeviceId { get; set; } = string.Empty;
 
-        public EnumDeviceType DeviceType { get; set; }
+        public int DeviceType { get; set; }
 
         public string RedirectUrl { get; set; } = string.Empty;
     }

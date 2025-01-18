@@ -113,6 +113,7 @@
         public static string DevicesGetByCardApi = "Account/";
         public static string DevicesAddApi = "Account/";
         public static string DevicesDeleteApi = "Account/"; 
+        public static string DevicesGetAllApi = "Account/"; 
         #endregion
     }
 }
