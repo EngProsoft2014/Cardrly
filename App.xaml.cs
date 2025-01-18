@@ -1,11 +1,9 @@
-﻿
-
-
-using Akavache;
+﻿using Akavache;
 using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Pages;
 using Cardrly.ViewModels;
+using Plugin.Maui.Audio;
 
 namespace Cardrly
 {
@@ -15,13 +13,13 @@ namespace Cardrly
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
         #endregion
-        public App(IGenericRepository GenericRep, Services.Data.ServicesService service)
+        public App(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioManager audioManager)
         {
             try
             {
                 Rep = GenericRep;
                 _service = service;
-
+                Controls.StaticMember._audioManager = audioManager;
                 BlobCache.ApplicationName = "CardrlyDB";
                 BlobCache.EnsureInitialized();
                 // Register global exception handling
@@ -32,11 +30,11 @@ namespace Cardrly
 
                 if (string.IsNullOrEmpty(AccountId))
                 {
-                    MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service)));
+                    MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
                 }
                 else
                 {
-                    var page = new HomePage(new HomeViewModel(Rep, _service), Rep, _service);
+                    var page = new HomePage(new HomeViewModel(Rep, _service, audioManager), Rep, _service);
                     MainPage = new NavigationPage(page);
                 }
             }

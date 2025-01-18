@@ -6,12 +6,15 @@ using Cardrly.Pages;
 using Cardrly.Services.Data;
 using Cardrly.ViewModels;
 using CommunityToolkit.Maui.Core;
+using Plugin.Maui.Audio;
 using System.Reactive.Linq;
 
 namespace Cardrly.Controls
 {
     static class StaticMember
     {
+        public static IAudioManager _audioManager;
+
         #region Const Variables
         public static string SnackBarColor = "#FF7F3E";
         public static string SnackBarTextColor = "#FFFFFF";
@@ -20,7 +23,6 @@ namespace Cardrly.Controls
         public static bool ShowSendOfferBtn { get; set; } = false;
         public static DateTime EndRequestStatic { get; set; }
         #endregion
-
 
         #region SnackBar Setting
         [Obsolete]
@@ -77,7 +79,7 @@ namespace Cardrly.Controls
             await BlobCache.LocalMachine.InvalidateAll();
             await BlobCache.LocalMachine.Vacuum();
             Preferences.Default.Set("Lan", LangValueToKeep);
-            await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(generic, _service)));
+            await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(generic, _service,_audioManager)));
         }
 
         public static async Task<byte[]> GetImageBase64FromUrlAsync(string imageUrl)

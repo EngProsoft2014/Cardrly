@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
+using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 
 namespace Cardrly.ViewModels
@@ -26,7 +27,8 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         DateTime fromDate = DateTime.UtcNow.Date;
         [ObservableProperty]
-        DateTime toDate = DateTime.UtcNow.Date; 
+        DateTime toDate = DateTime.UtcNow.Date;
+        public readonly IAudioManager _audioManager;
         #endregion
 
         #region Service
@@ -35,10 +37,12 @@ namespace Cardrly.ViewModels
         #endregion
 
         #region Cons
-        public HomeViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service)
+        public HomeViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioManager audioManager)
         {
             Rep = GenericRep;
             _service = service;
+            // Initialize audio manager
+            _audioManager = audioManager;
             Init();
         }
         #endregion

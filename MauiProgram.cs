@@ -4,6 +4,7 @@ using CommunityToolkit.Maui;
 using Controls.UserDialogs.Maui;
 using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
+using Plugin.Maui.Audio;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Syncfusion.Maui.Core.Hosting;
 using ZXing.Net.Maui.Controls;
@@ -37,6 +38,7 @@ namespace Cardrly
 
 #if DEBUG
             builder.Logging.AddDebug();
+
 #endif
             builder.Services.AddDependencies();
 

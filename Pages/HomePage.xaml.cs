@@ -38,11 +38,11 @@ public partial class HomePage : Controls.CustomControl
 		}
 		else if (e.NewIndex == 2)
 		{
-			ContactView.BindingContext = LeadViewModel = new LeadViewModel(Rep,_service);
+			ContactView.BindingContext = LeadViewModel = new LeadViewModel(Rep,_service,homeViewModel._audioManager);
 		}
 		else if (e.NewIndex == 4)
 		{
-			MoreView.BindingContext = new MoreViewModel(Rep,_service);
+			MoreView.BindingContext = new MoreViewModel(Rep,_service,homeViewModel._audioManager);
 		} 
     }
 

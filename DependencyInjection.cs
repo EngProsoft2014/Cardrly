@@ -7,6 +7,7 @@ using Cardrly.ViewModels;
 using Cardrly.ViewModels.Leads;
 using Cardrly.ViewModels.Links;
 using Microsoft.Maui.Handlers;
+using Plugin.Maui.Audio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,6 +87,7 @@ namespace Cardrly
 
             #endregion
 
+            Services.AddSingleton<IAudioManager, AudioManager>();
             return Services;
         }
 

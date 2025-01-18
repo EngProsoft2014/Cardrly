@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
+using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 
 namespace Cardrly.ViewModels.Leads
@@ -43,6 +44,7 @@ namespace Cardrly.ViewModels.Leads
             Rep = GenericRep;
             _service = service;
             AddOrUpdate = 1;
+
         }
 
         public AddLeadViewModel(LeadResponse leadResponse, IGenericRepository GenericRep, Services.Data.ServicesService service)
@@ -54,6 +56,7 @@ namespace Cardrly.ViewModels.Leads
             Init(leadResponse);
         }
         #endregion
+
 
         #region RelayCommand
         [RelayCommand]

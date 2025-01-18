@@ -9,21 +9,25 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Plugin.Maui.Audio;
 
 namespace Cardrly.ViewModels
 {
     public partial class MoreViewModel : BaseViewModel
     {
+        readonly IAudioManager _audioManager;
         #region Service
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
         #endregion
 
         #region Cons
-        public MoreViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service)
+        public MoreViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioManager audioManager)
         {
             Rep = GenericRep;
             _service = service;
+            // Initialize audio manager
+            _audioManager = audioManager;
         }
         #endregion
 
@@ -45,7 +49,7 @@ namespace Cardrly.ViewModels
                 await BlobCache.LocalMachine.Vacuum();
 
                 Preferences.Default.Set("Lan", LangValueToKeep);
-                await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service)));
+                await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service,_audioManager)));
             };
             Controls.StaticMember.ShowSnackBar("Do you want to Logout", Controls.StaticMember.SnackBarColor, Controls.StaticMember.SnackBarTextColor, action);
             return Task.CompletedTask;

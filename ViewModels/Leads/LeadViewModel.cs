@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
+using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 
 namespace Cardrly.ViewModels.Leads
@@ -17,17 +18,19 @@ namespace Cardrly.ViewModels.Leads
     {
         [ObservableProperty]
         ObservableCollection<LeadResponse> leads = new ObservableCollection<LeadResponse>();
-
+        public readonly IAudioManager _audioManager;
         #region Service
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
         #endregion
 
         #region Cons
-        public LeadViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service)
+        public LeadViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioManager audioManager)
         {
             Rep = GenericRep;
             _service = service;
+            // Initialize audio manager
+            _audioManager = audioManager;
             Init();
         }
         #endregion
@@ -37,7 +40,7 @@ namespace Cardrly.ViewModels.Leads
         async Task AddLeadClick()
         {
             var vm = new AddLeadViewModel(Rep, _service);
-            var page = new AddLeadsPage();
+            var page = new AddLeadsPage(_audioManager);
             page.BindingContext = vm;
             await App.Current!.MainPage!.Navigation.PushAsync(page);
         }
@@ -69,7 +72,7 @@ namespace Cardrly.ViewModels.Leads
         async Task SelectClick(LeadResponse lead)
         {
             var vm = new AddLeadViewModel(lead,Rep, _service);
-            var page = new AddLeadsPage();
+            var page = new AddLeadsPage(_audioManager);
             page.BindingContext = vm;
             await App.Current!.MainPage!.Navigation.PushAsync(page);
         }

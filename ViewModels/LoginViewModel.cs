@@ -9,6 +9,7 @@ using Cardrly.Pages;
 using Cardrly.Services.Data;
 using System.Reactive.Linq;
 using Cardrly.Constants;
+using Plugin.Maui.Audio;
 
 namespace Cardrly.ViewModels
 {
@@ -19,6 +20,7 @@ namespace Cardrly.ViewModels
         public ApplicationUserLoginRequest loginRequest = new ApplicationUserLoginRequest();
         [ObservableProperty]
         public ApplicationUserResponse userResponse = new ApplicationUserResponse();
+        readonly IAudioManager _audioManager;
         #endregion
 
         #region Service
@@ -27,10 +29,12 @@ namespace Cardrly.ViewModels
         #endregion
 
         #region Cons
-        public LoginViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service)
+        public LoginViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioManager audioManager)
         {
             Rep = GenericRep;
             _service = service;
+            // Initialize audio manager
+            _audioManager = audioManager;
         }
         #endregion
 
@@ -71,7 +75,7 @@ namespace Cardrly.ViewModels
 
                         await BlobCache.LocalMachine.InsertObject(ServicesService.UserTokenServiceKey, UserResponse?.Token, DateTimeOffset.Now.AddMinutes(43200));
 
-                        var page = new HomePage(new HomeViewModel(Rep, _service), Rep,_service);
+                        var page = new HomePage(new HomeViewModel(Rep, _service,_audioManager), Rep,_service);
                         await App.Current!.MainPage!.Navigation.PushAsync(page);
                     }
                 }
