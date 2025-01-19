@@ -499,7 +499,11 @@ public partial class ActiveDevicePage : Controls.CustomControl
             await ShowAlert(ex.Message);
         }
     }
+
     #endregion
 
-
+    private void ClearCard_Tapped(object sender, TappedEventArgs e)
+    {
+        CrossNFC.Current.StartPublishing(clearMessage: true);
+    }
 }
