@@ -7,6 +7,7 @@ using CommunityToolkit.Maui;
 using Mopups.Services;
 using Plugin.NFC;
 using System.Text;
+using ZXing.Net.Maui.Controls;
 
 namespace Cardrly.Pages;
 
@@ -328,15 +329,31 @@ public partial class ActiveDevicePage : Controls.CustomControl
         var Item = e.Parameter as DevicesTypeModel;
         if (Item!.DeviceName == "QR")
         {
-            var page = new InsertDevicePopup();
-            page.DeviceClose += async (Uri) =>
+            DeviceId = Item.DeviceNumber;
+            var page = new ScanQrPage();
+            page.QrClose += async (QrValue) =>
             {
-                SetupUri = Uri;
-                DeviceId = Item.DeviceNumber;
-                await MopupService.Instance.PopAsync(true);
-                await Publish(NFCNdefTypeFormat.Uri);
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    await App.Current!.MainPage!.Navigation.PopAsync();
+                    //Check if Qr Is Valid
+                    if (string.IsNullOrEmpty(QrValue))
+                    {
+                        await DisplayAlert("Warning", "No ID found in the Qr.", "ok");
+                        return;
+                    }
+                });
+                //Get Link 
+                var page = new InsertDevicePopup();
+                page.DeviceClose += async (Uri) =>
+                {
+                    SetupUri = Uri;
+                    await MopupService.Instance.PopAsync(true);
+                    await Model.DeviceClick(SetupUri, DeviceId);
+                };
+                await MopupService.Instance.PushAsync(page, true);
             };
-            await MopupService.Instance.PushAsync(page,true);
+            await App.Current!.MainPage!.Navigation.PushAsync(page);
         }
         else
         {
@@ -422,6 +439,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
     /// </summary>
     /// <returns>The task to be performed</returns>
     async Task StartListeningIfNotiOS()
+    
     {
         if (_isDeviceiOS)
         {
@@ -471,4 +489,6 @@ public partial class ActiveDevicePage : Controls.CustomControl
         }
     }
     #endregion
+
+
 }

@@ -27,7 +27,6 @@
                     </Label.GestureRecognizers>
                 </Label>
             </StackLayout>
-
             <Label Text="Activate a Cardrly Device" FontAutoScalingEnabled="False" TextColor="Black" FontAttributes="Bold" Margin="0,15,0,0"
                FontSize="22"></Label>
             <Label Text="Choose the Device you are activating" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14"></Label>
