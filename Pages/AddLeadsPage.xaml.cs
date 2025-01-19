@@ -1,5 +1,6 @@
 using Azure;
 using Azure.AI.TextAnalytics;
+using Cardrly.ViewModels.Leads;
 using Controls.UserDialogs.Maui;
 using Microsoft.CognitiveServices.Speech;
 using Plugin.Maui.Audio;
@@ -9,14 +10,16 @@ namespace Cardrly.Pages;
 
 public partial class AddLeadsPage : Controls.CustomControl
 {
+    AddLeadViewModel Model;
     readonly IAudioManager _audioManager;
     readonly IAudioRecorder _audioRecorder;
     readonly TextAnalyticsClient _textAnalyticsClient;
     readonly SpeechRecognizer _speechRecognizer;
-    public AddLeadsPage(IAudioManager audioManager)
+    public AddLeadsPage(AddLeadViewModel model,IAudioManager audioManager)
 	{
 		InitializeComponent();
-
+        Model = model;
+        this.BindingContext = model;
         // Initialize audio manager
         _audioManager = audioManager;
         _audioRecorder = audioManager.CreateRecorder();
@@ -39,7 +42,7 @@ public partial class AddLeadsPage : Controls.CustomControl
         {
             // Disable button and show a loading indicator
             RecordButton.IsEnabled = false;
-            UserDialogs.Instance.ShowLoading("Analyze audio...");
+            
 
             // Step 1: Record audio
             var audioFilePath = await RecordAudioAsync();
@@ -59,7 +62,7 @@ public partial class AddLeadsPage : Controls.CustomControl
         {
             // Re-enable button and hide the loading indicator
             RecordButton.IsEnabled = true;
-            UserDialogs.Instance.HideHud();
+            
         }
     }
 
@@ -137,6 +140,10 @@ public partial class AddLeadsPage : Controls.CustomControl
 
             foreach (var entity in entities.Value)
             {
+                if (entity.Category.ToString().Contains("user"))
+                {
+
+                }
                 result.AppendLine($"Entity: {entity.Text}, Type: {entity.Category}");
             }
             string res = result.ToString();

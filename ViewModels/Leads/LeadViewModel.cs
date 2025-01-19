@@ -39,10 +39,7 @@ namespace Cardrly.ViewModels.Leads
         [RelayCommand]
         async Task AddLeadClick()
         {
-            var vm = new AddLeadViewModel(Rep, _service);
-            var page = new AddLeadsPage(_audioManager);
-            page.BindingContext = vm;
-            await App.Current!.MainPage!.Navigation.PushAsync(page);
+            await App.Current!.MainPage!.Navigation.PushAsync(new AddLeadsPage(new AddLeadViewModel(Rep, _service), _audioManager));
         }
         [RelayCommand]
         async Task ActiveClick(LeadResponse lead)
@@ -71,10 +68,7 @@ namespace Cardrly.ViewModels.Leads
         [RelayCommand]
         async Task SelectClick(LeadResponse lead)
         {
-            var vm = new AddLeadViewModel(lead,Rep, _service);
-            var page = new AddLeadsPage(_audioManager);
-            page.BindingContext = vm;
-            await App.Current!.MainPage!.Navigation.PushAsync(page);
+            await App.Current!.MainPage!.Navigation.PushAsync(new AddLeadsPage(new AddLeadViewModel(lead, Rep, _service), _audioManager));
         }
 
         [RelayCommand]

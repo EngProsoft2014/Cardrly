@@ -57,7 +57,6 @@ namespace Cardrly.ViewModels.Leads
         }
         #endregion
 
-
         #region RelayCommand
         [RelayCommand]
         async Task AddProfileImageClick()

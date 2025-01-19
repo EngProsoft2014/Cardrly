@@ -15,7 +15,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
 {
     ActiveDeviceViewModel Model;
     string SetupUri = "";
-    int DeviceId ;
+    int deviceType;
     public ActiveDevicePage(ActiveDeviceViewModel model)
     {
         InitializeComponent();
@@ -208,7 +208,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
                 await ShowAlert("Formatting tag operation successful");
             else
             {
-                await Model.DeviceClick(SetupUri,DeviceId);
+                await Model.DeviceClick(SetupUri,deviceType,"");
                 await ShowAlert("Writing tag operation successful");
             }  
         }
@@ -329,7 +329,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
         var Item = e.Parameter as DevicesTypeModel;
         if (Item!.DeviceName == "QR")
         {
-            DeviceId = Item.DeviceNumber;
+            deviceType = Item.DeviceNumber;
             var page = new ScanQrPage();
             page.QrClose += async (QrValue) =>
             {
@@ -349,16 +349,27 @@ public partial class ActiveDevicePage : Controls.CustomControl
                 {
                     SetupUri = Uri;
                     await MopupService.Instance.PopAsync(true);
-                    await Model.DeviceClick(SetupUri, DeviceId);
+                    await Model.DeviceClick(SetupUri, deviceType,QrValue);
                 };
                 await MopupService.Instance.PushAsync(page, true);
             };
             await App.Current!.MainPage!.Navigation.PushAsync(page);
         }
+        else if (Item!.DeviceName == "Google Stand")
+        {
+            var page = new InsertDevicePopup();
+            page.DeviceClose += async (Uri) =>
+            {
+                SetupUri = Uri;
+                await MopupService.Instance.PopAsync(true);
+                await Publish(NFCNdefTypeFormat.Uri);
+            };
+            await MopupService.Instance.PushAsync(page, true);
+        }
         else
         {
             SetupUri = Model.DetailsResponse.CardUrl!;
-            DeviceId = Item.DeviceNumber;
+            deviceType = Item.DeviceNumber;
             await Publish(NFCNdefTypeFormat.Uri);
         }
     } 

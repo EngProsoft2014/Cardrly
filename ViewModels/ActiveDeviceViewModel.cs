@@ -85,8 +85,9 @@ namespace Cardrly.ViewModels
             }
             IsEnable = true;
         }
-        public async Task DeviceClick(string uri,int deviceType)
+        public async Task DeviceClick(string uri,int deviceType,string DeviceId)
         {
+            UserDialogs.Instance.ShowLoading();
             IsEnable = false;
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
@@ -96,7 +97,7 @@ namespace Cardrly.ViewModels
                 {
                     DeviceType = deviceType,
                     RedirectUrl = uri,
-                    DeviceId = "12348957890ABCDEF"
+                    DeviceId = DeviceId
                 };
                 var res = await Rep.PostTRAsync<DevicesRequest, DevicesResponse>($"{ApiConstants.DevicesAddApi}{AccId}/Card/{DetailsResponse.Id}/Devices", reqdto, UserToken);
                 if (res.Item1 != null)
@@ -112,6 +113,7 @@ namespace Cardrly.ViewModels
                 }
                 IsEnable = true;
             }
+            UserDialogs.Instance.HideHud();
         }
         #endregion
     }
