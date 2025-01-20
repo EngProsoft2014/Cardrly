@@ -5,6 +5,7 @@ using Cardrly.Pages.MainPopups;
 using Cardrly.ViewModels;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Alerts;
+using Microsoft.Extensions.Azure;
 using Mopups.Services;
 using Plugin.NFC;
 using System.Text;
@@ -17,6 +18,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
     ActiveDeviceViewModel Model;
     string SetupUri = "";
     int deviceType;
+    string deviceId;
     public ActiveDevicePage(ActiveDeviceViewModel model)
     {
         InitializeComponent();
@@ -209,7 +211,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
                 await ShowAlert("Formatting tag operation successful");
             else
             {
-                await Model.DeviceClick(SetupUri,deviceType,"");
+                await Model.DeviceClick(SetupUri,deviceType, deviceId);
                 await ShowAlert("Writing tag operation successful");
             }  
         }
@@ -226,7 +228,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
     /// <param name="format">Format the tag</param>
     async void Current_OnTagDiscovered(ITagInfo tagInfo, bool format)
     {
-
+        deviceId = tagInfo.SerialNumber;
         if (!CrossNFC.Current.IsWritingTagSupported)
         {
             await ShowAlert("Writing tag is not supported on this device");
@@ -289,7 +291,6 @@ public partial class ActiveDevicePage : Controls.CustomControl
             else
             {
                 CrossNFC.Current.PublishMessage(tagInfo, _makeReadOnly);
-                
                 
             }
         }
