@@ -87,7 +87,7 @@ namespace Cardrly.ViewModels
         }
         public async Task DeviceClick(string uri,int deviceType,string DeviceId)
         {
-            UserDialogs.Instance.ShowLoading();
+            
             IsEnable = false;
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
@@ -99,7 +99,9 @@ namespace Cardrly.ViewModels
                     RedirectUrl = uri,
                     DeviceId = DeviceId
                 };
+                UserDialogs.Instance.ShowLoading();
                 var res = await Rep.PostTRAsync<DevicesRequest, DevicesResponse>($"{ApiConstants.DevicesAddApi}{AccId}/Card/{DetailsResponse.Id}/Devices", reqdto, UserToken);
+                UserDialogs.Instance.HideHud();
                 if (res.Item1 != null)
                 {
                     var toast = Toast.Make($"Device Added Successfully.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
@@ -114,7 +116,7 @@ namespace Cardrly.ViewModels
                 }
                 IsEnable = true;
             }
-            UserDialogs.Instance.HideHud();
+            
         }
         #endregion
     }
