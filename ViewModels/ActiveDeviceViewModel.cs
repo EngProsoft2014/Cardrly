@@ -99,9 +99,7 @@ namespace Cardrly.ViewModels
                     RedirectUrl = uri,
                     DeviceId = DeviceId
                 };
-                UserDialogs.Instance.ShowLoading();
                 var res = await Rep.PostTRAsync<DevicesRequest, DevicesResponse>($"{ApiConstants.DevicesAddApi}{AccId}/Card/{DetailsResponse.Id}/Devices", reqdto, UserToken);
-                UserDialogs.Instance.HideHud();
                 if (res.Item1 != null)
                 {
                     var toast = Toast.Make($"Device Added Successfully.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
