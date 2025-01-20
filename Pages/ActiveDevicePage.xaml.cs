@@ -4,6 +4,7 @@ using Cardrly.Models.Devices;
 using Cardrly.Pages.MainPopups;
 using Cardrly.ViewModels;
 using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Alerts;
 using Mopups.Services;
 using Plugin.NFC;
 using System.Text;
@@ -355,13 +356,17 @@ public partial class ActiveDevicePage : Controls.CustomControl
             };
             await App.Current!.MainPage!.Navigation.PushAsync(page);
         }
-        else if (Item!.DeviceName == "Google Stand")
+        else if (Item!.DeviceName == "Stand")
         {
             var page = new InsertDevicePopup();
             page.DeviceClose += async (Uri) =>
             {
                 SetupUri = Uri;
                 await MopupService.Instance.PopAsync(true);
+#if ANDROID
+                var toast = Toast.Make($"Near the stand now.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+#endif
                 await Publish(NFCNdefTypeFormat.Uri);
             };
             await MopupService.Instance.PushAsync(page, true);
@@ -370,6 +375,10 @@ public partial class ActiveDevicePage : Controls.CustomControl
         {
             SetupUri = Model.DetailsResponse.CardUrl!;
             deviceType = Item.DeviceNumber;
+#if ANDROID
+                var toast = Toast.Make($"Near the stand now.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+#endif
             await Publish(NFCNdefTypeFormat.Uri);
         }
     } 

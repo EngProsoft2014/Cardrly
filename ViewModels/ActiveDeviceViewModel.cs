@@ -102,7 +102,8 @@ namespace Cardrly.ViewModels
                 var res = await Rep.PostTRAsync<DevicesRequest, DevicesResponse>($"{ApiConstants.DevicesAddApi}{AccId}/Card/{DetailsResponse.Id}/Devices", reqdto, UserToken);
                 if (res.Item1 != null)
                 {
-
+                    var toast = Toast.Make($"Device Added Successfully.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
                 }
                 else
                 {
