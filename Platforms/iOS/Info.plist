@@ -43,5 +43,9 @@
 		<string>com.companyname.cardrly</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>We need access to your microphone to recognize your speech.</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>mailto</string>
+		</array>
 	</dict>
 </plist>

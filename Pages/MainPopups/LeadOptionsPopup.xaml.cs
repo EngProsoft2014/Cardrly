@@ -78,4 +78,47 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
         await Navigation.PushAsync(new AllCommentPage(new AllCommentViewModel(Res,Rep,_service)));
         await MopupService.Instance.PopAsync();
     }
+
+    private async void TapGestureRecognizer_Call(object sender, TappedEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(Res.Phone))
+        {
+            if (PhoneDialer.Default.IsSupported)
+                PhoneDialer.Default.Open($"{Res.Phone}");
+        }
+        else
+        {
+            var toast = Toast.Make("This lead don't have Phone Number", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            await toast.Show();
+        }
+    }
+
+    private async void TapGestureRecognizer_Email(object sender, TappedEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(Res.Email))
+        {
+            if (Email.Default.IsComposeSupported)
+            {
+
+                string subject = "";
+                string body = "";
+                string[] recipients = new[] { $"{Res.Email}" };
+
+                var message = new EmailMessage
+                {
+                    Subject = subject,
+                    Body = body,
+                    BodyFormat = EmailBodyFormat.PlainText,
+                    To = new List<string>(recipients)
+                };
+
+                await Email.Default.ComposeAsync(message);
+            }
+        }
+        else
+        {
+            var toast = Toast.Make("This lead don't have email", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            await toast.Show();
+        }
+    }
 }
