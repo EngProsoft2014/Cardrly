@@ -19,6 +19,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
     string SetupUri = "";
     int deviceType;
     string deviceId;
+    int isInserted = 0;
     public ActiveDevicePage(ActiveDeviceViewModel model)
     {
         InitializeComponent();
@@ -211,7 +212,12 @@ public partial class ActiveDevicePage : Controls.CustomControl
                 await ShowAlert("Formatting tag operation successful");
             else
             {
-                await Model.DeviceClick(SetupUri,deviceType, deviceId);
+                if (isInserted == 0)
+                {
+                    await Model.DeviceClick(SetupUri, deviceType, deviceId);
+                    isInserted = 1;
+                }
+                
                 await ShowAlert("Writing tag operation successful");
             }  
         }
@@ -229,6 +235,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
     async void Current_OnTagDiscovered(ITagInfo tagInfo, bool format)
     {
         deviceId = tagInfo.SerialNumber;
+        isInserted = 0;
         if (!CrossNFC.Current.IsWritingTagSupported)
         {
             await ShowAlert("Writing tag is not supported on this device");
