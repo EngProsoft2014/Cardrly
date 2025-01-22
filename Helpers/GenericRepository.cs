@@ -395,6 +395,12 @@ namespace Cardrly.Helpers
                         await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
                         return default;
                     }
+
+                    if (responseMessage.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 404. System.Net.HttpStatusCode.NotFound indicates\r\nthat the server is Not Found.", "OK");
+                        return default;
+                    }
                     var model = JsonConvert.DeserializeObject<TR>("");
                     var json = JsonConvert.DeserializeObject<ErrorResult>(jsonResult);
                     return (model!, json);

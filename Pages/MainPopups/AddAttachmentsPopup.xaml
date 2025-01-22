@@ -90,7 +90,7 @@
                 <Border Padding="10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
 
 
-                    <Label Text="Cancle"
+                    <Label Text="Cancel"
                            TextColor="#FF7F3E"
                            FontSize="14"
                            FontFamily="AlmaraiBold"

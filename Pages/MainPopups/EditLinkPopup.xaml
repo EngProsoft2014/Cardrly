@@ -48,9 +48,9 @@
                         <!--Save Button-->
                         <Button  FontAutoScalingEnabled="False" Text="Save" FontSize="16" FontAttributes="Bold" Clicked="Save_Clicked"
                  BackgroundColor="#FF7F3E" TextColor="White" HorizontalOptions="FillAndExpand"></Button>
-                        <!--Cancle-->
+                        <!--Cancel-->
                         <Border StrokeShape="RoundRectangle 10" VerticalOptions="End" Stroke="#FF7F3E">
-                            <Button  FontAutoScalingEnabled="False" Text="Cancle" FontSize="16" FontAttributes="Bold" Clicked="Cancel_Clicked"
+                            <Button  FontAutoScalingEnabled="False" Text="Cancel" FontSize="16" FontAttributes="Bold" Clicked="Cancel_Clicked"
                                      TextColor="Black" HorizontalOptions="FillAndExpand" Padding="20,0" BackgroundColor="Transparent">
                             </Button>
                         </Border>

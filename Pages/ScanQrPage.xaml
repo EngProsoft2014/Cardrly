@@ -6,7 +6,13 @@
              x:Class="Cardrly.Pages.ScanQrPage"
              Title="ScanQrPage">
     <StackLayout VerticalOptions="FillAndExpand">
-        <zxing:CameraBarcodeReaderView x:Name="cameraBarcodeReaderView" BarcodesDetected="cameraBarcodeReaderView_BarcodesDetected"
+        <Grid VerticalOptions="FillAndExpand">
+            <zxing:CameraBarcodeReaderView x:Name="cameraBarcodeReaderView" BarcodesDetected="cameraBarcodeReaderView_BarcodesDetected"
                                        VerticalOptions="FillAndExpand"/>
+            <Border StrokeShape="RoundRectangle 20" Stroke="White" StrokeThickness="2" VerticalOptions="CenterAndExpand" Padding="5" Margin="100,0">
+                <Image Source="qrcode.svg" Opacity="0.5"></Image>
+            </Border>
+        </Grid>
+        
     </StackLayout>
 </Controls:CustomControl>
