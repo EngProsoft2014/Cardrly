@@ -37,7 +37,7 @@
                 <VerticalStackLayout Spacing="3" VerticalOptions="CenterAndExpand">
                     <!--Cover Iamge-->
                     <Border StrokeShape="RoundRectangle 10" Margin="30,0,30,0" StrokeThickness="1.5" HeightRequest="130" Stroke="#FF7F3E">
-                        <Image Source="{Binding Card.UrlImgCover}"
+                        <Image Source="{Binding Card.UrlImgCoverVM}"
                            VerticalOptions="FillAndExpand" Aspect="AspectFill"></Image>
                     </Border>
                     <Grid>
@@ -60,7 +60,7 @@
                         <!--Profile Iamge-->
                         <Border StrokeShape="RoundRectangle 60" HeightRequest="100" WidthRequest="100" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" 
                             TranslationY="-50" StrokeThickness="1" Stroke="#FF7F3E">
-                            <Image Source="{Binding Card.UrlImgProfile}" Aspect="AspectFill"></Image>
+                            <Image Source="{Binding Card.UrlImgProfileVM}" Aspect="AspectFill"></Image>
                         </Border>
                     </Grid>
                 </VerticalStackLayout>

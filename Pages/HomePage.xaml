@@ -13,7 +13,7 @@
              IsEnabled="{Binding IsEnable}">
 
     <StackLayout>
-        <tabView:SfTabView IndicatorPlacement="Top" TabBarPlacement="Bottom" IndicatorBackground="#FF7F3E" FlowDirection="LeftToRight"
+        <tabView:SfTabView x:Name="tabHome" IndicatorPlacement="Top" TabBarPlacement="Bottom" IndicatorBackground="#FF7F3E" FlowDirection="LeftToRight"
                            VerticalOptions="FillAndExpand" Margin="0,0,0,10" ContentTransitionDuration="300" SelectionChanged="SfTabView_SelectionChanged">
             <tabView:SfTabView.Items>
                 <!--Home-->
@@ -257,13 +257,13 @@
                                                             <StackLayout Orientation="Horizontal" Spacing="15">
                                                                 <StackLayout HorizontalOptions="FillAndExpand" WidthRequest="{OnPlatform iOS=340}">
                                                                     <!--Cover Iamge-->
-                                                                    <Image Source="{Binding UrlImgCover}" HeightRequest="100" HorizontalOptions="FillAndExpand" 
+                                                                    <Image Source="{Binding UrlImgCoverVM}" HeightRequest="100" HorizontalOptions="FillAndExpand" 
                                                                        Aspect="AspectFill"></Image>
                                                                     <Grid HorizontalOptions="FillAndExpand">
                                                                         <VerticalStackLayout >
                                                                             <!--Profile Iamge-->
                                                                             <Border StrokeShape="RoundRectangle 50" WidthRequest="85" HorizontalOptions="CenterAndExpand" TranslationY="-45" HeightRequest="85">
-                                                                                <Image  Source="{Binding UrlImgProfile}" Aspect="AspectFill" HeightRequest="85"></Image>
+                                                                                <Image  Source="{Binding UrlImgProfileVM}" Aspect="AspectFill" HeightRequest="85"></Image>
                                                                             </Border>
                                                                             <!--Card Data-->
                                                                             <VerticalStackLayout HorizontalOptions="CenterAndExpand" Margin="10,0,0,0" TranslationY="-35">
@@ -349,7 +349,7 @@
                                                 <StackLayout Orientation="Horizontal" Spacing="10" >
                                                     <!--Image Profile-->
                                                     <Border StrokeShape="RoundRectangle 50" HeightRequest="60" WidthRequest="60">
-                                                        <Image Source="{Binding UrlImgProfile}" Aspect="AspectFill"></Image>
+                                                        <Image Source="{Binding UrlImgProfileVM}" Aspect="AspectFill"></Image>
                                                     </Border>
                                                     <!--Name & Company-->
                                                     <VerticalStackLayout Margin="0,7,0,0" HorizontalOptions="FillAndExpand" Spacing="7">

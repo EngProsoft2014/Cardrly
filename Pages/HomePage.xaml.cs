@@ -16,9 +16,9 @@ public partial class HomePage : Controls.CustomControl
     readonly IGenericRepository Rep;
     readonly Services.Data.ServicesService _service;
     #endregion
-    public HomePage(HomeViewModel model,IGenericRepository GenericRep, Services.Data.ServicesService service)
-	{
-		InitializeComponent();
+    public HomePage(HomeViewModel model, IGenericRepository GenericRep, Services.Data.ServicesService service)
+    {
+        InitializeComponent();
         homeViewModel = model;
         //CardPicker.SelectedIndex = 0;
         Rep = GenericRep;
@@ -28,22 +28,45 @@ public partial class HomePage : Controls.CustomControl
 
     private void SfTabView_SelectionChanged(object sender, Syncfusion.Maui.TabView.TabSelectionChangedEventArgs e)
     {
+
         if (e.NewIndex == 0)
         {
             HomeView.BindingContext = homeViewModel;
         }
-		else if (e.NewIndex == 1)
-		{
-            CardsView.BindingContext = cardsViewModel = new CardsViewModel(homeViewModel.CardLst,Rep,_service);
-		}
-		else if (e.NewIndex == 2)
-		{
-			ContactView.BindingContext = LeadViewModel = new LeadViewModel(Rep,_service,homeViewModel._audioManager);
-		}
-		else if (e.NewIndex == 4)
-		{
-			MoreView.BindingContext = new MoreViewModel(Rep,_service,homeViewModel._audioManager);
-		} 
+        else if (e.NewIndex == 1)
+        {
+            if (homeViewModel.IsEnable == true)
+            {
+                CardsView.BindingContext = cardsViewModel = new CardsViewModel(homeViewModel.CardLst, Rep, _service);
+            }
+            else
+            {
+                tabHome.SelectedIndex = 0;
+            }
+        }
+        else if (e.NewIndex == 2)
+        {
+            if (homeViewModel.IsEnable == true)
+            {
+                ContactView.BindingContext = LeadViewModel = new LeadViewModel(Rep, _service, homeViewModel._audioManager);
+            }
+            else
+            {
+                tabHome.SelectedIndex = 0;
+            }
+        }
+        else if (e.NewIndex == 4)
+        {
+            if (homeViewModel.IsEnable == true)
+            {
+                MoreView.BindingContext = new MoreViewModel(Rep, _service, homeViewModel._audioManager);
+            }
+            else
+            {
+                tabHome.SelectedIndex = 0;
+            }
+        }
+
     }
 
     [Obsolete]
@@ -69,7 +92,7 @@ public partial class HomePage : Controls.CustomControl
 
     private void Lead_Refreshing(object sender, EventArgs e)
     {
-        LeadRef.IsRefreshing= true;
+        LeadRef.IsRefreshing = true;
         LeadViewModel.Init();
         LeadRef.IsRefreshing = false;
     }

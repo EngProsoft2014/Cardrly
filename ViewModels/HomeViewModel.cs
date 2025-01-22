@@ -139,14 +139,8 @@ namespace Cardrly.ViewModels
                 
                 var json = await Rep.GetAsync<ObservableCollection<CardResponse>>($"{ApiConstants.CardGetAllApi}{AccId}/Card", UserToken);
                 
-                if (json != null)
+                if (json != null && json.Count > 0)
                 {
-                    foreach (CardResponse card in json)
-                    {
-                        card.UrlImgProfile = Utility.ServerUrl + card.UrlImgProfile;
-                        card.UrlImgCover = Utility.ServerUrl + card.UrlImgCover;
-                        card.CardUrl = $"https://app.cardrly.com/profile/{card.Id}";
-                    }
                     CardLst = json;
                 }
             }

@@ -98,9 +98,9 @@ namespace Cardrly.ViewModels
             Request.PersonName = card.PersonName;
             Request.LinkColor = card.LinkColor;
             Request.PersonNikeName = card.PersonNikeName;
-            Request.ImgProfileFile = ImageSource.FromUri(new Uri(card.UrlImgProfile!));
+            Request.ImgProfileFile = ImageSource.FromUri(new Uri(card.UrlImgProfileVM!));
             IsProfileImageAdded = 2;
-            Request.ImgCoverFile = ImageSource.FromUri(new Uri(card.UrlImgCover!));
+            Request.ImgCoverFile = ImageSource.FromUri(new Uri(card.UrlImgCoverVM!));
             IsCoverImageAdded = 2;
             #endregion
 
@@ -139,10 +139,10 @@ namespace Cardrly.ViewModels
             {
                 page = new AddAttachmentsPopup(Request.ImgFileProfile);
             }
-            else if (!string.IsNullOrEmpty(Card.UrlImgProfile) && Card.UrlImgProfile != Utility.ServerUrl)
+            else if (!string.IsNullOrEmpty(Card.UrlImgProfileVM) && Card.UrlImgProfileVM != Utility.ServerUrl)
             {
                 UserDialogs.Instance.ShowLoading("Loading Image");
-                var bytes = await StaticMember.GetImageBase64FromUrlAsync(Card.UrlImgProfile);
+                var bytes = await StaticMember.GetImageBase64FromUrlAsync(Card.UrlImgProfileVM);
                 UserDialogs.Instance.HideHud();
                 page = new AddAttachmentsPopup(bytes);
             }
@@ -171,10 +171,10 @@ namespace Cardrly.ViewModels
             {
                 page = new AddAttachmentsPopup(Request.ImgFileCover);
             }
-            else if (!string.IsNullOrEmpty(Card.UrlImgCover) && Card.UrlImgCover != Utility.ServerUrl)
+            else if (!string.IsNullOrEmpty(Card.UrlImgCoverVM) && Card.UrlImgCoverVM != Utility.ServerUrl)
             {
                 UserDialogs.Instance.ShowLoading("Loading Image");
-                var bytes = await StaticMember.GetImageBase64FromUrlAsync(Card.UrlImgCover);
+                var bytes = await StaticMember.GetImageBase64FromUrlAsync(Card.UrlImgCoverVM);
                 UserDialogs.Instance.HideHud();
                 page = new AddAttachmentsPopup(bytes);
             }

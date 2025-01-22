@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cardrly.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,10 @@ namespace Cardrly.Mode_s.Card
         public string? Cardlayout { get; set; } = default!;
         public string? ImgProfile { get; set; } = default!;
         public string? UrlImgProfile { get; set; } = default!;
+        public string? UrlImgProfileVM { get { return Utility.ServerUrl + UrlImgProfile; } }
         public string? ImgCover { get; set; } = default!;
         public string? UrlImgCover { get; set; } = default!;
+        public string? UrlImgCoverVM { get { return Utility.ServerUrl + UrlImgCover; } }
         public string? PersonName { get; set; } = default!;
         public string? PersonNikeName { get; set; } = default!;
         public string? location { get; set; } = default!;
@@ -24,6 +27,7 @@ namespace Cardrly.Mode_s.Card
         public string? LinkColor { get; set; } = default!;
         public string? FontStyle { get; set; } = default!;
         public string? CardUrl { get; set; } = default!;
+        public string? CardUrlVM { get { return $"https://app.cardrly.com/profile/{Id}"; } }
         public bool? Active { get; set; }
     }
 }
