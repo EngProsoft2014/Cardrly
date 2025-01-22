@@ -27,6 +27,7 @@ namespace Cardrly.Mode_s.Card
         public string? LinkColor { get; set; } = default!;
         public string? FontStyle { get; set; } = default!;
         public string? CardUrl { get; set; } = default!;
+
         public string? CardUrlVM { get { return $"https://app.cardrly.com/profile/{Id}"; } }
         public bool? Active { get; set; }
     }

@@ -10,7 +10,7 @@ namespace Cardrly.Helpers
                 "VERSION:3.0\n" +
                 $"FN:{Card.PersonName + " " + Card.PersonNikeName}\n" +
                 $"ADR:{Card.location}\n" +
-                $"URL:{Card.CardUrl}\n" +
+                $"URL:{Card.CardUrlVM}\n" +
                 "END:VCARD"; 
         }
 

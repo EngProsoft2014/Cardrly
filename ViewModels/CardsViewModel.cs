@@ -47,7 +47,7 @@ namespace Cardrly.ViewModels
         {
             try
             {
-                Uri uri = new Uri(card.CardUrl!);
+                Uri uri = new Uri(card.CardUrlVM!);
                 await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
             }
             catch (Exception ex)
@@ -95,12 +95,6 @@ namespace Cardrly.ViewModels
                 UserDialogs.Instance.HideHud();
                 if (json != null)
                 {
-                    foreach (CardResponse card in json)
-                    {
-                        card.UrlImgProfile = Utility.ServerUrl + card.UrlImgProfile;
-                        card.UrlImgCover = Utility.ServerUrl + card.UrlImgCover;
-                        card.CardUrl = $"https://app.cardrly.com/profile/{card.Id}";
-                    }
                     CardLst = json;
                 }
             }

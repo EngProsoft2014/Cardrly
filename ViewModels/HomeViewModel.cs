@@ -7,7 +7,6 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
-using Mopups.Services;
 using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 
@@ -71,21 +70,21 @@ namespace Cardrly.ViewModels
         #region Methodes
         public async void Init()
         {
+            IsEnable = false;
             await GetAllCards();
             if (CardLst.Count > 0)
             {
                 SelectedCard = CardLst[0];
             }
             UserDialogs.Instance.ShowLoading();
-            await GetAllStatistics();
-            await GetAccData();
+            await Task.WhenAll(GetAllStatistics(),GetAccData());
             UserDialogs.Instance.HideHud();
+            IsEnable = true;
         }
 
         async Task GetAllStatistics()
         {
             
-            IsEnable = false;
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
             {
@@ -102,14 +101,11 @@ namespace Cardrly.ViewModels
                     BoardResponse = json;
                 }
             }
-            IsEnable = true;
             
         }
 
         async Task GetAccData()
         {
-            
-            IsEnable = false;
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
             {
@@ -125,13 +121,10 @@ namespace Cardrly.ViewModels
                     AccResponse.ExpireProgress = (json.DayOperationExpireAcc / (double)json.DayOperationAcc) * 100;
                 }
             }
-            IsEnable = true;
-            
         }
 
         async Task GetAllCards()
         {
-            IsEnable = false;
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
             {
@@ -144,7 +137,6 @@ namespace Cardrly.ViewModels
                     CardLst = json;
                 }
             }
-            IsEnable = true;
         }
         #endregion
     }

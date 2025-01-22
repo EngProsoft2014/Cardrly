@@ -1,4 +1,5 @@
-﻿using Cardrly.Models.LeadCategory;
+﻿using Cardrly.Helpers;
+using Cardrly.Models.LeadCategory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,6 +24,7 @@ namespace Cardrly.Models.Lead
         public string? JobTitle { get; set; } = default!;
         public string? ImgProfile { get; set; } = default!;
         public string? UrlImgProfile { get; set; } = default!;
+        public string? UrlImgProfileVM { get { return Utility.ServerUrl + UrlImgProfile; } }
         public bool Active { get; set; } = default!;
         public bool? IsShareToUsers { get; set; } = default!;
         public DateTime CreatedDate { get; set; }

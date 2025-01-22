@@ -36,7 +36,7 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
                 "VERSION:3.0\n" +
                 $"FN:{Card.PersonName + " " + Card.PersonNikeName}\n" +
                 $"ADR:{Card.location}\n" +
-                $"URL:{Card.CardUrl}\n" +
+                $"URL:{Card.CardUrlVM}\n" +
                 "END:VCARD";
 
 
@@ -66,7 +66,7 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
                 "VERSION:3.0\n" +
                 $"FN:{Card.PersonName + " " + Card.PersonNikeName}\n" +
                 $"ADR:{Card.location}\n" +
-                $"URL:{Card.CardUrl}\n" +
+                $"URL:{Card.CardUrlVM}\n" +
                 "END:VCARD";
 
 
@@ -76,7 +76,7 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
         else
         {
             // Assign the vCard content to the QR code
-            QRCodeImage.Value = Card.CardUrl;
+            QRCodeImage.Value = Card.CardUrlVM;
         }
     }
     #endregion
@@ -86,7 +86,7 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
     {
         await Share.RequestAsync(new ShareTextRequest
         {
-            Uri = Card.CardUrl,
+            Uri = Card.CardUrlVM,
             Title = "Share Web Link"
         });
     }
@@ -105,7 +105,7 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
     {
         try
         {
-            Uri uri = new Uri(Card.CardUrl!);
+            Uri uri = new Uri(Card.CardUrlVM!);
             await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
         }
         catch (Exception ex)

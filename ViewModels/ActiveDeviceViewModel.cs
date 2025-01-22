@@ -54,7 +54,6 @@ namespace Cardrly.ViewModels
                 if (json != null)
                 {
                     DetailsResponse = json;
-                    DetailsResponse.CardUrl = $"https://app.cardrly.com/profile/{json.Id}";
                 }
             }
             IsEnable = true;

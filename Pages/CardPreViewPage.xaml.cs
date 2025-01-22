@@ -266,7 +266,7 @@ public partial class CardPreViewPage : Controls.CustomControl
                 record = new NFCNdefRecord
                 {
                     TypeFormat = NFCNdefTypeFormat.Uri,
-                    Payload = NFCUtils.EncodeToByteArray(Card.CardUrl)
+                    Payload = NFCUtils.EncodeToByteArray(Card.CardUrlVM)
                 };
             }
 

@@ -96,13 +96,7 @@ namespace Cardrly.ViewModels.Leads
                 
                 if (json != null)
                 {
-                    foreach (LeadResponse Lead in json)
-                    {
-                        if (!string.IsNullOrEmpty(Lead.UrlImgProfile))
-                        {
-                            Lead.UrlImgProfile = Utility.ServerUrl + Lead.UrlImgProfile;
-                        }
-                    }
+                    
                     Leads = json;
                 }
             }

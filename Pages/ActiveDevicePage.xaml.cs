@@ -249,7 +249,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
               "TEL:+18324686031\n" +
               "EMAIL:engprosoftcompany@gmail.com\n" +
               $"ADR:{Model.DetailsResponse.location}\n" +
-              $"URL:{Model.DetailsResponse.CardUrl}\n" +
+              $"URL:{Model.DetailsResponse.CardUrlVM}\n" +
               //$"LOGO:{Card.UrlImgProfile}\n" +
               "END:VCARD";
 
@@ -381,7 +381,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
         }
         else
         {
-            SetupUri = Model.DetailsResponse.CardUrl!;
+            SetupUri = Model.DetailsResponse.CardUrlVM!;
             deviceType = Item.DeviceNumber;
 #if ANDROID
                 var toast = Toast.Make($"Near the stand now.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);

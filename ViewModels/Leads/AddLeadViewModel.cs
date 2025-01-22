@@ -66,10 +66,10 @@ namespace Cardrly.ViewModels.Leads
             {
                 page = new AddAttachmentsPopup(Request.ImgFile);
             }
-            else if (!string.IsNullOrEmpty(Response!.UrlImgProfile))
+            else if (!string.IsNullOrEmpty(Response!.UrlImgProfileVM) & Response.UrlImgProfileVM != Utility.ServerUrl)
             {
                 UserDialogs.Instance.ShowLoading("Loading Image");
-                var bytes = await StaticMember.GetImageBase64FromUrlAsync(Response.UrlImgProfile);
+                var bytes = await StaticMember.GetImageBase64FromUrlAsync(Response.UrlImgProfileVM);
                 UserDialogs.Instance.HideHud();
                 page = new AddAttachmentsPopup(bytes);
             }
@@ -212,10 +212,10 @@ namespace Cardrly.ViewModels.Leads
             {
                 SelectedLeadCategory = new SelectListCategory();
             }
-            if (!string.IsNullOrEmpty(lead.UrlImgProfile))
+            if (!string.IsNullOrEmpty(lead.UrlImgProfileVM))
             {
                 IsProfileImageAdded = 2;
-                Request.ImagefileProfile = ImageSource.FromUri(new Uri(lead.UrlImgProfile));
+                Request.ImagefileProfile = ImageSource.FromUri(new Uri(lead.UrlImgProfileVM));
             }
         }
 
