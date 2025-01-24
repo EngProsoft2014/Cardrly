@@ -3,6 +3,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Views;
 using Mopups.Services;
 using SkiaSharp;
+using System.Globalization;
 using System.IO;
 
 
@@ -16,7 +17,20 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
     public AddAttachmentsPopup()
 	{
 		InitializeComponent();
-	}
+
+        string Lan = Preferences.Default.Get("Lan", "en");
+
+        if (Lan == "ar")
+        {
+            this.FlowDirection = FlowDirection.RightToLeft;
+            CultureInfo.CurrentCulture = new CultureInfo("ar");
+        }
+        else
+        {
+            this.FlowDirection = FlowDirection.LeftToRight;
+            CultureInfo.CurrentCulture = new CultureInfo("en");
+        }
+    }
 
     public AddAttachmentsPopup(byte[] bytes)
     {

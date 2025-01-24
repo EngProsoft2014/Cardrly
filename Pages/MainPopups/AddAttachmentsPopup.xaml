@@ -3,6 +3,7 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                  xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
                  xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+                 xmlns:res="clr-namespace:Cardrly.Resources.Lan"
                  x:Class="Cardrly.Pages.MainPopups.AddAttachmentsPopup"
                  Title="AddAttachmentsPopup"
                  CloseWhenBackgroundIsClicked="True"
@@ -26,10 +27,9 @@
                     <StackLayout  BackgroundColor="#FFFFFF">
 
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
-                            <Label Text="Take Photo"
+                            <Label Text="{x:Static res:AppResources.lblTakePhoto}"
                                    TextColor="#FF7F3E"
                                    FontSize="16"
-                                   FontFamily="AlmaraiBold"
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
                                    HorizontalOptions="CenterAndExpand" 
@@ -47,10 +47,10 @@
 
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Label 
-                                   Text="Pick Photo"
+                                   Text="{x:Static res:AppResources.lblPickPhoto}"
                                    TextColor="#FF7F3E"
                                    FontSize="16"
-                                   FontFamily="AlmaraiBold"
+                                   
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
                                    HorizontalOptions="CenterAndExpand"
@@ -67,10 +67,10 @@
 
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Label 
-                                    Text="Edit Photo"
+                                    Text="{x:Static res:AppResources.lblEdit_Photo}"
                                     TextColor="#FF7F3E"
                                     FontSize="16"
-                                    FontFamily="AlmaraiBold"
+                                    
                                     HorizontalTextAlignment="Center"
                                     VerticalTextAlignment="Center"
                                     HorizontalOptions="CenterAndExpand"
@@ -90,10 +90,10 @@
                 <Border Padding="10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
 
 
-                    <Label Text="Cancel"
+                    <Label Text="{x:Static res:AppResources.btnCancel}"
                            TextColor="#FF7F3E"
                            FontSize="14"
-                           FontFamily="AlmaraiBold"
+                           
                            HorizontalTextAlignment="Center"
                            VerticalTextAlignment="Center"
                            HorizontalOptions="CenterAndExpand"

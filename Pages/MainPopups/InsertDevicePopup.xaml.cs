@@ -1,6 +1,7 @@
 using Cardrly.Helpers;
 using CommunityToolkit.Maui.Alerts;
 using Mopups.Services;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Cardrly.Pages.MainPopups;
@@ -13,6 +14,19 @@ public partial class InsertDevicePopup : Mopups.Pages.PopupPage
     public InsertDevicePopup()
 	{
 		InitializeComponent();
+
+        string Lan = Preferences.Default.Get("Lan", "en");
+
+        if (Lan == "ar")
+        {
+            this.FlowDirection = FlowDirection.RightToLeft;
+            CultureInfo.CurrentCulture = new CultureInfo("ar");
+        }
+        else
+        {
+            this.FlowDirection = FlowDirection.LeftToRight;
+            CultureInfo.CurrentCulture = new CultureInfo("en");
+        }
     }
 
     private async void Save_Clicked(object sender, EventArgs e)

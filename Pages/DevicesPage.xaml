@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Controls="clr-namespace:Cardrly.Controls"
              xmlns:vm="clr-namespace:Cardrly.ViewModels"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
              x:Class="Cardrly.Pages.DevicesPage"
              Title="DevicesPage">
-    <StackLayout Margin="20">
+    <StackLayout Margin="20" VerticalOptions="FillAndExpand">
         <!--Header-->
         <StackLayout Orientation="Horizontal">
             <Image VerticalOptions="CenterAndExpand">
@@ -21,7 +22,7 @@
                     <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
             </Image>
-            <Label Text="My Devices" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black"
+            <Label Text="{x:Static res:AppResources.lblMyDevices}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black"
                    VerticalOptions="CenterAndExpand" ></Label>
         </StackLayout>
         <!--Data-->
@@ -49,7 +50,7 @@
                                     <Label Text="Dynamic" FontSize="14" FontAttributes="Bold" TextColor="Black"></Label>
                                 </HorizontalStackLayout>
                                 <HorizontalStackLayout Spacing="5">
-                                    <Label Text="Activated on" FontSize="14" TextColor="Black"></Label>
+                                    <Label Text="{x:Static res:AppResources.lblActivateat}" FontSize="14" TextColor="Black"></Label>
                                     <Label Text="{Binding CreatedDate, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="14" TextColor="Black" />
                                 </HorizontalStackLayout>
                             </VerticalStackLayout>
@@ -63,13 +64,13 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
         <!--Activate another Device Button  & Cancel Button-->
-        <StackLayout Orientation="Vertical" Spacing="10" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
+        <StackLayout Orientation="Vertical" Spacing="10" VerticalOptions="End" HorizontalOptions="FillAndExpand">
             <!--Activate another Device Button-->
-            <Button FontAutoScalingEnabled="False" Text="Activate another Device" FontSize="16" FontAttributes="Bold" BackgroundColor="#FF7F3E"
+            <Button FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnActivateanotherDevice}" FontSize="16" FontAttributes="Bold" BackgroundColor="#FF7F3E"
                     HorizontalOptions="FillAndExpand" TextColor="White" Command="{Binding ActiveDeviceClickCommand}"></Button>
             <!--Cancel Button-->
             <Border StrokeShape="RoundRectangle 10" VerticalOptions="End" Stroke="#FF7F3E">
-                <Button  FontAutoScalingEnabled="False" Text="Cancel" FontSize="16" FontAttributes="Bold" BackgroundColor="Transparent" 
+                <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnCancel}" FontSize="16" FontAttributes="Bold" BackgroundColor="Transparent" 
                          TextColor="Black" HorizontalOptions="FillAndExpand" Padding="20,0" Command="{Binding CancelClickCommand}">
                 </Button>
             </Border>

@@ -46,13 +46,11 @@ namespace Cardrly
             Services.AddTransient<AddCustomCardViewModel>();
             Services.AddTransient<AllCommentViewModel>();
             Services.AddTransient<BaseViewModel>();
-            Services.AddTransient<CardPreViewViewModel>();
             Services.AddTransient<CardsViewModel>();
             Services.AddTransient<DevicesViewModel>();
             Services.AddTransient<HomeViewModel>();
             Services.AddTransient<LoginViewModel>();
             Services.AddTransient<MoreViewModel>();
-            Services.AddTransient<ProfileViewModel>();
             #endregion
             #endregion
 
@@ -68,12 +66,10 @@ namespace Cardrly
             Services.AddTransient<AddCustomCardPage>();
             Services.AddTransient<AddLeadsPage>();
             Services.AddTransient<AllCommentPage>();
-            Services.AddTransient<CardPreViewPage>();
             Services.AddTransient<DevicesPage>();
             Services.AddTransient<HomePage>();
             Services.AddTransient<ImageEditorPage>();
             Services.AddTransient<LoginPage>();
-            Services.AddTransient<ProfilePage>();
             #endregion
 
             #region MainPopups

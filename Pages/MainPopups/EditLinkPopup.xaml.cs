@@ -5,6 +5,7 @@ using Cardrly.Models.AccountLinks;
 using CommunityToolkit.Maui.Alerts;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Cardrly.Pages.MainPopups;
@@ -36,6 +37,19 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
         CardLinkRef = cardLink;
         ValueEn.Text = CardLink.ValueOf;
         LoadData();
+
+        string Lan = Preferences.Default.Get("Lan", "en");
+
+        if (Lan == "ar")
+        {
+            this.FlowDirection = FlowDirection.RightToLeft;
+            CultureInfo.CurrentCulture = new CultureInfo("ar");
+        }
+        else
+        {
+            this.FlowDirection = FlowDirection.LeftToRight;
+            CultureInfo.CurrentCulture = new CultureInfo("en");
+        }
     }
 
     public EditLinkPopup(int isUpdate, AccountLinkResponse res,string cardId, IGenericRepository GenericRep, Services.Data.ServicesService service)

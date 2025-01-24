@@ -2,6 +2,7 @@
 using Cardrly.Helpers;
 using Cardrly.Models.AccountLinks;
 using Cardrly.Pages.MainPopups;
+using Cardrly.Resources.Lan;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
@@ -50,6 +51,7 @@ namespace Cardrly.ViewModels.Links
             if (!string.IsNullOrEmpty(UserToken))
             {
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                string Lan = Preferences.Default.Get("Lan", "en");
                 UserDialogs.Instance.ShowLoading();
                 var json = await Rep.GetAsync<ObservableCollection<AccountLinkResponse>>($"{ApiConstants.AccountLinksCurrentApi}{AccId}/AccountLink/current", UserToken);
                 UserDialogs.Instance.HideHud();
@@ -59,10 +61,9 @@ namespace Cardrly.ViewModels.Links
                     {
                         res.UrlImgName = Utility.ServerUrl + res.UrlImgName;
                     }
-                    AccountLinks.Add(new LinksGroup("Contact", json.Where(a => a.TypeLink == Enums.EnumTypeLink.Contact).ToList()));
-                    AccountLinks.Add(new LinksGroup("SocialMedia", json.Where(a => a.TypeLink == Enums.EnumTypeLink.SocialMedia).ToList()));
-                    AccountLinks.Add(new LinksGroup("Business", json.Where(a => a.TypeLink == Enums.EnumTypeLink.Business).ToList()));
-                    
+                        AccountLinks.Add(new LinksGroup($"{AppResources.lblContact}", json.Where(a => a.TypeLink == Enums.EnumTypeLink.Contact).ToList()));
+                        AccountLinks.Add(new LinksGroup($"{AppResources.lblSocial_Media}", json.Where(a => a.TypeLink == Enums.EnumTypeLink.SocialMedia).ToList()));
+                        AccountLinks.Add(new LinksGroup($"{AppResources.lblBusiness}", json.Where(a => a.TypeLink == Enums.EnumTypeLink.Business).ToList()));    
                 }
             }
             IsEnable = true;

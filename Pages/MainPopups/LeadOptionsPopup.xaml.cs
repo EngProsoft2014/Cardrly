@@ -8,6 +8,7 @@ using Controls.UserDialogs.Maui;
 
 using Mopups.Services;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace Cardrly.Pages.MainPopups;
 
@@ -25,6 +26,19 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
         Rep = GenericRep;
         _service = service;
         Res = res;
+
+        string Lan = Preferences.Default.Get("Lan", "en");
+
+        if (Lan == "ar")
+        {
+            this.FlowDirection = FlowDirection.RightToLeft;
+            CultureInfo.CurrentCulture = new CultureInfo("ar");
+        }
+        else
+        {
+            this.FlowDirection = FlowDirection.LeftToRight;
+            CultureInfo.CurrentCulture = new CultureInfo("en");
+        }
     }
 
     private async void TapGestureRecognizer_Cancel(object sender, EventArgs e)

@@ -6,6 +6,7 @@ using CommunityToolkit.Maui.Alerts;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace Cardrly.Pages.MainPopups;
 
@@ -22,6 +23,19 @@ public partial class ShareLeadPopup : Mopups.Pages.PopupPage
     public ShareLeadPopup(LeadResponse res,IGenericRepository GenericRep, Services.Data.ServicesService service)
 	{
 		InitializeComponent();
+        string Lan = Preferences.Default.Get("Lan", "en");
+
+        if (Lan == "ar")
+        {
+            this.FlowDirection = FlowDirection.RightToLeft;
+            CultureInfo.CurrentCulture = new CultureInfo("ar");
+        }
+        else
+        {
+            this.FlowDirection = FlowDirection.LeftToRight;
+            CultureInfo.CurrentCulture = new CultureInfo("en");
+        }
+
         Rep = GenericRep;
         _service = service;
         leadResponse = res;

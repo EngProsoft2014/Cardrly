@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Controls="clr-namespace:Cardrly.Controls"
              xmlns:vm="clr-namespace:Cardrly.ViewModels.Links"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
              x:Class="Cardrly.Pages.Links.LinksPage"
              Title="LinksPage"
              IsEnabled="{Binding IsEnable}">
@@ -22,7 +23,7 @@
                     <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
             </Image>
-            <Label Text="My Links" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+            <Label Text="{x:Static res:AppResources.hdrMyLinks}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                    TextColor="Black" VerticalOptions="CenterAndExpand" ></Label>
             <!--Add Button-->
             <Image>

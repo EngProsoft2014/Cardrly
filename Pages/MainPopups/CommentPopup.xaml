@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
              xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
              x:Class="Cardrly.Pages.MainPopups.CommentPopup"
              CloseWhenBackgroundIsClicked="True"
              NavigationPage.HasNavigationBar="False" 
@@ -23,7 +24,7 @@
                     <StackLayout  BackgroundColor="#FFFFFF" Spacing="10">
                         <!--Comment-->
                         <StackLayout Orientation="Vertical" Spacing="3" Padding="20,0,20,0">
-                            <Label Text="Comment" TextColor="Gray" FontSize="13"></Label>
+                            <Label Text="{x:Static res:AppResources.lblComment}" TextColor="Gray" FontSize="13"></Label>
                             <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="120">
                                 <Editor x:Name="CommEntr" Keyboard="Text" TextColor="Black" FontSize="14" VerticalOptions="FillAndExpand"
                                            VerticalTextAlignment="Start" HorizontalOptions="FillAndExpand"></Editor>
@@ -32,7 +33,7 @@
                         <!--Save Button-->
                         <StackLayout Orientation="Horizontal" Spacing="10" Padding="10,0,10,0" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
                             <!--Save Button-->
-                            <Button  FontAutoScalingEnabled="False" Text="Save" FontSize="16" FontAttributes="Bold" Clicked="Save_Clicked"
+                            <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnSave}" FontSize="16" FontAttributes="Bold" Clicked="Save_Clicked"
                                          BackgroundColor="#FF7F3E" TextColor="White" HorizontalOptions="FillAndExpand"></Button>
                         </StackLayout>
                     </StackLayout>

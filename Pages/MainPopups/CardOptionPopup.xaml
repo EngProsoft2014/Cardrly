@@ -4,6 +4,7 @@
              xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
              xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
              xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
              x:Class="Cardrly.Pages.MainPopups.CardOptionPopup"
              CloseWhenBackgroundIsClicked="True"
              NavigationPage.HasNavigationBar="False" 
@@ -38,10 +39,10 @@
                         </Border>
                         <!--Share Card Link-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
-                            <Label Text="Share Card Link"
+                            <Label Text="{x:Static res:AppResources.lblShareCardLink}"
                                    TextColor="#FF7F3E"
                                    FontSize="16"
-                                   FontFamily="AlmaraiBold"
+                                   
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
                                    HorizontalOptions="CenterAndExpand" 
@@ -57,10 +58,10 @@
                         <!--Share Offline Card-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Grid HorizontalOptions="FillAndExpand">
-                                <Label Text="Share Offline Card"
+                                <Label Text="{x:Static res:AppResources.lblShareOfflineCard}"
                                    TextColor="#FF7F3E"
                                    FontSize="16"
-                                   FontFamily="AlmaraiBold"
+                                   
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
                                    HorizontalOptions="CenterAndExpand" 
@@ -72,10 +73,10 @@
                         <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
                         <!--Share VCard-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
-                            <Label Text="Share VCard"
+                            <Label Text="{x:Static res:AppResources.lblShareVCard}"
                                     TextColor="#FF7F3E"
                                     FontSize="16"
-                                    FontFamily="AlmaraiBold"
+                                    
                                     HorizontalTextAlignment="Center"
                                     VerticalTextAlignment="Center"
                                     HorizontalOptions="CenterAndExpand" 
@@ -91,10 +92,10 @@
                         <!--Edit Card-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Label 
-                               Text="Edit Card"
+                               Text="{x:Static res:AppResources.hdrEditCard}"
                                TextColor="#FF7F3E"
                                FontSize="16"
-                               FontFamily="AlmaraiBold"
+                               
                                HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center"
                                HorizontalOptions="CenterAndExpand"
@@ -109,10 +110,10 @@
                         <!--Preview Card-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Label 
-                               Text="Preview Card"
+                               Text="{x:Static res:AppResources.btnPreview}"
                                TextColor="#FF7F3E"
                                FontSize="16"
-                               FontFamily="AlmaraiBold"
+                               
                                HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center"
                                HorizontalOptions="CenterAndExpand"
@@ -127,10 +128,10 @@
                         <!--Delete Card-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Label 
-                               Text="Delete Card"
+                               Text="{x:Static res:AppResources.lblDeleteCard}"
                                TextColor="Red"
                                FontSize="16"
-                               FontFamily="AlmaraiBold"
+                               
                                HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center"
                                HorizontalOptions="CenterAndExpand"
@@ -150,10 +151,10 @@
                 <Border Padding="10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
 
 
-                    <Label Text="Cancel"
+                    <Label Text="{x:Static res:AppResources.btnCancel}"
                        TextColor="#FF7F3E"
                        FontSize="14"
-                       FontFamily="AlmaraiBold"
+                       
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="Center"
                        HorizontalOptions="CenterAndExpand"

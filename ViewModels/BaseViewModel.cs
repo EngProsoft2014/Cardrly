@@ -11,7 +11,7 @@ namespace Cardrly.ViewModels
     public partial class BaseViewModel : ObservableObject
     {
         [ObservableProperty]
-        public string? lang = "en";
+        public string? lang = "ar";
         [ObservableProperty]
         public bool? isEnable = true;
 

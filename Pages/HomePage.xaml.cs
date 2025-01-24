@@ -9,13 +9,18 @@ namespace Cardrly.Pages;
 
 public partial class HomePage : Controls.CustomControl
 {
+    #region Prop
     CardsViewModel cardsViewModel;
     HomeViewModel homeViewModel;
     LeadViewModel LeadViewModel;
+    CalendarViewModel CalendarViewModel; 
+    #endregion
+
     #region Service
     readonly IGenericRepository Rep;
     readonly Services.Data.ServicesService _service;
     #endregion
+
     public HomePage(HomeViewModel model, IGenericRepository GenericRep, Services.Data.ServicesService service)
     {
         InitializeComponent();
@@ -24,8 +29,16 @@ public partial class HomePage : Controls.CustomControl
         Rep = GenericRep;
         _service = service;
         HomeView.BindingContext = model;
+
+        // Add Flow Direction For Content View 
+        HomeView.FlowDirection = this.FlowDirection;
+        CardsView.FlowDirection = this.FlowDirection;
+        LeadView.FlowDirection = this.FlowDirection;
+        CalendarView.FlowDirection = this.FlowDirection;
+        MoreView.FlowDirection = this.FlowDirection;
     }
 
+    #region Methods
     private void SfTabView_SelectionChanged(object sender, Syncfusion.Maui.TabView.TabSelectionChangedEventArgs e)
     {
 
@@ -48,7 +61,18 @@ public partial class HomePage : Controls.CustomControl
         {
             if (homeViewModel.IsEnable == true)
             {
-                ContactView.BindingContext = LeadViewModel = new LeadViewModel(Rep, _service, homeViewModel._audioManager);
+                LeadView.BindingContext = LeadViewModel = new LeadViewModel(Rep, _service, homeViewModel._audioManager);
+            }
+            else
+            {
+                tabHome.SelectedIndex = 0;
+            }
+        }
+        else if (e.NewIndex == 3)
+        {
+            if (homeViewModel.IsEnable == true)
+            {
+                CalendarView.BindingContext = CalendarViewModel = new CalendarViewModel(Rep, _service);
             }
             else
             {
@@ -69,7 +93,6 @@ public partial class HomePage : Controls.CustomControl
 
     }
 
-    [Obsolete]
     protected override bool OnBackButtonPressed()
     {
         // Run the async code on the UI thread
@@ -100,5 +123,6 @@ public partial class HomePage : Controls.CustomControl
     private void SearchBar_Lead(object sender, TextChangedEventArgs e)
     {
         LeadColc.ItemsSource = LeadViewModel.Leads.Where(a => a.FullName.Contains(e.NewTextValue));
-    }
+    } 
+    #endregion
 }

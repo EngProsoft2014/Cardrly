@@ -9,6 +9,7 @@ using System.Text;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Cardrly.Mode_s.CardLink;
+using System.Globalization;
 
 
 namespace Cardrly.Pages.MainPopups;
@@ -43,6 +44,20 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
         // Assign the vCard content to the QR code
         QRCodeImage.Value = vCard;
         chkoffline.IsChecked = true;
+
+        // Flow Direction 
+        string Lan = Preferences.Default.Get("Lan", "en");
+
+        if (Lan == "ar")
+        {
+            this.FlowDirection = FlowDirection.RightToLeft;
+            CultureInfo.CurrentCulture = new CultureInfo("ar");
+        }
+        else
+        {
+            this.FlowDirection = FlowDirection.LeftToRight;
+            CultureInfo.CurrentCulture = new CultureInfo("en");
+        }
     }
 
     public static string EscapeValue(string value)

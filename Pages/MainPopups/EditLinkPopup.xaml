@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
              xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
              x:Class="Cardrly.Pages.MainPopups.EditLinkPopup"
              CloseWhenBackgroundIsClicked="True"
              NavigationPage.HasNavigationBar="False" 
@@ -31,14 +32,15 @@
                            VerticalTextAlignment="Center"
                            HorizontalOptions="CenterAndExpand" FontAttributes="Bold"></Label>
                     <Line X1="150"  HorizontalOptions="FillAndExpand" BackgroundColor="#212121"></Line>
+                    <!--Card Link Type-->
                     <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                        <Label Text="Card Link Type" TextColor="Gray" FontSize="13" ></Label>
+                        <Label Text="{x:Static res:AppResources.lblCardLinkType}" TextColor="Gray" FontSize="13" ></Label>
                         <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                             <Picker x:Name="TypePicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></Picker>
                         </Border>
                     </VerticalStackLayout>
                     <VerticalStackLayout HorizontalOptions="FillAndExpand" Margin="0,10,0,0">
-                        <Label Text="Value" TextColor="Gray" FontSize="13" ></Label>
+                        <Label Text="{x:Static res:AppResources.lblValue}" TextColor="Gray" FontSize="13" ></Label>
                         <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                             <Entry x:Name="ValueEn" Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></Entry>
                         </Border>
@@ -46,11 +48,11 @@
                     <!--Save Button  & Edit Links-->
                     <StackLayout Orientation="Horizontal" Spacing="15" Margin="0,10,0,0" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
                         <!--Save Button-->
-                        <Button  FontAutoScalingEnabled="False" Text="Save" FontSize="16" FontAttributes="Bold" Clicked="Save_Clicked"
+                        <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnSave}" FontSize="16" FontAttributes="Bold" Clicked="Save_Clicked"
                  BackgroundColor="#FF7F3E" TextColor="White" HorizontalOptions="FillAndExpand"></Button>
                         <!--Cancel-->
                         <Border StrokeShape="RoundRectangle 10" VerticalOptions="End" Stroke="#FF7F3E">
-                            <Button  FontAutoScalingEnabled="False" Text="Cancel" FontSize="16" FontAttributes="Bold" Clicked="Cancel_Clicked"
+                            <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnCancel}" FontSize="16" FontAttributes="Bold" Clicked="Cancel_Clicked"
                                      TextColor="Black" HorizontalOptions="FillAndExpand" Padding="20,0" BackgroundColor="Transparent">
                             </Button>
                         </Border>

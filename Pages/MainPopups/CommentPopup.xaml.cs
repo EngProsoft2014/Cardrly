@@ -5,6 +5,7 @@ using Cardrly.Models.LeadComment;
 using CommunityToolkit.Maui.Alerts;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
+using System.Globalization;
 
 namespace Cardrly.Pages.MainPopups;
 
@@ -24,7 +25,18 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
         Rep = GenericRep;
         _service = service;
         Res = res;
-        //Init();
+        string Lan = Preferences.Default.Get("Lan", "en");
+
+        if (Lan == "ar")
+        {
+            this.FlowDirection = FlowDirection.RightToLeft;
+            CultureInfo.CurrentCulture = new CultureInfo("ar");
+        }
+        else
+        {
+            this.FlowDirection = FlowDirection.LeftToRight;
+            CultureInfo.CurrentCulture = new CultureInfo("en");
+        }
     }
     #endregion
 

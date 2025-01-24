@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
              xmlns:Controls="clr-namespace:Cardrly.Controls"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
              x:Class="Cardrly.Pages.LoginPage"
              Title="LoginPage"
              IsEnabled="{Binding IsEnable}">
@@ -15,12 +16,12 @@
                                WidthRequest="300" />
             <VerticalStackLayout Spacing="15">
                 <Border StrokeShape="RoundRectangle 8">
-                    <Entry x:Name="entryEmail" Text="{Binding LoginRequest.UserName}" Placeholder="User Name" FontSize="14" TextColor="Black" PlaceholderColor="Gray"
+                    <Entry x:Name="entryEmail" Text="{Binding LoginRequest.UserName}" Placeholder="{x:Static res:AppResources.plcUserName}" FontSize="14" TextColor="Black" PlaceholderColor="Gray"
                        HorizontalTextAlignment="Center" FontAttributes="Bold" ></Entry>
                 </Border>
                 <Border StrokeShape="RoundRectangle 8">
                     <Grid>
-                        <Entry x:Name="entryPassword" Text="{Binding LoginRequest.Password}" Placeholder="Password" FontAutoScalingEnabled="False"
+                        <Entry x:Name="entryPassword" Text="{Binding LoginRequest.Password}" Placeholder="{x:Static res:AppResources.plcPassword}" FontAutoScalingEnabled="False"
                            Keyboard="Text" TextColor="Black" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center"  IsPassword="True"
                            HorizontalOptions="FillAndExpand">
                         </Entry>
@@ -44,7 +45,7 @@
                     </Grid>
                 </Border>
             </VerticalStackLayout>
-            <Button Text="Login" FontSize="16" FontAttributes="Bold" BackgroundColor="Black" TextColor="White"
+            <Button Text="{x:Static res:AppResources.btnLogin}" FontSize="16" FontAttributes="Bold" BackgroundColor="Black" TextColor="White"
                 Command="{Binding LoginClickCommand}" CommandParameter="{Binding LoginRequest}"></Button>
         </StackLayout>
     </ScrollView>

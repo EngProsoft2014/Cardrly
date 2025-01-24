@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
              xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
              x:Class="Cardrly.Pages.MainPopups.LeadOptionsPopup"
              CloseWhenBackgroundIsClicked="True"
              NavigationPage.HasNavigationBar="False" 
@@ -24,10 +25,10 @@
                     <StackLayout  BackgroundColor="#FFFFFF" Spacing="3">
                         <!--Call-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
-                            <Label Text="Call"
+                            <Label Text="{x:Static res:AppResources.lblCall}"
            TextColor="#FF7F3E"
            FontSize="16"
-           FontFamily="AlmaraiBold"
+           
            HorizontalTextAlignment="Center"
            VerticalTextAlignment="Center"
            HorizontalOptions="CenterAndExpand" 
@@ -40,10 +41,10 @@
                         <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
                         <!--Email-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
-                            <Label Text="Email"
+                            <Label Text="{x:Static res:AppResources.lblEmail}"
            TextColor="#FF7F3E"
            FontSize="16"
-           FontFamily="AlmaraiBold"
+           
            HorizontalTextAlignment="Center"
            VerticalTextAlignment="Center"
            HorizontalOptions="CenterAndExpand" 
@@ -56,10 +57,10 @@
                         <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
                         <!--Add Comment-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
-                            <Label Text="Add Comment"
+                            <Label Text="{x:Static res:AppResources.lblAddComment}"
                                    TextColor="#FF7F3E"
                                    FontSize="16"
-                                   FontFamily="AlmaraiBold"
+                                   
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
                                    HorizontalOptions="CenterAndExpand" 
@@ -72,10 +73,10 @@
                         <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
                         <!--Show Comments-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
-                            <Label Text="Show Comments"
+                            <Label Text="{x:Static res:AppResources.lblShowComments}"
                                    TextColor="#FF7F3E"
                                    FontSize="16"
-                                   FontFamily="AlmaraiBold"
+                                   
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
                                    HorizontalOptions="CenterAndExpand" 
@@ -88,10 +89,10 @@
                         <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
                         <!--Share Lead-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
-                            <Label Text="Share Lead"
+                            <Label Text="{x:Static res:AppResources.lblShareLead}"
                                    TextColor="#FF7F3E"
                                    FontSize="16"
-                                   FontFamily="AlmaraiBold"
+                                   
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
                                    HorizontalOptions="CenterAndExpand" 
@@ -104,10 +105,10 @@
                         <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
                         <!--Delete-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
-                            <Label Text="Delete"
+                            <Label Text="{x:Static res:AppResources.lblDeleteLead}"
                                    TextColor="Red"
                                    FontSize="16"
-                                   FontFamily="AlmaraiBold"
+                                   
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
                                    HorizontalOptions="CenterAndExpand" 
@@ -124,10 +125,10 @@
                 </Border>
                 <!--Cancel-->
                 <Border Padding="10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
-                    <Label Text="Cancel"
+                    <Label Text="{x:Static res:AppResources.btnCancel}"
                    TextColor="#FF7F3E"
                    FontSize="14"
-                   FontFamily="AlmaraiBold"
+                   
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center"
                    HorizontalOptions="CenterAndExpand"

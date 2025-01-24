@@ -32,11 +32,6 @@ namespace Cardrly.ViewModels
         #endregion
 
         #region RelayCommand
-        [RelayCommand]
-        async Task ProfileClick()
-        {
-            await App.Current!.MainPage!.Navigation.PushAsync(new ProfilePage(new ProfileViewModel(Rep, _service)));
-        }
 
         [RelayCommand]
         Task ExitClick()

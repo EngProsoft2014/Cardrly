@@ -4,6 +4,7 @@ using Cardrly.Helpers;
 using Cardrly.Pages;
 using Cardrly.ViewModels;
 using Plugin.Maui.Audio;
+using System.Globalization;
 
 namespace Cardrly
 {
@@ -17,6 +18,9 @@ namespace Cardrly
         {
             try
             {
+                Preferences.Default.Set("Lan", "ar");
+                CultureInfo.CurrentCulture = new CultureInfo("ar");
+                CultureInfo.CurrentUICulture = new CultureInfo("ar");
                 Rep = GenericRep;
                 _service = service;
                 Controls.StaticMember._audioManager = audioManager;
