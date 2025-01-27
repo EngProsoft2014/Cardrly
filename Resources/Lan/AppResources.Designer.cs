@@ -250,6 +250,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Language.
+        /// </summary>
+        internal static string hdrSelectLanguage {
+            get {
+                return ResourceManager.GetString("hdrSelectLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activate Cardrly Device.
         /// </summary>
         internal static string lblACD {
@@ -291,15 +300,6 @@ namespace Cardrly.Resources.Lan {
         internal static string lblAddress {
             get {
                 return ResourceManager.GetString("lblAddress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Arabic.
-        /// </summary>
-        internal static string lblArabic {
-            get {
-                return ResourceManager.GetString("lblArabic", resourceCulture);
             }
         }
         
@@ -453,15 +453,6 @@ namespace Cardrly.Resources.Lan {
         internal static string lblEmail {
             get {
                 return ResourceManager.GetString("lblEmail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to English.
-        /// </summary>
-        internal static string lblEnglish {
-            get {
-                return ResourceManager.GetString("lblEnglish", resourceCulture);
             }
         }
         
@@ -817,6 +808,465 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred:.
+        /// </summary>
+        internal static string msgAnerroroccurred {
+            get {
+                return ResourceManager.GetString("msgAnerroroccurred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audio file not saved. Please try again..
+        /// </summary>
+        internal static string msgAudiofilenotsavedPleasetryagain {
+            get {
+                return ResourceManager.GetString("msgAudiofilenotsavedPleasetryagain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Camera not supported.
+        /// </summary>
+        internal static string msgCameranotsupported {
+            get {
+                return ResourceManager.GetString("msgCameranotsupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t Delete This Lead Now Try again Later..
+        /// </summary>
+        internal static string msgCan_tDeleteThisLeadNowTryagainLater {
+            get {
+                return ResourceManager.GetString("msgCan\'tDeleteThisLeadNowTryagainLater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The To Date Must be greater Than From Date..
+        /// </summary>
+        internal static string msgDate_HomePage {
+            get {
+                return ResourceManager.GetString("msgDate_HomePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Device.
+        /// </summary>
+        internal static string msgDeleteDevice {
+            get {
+                return ResourceManager.GetString("msgDeleteDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this device?.
+        /// </summary>
+        internal static string msgDeleteDevice_qu {
+            get {
+                return ResourceManager.GetString("msgDeleteDevice_qu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure to delete This Lead?.
+        /// </summary>
+        internal static string msgDeleteLead {
+            get {
+                return ResourceManager.GetString("msgDeleteLead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device Added Successfully..
+        /// </summary>
+        internal static string msgDeviceAddedSuccessfully {
+            get {
+                return ResourceManager.GetString("msgDeviceAddedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to Logout ?.
+        /// </summary>
+        internal static string msgDoYouWantToLogout {
+            get {
+                return ResourceManager.GetString("msgDoYouWantToLogout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Recording.
+        /// </summary>
+        internal static string msgEndRecording {
+            get {
+                return ResourceManager.GetString("msgEndRecording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error during speech recognition:.
+        /// </summary>
+        internal static string msgErrorduringspeechrecognition {
+            get {
+                return ResourceManager.GetString("msgErrorduringspeechrecognition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed To Change Status..
+        /// </summary>
+        internal static string msgFailedToChangeStatus {
+            get {
+                return ResourceManager.GetString("msgFailedToChangeStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Required : Card Name.
+        /// </summary>
+        internal static string msgFRCardName {
+            get {
+                return ResourceManager.GetString("msgFRCardName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Required : Comment.
+        /// </summary>
+        internal static string msgFRComment {
+            get {
+                return ResourceManager.GetString("msgFRComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Required : Email.
+        /// </summary>
+        internal static string msgFREmail {
+            get {
+                return ResourceManager.GetString("msgFREmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Required : Full Name.
+        /// </summary>
+        internal static string msgFRFullName {
+            get {
+                return ResourceManager.GetString("msgFRFullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Required : Link.
+        /// </summary>
+        internal static string msgFRLink {
+            get {
+                return ResourceManager.GetString("msgFRLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Required : Password.
+        /// </summary>
+        internal static string msgFRPassword {
+            get {
+                return ResourceManager.GetString("msgFRPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Required : User Name.
+        /// </summary>
+        internal static string msgFRUserName {
+            get {
+                return ResourceManager.GetString("msgFRUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Required : Value.
+        /// </summary>
+        internal static string msgFRValue {
+            get {
+                return ResourceManager.GetString("msgFRValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lead Deleted Successfully.
+        /// </summary>
+        internal static string msgLeadDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("msgLeadDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This lead don&apos;t have email..
+        /// </summary>
+        internal static string msgLeadEmail {
+            get {
+                return ResourceManager.GetString("msgLeadEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This lead don&apos;t have Phone Number..
+        /// </summary>
+        internal static string msgLeadPhone {
+            get {
+                return ResourceManager.GetString("msgLeadPhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Image.
+        /// </summary>
+        internal static string msgLoadingImage {
+            get {
+                return ResourceManager.GetString("msgLoadingImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Microphone access is required to record audio..
+        /// </summary>
+        internal static string msgMicrophoneaccessisrequiredtorecordaudio_ {
+            get {
+                return ResourceManager.GetString("msgMicrophoneaccessisrequiredtorecordaudio.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string msgNo {
+            get {
+                return ResourceManager.GetString("msgNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ID found in the Qr..
+        /// </summary>
+        internal static string msgNoIDfoundintheQr {
+            get {
+                return ResourceManager.GetString("msgNoIDfoundintheQr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        internal static string msgOk {
+            get {
+                return ResourceManager.GetString("msgOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please Select Image First.
+        /// </summary>
+        internal static string msgPleaseSelectImageFirst {
+            get {
+                return ResourceManager.GetString("msgPleaseSelectImageFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recording started....
+        /// </summary>
+        internal static string msgRecordingstarted {
+            get {
+                return ResourceManager.GetString("msgRecordingstarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service is currently down. Please try again later..
+        /// </summary>
+        internal static string msgServicedown {
+            get {
+                return ResourceManager.GetString("msgServicedown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speech not recognized. Please try again..
+        /// </summary>
+        internal static string msgSpeechnotrecognizedPleasetryagain {
+            get {
+                return ResourceManager.GetString("msgSpeechnotrecognizedPleasetryagain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speech recognition failed:.
+        /// </summary>
+        internal static string msgSpeechrecognitionfailed {
+            get {
+                return ResourceManager.GetString("msgSpeechrecognitionfailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully Add Card..
+        /// </summary>
+        internal static string msgSuccessfullyAddCard {
+            get {
+                return ResourceManager.GetString("msgSuccessfullyAddCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully Add Comment..
+        /// </summary>
+        internal static string msgSuccessfullyAddComment {
+            get {
+                return ResourceManager.GetString("msgSuccessfullyAddComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully Add Lead..
+        /// </summary>
+        internal static string msgSuccessfullyAddLead {
+            get {
+                return ResourceManager.GetString("msgSuccessfullyAddLead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully Add Link..
+        /// </summary>
+        internal static string msgSuccessfullyAddLink {
+            get {
+                return ResourceManager.GetString("msgSuccessfullyAddLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully Reordered..
+        /// </summary>
+        internal static string msgSuccessfullyReordered {
+            get {
+                return ResourceManager.GetString("msgSuccessfullyReordered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully Scan Card..
+        /// </summary>
+        internal static string msgSuccessfullyScanCard {
+            get {
+                return ResourceManager.GetString("msgSuccessfullyScanCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully Update Card..
+        /// </summary>
+        internal static string msgSuccessfullyUpdateCard {
+            get {
+                return ResourceManager.GetString("msgSuccessfullyUpdateCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully Update Lead..
+        /// </summary>
+        internal static string msgSuccessfullyUpdateLead {
+            get {
+                return ResourceManager.GetString("msgSuccessfullyUpdateLead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully Update Link..
+        /// </summary>
+        internal static string msgSuccessfullyUpdateLink {
+            get {
+                return ResourceManager.GetString("msgSuccessfullyUpdateLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The device has not been deleted..
+        /// </summary>
+        internal static string msgTheDeviceHasNotBeenDeleted_ {
+            get {
+                return ResourceManager.GetString("msgTheDeviceHasNotBeenDeleted.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value not match Card Link Type..
+        /// </summary>
+        internal static string msgThevaluenotmatchCardLinkType {
+            get {
+                return ResourceManager.GetString("msgThevaluenotmatchCardLinkType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value not match link format..
+        /// </summary>
+        internal static string msgThevaluenotmatchlinkformat {
+            get {
+                return ResourceManager.GetString("msgThevaluenotmatchlinkformat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unexpected error occurred. Please restart the app or contact support..
+        /// </summary>
+        internal static string msgUnexpected {
+            get {
+                return ResourceManager.GetString("msgUnexpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        internal static string msgWarning {
+            get {
+                return ResourceManager.GetString("msgWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure to delete This Card?.
+        /// </summary>
+        internal static string msgWarning_qu {
+            get {
+                return ResourceManager.GetString("msgWarning_qu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string msgYes {
+            get {
+                return ResourceManager.GetString("msgYes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Internet connection!.
+        /// </summary>
+        internal static string No_Internet_connection {
+            get {
+                return ResourceManager.GetString("No_Internet_connection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         internal static string plcPassword {
@@ -840,6 +1290,15 @@ namespace Cardrly.Resources.Lan {
         internal static string plcUserName {
             get {
                 return ResourceManager.GetString("plcUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retry.
+        /// </summary>
+        internal static string Retry {
+            get {
+                return ResourceManager.GetString("Retry", resourceCulture);
             }
         }
     }

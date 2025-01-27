@@ -10,6 +10,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Cardrly.Mode_s.CardLink;
 using System.Globalization;
+using Cardrly.Resources.Lan;
 
 
 namespace Cardrly.Pages.MainPopups;
@@ -132,7 +133,7 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
 
     private async void TapGestureRecognizer_DeleteCard(object sender, TappedEventArgs e)
     {
-        bool ans = await DisplayAlert("Question", "Are you sure to delete This Card", "Ok", "Cancel");
+        bool ans = await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgWarning_qu}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
         if (ans)
         {
             this.IsEnabled = false;
@@ -182,10 +183,10 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
 
             if (json != null)
             {
-                foreach (CardLinkResponse cardLink in json.CardLinks)
-                {
-                    cardLink.AccountLinkUrlImgName = Utility.ServerUrl + cardLink.AccountLinkUrlImgName;
-                }
+                //foreach (CardLinkResponse cardLink in json.CardLinks)
+                //{
+                //    cardLink.AccountLinkUrlImgName = Utility.ServerUrl + cardLink.AccountLinkUrlImgName;
+                //}
                 CardDetails = json;
             }
             UserDialogs.Instance.HideHud();

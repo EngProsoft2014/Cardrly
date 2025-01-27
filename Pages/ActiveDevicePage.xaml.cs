@@ -2,6 +2,7 @@ using Cardrly.Mode_s.Card;
 using Cardrly.Models;
 using Cardrly.Models.Devices;
 using Cardrly.Pages.MainPopups;
+using Cardrly.Resources.Lan;
 using Cardrly.ViewModels;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Alerts;
@@ -348,7 +349,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
                     //Check if Qr Is Valid
                     if (string.IsNullOrEmpty(QrValue))
                     {
-                        await DisplayAlert("Warning", "No ID found in the Qr.", "ok");
+                        await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgNoIDfoundintheQr}", $"{AppResources.msgOk}");
                         return;
                     }
                 });

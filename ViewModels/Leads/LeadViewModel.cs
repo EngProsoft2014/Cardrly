@@ -4,6 +4,7 @@ using Cardrly.Helpers;
 using Cardrly.Models.Lead;
 using Cardrly.Pages;
 using Cardrly.Pages.MainPopups;
+using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -16,9 +17,12 @@ namespace Cardrly.ViewModels.Leads
 {
     public partial class LeadViewModel : BaseViewModel
     {
+        #region Prop
         [ObservableProperty]
         ObservableCollection<LeadResponse> leads = new ObservableCollection<LeadResponse>();
-        public readonly IAudioManager _audioManager;
+        public readonly IAudioManager _audioManager; 
+        #endregion
+
         #region Service
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
@@ -57,7 +61,7 @@ namespace Cardrly.ViewModels.Leads
                 }
                 else
                 {
-                    var toast = Toast.Make($"Failed to change status", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    var toast = Toast.Make($"{AppResources.msgFailedToChangeStatus}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
                 IsEnable = true;

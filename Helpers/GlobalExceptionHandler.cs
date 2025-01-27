@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Cardrly.Resources.Lan;
+using System.Diagnostics;
 
 namespace Cardrly.Helpers
 {
@@ -82,9 +83,9 @@ namespace Cardrly.Helpers
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 Application.Current.MainPage?.DisplayAlert(
-                    "Unexpected Error",
-                    "An unexpected error occurred. Please restart the app or contact support.",
-                    "OK"
+                    $"{AppResources.msgWarning}",
+                    $"{AppResources.msgUnexpected}",
+                    $"{AppResources.msgOk}"
                 );
             });
         }

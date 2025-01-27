@@ -2,6 +2,7 @@ using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models.Lead;
 using Cardrly.Models.LeadComment;
+using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
@@ -47,7 +48,7 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
         {
             if (string.IsNullOrEmpty(CommEntr.Text))
             {
-                var toast = Toast.Make("Require Field : Comment", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                var toast = Toast.Make($"{AppResources.msgFRComment}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
             }
             else
@@ -65,7 +66,7 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
                     var json = await Rep.PostTRAsync<LeadCommentRequest, LeadCommentResponse>($"{ApiConstants.LeadCommentAddApi}{AccId}/Lead/{Res.Id}/LeadComment", req, UserToken);
                     if (json.Item1 != null)
                     {
-                        var toast = Toast.Make("Successfully Add Comment.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        var toast = Toast.Make($"{AppResources.msgSuccessfullyAddComment}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
                         //await MopupService.Instance.PopAsync();
                     }

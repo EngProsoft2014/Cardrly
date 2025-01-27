@@ -1,5 +1,6 @@
 ﻿
 
+using Cardrly.Helpers;
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -15,6 +16,7 @@ namespace Cardrly.Mode_s.CardLink
         public string AccountLinkTitle { get; set; } = default!;
         public int CardLinkType { get; set; } = default!;
         public string? AccountLinkUrlImgName { get; set; } = default!;
+        public string? AccountLinkUrlImgNameVM { get { return Utility.ServerUrl + AccountLinkUrlImgName; } }
         private string? _ValueOf;
         public string ValueOf
         {

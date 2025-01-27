@@ -36,7 +36,7 @@
         <ScrollView VerticalOptions="FillAndExpand">
             <StackLayout Margin="0,30,0,0">
                 <!--Cover Image-->
-                <Border StrokeShape="RoundRectangle 15" HeightRequest="150" HorizontalOptions="FillAndExpand" BackgroundColor="White">
+                <Border StrokeShape="RoundRectangle 15" HeightRequest="150" Stroke="#FF7F3E" HorizontalOptions="FillAndExpand" BackgroundColor="White">
                     <Image>
                         <Image.Triggers>
                             <DataTrigger Binding="{Binding IsCoverImageAdded}" TargetType="Image" Value="1">
@@ -59,7 +59,7 @@
                 </Border>
                 <!--Profile Image-->
                 <Border StrokeShape="RoundRectangle 50" HeightRequest="100" WidthRequest="100" HorizontalOptions="FillAndExpand" BackgroundColor="White"
-                        StrokeThickness="1" TranslationY="-50">
+                        StrokeThickness="1" TranslationY="-50" Stroke="#FF7F3E">
                     <Image>
                         <Image.Triggers>
                             <DataTrigger Binding="{Binding IsProfileImageAdded}" TargetType="Image" Value="1">

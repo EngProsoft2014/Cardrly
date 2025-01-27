@@ -1,5 +1,6 @@
 ﻿using Akavache;
 using Cardrly.Constants;
+using Cardrly.Extensions;
 using Cardrly.Helpers;
 using Cardrly.Pages;
 using Cardrly.ViewModels;
@@ -18,11 +19,10 @@ namespace Cardrly
         {
             try
             {
-                Preferences.Default.Set("Lan", "ar");
-                CultureInfo.CurrentCulture = new CultureInfo("ar");
-                CultureInfo.CurrentUICulture = new CultureInfo("ar");
+
                 Rep = GenericRep;
                 _service = service;
+                LoadSetting();
                 Controls.StaticMember._audioManager = audioManager;
                 BlobCache.ApplicationName = "CardrlyDB";
                 BlobCache.EnsureInitialized();
@@ -38,13 +38,60 @@ namespace Cardrly
                 }
                 else
                 {
-                    var page = new HomePage(new HomeViewModel(Rep, _service, audioManager), Rep, _service);
-                    MainPage = new NavigationPage(page);
+                    MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, audioManager), Rep, _service));
                 }
+                Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             }
             catch(Exception ex)
             {
                 // Maui Team 
+            }
+        }
+
+        private async void Connectivity_ConnectivityChanged(object? sender, ConnectivityChangedEventArgs e)
+        {
+            if (e.NetworkAccess != NetworkAccess.Internet)
+            {
+                // Connection to internet is Not available
+                await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service));
+                return;
+            }
+        }
+
+        protected async override void OnStart()
+        {
+            base.OnStart();
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                // Connection to internet is Not available
+                await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service));
+                return;
+            }
+        }
+
+        protected async override void OnResume()
+        {
+            base.OnResume();
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                // Connection to internet is Not available
+                await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service));
+                return;
+            }
+        }
+
+        void LoadSetting()
+        {
+            string Lan = Preferences.Default.Get("Lan", "en");
+            if (Lan == "ar")
+            {
+                CultureInfo cal = new CultureInfo("ar");
+                TranslateExtension.Instance.SetCulture(cal);
+            }
+            else
+            {
+                CultureInfo cal = new CultureInfo("en");
+                TranslateExtension.Instance.SetCulture(cal);
             }
         }
 

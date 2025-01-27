@@ -55,10 +55,6 @@ namespace Cardrly.ViewModels
                 var toast = Toast.Make($"{ex.Message}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
             }
-            //var vm = new CardPreViewViewModel(card);
-            //var page = new CardPreViewPage(card);
-            //page.BindingContext = vm;
-            //await App.Current!.MainPage!.Navigation.PushAsync(page);
         }
 
         [RelayCommand]

@@ -3,6 +3,7 @@
 using Akavache;
 using Cardrly.Helpers;
 using Cardrly.Pages;
+using Cardrly.Resources.Lan;
 using Cardrly.Services.Data;
 using Cardrly.ViewModels;
 using CommunityToolkit.Maui.Core;
@@ -32,15 +33,17 @@ namespace Cardrly.Controls
 
             var snackbarOptions = new SnackbarOptions
             {
+                
                 BackgroundColor = Color.FromHex(BKColor),
                 TextColor = Color.FromHex(TextColor),
                 ActionButtonTextColor = Color.FromHex(TextColor),
                 CornerRadius = new CornerRadius(10),
                 Font = Microsoft.Maui.Font.SystemFontOfSize(14),
                 ActionButtonFont = Microsoft.Maui.Font.SystemFontOfSize(14),
+                
             };
             string text = Message;
-            string actionButtonText = "OK";
+            string actionButtonText = $"{AppResources.msgOk}";
             Action action = action1;
             TimeSpan duration = TimeSpan.FromSeconds(3);
 
@@ -72,7 +75,7 @@ namespace Cardrly.Controls
         {
             ServicesService _service = new ServicesService(generic);
 
-            await App.Current!.MainPage!.DisplayAlert("Warnaing", "Service is currently down. Please try again later.", "ok");
+            await App.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgServicedown}", $"{AppResources.msgOk}");
 
             string LangValueToKeep = Preferences.Default.Get("Lan", "en");
             Preferences.Default.Clear();

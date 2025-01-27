@@ -1,4 +1,5 @@
 using Cardrly.Controls;
+using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Views;
 using Mopups.Services;
@@ -71,12 +72,12 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
             }
             else
             {
-                await DisplayAlert("error", "Camera not supported", "OK");
+                await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgCameranotsupported}", $"{AppResources.msgOk}");
             }
         }
         catch (Exception ex)
         {
-            await DisplayAlert("error", ex.Message, "OK");
+            await DisplayAlert($"{AppResources.msgWarning}", ex.Message, $"{AppResources.msgOk}");
         }
         await MopupService.Instance.PopAsync();
     }
@@ -108,7 +109,7 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("TripBliss.Resources.Language.AppResources.error", ex.Message, "TripBliss.Resources.Language.AppResources.OK");
+            await DisplayAlert($"{AppResources.msgWarning}", ex.Message, $"{AppResources.msgOk}");
         }
         await MopupService.Instance.PopAsync();
     }
@@ -129,7 +130,7 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
         }
         else
         {
-            var toast = Toast.Make($"Please Select Image First", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            var toast = Toast.Make($"{AppResources.msgPleaseSelectImageFirst}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
         }
         await MopupService.Instance.PopAsync();

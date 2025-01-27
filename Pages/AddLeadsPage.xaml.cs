@@ -1,5 +1,6 @@
 using Azure;
 using Azure.AI.TextAnalytics;
+using Cardrly.Resources.Lan;
 using Cardrly.ViewModels.Leads;
 using Controls.UserDialogs.Maui;
 using Microsoft.CognitiveServices.Speech;
@@ -56,7 +57,7 @@ public partial class AddLeadsPage : Controls.CustomControl
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+            await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgAnerroroccurred} {ex.Message}", $"{AppResources.msgOk}");
         }
         finally
         {
@@ -70,7 +71,7 @@ public partial class AddLeadsPage : Controls.CustomControl
     {
         if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
         {
-            await DisplayAlert("Permission Denied", "Microphone access is required to record audio.", "OK");
+            await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgMicrophoneaccessisrequiredtorecordaudio_}", $"{AppResources.msgOk}");
             return null;
         }
 
@@ -79,8 +80,8 @@ public partial class AddLeadsPage : Controls.CustomControl
         if (!_audioRecorder.IsRecording)
         {
             await _audioRecorder.StartAsync(filePath);
-            await DisplayAlert("Recording", "Recording started...", "OK");
-            RecordButton.Text = "End Recording";
+            await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgRecordingstarted}", $"{AppResources.msgOk}");
+            RecordButton.Text = $"{AppResources.msgEndRecording}";
             return null; // Recording is ongoing
         }
         else
@@ -88,8 +89,7 @@ public partial class AddLeadsPage : Controls.CustomControl
             var recordedAudio = await _audioRecorder.StopAsync();
             if (File.Exists(filePath))
             {
-                await DisplayAlert("Recording Stopped", $"Audio saved to: {filePath}", "OK");
-                RecordButton.Text = "Start Recording";
+                RecordButton.Text = $"{AppResources.lblStarRecording}";
 
                 var player = AudioManager.Current.CreatePlayer(recordedAudio.GetAudioStream());
                 player.Play();
@@ -97,8 +97,8 @@ public partial class AddLeadsPage : Controls.CustomControl
             }
             else
             {
-                await DisplayAlert("Error", "Audio file not saved. Please try again.", "OK");
-                RecordButton.Text = "Start Recording";
+                await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgAudiofilenotsavedPleasetryagain}", $"{AppResources.msgOk}");
+                RecordButton.Text = $"{AppResources.lblStarRecording}";
                 return null;
             }
 
@@ -118,16 +118,16 @@ public partial class AddLeadsPage : Controls.CustomControl
             }
             else if (result.Reason == ResultReason.NoMatch)
             {
-                return "Speech not recognized. Please try again.";
+                return $"{AppResources.msgSpeechnotrecognizedPleasetryagain}";
             }
             else
             {
-                return $"Speech recognition failed: {result.Reason}";
+                return $"{AppResources.msgSpeechrecognitionfailed} {result.Reason}";
             }
         }
         catch (Exception ex)
         {
-            return $"Error during speech recognition: {ex.Message}";
+            return $"{AppResources.msgErrorduringspeechrecognition} {ex.Message}";
         }
     }
 
@@ -142,7 +142,23 @@ public partial class AddLeadsPage : Controls.CustomControl
             {
                 if (entity.Category.ToString().Contains("user"))
                 {
-
+                    Model.Request!.FullName = entity.Text;
+                }
+                if (entity.Category.ToString().Contains("phone"))
+                {
+                    Model.Request!.Phone = entity.Text;
+                }
+                if (entity.Category.ToString().ToLower().Contains("email"))
+                {
+                    Model.Request!.Email = entity.Text;
+                }
+                if (entity.Category.ToString().ToLower().Contains("address"))
+                {
+                    Model.Request!.Address = entity.Text;
+                }
+                if (entity.Category.ToString().ToLower().Contains("company"))
+                {
+                    Model.Request!.Company = entity.Text;
                 }
                 result.AppendLine($"Entity: {entity.Text}, Type: {entity.Category}");
             }

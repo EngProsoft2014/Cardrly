@@ -2,6 +2,7 @@
 using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models.Lead;
+using Cardrly.Resources.Lan;
 using Cardrly.ViewModels;
 using CommunityToolkit.Maui.Alerts;
 using Controls.UserDialogs.Maui;
@@ -54,7 +55,7 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
 
     private async void TapGestureRecognizer_DeleteLead(object sender, TappedEventArgs e)
     {
-        bool ans = await DisplayAlert("Question", "Are you sure to delete This Lead", "Ok", "Cancel");
+        bool ans = await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgDeleteLead}", $"{AppResources.msgOk}", $"{AppResources.msgNo}");
         if (ans)
         {
             this.IsEnabled = false;
@@ -66,12 +67,12 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
                 string res = await Rep.PostEAsync($"{ApiConstants.LeadDeleteApi}{AccId}/Lead/{Res.Id}/Delete", UserToken);
                 if (res == "")
                 {
-                    var toast = Toast.Make($"Lead Deleted Successfully", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    var toast = Toast.Make($"{AppResources.msgLeadDeletedSuccessfully}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
                 else
                 {
-                    var toast = Toast.Make($"Can't Delete This Lead Now Try ahin Later", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    var toast = Toast.Make($"{AppResources.msgCan_tDeleteThisLeadNowTryagainLater}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
                 await MopupService.Instance.PopAsync();
@@ -102,7 +103,7 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
         }
         else
         {
-            var toast = Toast.Make("This lead don't have Phone Number", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            var toast = Toast.Make($"{AppResources.msgLeadPhone}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
         }
     }
@@ -131,7 +132,7 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
         }
         else
         {
-            var toast = Toast.Make("This lead don't have email", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            var toast = Toast.Make($"{AppResources.msgLeadEmail}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
         }
     }

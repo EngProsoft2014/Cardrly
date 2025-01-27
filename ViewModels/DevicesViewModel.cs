@@ -5,6 +5,7 @@ using Cardrly.Helpers;
 using Cardrly.Mode_s.Card;
 using Cardrly.Models.Devices;
 using Cardrly.Pages;
+using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -17,10 +18,12 @@ namespace Cardrly.ViewModels
 {
     public partial class DevicesViewModel : BaseViewModel
     {
+        #region Prop
         [ObservableProperty]
         ObservableCollection<DevicesResponse> devices = new ObservableCollection<DevicesResponse>();
         [ObservableProperty]
-        public CardDetailsResponse detailsResponse = new CardDetailsResponse();
+        public CardDetailsResponse detailsResponse = new CardDetailsResponse(); 
+        #endregion
 
         #region Service
         readonly IGenericRepository Rep;
@@ -90,7 +93,7 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task DeletDeviceClick(DevicesResponse res)
         {
-            bool result = await App.Current!.MainPage!.DisplayAlert("Delete Device" , "Are you sure you want to delete this device?", "Yes", "No");
+            bool result = await App.Current!.MainPage!.DisplayAlert($"{AppResources.msgDeleteDevice}" , $"{AppResources.msgDeleteDevice_qu}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
             if (result)
             {
                 UserDialogs.Instance.ShowLoading();
@@ -108,7 +111,7 @@ namespace Cardrly.ViewModels
                     }
                     else
                     {
-                        var toast = Toast.Make("The device has not been deleted.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        var toast = Toast.Make($"{AppResources.msgTheDeviceHasNotBeenDeleted_}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
                     }
                 }

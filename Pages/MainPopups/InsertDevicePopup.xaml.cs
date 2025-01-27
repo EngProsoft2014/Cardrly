@@ -1,4 +1,4 @@
-using Cardrly.Helpers;
+using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using Mopups.Services;
 using System.Globalization;
@@ -35,7 +35,7 @@ public partial class InsertDevicePopup : Mopups.Pages.PopupPage
         string valid = "";
         if (string.IsNullOrEmpty(ValueEn.Text))
         {
-            var toast = Toast.Make("Require Field : Link", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            var toast = Toast.Make($"{AppResources.msgFRLink}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
             return;
         }
@@ -46,7 +46,7 @@ public partial class InsertDevicePopup : Mopups.Pages.PopupPage
         // return data 
         if (valid != "URL")
         {
-            var toast = Toast.Make("The value not match link format", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            var toast = Toast.Make($"{AppResources.msgThevaluenotmatchlinkformat}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
         }
         else

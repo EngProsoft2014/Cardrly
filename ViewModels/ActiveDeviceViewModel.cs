@@ -3,6 +3,7 @@ using Cardrly.Helpers;
 using Cardrly.Mode_s.Card;
 using Cardrly.Models;
 using Cardrly.Models.Devices;
+using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -71,13 +72,13 @@ namespace Cardrly.ViewModels
                 UserDialogs.Instance.HideHud();
                 if (json != null)
                 {
-                    foreach (DevicesTypeModel item in json)
-                    {
-                        if (!string.IsNullOrEmpty(item.DeviceImgUrl))
-                        {
-                            item.DeviceImgUrl = $"https://app.cardrly.com/{item.DeviceImgUrl}";
-                        }
-                    }
+                    //foreach (DevicesTypeModel item in json)
+                    //{
+                    //    if (!string.IsNullOrEmpty(item.DeviceImgUrl))
+                    //    {
+                    //        item.DeviceImgUrl = $"https://app.cardrly.com/{item.DeviceImgUrl}";
+                    //    }
+                    //}
                     DeviceModels = json;
                     
                 }
@@ -101,7 +102,7 @@ namespace Cardrly.ViewModels
                 var res = await Rep.PostTRAsync<DevicesRequest, DevicesResponse>($"{ApiConstants.DevicesAddApi}{AccId}/Card/{DetailsResponse.Id}/Devices", reqdto, UserToken);
                 if (res.Item1 != null)
                 {
-                    var toast = Toast.Make($"Device Added Successfully.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    var toast = Toast.Make($"{AppResources.msgDeviceAddedSuccessfully}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
                 else

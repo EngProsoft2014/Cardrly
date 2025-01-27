@@ -39,7 +39,7 @@
                     <DataTemplate>
                         <Border StrokeShape="RoundRectangle 20" Padding="0,20" StrokeThickness="0" BackgroundColor="White">
                             <VerticalStackLayout Spacing="10">
-                                <Image Source="{Binding DeviceImgUrl}"></Image>
+                                <Image Source="{Binding DeviceImgUrlVM}"></Image>
                                 <Label Text="{Binding DeviceName}" FontAutoScalingEnabled="False" TextColor="Black" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                                    FontSize="14"></Label>
                             </VerticalStackLayout>

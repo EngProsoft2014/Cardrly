@@ -5,6 +5,7 @@ using Cardrly.Mode_s.CardLink;
 using Cardrly.Models.CardLink;
 using Cardrly.Pages.Links;
 using Cardrly.Pages.MainPopups;
+using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -62,7 +63,7 @@ namespace Cardrly.ViewModels.Links
                 }
                 else
                 {
-                    var toast = Toast.Make($"Failed to change status", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    var toast = Toast.Make($"{AppResources.msgFailedToChangeStatus}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
                 IsEnable = true;
@@ -86,7 +87,7 @@ namespace Cardrly.ViewModels.Links
                 }
                 else
                 {
-                    var toast = Toast.Make($"Failed to Delete Link", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    var toast = Toast.Make($"{AppResources.msgFailedToChangeStatus}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
                 UserDialogs.Instance.HideHud();
@@ -121,10 +122,10 @@ namespace Cardrly.ViewModels.Links
                 var json = await Rep.GetAsync<CardDetailsResponse>($"{ApiConstants.CardGetDetailsAllApi}{CardId}", UserToken);     
                 if (json != null)
                 {
-                    foreach (CardLinkResponse cardLink in json.CardLinks)
-                    {
-                        cardLink.AccountLinkUrlImgName = Utility.ServerUrl + cardLink.AccountLinkUrlImgName;
-                    }
+                    //foreach (CardLinkResponse cardLink in json.CardLinks)
+                    //{
+                    //    cardLink.AccountLinkUrlImgName = Utility.ServerUrl + cardLink.AccountLinkUrlImgName;
+                    //}
                     CardDetails = json;
                     CardOrder = new List<CardLinkResponse>(json.CardLinks);
                 }
@@ -145,7 +146,7 @@ namespace Cardrly.ViewModels.Links
                 if (json.Item1 != null)
                 {
                     CardOrder = json.Item1;
-                    var toast = Toast.Make("Successfully Reordered.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    var toast = Toast.Make($"{AppResources.msgSuccessfullyReordered}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
                 else if (json.Item2 != null)

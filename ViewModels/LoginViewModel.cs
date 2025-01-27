@@ -10,6 +10,7 @@ using Cardrly.Services.Data;
 using System.Reactive.Linq;
 using Cardrly.Constants;
 using Plugin.Maui.Audio;
+using Cardrly.Resources.Lan;
 
 namespace Cardrly.ViewModels
 {
@@ -45,12 +46,12 @@ namespace Cardrly.ViewModels
             IsEnable = false;
             if (string.IsNullOrEmpty(model.UserName))
             {
-                var toast = Toast.Make($"Field Required : User Name", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                var toast = Toast.Make($"{AppResources.msgFRUserName}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
             }
             else if (string.IsNullOrEmpty(model.Password))
             {
-                var toast = Toast.Make($"Field Required : Password", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                var toast = Toast.Make($"{AppResources.msgFRPassword}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
             }
             else

@@ -4,6 +4,7 @@ using Cardrly.Helpers;
 using Cardrly.Models.Lead;
 using Cardrly.Models.LeadCategory;
 using Cardrly.Pages.MainPopups;
+using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -44,7 +45,6 @@ namespace Cardrly.ViewModels.Leads
             Rep = GenericRep;
             _service = service;
             AddOrUpdate = 1;
-
         }
 
         public AddLeadViewModel(LeadResponse leadResponse, IGenericRepository GenericRep, Services.Data.ServicesService service)
@@ -68,7 +68,7 @@ namespace Cardrly.ViewModels.Leads
             }
             else if (!string.IsNullOrEmpty(Response!.UrlImgProfileVM) & Response.UrlImgProfileVM != Utility.ServerUrl)
             {
-                UserDialogs.Instance.ShowLoading("Loading Image");
+                UserDialogs.Instance.ShowLoading($"{AppResources.msgLoadingImage}");
                 var bytes = await StaticMember.GetImageBase64FromUrlAsync(Response.UrlImgProfileVM);
                 UserDialogs.Instance.HideHud();
                 page = new AddAttachmentsPopup(bytes);
@@ -97,7 +97,7 @@ namespace Cardrly.ViewModels.Leads
         {
             if (string.IsNullOrEmpty(Request!.FullName))
             {
-                var toast = Toast.Make("Require Field : Full Name", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                var toast = Toast.Make($"{AppResources.msgFRFullName}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
             }
             else
@@ -125,7 +125,7 @@ namespace Cardrly.ViewModels.Leads
                         var json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadAddApi}{accid}/Lead", requestDto, UserToken);
                         if (json.Item1 != null)
                         {
-                            var toast = Toast.Make("Successfully Add Lead.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            var toast = Toast.Make($"{AppResources.msgSuccessfullyAddLead}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
                             await App.Current!.MainPage!.Navigation.PopAsync();
                         }
@@ -154,7 +154,7 @@ namespace Cardrly.ViewModels.Leads
                         UserDialogs.Instance.HideHud();
                         if (json.Item1 != null)
                         {
-                            var toast = Toast.Make("Successfully update Lead.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            var toast = Toast.Make($"{AppResources.msgSuccessfullyUpdateLead}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
 
                         }
@@ -231,7 +231,7 @@ namespace Cardrly.ViewModels.Leads
                 var json = await Rep.PostTRAsync<LeadScanCardRequest, LeadResponse>($"{ApiConstants.LeadGetScanCardApi}{accid}/Lead/GetScanCard", ScanCard, UserToken);
                 if (json.Item1 != null)
                 {
-                    var toast = Toast.Make("Successfully Scan Card.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    var toast = Toast.Make($"{AppResources.msgSuccessfullyScanCard}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                     Init(json.Item1);
                 }

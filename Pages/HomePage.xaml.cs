@@ -123,6 +123,14 @@ public partial class HomePage : Controls.CustomControl
     private void SearchBar_Lead(object sender, TextChangedEventArgs e)
     {
         LeadColc.ItemsSource = LeadViewModel.Leads.Where(a => a.FullName.Contains(e.NewTextValue));
-    } 
+    }
     #endregion
+
+    private async void HomeRef_Refreshing(object sender, EventArgs e)
+    {
+        HomeRef.IsRefreshing = true;
+        await homeViewModel.GetAccData();
+        await homeViewModel.GetAllCards();
+        HomeRef.IsRefreshing = false;
+    }
 }

@@ -2,14 +2,11 @@
 using CommunityToolkit.Mvvm.Input;
 using Cardrly.Helpers;
 using Cardrly.Pages;
-using Plugin.NFC;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Plugin.Maui.Audio;
+using Cardrly.Resources.Lan;
+using Mopups.Services;
+using Cardrly.Pages.MainPopups;
 
 namespace Cardrly.ViewModels
 {
@@ -46,7 +43,7 @@ namespace Cardrly.ViewModels
                 Preferences.Default.Set("Lan", LangValueToKeep);
                 await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service,_audioManager)));
             };
-            Controls.StaticMember.ShowSnackBar("Do you want to Logout", Controls.StaticMember.SnackBarColor, Controls.StaticMember.SnackBarTextColor, action);
+            Controls.StaticMember.ShowSnackBar($"{AppResources.msgDoYouWantToLogout}", Controls.StaticMember.SnackBarColor, Controls.StaticMember.SnackBarTextColor, action);
             return Task.CompletedTask;
         }
 
@@ -59,6 +56,11 @@ namespace Cardrly.ViewModels
         async Task DeviceClick()
         {
             await App.Current!.MainPage!.Navigation.PushAsync(new DevicesPage(new DevicesViewModel(Rep, _service)));
+        }
+        [RelayCommand]
+        async Task LanguageClick()
+        {
+            await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service));
         }
         #endregion
     }

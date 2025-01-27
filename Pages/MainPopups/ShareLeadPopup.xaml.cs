@@ -2,6 +2,7 @@ using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models.Lead;
 using Cardrly.Models.LeadAssign;
+using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
@@ -131,7 +132,7 @@ public partial class ShareLeadPopup : Mopups.Pages.PopupPage
             }
             else
             {
-                var toast = Toast.Make($"Failed to change status", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                var toast = Toast.Make($"{AppResources.msgFailedToChangeStatus}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
             }
             this.IsEnabled = true;
@@ -154,7 +155,7 @@ public partial class ShareLeadPopup : Mopups.Pages.PopupPage
             }
             else
             {
-                var toast = Toast.Make($"Failed to change status", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                var toast = Toast.Make($"{AppResources.msgFailedToChangeStatus}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
             }
             this.IsEnabled = true;

@@ -13,6 +13,7 @@ using Cardrly.ViewModels.Links;
 using Cardrly.Controls;
 using System.Collections.ObjectModel;
 using Cardrly.Models;
+using Cardrly.Resources.Lan;
 
 namespace Cardrly.ViewModels
 {
@@ -141,7 +142,7 @@ namespace Cardrly.ViewModels
             }
             else if (!string.IsNullOrEmpty(Card.UrlImgProfileVM) && Card.UrlImgProfileVM != Utility.ServerUrl)
             {
-                UserDialogs.Instance.ShowLoading("Loading Image");
+                UserDialogs.Instance.ShowLoading($"{AppResources.msgLoadingImage}");
                 var bytes = await StaticMember.GetImageBase64FromUrlAsync(Card.UrlImgProfileVM);
                 UserDialogs.Instance.HideHud();
                 page = new AddAttachmentsPopup(bytes);
@@ -173,7 +174,7 @@ namespace Cardrly.ViewModels
             }
             else if (!string.IsNullOrEmpty(Card.UrlImgCoverVM) && Card.UrlImgCoverVM != Utility.ServerUrl)
             {
-                UserDialogs.Instance.ShowLoading("Loading Image");
+                UserDialogs.Instance.ShowLoading($"{AppResources.msgLoadingImage}");
                 var bytes = await StaticMember.GetImageBase64FromUrlAsync(Card.UrlImgCoverVM);
                 UserDialogs.Instance.HideHud();
                 page = new AddAttachmentsPopup(bytes);
@@ -203,28 +204,29 @@ namespace Cardrly.ViewModels
             IsEnable = false;
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                UserDialogs.Instance.ShowLoading();
+                
                 string UserToken = await _service.UserToken();
                 string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
                 if (AddOrUpdate == 1)
                 {
                     if (string.IsNullOrEmpty(Request!.Email))
                     {
-                        var toast = Toast.Make("Require Field : Email", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        var toast = Toast.Make($"{AppResources.msgFREmail}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
                     }
                     else if (string.IsNullOrEmpty(Request!.Password))
                     {
-                        var toast = Toast.Make("Require Field : Password", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        var toast = Toast.Make($"{AppResources.msgFRPassword}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
                     }
                     else if (string.IsNullOrEmpty(Request!.CardName))
                     {
-                        var toast = Toast.Make("Require Field : Card Name", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        var toast = Toast.Make($"{AppResources.msgFRCardName}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
                     }
                     else
                     {
+                        UserDialogs.Instance.ShowLoading();
                         CardRequestDto requestDto = new CardRequestDto()
                         {
                             PersonName = Request.PersonName,
@@ -248,7 +250,7 @@ namespace Cardrly.ViewModels
                         UserDialogs.Instance.HideHud();
                         if (json.Item1 != null)
                         {
-                            var toast = Toast.Make("Successfully Add card.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            var toast = Toast.Make($"{AppResources.msgSuccessfullyAddCard}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
 
                         }
@@ -283,7 +285,7 @@ namespace Cardrly.ViewModels
                     UserDialogs.Instance.HideHud();
                     if (json.Item1 != null)
                     {
-                        var toast = Toast.Make("Successfully update card.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        var toast = Toast.Make($"{AppResources.msgSuccessfullyUpdateCard}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
 
                     }

@@ -2,10 +2,12 @@ using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Mode_s.CardLink;
 using Cardrly.Models.AccountLinks;
+using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
 using System.Globalization;
+using System.Reactive.Joins;
 using System.Text.RegularExpressions;
 
 namespace Cardrly.Pages.MainPopups;
@@ -37,19 +39,6 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
         CardLinkRef = cardLink;
         ValueEn.Text = CardLink.ValueOf;
         LoadData();
-
-        string Lan = Preferences.Default.Get("Lan", "en");
-
-        if (Lan == "ar")
-        {
-            this.FlowDirection = FlowDirection.RightToLeft;
-            CultureInfo.CurrentCulture = new CultureInfo("ar");
-        }
-        else
-        {
-            this.FlowDirection = FlowDirection.LeftToRight;
-            CultureInfo.CurrentCulture = new CultureInfo("en");
-        }
     }
 
     public EditLinkPopup(int isUpdate, AccountLinkResponse res,string cardId, IGenericRepository GenericRep, Services.Data.ServicesService service)
@@ -78,6 +67,19 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
         LinkType.Add("Phone");
         TypePicker.ItemsSource = LinkType;
         TypePicker.SelectedIndex = CardLink.CardLinkType - 1;
+
+        // Flow Direction
+        string Lan = Preferences.Default.Get("Lan", "en");
+        if (Lan == "ar")
+        {
+            this.FlowDirection = FlowDirection.RightToLeft;
+            CultureInfo.CurrentCulture = new CultureInfo("ar");
+        }
+        else
+        {
+            this.FlowDirection = FlowDirection.LeftToRight;
+            CultureInfo.CurrentCulture = new CultureInfo("en");
+        }
     }
 
     private async void Save_Clicked(object sender, EventArgs e)
@@ -85,7 +87,7 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
         string valid = "";
         if (string.IsNullOrEmpty(ValueEn.Text))
         {
-            var toast = Toast.Make("Require Field : Value", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            var toast = Toast.Make($"{AppResources.msgFRValue}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
             return;
         }
@@ -108,7 +110,7 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
         }
         else
         {
-            var toast = Toast.Make($"The value not match Card Link Type", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            var toast = Toast.Make($"{AppResources.msgThevaluenotmatchCardLinkType}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
         }
     }
@@ -162,7 +164,7 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
                 UserDialogs.Instance.HideHud();
                 if (json.Item1 != null)
                 {
-                    var toast = Toast.Make($"Successfully Add Link", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    var toast = Toast.Make($"{AppResources.msgSuccessfullyUpdateLink}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                     await MopupService.Instance.PopAsync();
                 }
@@ -178,7 +180,7 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
                 UserDialogs.Instance.HideHud();
                 if (json.Item1 != null)
                 {
-                    var toast = Toast.Make($"Successfully Add Link", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    var toast = Toast.Make($"{AppResources.msgSuccessfullyAddLink}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                     await MopupService.Instance.PopAsync();
                 }

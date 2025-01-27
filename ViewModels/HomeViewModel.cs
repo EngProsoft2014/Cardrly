@@ -3,6 +3,7 @@ using Cardrly.Helpers;
 using Cardrly.Mode_s.Account;
 using Cardrly.Mode_s.Card;
 using Cardrly.Models.Home;
+using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -52,15 +53,13 @@ namespace Cardrly.ViewModels
         {
             if (FromDate.Date >ToDate.Date)
             {
-                var toast = Toast.Make("The To Date Must be greater Than From Date", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                var toast = Toast.Make($"{AppResources.msgDate_HomePage}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
             }
             else
             {
                 UserDialogs.Instance.ShowLoading();
-                await GetAllCards();
                 await GetAllStatistics();
-                await GetAccData();
                 UserDialogs.Instance.HideHud();
             }
         }
@@ -104,7 +103,7 @@ namespace Cardrly.ViewModels
             
         }
 
-        async Task GetAccData()
+        public async Task GetAccData()
         {
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
@@ -123,7 +122,7 @@ namespace Cardrly.ViewModels
             }
         }
 
-        async Task GetAllCards()
+        public async Task GetAllCards()
         {
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))

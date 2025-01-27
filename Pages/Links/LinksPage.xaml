@@ -53,7 +53,7 @@
                                 </Image>
                                 <!--Icon-->
                                 <Border StrokeShape="RoundRectangle 8" StrokeThickness="0" HeightRequest="50" WidthRequest="50">
-                                    <Image Source="{Binding AccountLinkUrlImgName}" Aspect="AspectFill"></Image>
+                                    <Image Source="{Binding AccountLinkUrlImgNameVM}" Aspect="AspectFill"></Image>
                                 </Border>
                                 <!--Titel-->
                                 <Label Text="{Binding AccountLinkTitle}" FontSize="16" TextColor="Black" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
