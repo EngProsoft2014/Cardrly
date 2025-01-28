@@ -4,6 +4,8 @@ using Cardrly.ViewModels.Leads;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
+using static Cardrly.Models.Calendar.CalendlyResponseModel;
+using static Cardrly.Models.Calendar.GmailResponseModel;
 
 namespace Cardrly.Pages;
 
@@ -132,5 +134,39 @@ public partial class HomePage : Controls.CustomControl
         await homeViewModel.GetAccData();
         await homeViewModel.GetAllCards();
         HomeRef.IsRefreshing = false;
+    }
+
+    private void UpComing_Tapped(object sender, TappedEventArgs e)
+    {
+        CalendarViewModel.IsPassed = 0;
+        if (CalendarViewModel.SelectedProvider.Value == 3)
+        {
+            CalenderCollcView.ItemsSource = CalendarViewModel.CalendlyResponses.Where(a => a.start_time > DateTime.UtcNow);
+        }
+        else if(CalendarViewModel.SelectedProvider.Value == 1)
+        {
+            CalenderCollcView.ItemsSource = CalendarViewModel.CalendarEventGmails.Where(a => a.Start.DateTime > DateTime.UtcNow);
+        }
+        else
+        {
+            CalenderCollcView.ItemsSource = CalendarViewModel.CalendarOutlookEvents.Where(a => a.Start.DateTime > DateTime.UtcNow);
+        }
+    }
+
+    private void Passed_Tapped(object sender, TappedEventArgs e)
+    {
+        CalendarViewModel.IsPassed = 1;
+        if (CalendarViewModel.SelectedProvider.Value == 3)
+        {
+            CalenderCollcView.ItemsSource = CalendarViewModel.CalendlyResponses.Where(a => a.start_time < DateTime.UtcNow);
+        }
+        else if (CalendarViewModel.SelectedProvider.Value == 1)
+        {
+            CalenderCollcView.ItemsSource = CalendarViewModel.CalendarEventGmails.Where(a => a.Start.DateTime < DateTime.UtcNow);
+        }
+        else
+        {
+            CalenderCollcView.ItemsSource = CalendarViewModel.CalendarOutlookEvents.Where(a => a.Start.DateTime < DateTime.UtcNow);
+        }
     }
 }

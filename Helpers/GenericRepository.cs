@@ -108,8 +108,7 @@ namespace Cardrly.Helpers
                 }
                 //throw new HttpRequestExceptionEx(responseMessage.StatusCode, jsonResult);   
                 jsonResult = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var json1 = JsonConvert.DeserializeObject<T>(jsonResult);
-                return json1!;
+                return default(T)!;
             }
             catch (Exception e)
             {

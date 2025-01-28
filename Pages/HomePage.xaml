@@ -411,71 +411,221 @@
                         <ContentView x:Name="CalendarView" IsEnabled="{Binding IsEnable}" Margin="20">
                             <StackLayout Spacing="20">
                                 <!--Header-->
-                                <Label Text="{x:Static res:AppResources.hdrCalendar}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
-                                       TextColor="Black"></Label>
-                                <!--Data Menu-->
-                                <StackLayout Orientation="Horizontal" Spacing="10" HorizontalOptions="FillAndExpand">
-                                    <!--UpComing-->
-                                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="0.5" BackgroundColor="White" Stroke="Gray" HeightRequest="40" Padding="5,0">
-                                        <Label Text="{x:Static res:AppResources.btnUpcoming}" TextColor="Black" FontSize="14" BackgroundColor="Transparent" VerticalTextAlignment="Center"></Label>
-                                        <Border.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding OutComingClickCommand}"></TapGestureRecognizer>
-                                        </Border.GestureRecognizers>
-                                        <Border.Triggers>
-                                            <DataTrigger TargetType="Border" Binding="{Binding IsPassed}" Value="0">
-                                                <Setter Property="StrokeThickness" Value="1"></Setter>
-                                                <Setter Property="Stroke" Value="#FF7F3E"></Setter>
-                                            </DataTrigger>
-                                        </Border.Triggers>
-                                    </Border>
-                                    <!--Passed-->
-                                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="0.5" BackgroundColor="White" Stroke="Gray" HeightRequest="40" Padding="15,0">
-                                        <Label Text="{x:Static res:AppResources.btnPassed}" TextColor="Black" FontSize="14" BackgroundColor="Transparent" VerticalTextAlignment="Center"></Label>
-                                        <Border.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding PassedClickCommand}"></TapGestureRecognizer>
-                                        </Border.GestureRecognizers>
-                                        <Border.Triggers>
-                                            <DataTrigger TargetType="Border" Binding="{Binding IsPassed}" Value="1">
-                                                <Setter Property="StrokeThickness" Value="1"></Setter>
-                                                <Setter Property="Stroke" Value="#FF7F3E"></Setter>
-                                            </DataTrigger>
-                                        </Border.Triggers>
-                                    </Border>
-                                    <!--Provider-->
-                                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray"  Margin='30,0,0,0'
-                                            HeightRequest="40" HorizontalOptions="FillAndExpand">
-                                        <Picker x:Name="ProviderPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding CardName}"
-                                                    SelectedItem="{Binding SelectedCard}" ItemsSource="{Binding CardLst}"></Picker>
-                                    </Border>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{x:Static res:AppResources.hdrCalendar}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                                           TextColor="Black"></Label>
+                                    <Image>
+                                        <Image.Source>
+                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="25" Color="#FF7F3E"></FontImageSource>
+                                        </Image.Source>
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding GetDataCommand}"></TapGestureRecognizer>
+                                        </Image.GestureRecognizers>
+                                    </Image>
                                 </StackLayout>
-                                <!--Data View-->
-                                <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Stroke="Black">
-                                    <StackLayout>
-                                        <!--Meeting Data-->
-                                        <HorizontalStackLayout BackgroundColor="Black" Padding="10" Spacing="3">
-                                            <Label Text="Monday" FontSize="14" TextColor="White"></Label>
-                                            <Label Text="," FontSize="14" TextColor="White"></Label>
-                                            <Label Text="1/1/2025" FontSize="14" TextColor="White"></Label>
-                                        </HorizontalStackLayout>
-                                        <!--Meeting Date-->
-                                        <StackLayout Orientation="Horizontal" Padding="10" Spacing="3">
-                                            <VerticalStackLayout Spacing="5">
-                                                <HorizontalStackLayout>
-                                                    <Label Text="8:30 AM" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
-                                                    <Label Text="-" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
-                                                    <Label Text="9:30 AM" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
-                                                </HorizontalStackLayout>
-                                                <HorizontalStackLayout Spacing="3">
-                                                    <Label Text="Event Type" FontSize="14" TextColor="Black"></Label>
-                                                    <Label Text=":" FontSize="14" TextColor="Black"></Label>
-                                                    <Label Text="30 Minute Meeting" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
-                                                </HorizontalStackLayout>
-                                            </VerticalStackLayout>
-                                            <Label Text="Abdullah AKl" FontSize="14" TextColor="Black" FontAttributes="Bold"
-                                                   HorizontalOptions="EndAndExpand"></Label>
-                                        </StackLayout>
+                                <!--Data Menu-->
+                                <ScrollView VerticalOptions="FillAndExpand">
+                                    <StackLayout Spacing="10">
+                                        <VerticalStackLayout Spacing="7">
+                                            <!--Upper Data Menu-->
+                                            <StackLayout Orientation="Horizontal" Spacing="10"  HorizontalOptions="FillAndExpand">
+                                                <Grid ColumnSpacing="10" HorizontalOptions="FillAndExpand">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <!--From-->
+                                                    <VerticalStackLayout Spacing="5" Grid.Column="0">
+                                                        <Label Text="{x:Static res:AppResources.lblFrom}" TextColor="Gray" FontSize="13"></Label>
+                                                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
+                                                            <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
+                                                            Date="{Binding FromDate}"></DatePicker>
+                                                        </Border>
+
+                                                    </VerticalStackLayout>
+                                                    <!--To-->
+                                                    <VerticalStackLayout Spacing="5" Grid.Column="1">
+                                                        <Label Text="{x:Static res:AppResources.lblTo}" TextColor="Gray" FontSize="13"></Label>
+                                                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
+                                                            <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
+                                                            Date="{Binding ToDate}"></DatePicker>
+                                                        </Border>
+                                                    </VerticalStackLayout>
+                                                    <!--Select Card-->
+                                                    <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand" Grid.Column="3">
+                                                        <Label Text="{x:Static res:AppResources.lblCard}" TextColor="Gray" FontSize="13"></Label>
+                                                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
+                                                            <Picker x:Name="CalenderCardPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding CardName}"
+                                                        SelectedItem="{Binding SelectedCard}" ItemsSource="{Binding CardLst}"></Picker>
+                                                        </Border>
+                                                    </VerticalStackLayout>
+                                                </Grid>
+                                            </StackLayout>
+                                            <!--Lower Data Menu-->
+                                            <StackLayout Orientation="Horizontal" Spacing="14" HorizontalOptions="FillAndExpand">
+                                                <Grid ColumnSpacing="10" HorizontalOptions="FillAndExpand">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <!--UpComing-->
+                                                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="0.5" BackgroundColor="White"
+                                                            Stroke="Gray" HeightRequest="40" Padding="5,0" Grid.Column="0">
+                                                        <Label Text="{x:Static res:AppResources.btnUpcoming}" TextColor="Black" FontSize="14" BackgroundColor="Transparent" VerticalTextAlignment="Center"></Label>
+                                                        <Border.GestureRecognizers>
+                                                            <TapGestureRecognizer Tapped="UpComing_Tapped" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                                        </Border.GestureRecognizers>
+                                                        <Border.Triggers>
+                                                            <DataTrigger TargetType="Border" Binding="{Binding IsPassed}" Value="0">
+                                                                <Setter Property="StrokeThickness" Value="1"></Setter>
+                                                                <Setter Property="Stroke" Value="#FF7F3E"></Setter>
+                                                            </DataTrigger>
+                                                        </Border.Triggers>
+                                                    </Border>
+                                                    <!--Passed-->
+                                                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="0.5" BackgroundColor="White" 
+                                                            Stroke="Gray" HeightRequest="40" Padding="15,0" Grid.Column="1">
+                                                        <Label Text="{x:Static res:AppResources.btnPassed}" TextColor="Black" FontSize="14" BackgroundColor="Transparent" VerticalTextAlignment="Center"></Label>
+                                                        <Border.GestureRecognizers>
+                                                            <TapGestureRecognizer Tapped="Passed_Tapped" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                                        </Border.GestureRecognizers>
+                                                        <Border.Triggers>
+                                                            <DataTrigger TargetType="Border" Binding="{Binding IsPassed}" Value="1">
+                                                                <Setter Property="StrokeThickness" Value="1"></Setter>
+                                                                <Setter Property="Stroke" Value="#FF7F3E"></Setter>
+                                                            </DataTrigger>
+                                                        </Border.Triggers>
+                                                    </Border>
+                                                    <!--Provider-->
+                                                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" 
+                                                            HeightRequest="40" Grid.Column="2">
+                                                        <Picker x:Name="ProviderPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding Name}"
+                                                    SelectedItem="{Binding SelectedProvider}" ItemsSource="{Binding CalendarTypes}"></Picker>
+                                                    </Border>
+                                                </Grid>
+                                            </StackLayout>
+                                        </VerticalStackLayout>
+                                        <CollectionView x:Name="CalenderCollcView" ItemsSource="{Binding CalendlyResponses}" VerticalOptions="FillAndExpand" >
+                                            <CollectionView.ItemsLayout>
+                                                <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
+                                            </CollectionView.ItemsLayout>
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <!--Data View-->
+                                                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Stroke="Black">
+                                                        <StackLayout>
+                                                            <!--Meeting Data-->
+                                                            <HorizontalStackLayout BackgroundColor="Black" Padding="10" Spacing="3">
+                                                                <Label Text="{Binding start_time,StringFormat='{0:dddd}'}" FontSize="12" TextColor="White">
+                                                                    <Label.Triggers>
+                                                                        <!--For OutLook Date-->
+                                                                        <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="2">
+                                                                            <Setter Property="Text" Value="{Binding Start.DateTime,StringFormat='{0:dddd}'}"></Setter>
+                                                                        </DataTrigger>
+                                                                        <!--For Gmail Date-->
+                                                                        <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="1">
+                                                                            <Setter Property="Text" Value="{Binding Start.DateTime,StringFormat='{0:dddd}'}"></Setter>
+                                                                        </DataTrigger>
+                                                                    </Label.Triggers>
+                                                                </Label>
+                                                                <Label Text="," FontSize="12" TextColor="White"></Label>
+                                                                <Label Text="{Binding start_time,StringFormat='{0:yyyy-MM-dd}'}" FontSize="12" TextColor="White">
+                                                                    <Label.Triggers>
+                                                                        <!--For OutLook Date-->
+                                                                        <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="2">
+                                                                            <Setter Property="Text" Value="{Binding Start.DateTime,StringFormat='{0:yyyy-MM-dd}'}"></Setter>
+                                                                        </DataTrigger>
+                                                                        <!--For Gmail Date-->
+                                                                        <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="1">
+                                                                            <Setter Property="Text" Value="{Binding Start.DateTime,StringFormat='{0:yyyy-MM-dd}'}"></Setter>
+                                                                        </DataTrigger>
+                                                                    </Label.Triggers>
+                                                                </Label>
+                                                            </HorizontalStackLayout>
+                                                            <!--Meeting Date-->
+                                                            <StackLayout Orientation="Horizontal" Padding="10" Spacing="3">
+                                                                <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
+                                                                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                                                        <Label Text="{Binding start_time,StringFormat='{0:hh:mm tt}'}" FontSize="12" TextColor="Black" FontAttributes="Bold">
+                                                                            <Label.Triggers>
+                                                                                <!--For OutLook Date-->
+                                                                                <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="2">
+                                                                                    <Setter Property="Text" Value="{Binding Start.DateTime,StringFormat='{0:hh:mm tt}'}"></Setter>
+                                                                                </DataTrigger>
+                                                                                <!--For Gmail Date-->
+                                                                                <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="1">
+                                                                                    <Setter Property="Text" Value="{Binding Start.DateTime,StringFormat='{0:hh:mm tt}'}"></Setter>
+                                                                                </DataTrigger>
+                                                                            </Label.Triggers>
+                                                                        </Label>
+                                                                        <Label Text="-" FontSize="12" TextColor="Black" FontAttributes="Bold"></Label>
+                                                                        <Label Text="{Binding end_time,StringFormat='{0:hh:mm tt}'}" FontSize="12" TextColor="Black" FontAttributes="Bold">
+                                                                            <Label.Triggers>
+                                                                                <!--For OutLook Date-->
+                                                                                <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="2">
+                                                                                    <Setter Property="Text" Value="{Binding End.DateTime,StringFormat='{0:hh:mm tt}'}"></Setter>
+                                                                                </DataTrigger>
+                                                                                <!--For Gmail Date-->
+                                                                                <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="1">
+                                                                                    <Setter Property="Text" Value="{Binding End.DateTime,StringFormat='{0:hh:mm tt}'}"></Setter>
+                                                                                </DataTrigger>
+                                                                            </Label.Triggers>
+                                                                        </Label>
+                                                                        <Label Text="{Binding Invitees[0].Name}" FontSize="12" TextColor="Black" FontAttributes="Bold" MaxLines="1" HorizontalOptions="EndAndExpand">
+                                                                            <Label.Triggers>
+                                                                                <!--For OutLook Date-->
+                                                                                <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="2">
+                                                                                    <Setter Property="Text" Value="{Binding Attendees[0].EmailAddress.Name}"></Setter>
+                                                                                </DataTrigger>
+                                                                                <!--For Gmail Date-->
+                                                                                <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="1">
+                                                                                    <Setter Property="Text" Value="{Binding Attendees[0].Email}"></Setter>
+                                                                                </DataTrigger>
+                                                                            </Label.Triggers>
+                                                                        </Label>
+                                                                    </StackLayout>
+                                                                    <HorizontalStackLayout Spacing="3">
+                                                                        <Label Text="Event Type" FontSize="12" TextColor="Black"></Label>
+                                                                        <Label Text=":" FontSize="12" TextColor="Black"></Label>
+                                                                        <Label Text="{Binding EventType}" FontSize="12" TextColor="Black" FontAttributes="Bold">
+                                                                            <Label.Triggers>
+                                                                                <!--For OutLook Date-->
+                                                                                <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="2">
+                                                                                    <Setter Property="Text" Value="{Binding Subject}"></Setter>
+                                                                                </DataTrigger>
+                                                                                <!--For Gmail Date-->
+                                                                                <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="1">
+                                                                                    <Setter Property="Text" Value="{Binding Summary}"></Setter>
+                                                                                </DataTrigger>
+                                                                            </Label.Triggers>
+                                                                        </Label>
+                                                                    </HorizontalStackLayout>
+                                                                </VerticalStackLayout>
+                                                            </StackLayout>
+                                                        </StackLayout>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                            <CollectionView.EmptyView>
+                                                <ContentView>
+                                                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                                        <Label Text="No Available Events" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                    </StackLayout>
+                                                </ContentView>
+                                            </CollectionView.EmptyView>
+                                            <CollectionView.Triggers>
+                                                <DataTrigger TargetType="CollectionView" Binding="{Binding SelectedProvider.Value}" Value="2">
+                                                    <Setter Property="ItemsSource" Value="{Binding CalendarOutlookEvents}"></Setter>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="CollectionView" Binding="{Binding SelectedProvider.Value}" Value="1">
+                                                    <Setter Property="ItemsSource" Value="{Binding CalendarEventGmails}"></Setter>
+                                                </DataTrigger>
+                                            </CollectionView.Triggers>
+                                        </CollectionView>
                                     </StackLayout>
-                                </Border>
+                                </ScrollView>
                             </StackLayout>
                         </ContentView>
                     </tabView:SfTabItem.Content>
