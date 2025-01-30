@@ -21,4 +21,9 @@ public partial class ScanQrPage : Controls.CustomControl
         Match match = Regex.Match(e.Results.FirstOrDefault()!.Value, pattern);
         QrClose?.Invoke(match.Value);
     }
+
+    private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    {
+        App.Current!.MainPage!.Navigation.PopAsync();
+    }
 }

@@ -356,7 +356,20 @@
                                                 <StackLayout Orientation="Horizontal" Spacing="10" >
                                                     <!--Image Profile-->
                                                     <Border StrokeShape="RoundRectangle 50" HeightRequest="60" WidthRequest="60">
-                                                        <Image Source="{Binding UrlImgProfileVM}" Aspect="AspectFill"></Image>
+                                                        <Image Source="{Binding UrlImgProfileVM}" Aspect="AspectFill">
+                                                            <Image.Triggers>
+                                                                <DataTrigger TargetType="Image" Binding="{Binding UrlImgProfileVM}" Value="https://api.cardrly.com/">
+                                                                    <Setter Property="Source">
+                                                                        <Setter.Value>
+                                                                            <FontImageSource Glyph="" FontFamily="FontIcon" Color="Black"></FontImageSource>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                    <Setter Property="WidthRequest" Value="25"></Setter>
+                                                                    <Setter Property="HeightRequest" Value="25"></Setter>
+                                                                    <Setter Property="Aspect" Value="AspectFit"></Setter>
+                                                                </DataTrigger>
+                                                            </Image.Triggers>
+                                                        </Image>
                                                     </Border>
                                                     <!--Name & Company-->
                                                     <VerticalStackLayout Margin="0,7,0,0" HorizontalOptions="FillAndExpand" Spacing="7">

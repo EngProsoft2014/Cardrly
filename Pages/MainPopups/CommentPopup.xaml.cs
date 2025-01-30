@@ -68,7 +68,7 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
                     {
                         var toast = Toast.Make($"{AppResources.msgSuccessfullyAddComment}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
-                        //await MopupService.Instance.PopAsync();
+                        await MopupService.Instance.PopAsync();
                     }
                     else
                     {

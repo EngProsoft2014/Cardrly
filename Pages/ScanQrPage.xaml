@@ -12,6 +12,14 @@
             <Border StrokeShape="RoundRectangle 20" Stroke="White" StrokeThickness="2" VerticalOptions="CenterAndExpand" Padding="5" Margin="100,0">
                 <Image Source="qrcode.svg" Opacity="0.5"></Image>
             </Border>
+            <Image VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Margin="20">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="30" Color="White"></FontImageSource>
+                </Image.Source>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
         </Grid>
         
     </StackLayout>
