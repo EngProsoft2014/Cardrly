@@ -493,7 +493,7 @@
                                                     <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" 
                                                             HeightRequest="40" Grid.Column="2">
                                                         <Picker x:Name="ProviderPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding Name}"
-                                                                SelectedItem="{Binding SelectedProvider}" ItemsSource="{Binding CalendarTypes}" SelectedIndexChanged="ProviderPicker_SelectedIndexChanged"></Picker>
+                                                                SelectedItem="{Binding SelectedProvider}" ItemsSource="{Binding CalendarTypes}"></Picker>
                                                     </Border>
                                                 </Grid>
                                             </StackLayout>
