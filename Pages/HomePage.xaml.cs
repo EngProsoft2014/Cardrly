@@ -136,37 +136,4 @@ public partial class HomePage : Controls.CustomControl
         HomeRef.IsRefreshing = false;
     }
 
-    private async void UpComing_Tapped(object sender, TappedEventArgs e)
-    {
-        CalendarViewModel.IsPassed = 0;
-        if (CalendarViewModel.SelectedProvider.Value == 3)
-        {
-            CalenderCollcView.ItemsSource = CalendarViewModel.CalendlyResponses.Where(a => a.start_time > DateTime.UtcNow);
-        }
-        else if(CalendarViewModel.SelectedProvider.Value == 1)
-        {
-            CalenderCollcView.ItemsSource = CalendarViewModel.CalendarEventGmails.Where(e => DateTimeOffset.Parse(e.Start.DateTime!.ToString()) > DateTimeOffset.Now).ToList();
-        }
-        else
-        {
-            CalenderCollcView.ItemsSource = CalendarViewModel.CalendarOutlookEvents.Where(a => a.Start.DateTime.ToLocalTime() > DateTime.UtcNow);
-        }
-    }
-
-    private void Passed_Tapped(object sender, TappedEventArgs e)
-    {
-        CalendarViewModel.IsPassed = 1;
-        if (CalendarViewModel.SelectedProvider.Value == 3)
-        {
-            CalenderCollcView.ItemsSource = CalendarViewModel.CalendlyResponses.Where(a => a.start_time < DateTime.UtcNow);
-        }
-        else if (CalendarViewModel.SelectedProvider.Value == 1)
-        {
-            CalenderCollcView.ItemsSource = CalendarViewModel.CalendarEventGmails.Where(a => a.Start.DateTime.ToLocalTime() < DateTime.UtcNow);
-        }
-        else
-        {
-            CalenderCollcView.ItemsSource = CalendarViewModel.CalendarOutlookEvents.Where(a => a.Start.DateTime < DateTime.UtcNow);
-        }
-    }
 }

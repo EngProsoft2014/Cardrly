@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui.Alerts;
 using Mopups.Services;
+using System.Globalization;
 using static Cardrly.Models.Calendar.GmailResponseModel;
 
 namespace Cardrly.Pages.MainPopups;
@@ -12,7 +13,21 @@ public partial class GmailDetailsPopup : Mopups.Pages.PopupPage
 		InitializeComponent();
         this.BindingContext = model;
         Model = model;
-	}
+
+
+        string Lan = Preferences.Default.Get("Lan", "en");
+
+        if (Lan == "ar")
+        {
+            this.FlowDirection = FlowDirection.RightToLeft;
+            CultureInfo.CurrentCulture = new CultureInfo("ar");
+        }
+        else
+        {
+            this.FlowDirection = FlowDirection.LeftToRight;
+            CultureInfo.CurrentCulture = new CultureInfo("en");
+        }
+    }
 
     private async void TapGestureRecognizer_Cancel(object sender, EventArgs e)
     {

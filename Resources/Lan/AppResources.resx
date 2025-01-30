@@ -133,7 +133,7 @@
     <value>Login</value>
   </data>
   <data name="btnPassed" xml:space="preserve">
-    <value>Passed</value>
+    <value>Past</value>
   </data>
   <data name="btnPreview" xml:space="preserve">
     <value>Preview</value>
@@ -435,6 +435,9 @@
   <data name="msgFRLink" xml:space="preserve">
     <value>Field Required : Link</value>
   </data>
+  <data name="msgFromDateShouldbeStartFromNow" xml:space="preserve">
+    <value>"From" Date Should be Start From Now</value>
+  </data>
   <data name="msgFRPassword" xml:space="preserve">
     <value>Field Required : Password</value>
   </data>
@@ -518,6 +521,9 @@
   </data>
   <data name="msgThevaluenotmatchlinkformat" xml:space="preserve">
     <value>The value not match link format.</value>
+  </data>
+  <data name="msgTODateShouldbelessThanTodayDate" xml:space="preserve">
+    <value>"To" Date Should be less Than Today Date</value>
   </data>
   <data name="msgUnexpected" xml:space="preserve">
     <value>An unexpected error occurred. Please restart the app or contact support.</value>

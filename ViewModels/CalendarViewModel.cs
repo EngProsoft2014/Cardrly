@@ -21,7 +21,7 @@ namespace Cardrly.ViewModels
     {
         #region Prop
         [ObservableProperty]
-        public int isPassed = 2; //0 => out coming - 1 => passed 
+        public int isPassed = 0; //0 => out coming - 1 => passed 
         [ObservableProperty]
         public ObservableCollection<CardResponse> cardLst = new ObservableCollection<CardResponse>();
         [ObservableProperty]
@@ -33,7 +33,7 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         DateTime fromDate = DateTime.UtcNow.Date;
         [ObservableProperty]
-        DateTime toDate = DateTime.UtcNow.Date;
+        DateTime toDate = DateTime.UtcNow.Date.AddDays(6);
         [ObservableProperty]
         public ObservableCollection<CalendarCalendlyResponse> calendlyResponses = new ObservableCollection<CalendarCalendlyResponse>();
         [ObservableProperty]
@@ -58,40 +58,19 @@ namespace Cardrly.ViewModels
 
         #region RelayCommand
         [RelayCommand]
-        public async Task GetData()
+        public async Task GetAllDataClick()
         {
-            IsEnable = false;
-            string UserToken = await _service.UserToken();
-            if (!string.IsNullOrEmpty(UserToken))
+            
+            if (FromDate < ToDate)
             {
-                CalendlyResponses = new ObservableCollection<CalendarCalendlyResponse>();
-                CalendarOutlookEvents = new ObservableCollection<CalendarOutlookEvent>();
-                CalendarEventGmails = new ObservableCollection<CalendarEventGmail>();
-                UserDialogs.Instance.ShowLoading();
                 IsPassed = 2;
-                if (FromDate < ToDate)
-                {
-                    if (SelectedProvider.Value == 3)
-                    {
-                        await GetCalendlyData(UserToken);
-                    }
-                    else if (SelectedProvider.Value == 2)
-                    {
-                        await GetOutLookData(UserToken);
-                    }
-                    else if (SelectedProvider.Value == 1)
-                    {
-                        await GetGmailData(UserToken);
-                    }
-                }
-                else
-                {
-                    var toast = Toast.Make($"{AppResources.msgDate_HomePage}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                    await toast.Show();
-                }
-                UserDialogs.Instance.HideHud();
+                await GetData();
             }
-            IsEnable = true;
+            else
+            {
+                var toast = Toast.Make($"{AppResources.msgDate_HomePage}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
         }
         [RelayCommand]
         public async Task CalendlyItemClick(object item)
@@ -110,6 +89,46 @@ namespace Cardrly.ViewModels
             }
 
         }
+        [RelayCommand]
+        public async Task UpComingClick()
+        {
+            
+            if (FromDate.Date < DateTime.UtcNow.Date)
+            {
+                var toast = Toast.Make($"{AppResources.msgFromDateShouldbeStartFromNow}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+            else if (FromDate > ToDate)
+            {
+                var toast = Toast.Make($"{AppResources.msgDate_HomePage}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+            else
+            {
+                IsPassed = 0;
+                await GetData();
+            }
+        }
+        [RelayCommand]
+        public async Task PassedClick()
+        {
+            
+            if (ToDate.Date > DateTime.UtcNow.Date)
+            {
+                var toast = Toast.Make($"{AppResources.msgTODateShouldbelessThanTodayDate}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+            else if (FromDate > ToDate)
+            {
+                var toast = Toast.Make($"{AppResources.msgDate_HomePage}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+            else
+            {
+                IsPassed = 1;
+                await GetData();
+            }
+        }
         #endregion
 
         #region Methods
@@ -126,6 +145,7 @@ namespace Cardrly.ViewModels
             CalendarTypes.Add(new CalendarTypeItemModel() { Name = EnumCalendarType.Gmail.ToString(), Value = (int)EnumCalendarType.Gmail });
             CalendarTypes.Add(new CalendarTypeItemModel() { Name = EnumCalendarType.Outlook.ToString(), Value = (int)EnumCalendarType.Outlook });
             SelectedProvider = CalendarTypes.FirstOrDefault()!;
+            await GetCalendlyData();
             UserDialogs.Instance.HideHud();
             IsEnable = true;
         }
@@ -144,38 +164,77 @@ namespace Cardrly.ViewModels
                 }
             }
         }
-        public async Task GetCalendlyData(string UserToken)
+        public async Task GetCalendlyData()
         {
             string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-
-            var json = await Rep.GetAsync<ObservableCollection<CalendarCalendlyResponse>>($"{ApiConstants.CalnderGetByApi}{AccId}/Calendar/CalendarType/{SelectedProvider.Value}/{FromDate.Date.ToString("yyyy-MM-dd")}/{ToDate.Date.ToString("yyyy-MM-dd")}?cardid={SelectedCard.Id}", UserToken);
-
-            if (json != null)
+            string UserToken = await _service.UserToken();
+            if (!string.IsNullOrEmpty(UserToken))
             {
-                CalendlyResponses = json;
+                var json = await Rep.GetAsync<ObservableCollection<CalendarCalendlyResponse>>($"{ApiConstants.CalnderGetByApi}{AccId}/Calendar/CalendarType/{SelectedProvider.Value}/{FromDate.Date.ToString("yyyy-MM-dd")}/{ToDate.Date.ToString("yyyy-MM-dd")}?cardid={SelectedCard.Id}", UserToken);
+
+                if (json != null)
+                {
+                    CalendlyResponses = json;
+                }
             }
         }
-        public async Task GetGmailData(string UserToken)
+        public async Task GetGmailData()
         {
             string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-
-            var json = await Rep.GetAsync<ObservableCollection<CalendarGmailResponse>>($"{ApiConstants.CalnderGetByApi}{AccId}/Calendar/CalendarType/{SelectedProvider.Value}/{FromDate.Date.ToString("yyyy-MM-dd")}/{ToDate.Date.ToString("yyyy-MM-dd")}?cardid={SelectedCard.Id}", UserToken);
-
-            if (json != null)
+            string UserToken = await _service.UserToken();
+            if (!string.IsNullOrEmpty(UserToken))
             {
-                CalendarEventGmails = new ObservableCollection<CalendarEventGmail>(json.FirstOrDefault()!.Items);
+                var json = await Rep.GetAsync<ObservableCollection<CalendarGmailResponse>>($"{ApiConstants.CalnderGetByApi}{AccId}/Calendar/CalendarType/{SelectedProvider.Value}/{FromDate.Date.ToString("yyyy-MM-dd")}/{ToDate.Date.ToString("yyyy-MM-dd")}?cardid={SelectedCard.Id}", UserToken);
+
+                if (json != null)
+                {
+                    CalendarEventGmails = new ObservableCollection<CalendarEventGmail>(json.FirstOrDefault()!.Items);
+                }
             }
         }
-        public async Task GetOutLookData(string UserToken)
+        public async Task GetOutLookData()
         {
             string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-
-            var json = await Rep.GetAsync<ObservableCollection<CalendarOutLookResponse>>($"{ApiConstants.CalnderGetByApi}{AccId}/Calendar/CalendarType/{SelectedProvider.Value}/{FromDate.Date.ToString("yyyy-MM-dd")}/{ToDate.Date.ToString("yyyy-MM-dd")}?cardid={SelectedCard.Id}", UserToken);
-
-            if (json != null)
+            string UserToken = await _service.UserToken();
+            if (!string.IsNullOrEmpty(UserToken))
             {
-                CalendarOutlookEvents = new ObservableCollection<CalendarOutlookEvent>(json.FirstOrDefault()!.Events);
+                var json = await Rep.GetAsync<ObservableCollection<CalendarOutLookResponse>>($"{ApiConstants.CalnderGetByApi}{AccId}/Calendar/CalendarType/{SelectedProvider.Value}/{FromDate.Date.ToString("yyyy-MM-dd")}/{ToDate.Date.ToString("yyyy-MM-dd")}?cardid={SelectedCard.Id}", UserToken);
+
+                if (json != null)
+                {
+                    CalendarOutlookEvents = new ObservableCollection<CalendarOutlookEvent>(json.FirstOrDefault()!.Events);
+                }
             }
+        }
+        public async Task GetData()
+        {
+            IsEnable = false;
+            CalendlyResponses = new ObservableCollection<CalendarCalendlyResponse>();
+            CalendarOutlookEvents = new ObservableCollection<CalendarOutlookEvent>();
+            CalendarEventGmails = new ObservableCollection<CalendarEventGmail>();
+            UserDialogs.Instance.ShowLoading();
+            if (FromDate < ToDate)
+            {
+                if (SelectedProvider.Value == 3)
+                {
+                    await GetCalendlyData();
+                }
+                else if (SelectedProvider.Value == 2)
+                {
+                    await GetOutLookData();
+                }
+                else if (SelectedProvider.Value == 1)
+                {
+                    await GetGmailData();
+                }
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.msgDate_HomePage}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+            UserDialogs.Instance.HideHud();
+            IsEnable = true;
         }
         #endregion
     }

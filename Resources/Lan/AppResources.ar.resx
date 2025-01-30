@@ -133,7 +133,7 @@
     <value>تسجيل الدخول</value>
   </data>
   <data name="btnPassed" xml:space="preserve">
-    <value>اجتاز</value>
+    <value>ماضي</value>
   </data>
   <data name="btnPreview" xml:space="preserve">
     <value>معاينة</value>
@@ -435,6 +435,9 @@
   <data name="msgFRLink" xml:space="preserve">
     <value>الحقل المطلوب : الرابط</value>
   </data>
+  <data name="msgFromDateShouldbeStartFromNow" xml:space="preserve">
+    <value>يجب أن يبدأ تاريخ "من" من الآن</value>
+  </data>
   <data name="msgFRPassword" xml:space="preserve">
     <value>الحقل المطلوب : كلمة المرور</value>
   </data>
@@ -518,6 +521,9 @@
   </data>
   <data name="msgThevaluenotmatchlinkformat" xml:space="preserve">
     <value>القيمة لا تتطابق مع تنسيق الرابط.</value>
+  </data>
+  <data name="msgTODateShouldbelessThanTodayDate" xml:space="preserve">
+    <value>يجب أن يكون تاريخ "إلى" أقل من تاريخ اليوم</value>
   </data>
   <data name="msgUnexpected" xml:space="preserve">
     <value>حدث خطأ غير متوقع. يرجى إعادة تشغيل التطبيق أو الاتصال بالدعم.</value>

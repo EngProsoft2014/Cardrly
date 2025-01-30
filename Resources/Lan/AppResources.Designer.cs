@@ -106,7 +106,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Passed.
+        ///   Looks up a localized string similar to Past.
         /// </summary>
         internal static string btnPassed {
             get {
@@ -1015,6 +1015,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &quot;From&quot; Date Should be Start From Now.
+        /// </summary>
+        internal static string msgFromDateShouldbeStartFromNow {
+            get {
+                return ResourceManager.GetString("msgFromDateShouldbeStartFromNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field Required : Password.
         /// </summary>
         internal static string msgFRPassword {
@@ -1263,6 +1272,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgThevaluenotmatchlinkformat {
             get {
                 return ResourceManager.GetString("msgThevaluenotmatchlinkformat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;To&quot; Date Should be less Than Today Date.
+        /// </summary>
+        internal static string msgTODateShouldbelessThanTodayDate {
+            get {
+                return ResourceManager.GetString("msgTODateShouldbelessThanTodayDate", resourceCulture);
             }
         }
         
