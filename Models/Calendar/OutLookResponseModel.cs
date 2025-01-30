@@ -12,7 +12,6 @@ namespace Cardrly.Models.Calendar
     {
         public class CalendarOutLookResponse
         {
-            [JsonProperty("value")]
             public List<CalendarOutlookEvent> Events { get; set; }
         }
 
@@ -61,7 +60,6 @@ namespace Cardrly.Models.Calendar
 
         public class DateTimeInfo
         {
-            [JsonProperty("dateTime")]
             public DateTime DateTime { get; set; }
 
             [JsonProperty("timeZone")]

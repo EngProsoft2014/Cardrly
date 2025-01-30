@@ -55,8 +55,7 @@ namespace Cardrly.Models.Calendar
 
         public class EventDateTime
         {
-            [JsonProperty("dateTime")]
-            public DateTime? DateTime { get; set; }
+            public DateTime DateTime { get; set; }
 
             [JsonProperty("timeZone")]
             public string TimeZone { get; set; }

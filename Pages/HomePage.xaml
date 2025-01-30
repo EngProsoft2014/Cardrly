@@ -507,7 +507,7 @@
                                                 </Grid>
                                             </StackLayout>
                                         </VerticalStackLayout>
-                                        <CollectionView x:Name="CalenderCollcView" ItemsSource="{Binding CalendlyResponses}" VerticalOptions="FillAndExpand" >
+                                        <CollectionView x:Name="CalenderCollcView" VerticalOptions="FillAndExpand" >
                                             <CollectionView.ItemsLayout>
                                                 <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
                                             </CollectionView.ItemsLayout>
@@ -605,6 +605,10 @@
                                                                 </VerticalStackLayout>
                                                             </StackLayout>
                                                         </StackLayout>
+                                                        <Border.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=CalendlyItemClickCommand}"
+                                                                                  CommandParameter="{Binding}"></TapGestureRecognizer>
+                                                        </Border.GestureRecognizers>
                                                     </Border>
                                                 </DataTemplate>
                                             </CollectionView.ItemTemplate>
@@ -616,6 +620,9 @@
                                                 </ContentView>
                                             </CollectionView.EmptyView>
                                             <CollectionView.Triggers>
+                                                <DataTrigger TargetType="CollectionView" Binding="{Binding SelectedProvider.Value}" Value="3">
+                                                    <Setter Property="ItemsSource" Value="{Binding CalendlyResponses}"></Setter>
+                                                </DataTrigger>
                                                 <DataTrigger TargetType="CollectionView" Binding="{Binding SelectedProvider.Value}" Value="2">
                                                     <Setter Property="ItemsSource" Value="{Binding CalendarOutlookEvents}"></Setter>
                                                 </DataTrigger>
