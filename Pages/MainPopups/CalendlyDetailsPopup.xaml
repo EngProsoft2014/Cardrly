@@ -23,13 +23,13 @@
                     <StackLayout BackgroundColor="#FFFFFF" Spacing="3" Margin="20,10">
                         <!--Email-->
                         <HorizontalStackLayout Spacing="3">
-                            <Label Text="Email" FontSize="14" TextColor="Black"></Label>
+                            <Label Text="{x:Static res:AppResources.lblEmail}" FontSize="14" TextColor="Black"></Label>
                             <Label Text=":" FontSize="14" TextColor="Black"></Label>
                             <Label Text="{Binding Invitees[0].Email}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
                         </HorizontalStackLayout>
                         <!--Location-->
                         <HorizontalStackLayout Spacing="3">
-                            <Label Text="Location" FontSize="14" TextColor="Black"></Label>
+                            <Label Text="{x:Static res:AppResources.lblLocation}" FontSize="14" TextColor="Black"></Label>
                             <Label Text=":" FontSize="14" TextColor="Black"></Label>
                             <Label Text="{Binding Location.Type}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
                             <Label Text="Join now" FontSize="14" TextColor="DarkBlue" FontAttributes="Bold" TextDecorations="Underline">
@@ -40,35 +40,10 @@
                         </HorizontalStackLayout>
                         <!--Time Zone-->
                         <HorizontalStackLayout Spacing="3">
-                            <Label Text="Time Zone" FontSize="14" TextColor="Black"></Label>
+                            <Label Text="{x:Static res:AppResources.lblTimeZone}" FontSize="14" TextColor="Black"></Label>
                             <Label Text=":" FontSize="14" TextColor="Black"></Label>
                             <Label Text="{Binding Invitees[0].Timezone}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
                         </HorizontalStackLayout>
-                        <!--Questions-->
-                        <!--<VerticalStackLayout Spacing="8" VerticalOptions="FillAndExpand">
-                            <Label Text="Questions" FontSize="14" FontAttributes="Bold" TextColor="Black"></Label>
-                            <CollectionView ItemsSource="{Binding Invitees[0].QuestionsAndAnswers}" VerticalOptions="FillAndExpand">
-                                <CollectionView.ItemsLayout>
-                                    <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="5"></GridItemsLayout>
-                                </CollectionView.ItemsLayout>
-                                <CollectionView.ItemTemplate>
-                                    <DataTemplate>
-                                        <VerticalStackLayout Spacing="3">
-                                            <HorizontalStackLayout Spacing="1">
-                                            <Label Text="{Binding Question}" FontSize="13" TextColor="Black"></Label>
-                                            <Label Text="?" FontSize="14" TextColor="Black"></Label>
-                                            </HorizontalStackLayout>
-                                            <Label Text="{Binding Answer}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
-                                        </VerticalStackLayout>
-                                    </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
-                            <VerticalStackLayout.Triggers>
-                                <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding Invitees[0].QuestionsAndAnswers.Count}" Value="0">
-                                    <Setter Property="IsVisible" Value="False"></Setter>
-                                </DataTrigger>
-                            </VerticalStackLayout.Triggers>
-                        </VerticalStackLayout>-->
                     </StackLayout>
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="15"></RoundRectangle>

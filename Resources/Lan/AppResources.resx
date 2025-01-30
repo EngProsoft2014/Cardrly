@@ -249,6 +249,12 @@
   <data name="lblEmail" xml:space="preserve">
     <value>Email</value>
   </data>
+  <data name="lblEvent Name" xml:space="preserve">
+    <value>Event Name</value>
+  </data>
+  <data name="lblEventType" xml:space="preserve">
+    <value>Event Type</value>
+  </data>
   <data name="lblExpire" xml:space="preserve">
     <value>Expire</value>
   </data>
@@ -261,6 +267,9 @@
   <data name="lblFullName" xml:space="preserve">
     <value>Full Name</value>
   </data>
+  <data name="lblGuestsNumber" xml:space="preserve">
+    <value>Guests Number</value>
+  </data>
   <data name="lblHelpSupport" xml:space="preserve">
     <value>Help &amp; Support</value>
   </data>
@@ -269,6 +278,9 @@
   </data>
   <data name="lblJob title" xml:space="preserve">
     <value>Job title</value>
+  </data>
+  <data name="lblJoinnow" xml:space="preserve">
+    <value>Join now</value>
   </data>
   <data name="lblLanguage" xml:space="preserve">
     <value>Language</value>
@@ -350,6 +362,9 @@
   </data>
   <data name="lblTCDS" xml:space="preserve">
     <value>Total Count by Device System</value>
+  </data>
+  <data name="lblTimeZone" xml:space="preserve">
+    <value>Time Zone</value>
   </data>
   <data name="lblTo" xml:space="preserve">
     <value>To</value>

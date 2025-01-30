@@ -249,6 +249,12 @@
   <data name="lblEmail" xml:space="preserve">
     <value>البريد الإلكتروني</value>
   </data>
+  <data name="lblEvent Name" xml:space="preserve">
+    <value>اسم الحدث</value>
+  </data>
+  <data name="lblEventType" xml:space="preserve">
+    <value>نوع الحدث</value>
+  </data>
   <data name="lblExpire" xml:space="preserve">
     <value>صلاحيتها</value>
   </data>
@@ -261,6 +267,9 @@
   <data name="lblFullName" xml:space="preserve">
     <value>الاسم الكامل</value>
   </data>
+  <data name="lblGuestsNumber" xml:space="preserve">
+    <value>عدد الضيوف</value>
+  </data>
   <data name="lblHelpSupport" xml:space="preserve">
     <value>المساعدة والدعم</value>
   </data>
@@ -269,6 +278,9 @@
   </data>
   <data name="lblJob title" xml:space="preserve">
     <value>مسمى وظيفي</value>
+  </data>
+  <data name="lblJoinnow" xml:space="preserve">
+    <value>انضم الان</value>
   </data>
   <data name="lblLanguage" xml:space="preserve">
     <value>اللغة</value>
@@ -350,6 +362,9 @@
   </data>
   <data name="lblTCDS" xml:space="preserve">
     <value>العدد الإجمالي حسب نظام الجهاز</value>
+  </data>
+  <data name="lblTimeZone" xml:space="preserve">
+    <value>المنطقة الزمنية</value>
   </data>
   <data name="lblTo" xml:space="preserve">
     <value>الى</value>

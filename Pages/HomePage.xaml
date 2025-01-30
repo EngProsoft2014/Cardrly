@@ -587,7 +587,7 @@
                                                                         </Label>
                                                                     </StackLayout>
                                                                     <HorizontalStackLayout Spacing="3">
-                                                                        <Label Text="Event Type" FontSize="12" TextColor="Black"></Label>
+                                                                        <Label Text="{x:Static res:AppResources.lblEventType}" FontSize="12" TextColor="Black"></Label>
                                                                         <Label Text=":" FontSize="12" TextColor="Black"></Label>
                                                                         <Label Text="{Binding EventType}" FontSize="12" TextColor="Black" FontAttributes="Bold">
                                                                             <Label.Triggers>
@@ -601,7 +601,7 @@
                                                                                 </DataTrigger>
                                                                             </Label.Triggers>
                                                                         </Label>
-                                                                    </HorizontalStackLayout>
+                                                                    </HorizontalStackLayout>s
                                                                 </VerticalStackLayout>
                                                             </StackLayout>
                                                         </StackLayout>

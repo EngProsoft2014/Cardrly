@@ -457,6 +457,24 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Event Name.
+        /// </summary>
+        internal static string lblEvent_Name {
+            get {
+                return ResourceManager.GetString("lblEvent Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Type.
+        /// </summary>
+        internal static string lblEventType {
+            get {
+                return ResourceManager.GetString("lblEventType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expire.
         /// </summary>
         internal static string lblExpire {
@@ -493,6 +511,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Guests Number.
+        /// </summary>
+        internal static string lblGuestsNumber {
+            get {
+                return ResourceManager.GetString("lblGuestsNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help &amp; Support.
         /// </summary>
         internal static string lblHelpSupport {
@@ -516,6 +543,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblJob_title {
             get {
                 return ResourceManager.GetString("lblJob title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Join now.
+        /// </summary>
+        internal static string lblJoinnow {
+            get {
+                return ResourceManager.GetString("lblJoinnow", resourceCulture);
             }
         }
         
@@ -759,6 +795,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblTCDS {
             get {
                 return ResourceManager.GetString("lblTCDS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time Zone.
+        /// </summary>
+        internal static string lblTimeZone {
+            get {
+                return ResourceManager.GetString("lblTimeZone", resourceCulture);
             }
         }
         
