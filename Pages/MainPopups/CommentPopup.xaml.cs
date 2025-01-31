@@ -62,7 +62,9 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
                     LeadCommentRequest req = new LeadCommentRequest
                     {
                         Comment = CommEntr.Text,
+
                     };
+                    UserDialogs.Instance.HideHud();
                     var json = await Rep.PostTRAsync<LeadCommentRequest, LeadCommentResponse>($"{ApiConstants.LeadCommentAddApi}{AccId}/Lead/{Res.Id}/LeadComment", req, UserToken);
                     if (json.Item1 != null)
                     {
@@ -76,7 +78,7 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
                         await toast.Show();
                         //await MopupService.Instance.PopAsync();
                     }
-                    UserDialogs.Instance.HideHud();
+                    
 
                 }
                 this.IsEnabled = true;
