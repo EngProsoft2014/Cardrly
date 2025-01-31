@@ -28,35 +28,23 @@ public partial class LanguagePopup : Mopups.Pages.PopupPage
     //Arabic
     private async void ArabicTap(object sender, TappedEventArgs e)
     {
-        UserDialogs.Instance.ShowLoading();
         CultureInfo cal = new CultureInfo("ar");
         TranslateExtension.Instance.SetCulture(cal);
         Preferences.Default.Set("Lan", "ar");
-
-        imgCheckArabic.IsVisible = true;
-        imgCheckEnglish.IsVisible = false;
-
         LoadSetting();
         await MopupService.Instance.PopAsync();
         App.Current!.MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, Controls.StaticMember._audioManager), Rep, _service));
-        UserDialogs.Instance.HideHud();
     }
 
     //English
     private async void EnglishTap(object sender, TappedEventArgs e)
     {
-        UserDialogs.Instance.ShowLoading();
-
         CultureInfo cal = new CultureInfo("en");
         TranslateExtension.Instance.SetCulture(cal);
         Preferences.Default.Set("Lan", "en");
-        imgCheckEnglish.IsVisible = true;
-        imgCheckArabic.IsVisible = false;
         LoadSetting();
         await MopupService.Instance.PopAsync();
         App.Current!.MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, Controls.StaticMember._audioManager), Rep, _service));
-
-        UserDialogs.Instance.HideHud();
     }
 
 
@@ -68,9 +56,6 @@ public partial class LanguagePopup : Mopups.Pages.PopupPage
         {
             lblArabic.TextColor = color;
 
-            imgCheckArabic.IsVisible = true;
-            imgCheckEnglish.IsVisible = false;
-
             lblEnglish.TextColor = Color.FromHex("#333");
 
             Task.Delay(1000);
@@ -78,9 +63,6 @@ public partial class LanguagePopup : Mopups.Pages.PopupPage
         else
         {
             lblEnglish.TextColor = color;
-
-            imgCheckEnglish.IsVisible = true;
-            imgCheckArabic.IsVisible = false;
 
             lblArabic.TextColor = Color.FromHex("#333");
 

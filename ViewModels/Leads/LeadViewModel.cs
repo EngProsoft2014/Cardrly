@@ -20,6 +20,10 @@ namespace Cardrly.ViewModels.Leads
         #region Prop
         [ObservableProperty]
         ObservableCollection<LeadResponse> leads = new ObservableCollection<LeadResponse>();
+        [ObservableProperty]
+        LeadFilterRequest filterRequest = new LeadFilterRequest();
+        [ObservableProperty]
+        PagingLstLeadResponse pagingResponse = new PagingLstLeadResponse();
         public readonly IAudioManager _audioManager; 
         #endregion
 
@@ -95,13 +99,14 @@ namespace Cardrly.ViewModels.Leads
             if (!string.IsNullOrEmpty(UserToken))
             {
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                string Query = QueryStringHelper.ToQueryString(FilterRequest);
                 UserDialogs.Instance.ShowLoading();
-                var json = await Rep.GetAsync<ObservableCollection<LeadResponse>>($"{ApiConstants.LeadGetAllApi}{AccId}/Lead", UserToken);
+                var json = await Rep.GetAsync<PagingLstLeadResponse>($"{ApiConstants.LeadGetAllApi}{AccId}/Lead/Page?{Query}", UserToken);
                 
                 if (json != null)
                 {
-                    
-                    Leads = json;
+                    PagingResponse = json;
+                    Leads = new ObservableCollection<LeadResponse>(json.pagingLst.DataModel);
                 }
             }
             IsEnable = true;

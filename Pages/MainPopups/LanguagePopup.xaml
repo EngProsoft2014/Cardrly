@@ -45,12 +45,6 @@
                                    Padding="8">
 
                             </Label>
-
-                            <Image x:Name="imgCheckEnglish" IsVisible="False" HorizontalOptions="End">
-                                <Image.Source>
-                                    <FontImageSource FontFamily="FontIconSolid" Glyph="" Color="#FF7F3E" Size="20"></FontImageSource>
-                                </Image.Source>
-                            </Image>
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="EnglishTap"></TapGestureRecognizer>
                             </StackLayout.GestureRecognizers>
@@ -69,13 +63,6 @@
                                    Padding="8">
 
                             </Label>
-
-                            <!--<CheckBox x:Name="cheArabic" Color="Green" IsEnabled="False"></CheckBox>-->
-                            <Image x:Name="imgCheckArabic" IsVisible="False" HorizontalOptions="End">
-                                <Image.Source>
-                                    <FontImageSource FontFamily="FontIconSolid" Glyph="" Color="#FF7F3E" Size="20"></FontImageSource>
-                                </Image.Source>
-                            </Image>
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="ArabicTap"></TapGestureRecognizer>
                             </StackLayout.GestureRecognizers>
