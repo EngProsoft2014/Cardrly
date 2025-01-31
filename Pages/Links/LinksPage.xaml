@@ -37,7 +37,7 @@
         </StackLayout>
         <!--Data-->
         <RefreshView x:Name="RefView" Refreshing="RefreshView_Refreshing">
-            <CollectionView x:Name="Calc" ItemsSource="{Binding CardDetails.CardLinks}" EmptyView="Sorry No Data here...." VerticalOptions="FillAndExpand"
+            <CollectionView x:Name="Calc" ItemsSource="{Binding CardDetails.CardLinks}" VerticalOptions="FillAndExpand"
                             CanReorderItems="True" ReorderCompleted="Calc_ReorderCompleted">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
@@ -82,6 +82,13 @@
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <ContentView>
+                        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                            <Label Text="{x:Static res:AppResources.plcNoAvailableLinks}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                        </StackLayout>
+                    </ContentView>
+                </CollectionView.EmptyView>
             </CollectionView>
         </RefreshView>
     </StackLayout>

@@ -314,6 +314,13 @@
                                                     </StackLayout>
                                                 </DataTemplate>
                                             </CollectionView.ItemTemplate>
+                                            <CollectionView.EmptyView>
+                                                <ContentView>
+                                                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                                        <Label Text="{x:Static res:AppResources.plcNoAvailableCards}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                    </StackLayout>
+                                                </ContentView>
+                                            </CollectionView.EmptyView>
                                         </CollectionView>
                                     </ScrollView>
                                 </RefreshView>
@@ -327,6 +334,9 @@
                         <StackLayout  Spacing="20">
                             <!--Header-->
                             <StackLayout Orientation="Horizontal">
+                                <!--Leads Count-->
+                                <Label Text="{Binding Leads.Count}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" TextColor="#FF7F3E"></Label>
+                                <!--Titel-->
                                 <Label Text="{x:Static res:AppResources.hdrLeads}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                                    TextColor="Black"></Label>
                                 <!--Add Lead Button-->
@@ -407,6 +417,13 @@
                                             </Border>
                                         </DataTemplate>
                                     </CollectionView.ItemTemplate>
+                                    <CollectionView.EmptyView>
+                                        <ContentView>
+                                            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                                <Label Text="{x:Static res:AppResources.plcNoAvailableLaeds}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                            </StackLayout>
+                                        </ContentView>
+                                    </CollectionView.EmptyView>
                                 </CollectionView>
                             </RefreshView>
                         </StackLayout>
@@ -445,7 +462,7 @@
                                                         <Label Text="{x:Static res:AppResources.lblFrom}" TextColor="Gray" FontSize="13"></Label>
                                                         <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
                                                             <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
-                                                            Date="{Binding FromDate}"></DatePicker>
+                                                            Date="{Binding FromDate}" DateSelected="CalFromData_DateSelected"></DatePicker>
                                                         </Border>
                                                     </VerticalStackLayout>
                                                     <!--To-->
@@ -453,7 +470,7 @@
                                                         <Label Text="{x:Static res:AppResources.lblTo}" TextColor="Gray" FontSize="13"></Label>
                                                         <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
                                                             <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
-                                                            Date="{Binding ToDate}"></DatePicker>
+                                                            Date="{Binding ToDate}" DateSelected="CalFromData_DateSelected"></DatePicker>
                                                         </Border>
                                                     </VerticalStackLayout>
                                                     <!--Select Card-->
@@ -461,7 +478,7 @@
                                                         <Label Text="{x:Static res:AppResources.lblCard}" TextColor="Gray" FontSize="13"></Label>
                                                         <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
                                                             <Picker x:Name="CalenderCardPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding CardName}"
-                                                        SelectedItem="{Binding SelectedCard}" ItemsSource="{Binding CardLst}"></Picker>
+                                                                    SelectedItem="{Binding SelectedCard}" ItemsSource="{Binding CardLst}" SelectedIndexChanged="CalenderCardPicker_SelectedIndexChanged"></Picker>
                                                         </Border>
                                                     </VerticalStackLayout>
                                                 </Grid>
@@ -619,7 +636,7 @@
                                             <CollectionView.EmptyView>
                                                 <ContentView>
                                                     <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                                                        <Label Text="No Available Events" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                        <Label Text="{x:Static res:AppResources.PlcNoAvailableEvents}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
                                                     </StackLayout>
                                                 </ContentView>
                                             </CollectionView.EmptyView>

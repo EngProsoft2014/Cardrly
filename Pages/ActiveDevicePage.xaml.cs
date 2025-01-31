@@ -346,12 +346,6 @@ public partial class ActiveDevicePage : Controls.CustomControl
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
                     await App.Current!.MainPage!.Navigation.PopAsync();
-                    //Check if Qr Is Valid
-                    if (string.IsNullOrEmpty(QrValue))
-                    {
-                        await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgNoIDfoundintheQr}", $"{AppResources.msgOk}");
-                        return;
-                    }
                 });
                 //Get Link 
                 var page = new InsertDevicePopup();

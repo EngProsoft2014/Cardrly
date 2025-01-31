@@ -136,4 +136,19 @@ public partial class HomePage : Controls.CustomControl
         HomeRef.IsRefreshing = false;
     }
 
+    private void CalFromData_DateSelected(object sender, DateChangedEventArgs e)
+    {
+        CalendarViewModel.CalendlyResponses = new System.Collections.ObjectModel.ObservableCollection<CalendarCalendlyResponse>();
+        CalendarViewModel.CalendarEventGmails = new System.Collections.ObjectModel.ObservableCollection<CalendarEventGmail>();
+        CalendarViewModel.CalendarOutlookEvents = new System.Collections.ObjectModel.ObservableCollection<Models.Calendar.OutLookResponseModel.CalendarOutlookEvent>();
+        CalendarViewModel.IsPassed = 2;
+    }
+
+    private void CalenderCardPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        CalendarViewModel.CalendlyResponses = new System.Collections.ObjectModel.ObservableCollection<CalendarCalendlyResponse>();
+        CalendarViewModel.CalendarEventGmails = new System.Collections.ObjectModel.ObservableCollection<CalendarEventGmail>();
+        CalendarViewModel.CalendarOutlookEvents = new System.Collections.ObjectModel.ObservableCollection<Models.Calendar.OutLookResponseModel.CalendarOutlookEvent>();
+        CalendarViewModel.IsPassed = 2;
+    }
 }

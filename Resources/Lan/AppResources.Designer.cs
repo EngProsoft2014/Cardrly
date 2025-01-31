@@ -1105,6 +1105,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Activated Devices.
+        /// </summary>
+        internal static string msgNoActivatedDevices {
+            get {
+                return ResourceManager.GetString("msgNoActivatedDevices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No ID found in the Qr..
         /// </summary>
         internal static string msgNoIDfoundintheQr {
@@ -1326,6 +1335,42 @@ namespace Cardrly.Resources.Lan {
         internal static string No_Internet_connection {
             get {
                 return ResourceManager.GetString("No_Internet_connection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Available Cards.
+        /// </summary>
+        internal static string plcNoAvailableCards {
+            get {
+                return ResourceManager.GetString("plcNoAvailableCards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Available Events.
+        /// </summary>
+        internal static string PlcNoAvailableEvents {
+            get {
+                return ResourceManager.GetString("PlcNoAvailableEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Available Laeds.
+        /// </summary>
+        internal static string plcNoAvailableLaeds {
+            get {
+                return ResourceManager.GetString("plcNoAvailableLaeds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Available Links.
+        /// </summary>
+        internal static string plcNoAvailableLinks {
+            get {
+                return ResourceManager.GetString("plcNoAvailableLinks", resourceCulture);
             }
         }
         

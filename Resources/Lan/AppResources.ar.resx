@@ -465,6 +465,9 @@
   <data name="msgNo" xml:space="preserve">
     <value>لا</value>
   </data>
+  <data name="msgNoActivatedDevices" xml:space="preserve">
+    <value>لا يوجد أجهزة مفعلة</value>
+  </data>
   <data name="msgNoIDfoundintheQr" xml:space="preserve">
     <value>لم يتم العثور على معرف في Qr.</value>
   </data>
@@ -539,6 +542,18 @@
   </data>
   <data name="No_Internet_connection" xml:space="preserve">
     <value>لا يوجد اتصال بالإنترنت</value>
+  </data>
+  <data name="plcNoAvailableCards" xml:space="preserve">
+    <value>لا توجد بطاقات متاحة</value>
+  </data>
+  <data name="PlcNoAvailableEvents" xml:space="preserve">
+    <value>لا توجد أحداث متاحة</value>
+  </data>
+  <data name="plcNoAvailableLaeds" xml:space="preserve">
+    <value>لا توجد قوائم متاحة</value>
+  </data>
+  <data name="plcNoAvailableLinks" xml:space="preserve">
+    <value>لا توجد روابط متاحة</value>
   </data>
   <data name="plcPassword" xml:space="preserve">
     <value>كلمة المرور</value>

@@ -145,7 +145,7 @@ namespace Cardrly.ViewModels
             CalendarTypes.Add(new CalendarTypeItemModel() { Name = EnumCalendarType.Gmail.ToString(), Value = (int)EnumCalendarType.Gmail });
             CalendarTypes.Add(new CalendarTypeItemModel() { Name = EnumCalendarType.Outlook.ToString(), Value = (int)EnumCalendarType.Outlook });
             SelectedProvider = CalendarTypes.FirstOrDefault()!;
-            await GetCalendlyData();
+            await UpComingClick();
             UserDialogs.Instance.HideHud();
             IsEnable = true;
         }
