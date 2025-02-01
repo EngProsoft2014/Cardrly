@@ -64,12 +64,13 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
                         Comment = CommEntr.Text,
 
                     };
-                    UserDialogs.Instance.HideHud();
                     var json = await Rep.PostTRAsync<LeadCommentRequest, LeadCommentResponse>($"{ApiConstants.LeadCommentAddApi}{AccId}/Lead/{Res.Id}/LeadComment", req, UserToken);
+                    UserDialogs.Instance.HideHud();
                     if (json.Item1 != null)
                     {
                         var toast = Toast.Make($"{AppResources.msgSuccessfullyAddComment}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
+                        await Task.Delay(100);
                         await MopupService.Instance.PopAsync();
                     }
                     else
@@ -78,8 +79,6 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
                         await toast.Show();
                         //await MopupService.Instance.PopAsync();
                     }
-                    
-
                 }
                 this.IsEnabled = true;
             }
