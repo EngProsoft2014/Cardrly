@@ -47,5 +47,7 @@
 		<array>
 			<string>mailto</string>
 		</array>
+		<key>CFBundleVersion</key>
+		<string>1.0.0.19</string>
 	</dict>
 </plist>

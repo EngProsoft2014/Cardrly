@@ -107,10 +107,9 @@ namespace Cardrly.ViewModels
                 }
                 else
                 {
-                    {
                         var toast = Toast.Make($"{res.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
-                    }
+                   
                 }
                 IsEnable = true;
             }

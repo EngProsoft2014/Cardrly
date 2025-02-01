@@ -56,6 +56,8 @@ public partial class InsertDevicePopup : Mopups.Pages.PopupPage
         }
     }
 
+
+
     private void Cancel_Clicked(object sender, EventArgs e)
     {
         MopupService.Instance.PopAsync();

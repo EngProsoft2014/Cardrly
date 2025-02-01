@@ -340,24 +340,49 @@ public partial class ActiveDevicePage : Controls.CustomControl
         if (Item!.DeviceName == "QR")
         {
             deviceType = Item.DeviceNumber;
-            var page = new ScanQrPage();
-            page.QrClose += async (QrValue) =>
+            //var page = new ScanQrPage();
+            //page.QrClose += async (QrValue) =>
+            //{
+            //    MainThread.BeginInvokeOnMainThread(async () =>
+            //    {
+            //        await App.Current!.MainPage!.Navigation.PopAsync();
+            //    });
+            //    await Task.Delay(100);
+            //    //Get Link 
+            //    var page = new InsertDevicePopup();
+            //    page.DeviceClose += async (Uri) =>
+            //    {
+            //        SetupUri = Uri;
+            //        await Model.DeviceClick(SetupUri, deviceType,QrValue);
+            //    };
+            //    await MopupService.Instance.PushAsync(page, true);
+            //};
+            //await App.Current!.MainPage!.Navigation.PushAsync(page);
+            await App.Current!.MainPage!.Navigation.PushAsync(new ScanQrPage());
+
+            var page2 = new InsertDevicePopup();
+            MessagingCenter.Subscribe<ScanQrPage, string>(this, "QRCodeValue", async (sender, message) =>
             {
-                MainThread.BeginInvokeOnMainThread(async () =>
+                if (Guid.TryParse(message, out Guid parseGuid))
                 {
-                    await App.Current!.MainPage!.Navigation.PopAsync();
-                });
-                await Task.Delay(100);
-                //Get Link 
-                var page = new InsertDevicePopup();
-                page.DeviceClose += async (Uri) =>
-                {
-                    SetupUri = Uri;
-                    await Model.DeviceClick(SetupUri, deviceType,QrValue);
-                };
-                await MopupService.Instance.PushAsync(page, true);
-            };
-            await App.Current!.MainPage!.Navigation.PushAsync(page);
+
+                    var existingPage = Navigation.NavigationStack.FirstOrDefault(p => p is InsertDevicePopup);
+
+                    if (existingPage == null)
+                    {
+
+                        //Get Link  
+                        page2.DeviceClose += async (Uri) =>
+                        {
+                            SetupUri = Uri;
+                            await Model.DeviceClick(SetupUri, deviceType, message);
+                        };
+                        await MopupService.Instance.PushAsync(page2, true);
+                    }
+
+                }
+
+            });
         }
         else if (Item!.DeviceName == "Stand")
         {
