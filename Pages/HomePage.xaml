@@ -494,28 +494,42 @@
                                                     <!--UpComing-->
                                                     <Border StrokeShape="RoundRectangle 10" StrokeThickness="0.5" BackgroundColor="White"
                                                             Stroke="Gray" HeightRequest="40" Padding="5,0" Grid.Column="0">
-                                                        <Label Text="{x:Static res:AppResources.btnUpcoming}" TextColor="Black" FontSize="14" BackgroundColor="Transparent" VerticalTextAlignment="Center"></Label>
+                                                        <Label Text="{x:Static res:AppResources.btnUpcoming}" TextColor="Black" FontSize="14" BackgroundColor="Transparent" VerticalTextAlignment="Center">
+                                                            <Label.Triggers>
+                                                                <DataTrigger TargetType="Label" Binding="{Binding IsPassed}" Value="1">
+                                                                    <Setter Property="TextColor" Value="White"></Setter>
+                                                                </DataTrigger>
+                                                            </Label.Triggers>
+                                                        </Label>
                                                         <Border.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding UpComingClickCommand}"></TapGestureRecognizer>
                                                         </Border.GestureRecognizers>
                                                         <Border.Triggers>
                                                             <DataTrigger TargetType="Border" Binding="{Binding IsPassed}" Value="0">
                                                                 <Setter Property="StrokeThickness" Value="1"></Setter>
-                                                                <Setter Property="Stroke" Value="#FF7F3E"></Setter>
+                                                                <Setter Property="Stroke" Value="White"></Setter>
+                                                                <Setter Property="BackgroundColor" Value="#FF7F3E"></Setter>
                                                             </DataTrigger>
                                                         </Border.Triggers>
                                                     </Border>
                                                     <!--Passed-->
                                                     <Border StrokeShape="RoundRectangle 10" StrokeThickness="0.5" BackgroundColor="White" 
                                                             Stroke="Gray" HeightRequest="40" Padding="15,0" Grid.Column="1">
-                                                        <Label Text="{x:Static res:AppResources.btnPassed}" TextColor="Black" FontSize="14" BackgroundColor="Transparent" VerticalTextAlignment="Center"></Label>
+                                                        <Label Text="{x:Static res:AppResources.btnPassed}" TextColor="Black" FontSize="14" BackgroundColor="Transparent" VerticalTextAlignment="Center">
+                                                            <Label.Triggers>
+                                                                <DataTrigger TargetType="Label" Binding="{Binding IsPassed}" Value="1">
+                                                                    <Setter Property="TextColor" Value="White"></Setter>
+                                                                </DataTrigger>
+                                                            </Label.Triggers>
+                                                        </Label>
                                                         <Border.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding PassedClickCommand}"></TapGestureRecognizer>
                                                         </Border.GestureRecognizers>
                                                         <Border.Triggers>
                                                             <DataTrigger TargetType="Border" Binding="{Binding IsPassed}" Value="1">
                                                                 <Setter Property="StrokeThickness" Value="1"></Setter>
-                                                                <Setter Property="Stroke" Value="#FF7F3E"></Setter>
+                                                                <Setter Property="Stroke" Value="White"></Setter>
+                                                                <Setter Property="BackgroundColor" Value="#FF7F3E"></Setter>
                                                             </DataTrigger>
                                                         </Border.Triggers>
                                                     </Border>
