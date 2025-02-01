@@ -72,7 +72,8 @@
                         </Border.GestureRecognizers>
                     </Border>
                     <!--Star Recording-->
-                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="10" Stroke="Black" HorizontalOptions="FillAndExpand">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="10" Stroke="Black" HorizontalOptions="FillAndExpand"
+                            IsVisible="False">
                         <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="7">
                             <Image>
                                 <Image.Source>
