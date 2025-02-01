@@ -52,6 +52,7 @@ public partial class InsertDevicePopup : Mopups.Pages.PopupPage
         else
         {
             DeviceClose.Invoke(ValueEn.Text);
+            await MopupService.Instance.PopAsync(true);
         }
     }
 

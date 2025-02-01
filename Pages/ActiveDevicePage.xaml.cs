@@ -347,12 +347,12 @@ public partial class ActiveDevicePage : Controls.CustomControl
                 {
                     await App.Current!.MainPage!.Navigation.PopAsync();
                 });
+                await Task.Delay(100);
                 //Get Link 
                 var page = new InsertDevicePopup();
                 page.DeviceClose += async (Uri) =>
                 {
                     SetupUri = Uri;
-                    await MopupService.Instance.PopAsync(true);
                     await Model.DeviceClick(SetupUri, deviceType,QrValue);
                 };
                 await MopupService.Instance.PushAsync(page, true);
@@ -365,7 +365,6 @@ public partial class ActiveDevicePage : Controls.CustomControl
             page.DeviceClose += async (Uri) =>
             {
                 SetupUri = Uri;
-                await MopupService.Instance.PopAsync(true);
 #if ANDROID
                 var toast = Toast.Make($"Near the stand now.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
@@ -379,7 +378,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
             SetupUri = Model.DetailsResponse.CardUrlVM!;
             deviceType = Item.DeviceNumber;
 #if ANDROID
-                var toast = Toast.Make($"Near the stand now.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                var toast = Toast.Make($"Near the Device now.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
 #endif
             await Publish(NFCNdefTypeFormat.Uri);
