@@ -496,7 +496,7 @@
                                                             Stroke="Gray" HeightRequest="40" Padding="5,0" Grid.Column="0">
                                                         <Label Text="{x:Static res:AppResources.btnUpcoming}" TextColor="Black" FontSize="14" BackgroundColor="Transparent" VerticalTextAlignment="Center">
                                                             <Label.Triggers>
-                                                                <DataTrigger TargetType="Label" Binding="{Binding IsPassed}" Value="1">
+                                                                <DataTrigger TargetType="Label" Binding="{Binding IsPassed}" Value="0">
                                                                     <Setter Property="TextColor" Value="White"></Setter>
                                                                 </DataTrigger>
                                                             </Label.Triggers>
