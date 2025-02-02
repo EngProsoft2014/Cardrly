@@ -70,6 +70,7 @@ namespace Cardrly
             Services.AddTransient<HomePage>();
             Services.AddTransient<ImageEditorPage>();
             Services.AddTransient<LoginPage>();
+            Services.AddTransient<ScanQrPage>();
             #endregion
 
             #region MainPopups
@@ -79,8 +80,13 @@ namespace Cardrly
             Services.AddTransient<EditLinkPopup>();
             Services.AddTransient<LeadOptionsPopup>();
             Services.AddTransient<ShareLeadPopup>();
-            #endregion
+            Services.AddTransient<InsertDevicePopup>();
+            Services.AddTransient<CalendlyDetailsPopup>();
+            Services.AddTransient<OutLookDetailsPopup>();
+            Services.AddTransient<GmailDetailsPopup>();
 
+            #endregion
+            
             #endregion
 
             Services.AddSingleton<IAudioManager, AudioManager>();
