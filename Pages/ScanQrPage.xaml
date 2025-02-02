@@ -7,10 +7,12 @@
              Title="ScanQrPage">
     <StackLayout VerticalOptions="FillAndExpand">
         <Grid VerticalOptions="FillAndExpand">
-            <zxing:CameraBarcodeReaderView x:Name="cameraBarcodeReaderView" BarcodesDetected="cameraBarcodeReaderView_BarcodesDetected"
-                                       VerticalOptions="FillAndExpand"/>
+            <zxing:CameraBarcodeReaderView x:Name="cameraBarcodeReaderView" BarcodesDetected="cameraBarcodeReaderView_BarcodesDetected" 
+                                       VerticalOptions="FillAndExpand" />
+            
+            
             <Border StrokeShape="RoundRectangle 20" Stroke="White" StrokeThickness="2" VerticalOptions="CenterAndExpand" Padding="5" Margin="100,0">
-                <Image Source="qrcode" Opacity="0.5" VerticalOptions="FillAndExpand" HeightRequest="200"></Image>
+                <Image Source="qrcode" Opacity="0.5" VerticalOptions="FillAndExpand" HeightRequest="{OnPlatform iOS=200}"></Image>
             </Border>
             <Image VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Margin="20">
                 <Image.Source>

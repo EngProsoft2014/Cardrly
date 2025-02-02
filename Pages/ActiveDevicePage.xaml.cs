@@ -360,17 +360,17 @@ public partial class ActiveDevicePage : Controls.CustomControl
             //await App.Current!.MainPage!.Navigation.PushAsync(page);
             await App.Current!.MainPage!.Navigation.PushAsync(new ScanQrPage());
 
-            var page2 = new InsertDevicePopup();
             MessagingCenter.Subscribe<ScanQrPage, string>(this, "QRCodeValue", async (sender, message) =>
             {
+                MessagingCenter.Unsubscribe<ScanQrPage, string>(this, "QRCodeValue"); // Unsubscribe immediately
+
                 if (Guid.TryParse(message, out Guid parseGuid))
                 {
+                    var existingPopup = MopupService.Instance.PopupStack.FirstOrDefault(p => p is InsertDevicePopup);
 
-                    var existingPage = Navigation.NavigationStack.FirstOrDefault(p => p is InsertDevicePopup);
-
-                    if (existingPage == null)
+                    if (existingPopup == null)
                     {
-
+                        var page2 = new InsertDevicePopup();
                         //Get Link  
                         page2.DeviceClose += async (Uri) =>
                         {
@@ -379,9 +379,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
                         };
                         await MopupService.Instance.PushAsync(page2, true);
                     }
-
                 }
-
             });
         }
         else if (Item!.DeviceName == "Stand")

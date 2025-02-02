@@ -22,6 +22,8 @@ public partial class ScanQrPage : Controls.CustomControl
         cameraBarcodeReaderView.Options = new BarcodeReaderOptions
         {
             Formats = BarcodeFormat.QrCode,
+            TryInverted = true,
+            TryHarder = true,
             AutoRotate = true,
             Multiple = false
         };
