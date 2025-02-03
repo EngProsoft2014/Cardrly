@@ -574,7 +574,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lead Count.
+        ///   Looks up a localized string similar to Leads Count.
         /// </summary>
         internal static string lblLeadCount {
             get {

@@ -289,7 +289,7 @@
     <value>Lead Category</value>
   </data>
   <data name="lblLeadCount" xml:space="preserve">
-    <value>Lead Count</value>
+    <value>Leads Count</value>
   </data>
   <data name="lblLeadsRegistered" xml:space="preserve">
     <value>Leads Registered</value>
