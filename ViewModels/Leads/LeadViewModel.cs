@@ -99,7 +99,6 @@ namespace Cardrly.ViewModels.Leads
 
         public async Task GetAllLeads()
         {
-            IsEnable = false;
             UserDialogs.Instance.ShowLoading();
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
@@ -136,7 +135,6 @@ namespace Cardrly.ViewModels.Leads
             }
 
             UserDialogs.Instance.HideHud();
-            IsEnable = true;
         }
         public async Task SearchLeads()
         {
