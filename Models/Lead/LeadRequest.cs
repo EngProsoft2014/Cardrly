@@ -98,6 +98,7 @@ namespace Cardrly.Models.Lead
                 }
             }
         }
+        public string? UrlImgProfileVM { get; set; } = "usericon.png";
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)

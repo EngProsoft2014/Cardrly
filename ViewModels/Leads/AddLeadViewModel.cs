@@ -45,6 +45,7 @@ namespace Cardrly.ViewModels.Leads
             Rep = GenericRep;
             _service = service;
             AddOrUpdate = 1;
+            Request.ImagefileProfile = ImageSource.FromFile("usericon.png");
         }
 
         public AddLeadViewModel(LeadResponse leadResponse, IGenericRepository GenericRep, Services.Data.ServicesService service)
@@ -66,7 +67,7 @@ namespace Cardrly.ViewModels.Leads
             {
                 page = new AddAttachmentsPopup(Request.ImgFile);
             }
-            else if (!string.IsNullOrEmpty(Response!.UrlImgProfileVM) & Response.UrlImgProfileVM != Utility.ServerUrl)
+            else if (!string.IsNullOrEmpty(Response!.UrlImgProfileVM) & Response.UrlImgProfileVM != "usericon.png")
             {
                 UserDialogs.Instance.ShowLoading($"{AppResources.msgLoadingImage}");
                 var bytes = await StaticMember.GetImageBase64FromUrlAsync(Response.UrlImgProfileVM);
@@ -212,10 +213,14 @@ namespace Cardrly.ViewModels.Leads
             {
                 SelectedLeadCategory = new SelectListCategory();
             }
-            if (!string.IsNullOrEmpty(lead.UrlImgProfileVM))
+            if (!string.IsNullOrEmpty(lead.UrlImgProfileVM) && lead.UrlImgProfileVM != "usericon.png")
             {
                 IsProfileImageAdded = 2;
                 Request.ImagefileProfile = ImageSource.FromUri(new Uri(lead.UrlImgProfileVM));
+            }
+            else
+            {
+                Request.ImagefileProfile = ImageSource.FromFile("usericon.png");
             }
         }
 

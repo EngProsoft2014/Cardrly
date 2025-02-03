@@ -335,7 +335,12 @@
                             <!--Header-->
                             <StackLayout Orientation="Horizontal">
                                 <!--Leads Count-->
-                                <Label Text="{Binding Leads.Count}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" TextColor="#FF7F3E"></Label>
+                                <HorizontalStackLayout Spacing="3">
+                                    <Label Text="{x:Static res:AppResources.lblLeadCount}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" TextColor="#FF7F3E"></Label>
+                                    <Label Text=":" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" TextColor="#FF7F3E"></Label>
+                                    <Label Text="{Binding Leads.Count}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" TextColor="#FF7F3E"></Label>
+                                </HorizontalStackLayout>
+                                
                                 <!--Titel-->
                                 <Label Text="{x:Static res:AppResources.hdrLeads}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                                    TextColor="Black"></Label>
@@ -739,6 +744,9 @@
                                                     </DataTrigger>
                                                 </Image.Triggers>
                                             </Image>
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding HelpClickCommand}"></TapGestureRecognizer>
+                                            </StackLayout.GestureRecognizers>
                                         </StackLayout>
                                         <!--FAQ-->
                                         <StackLayout Orientation="Horizontal">
@@ -753,6 +761,9 @@
                                                     </DataTrigger>
                                                 </Image.Triggers>
                                             </Image>
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding FAQClickCommand}"></TapGestureRecognizer>
+                                            </StackLayout.GestureRecognizers>
                                         </StackLayout>
                                         <!--Language-->
                                         <StackLayout Orientation="Horizontal">

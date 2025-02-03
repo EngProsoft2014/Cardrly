@@ -7,6 +7,7 @@ using Plugin.Maui.Audio;
 using Cardrly.Resources.Lan;
 using Mopups.Services;
 using Cardrly.Pages.MainPopups;
+using CommunityToolkit.Maui.Alerts;
 
 namespace Cardrly.ViewModels
 {
@@ -61,6 +62,34 @@ namespace Cardrly.ViewModels
         async Task LanguageClick()
         {
             await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service));
+        }
+        [RelayCommand]
+        async Task FAQClick()
+        {
+            try
+            {
+                Uri uri = new Uri("https://cardrly.com/faq/");
+                await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+            }
+            catch (Exception ex)
+            {
+                var toast = Toast.Make($"{ex.Message}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+        }
+        [RelayCommand]
+        async Task HelpClick()
+        {
+            try
+            {
+                Uri uri = new Uri("https://cardrly.com/contact-us/");
+                await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+            }
+            catch (Exception ex)
+            {
+                var toast = Toast.Make($"{ex.Message}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
         }
         #endregion
     }

@@ -288,6 +288,9 @@
   <data name="lblLeadCategory" xml:space="preserve">
     <value>فئة العميل</value>
   </data>
+  <data name="lblLeadCount" xml:space="preserve">
+    <value>عدد العملاء</value>
+  </data>
   <data name="lblLeadsRegistered" xml:space="preserve">
     <value>العملاء المسجلون</value>
   </data>

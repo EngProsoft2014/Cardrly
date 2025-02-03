@@ -23,7 +23,7 @@ namespace Cardrly.ViewModels.Leads
         [ObservableProperty]
         ObservableCollection<LeadResponse> leadsInPage = new ObservableCollection<LeadResponse>();
         [ObservableProperty]
-        LeadFilterRequest filterRequest = new LeadFilterRequest();
+        public LeadFilterRequest filterRequest = new LeadFilterRequest();
         [ObservableProperty]
         PagingLstLeadResponse pagingResponse = new PagingLstLeadResponse();
         public readonly IAudioManager _audioManager;
@@ -86,18 +86,18 @@ namespace Cardrly.ViewModels.Leads
         [RelayCommand]
         async Task MoreOptionClick(LeadResponse res)
         {
-            await MopupService.Instance.PushAsync(new LeadOptionsPopup(res,Rep,_service));
+            await MopupService.Instance.PushAsync(new LeadOptionsPopup(res, Rep, _service));
         }
         #endregion
 
         #region Methodes
         public async void Init()
-        { 
+        {
             IsHasNext = true;
             await GetAllLeads();
         }
 
-        async Task GetAllLeads()
+        public async Task GetAllLeads()
         {
             IsEnable = false;
             UserDialogs.Instance.ShowLoading();
@@ -138,7 +138,30 @@ namespace Cardrly.ViewModels.Leads
             UserDialogs.Instance.HideHud();
             IsEnable = true;
         }
+        public async Task SearchLeads()
+        {
+            string UserToken = await _service.UserToken();
+            if (!string.IsNullOrEmpty(UserToken))
+            {
+                string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                string Query = QueryStringHelper.ToQueryString(FilterRequest);
 
+                var json = await Rep.GetAsync<PagingLstLeadResponse>($"{ApiConstants.LeadGetAllApi}{AccId}/Lead/Page?{Query}", UserToken);
+
+                if (json != null)
+                {
+                    PagingResponse = json;
+
+                    //IsHasNext = json.pagingLst.HasNextPages;
+
+                    IsHasNext = PagingResponse.pagingLst.DataModel.Count > 0 ? true : false;
+
+                    LeadsInPage = new ObservableCollection<LeadResponse>(PagingResponse?.pagingLst.DataModel!);
+
+                    Leads = new ObservableCollection<LeadResponse>(LeadsInPage.ToList());
+                }
+            }
+        }
         [RelayCommand]
         async Task GetLoadMore()
         {

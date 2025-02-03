@@ -15,7 +15,7 @@ public partial class HomePage : Controls.CustomControl
     CardsViewModel cardsViewModel;
     HomeViewModel homeViewModel;
     LeadViewModel LeadViewModel;
-    CalendarViewModel CalendarViewModel; 
+    CalendarViewModel CalendarViewModel;
     #endregion
 
     #region Service
@@ -122,11 +122,12 @@ public partial class HomePage : Controls.CustomControl
         LeadRef.IsRefreshing = false;
     }
 
-    private void SearchBar_Lead(object sender, TextChangedEventArgs e)
+    private async void SearchBar_Lead(object sender, TextChangedEventArgs e)
     {
-        LeadColc.ItemsSource = LeadViewModel.Leads.Where(a => a.FullName.Contains(e.NewTextValue));
+        LeadViewModel.FilterRequest.SearchLead = e.NewTextValue;
+        LeadViewModel.FilterRequest.PageNumber = 1;
+        await LeadViewModel.SearchLeads();
     }
-    #endregion
 
     private async void HomeRef_Refreshing(object sender, EventArgs e)
     {
@@ -151,4 +152,5 @@ public partial class HomePage : Controls.CustomControl
         CalendarViewModel.CalendarOutlookEvents = new System.Collections.ObjectModel.ObservableCollection<Models.Calendar.OutLookResponseModel.CalendarOutlookEvent>();
         CalendarViewModel.IsPassed = 2;
     }
+    #endregion
 }

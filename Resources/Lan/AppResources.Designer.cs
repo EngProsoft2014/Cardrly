@@ -574,6 +574,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lead Count.
+        /// </summary>
+        internal static string lblLeadCount {
+            get {
+                return ResourceManager.GetString("lblLeadCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Leads Registered.
         /// </summary>
         internal static string lblLeadsRegistered {
