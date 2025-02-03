@@ -34,20 +34,30 @@
                 <DataTemplate>
                     <Border StrokeShape="RoundRectangle 10" Padding="20" StrokeThickness="0" BackgroundColor="White">
                         <HorizontalStackLayout Spacing="20">
-                            <Image>
+                            <!--<Image>
                                 <Image.Source>
                                     <FontImageSource Glyph="" FontFamily="FontIconBrand" Size="45" Color="Black"></FontImageSource>
                                 </Image.Source>
+                            </Image>-->
+                            <Image Source="{Binding UrlImageUploadVM}" Aspect="AspectFit" HeightRequest="60" >
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image" Binding="{Binding UrlImageUploadVM}" Value="https://api.cardrly.com/">
+                                        <Setter Property="Source">
+                                            <Setter.Value>
+                                                <FontImageSource Glyph="" FontFamily="FontIconBrand" Size="45" Color="Black"></FontImageSource>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Image.Triggers>
                             </Image>
                             <VerticalStackLayout VerticalOptions="StartAndExpand" Spacing="7">
-                                <Label Text="Tark Gaber's Card" FontSize="16" FontAttributes="Bold" TextColor="Black"></Label>
                                 <HorizontalStackLayout Spacing="5">
                                     <Image>
                                         <Image.Source>
                                             <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="15" Color="Black"></FontImageSource>
                                         </Image.Source>
                                     </Image>
-                                    <Label Text="Dynamic" FontSize="14" FontAttributes="Bold" TextColor="Black"></Label>
+                                    <Label Text="{Binding DeviceType}" FontSize="14" FontAttributes="Bold" TextColor="Black"></Label>
                                 </HorizontalStackLayout>
                                 <HorizontalStackLayout Spacing="5">
                                     <Label Text="{x:Static res:AppResources.lblActivateat}" FontSize="14" TextColor="Black"></Label>

@@ -33,13 +33,13 @@
             <Label Text="{x:Static res:AppResources.lblChoosetheDeviceyouareactivating}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14"></Label>
             <CollectionView ItemsSource="{Binding DeviceModels}" Margin="20,20,20,0" VerticalOptions="FillAndExpand">
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="15" Span="2" HorizontalItemSpacing="30"></GridItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="15" Span="2" HorizontalItemSpacing="15"></GridItemsLayout>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border StrokeShape="RoundRectangle 20" Padding="0,20" StrokeThickness="0" BackgroundColor="White">
+                        <Border StrokeShape="RoundRectangle 20" Padding="5" StrokeThickness="0" BackgroundColor="White">
                             <VerticalStackLayout Spacing="10">
-                                <Image Source="{Binding DeviceImgUrlVM}"></Image>
+                                <Image Source="{Binding DeviceImgUrlVM}" HeightRequest="100" Aspect="AspectFit" Margin="5"></Image>
                                 <Label Text="{Binding DeviceName}" FontAutoScalingEnabled="False" TextColor="Black" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                                    FontSize="14"></Label>
                             </VerticalStackLayout>

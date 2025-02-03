@@ -356,7 +356,7 @@
                             <!--Data-->
                             <RefreshView x:Name="LeadRef" VerticalOptions="FillAndExpand" Refreshing="Lead_Refreshing">
                                 <!--Leads-->
-                                <CollectionView x:Name="LeadColc" ItemsSource="{Binding Leads}" VerticalOptions="FillAndExpand">
+                                <CollectionView x:Name="LeadColc" ItemsSource="{Binding Leads}" VerticalOptions="FillAndExpand" RemainingItemsThreshold="1" RemainingItemsThresholdReachedCommand="{Binding GetLoadMoreCommand}">
                                     <CollectionView.ItemsLayout>
                                         <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
                                     </CollectionView.ItemsLayout>
@@ -367,18 +367,17 @@
                                                     <!--Image Profile-->
                                                     <Border StrokeShape="RoundRectangle 50" HeightRequest="60" WidthRequest="60">
                                                         <Image Source="{Binding UrlImgProfileVM}" Aspect="AspectFill">
-                                                            <Image.Triggers>
+                                                            <!--<Image.Triggers>
                                                                 <DataTrigger TargetType="Image" Binding="{Binding UrlImgProfileVM}" Value="https://api.cardrly.com/">
                                                                     <Setter Property="Source">
                                                                         <Setter.Value>
-                                                                            <FontImageSource Glyph="" FontFamily="FontIcon" Color="Black"></FontImageSource>
+                                                                            <FontImageSource Glyph="" FontFamily="FontIcon" Size="25" Color="Black"></FontImageSource>
                                                                         </Setter.Value>
                                                                     </Setter>
-                                                                    <Setter Property="WidthRequest" Value="25"></Setter>
-                                                                    <Setter Property="HeightRequest" Value="25"></Setter>
                                                                     <Setter Property="Aspect" Value="AspectFit"></Setter>
+                                                                    <Setter Property="Margin" Value="15"></Setter>
                                                                 </DataTrigger>
-                                                            </Image.Triggers>
+                                                            </Image.Triggers>-->
                                                         </Image>
                                                     </Border>
                                                     <!--Name & Company-->

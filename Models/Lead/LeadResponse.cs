@@ -24,7 +24,7 @@ namespace Cardrly.Models.Lead
         public string? JobTitle { get; set; } = default!;
         public string? ImgProfile { get; set; } = default!;
         public string? UrlImgProfile { get; set; } = default!;
-        public string? UrlImgProfileVM { get { return Utility.ServerUrl + UrlImgProfile; } }
+        public string? UrlImgProfileVM { get { return !string.IsNullOrEmpty(UrlImgProfile) ? Utility.ServerUrl + UrlImgProfile : "usericon.png"; } }
         public bool Active { get; set; } = default!;
         public bool? IsShareToUsers { get; set; } = default!;
         public DateTime CreatedDate { get; set; }

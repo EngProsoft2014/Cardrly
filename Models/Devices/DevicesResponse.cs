@@ -12,5 +12,8 @@ namespace Cardrly.Models.Devices
         public EnumDeviceType DeviceType { get; set; }
         public string RedirectUrl { get; set; } = string.Empty;
         public DateTime? CreatedDate { get; set; } = default!;
+        public string? ImageUpload { get; set; } = default!;
+        public string? UrlImageUpload { get; set; } = default!;
+        public string? UrlImageUploadVM { get { return $"{Helpers.Utility.ServerUrl}{UrlImageUpload}"; } }
     }
 }
