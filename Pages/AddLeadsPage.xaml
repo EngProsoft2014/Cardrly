@@ -59,14 +59,14 @@
                 <StackLayout Orientation="Horizontal" Spacing="15">
                     <!--Scan Card-->
                     <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="10" Stroke="Black" HorizontalOptions="FillAndExpand">
-                        <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="7">
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Spacing="7">
                             <Image>
                                 <Image.Source>
-                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
+                                    <FontImageSource Glyph="" FontFamily="FontIcon" Color="Gray" Size="20"></FontImageSource>
                                 </Image.Source>
                             </Image>
-                            <Label Text="{x:Static res:AppResources.lblScanCard}" TextColor="Black" VerticalTextAlignment="Center" FontSize="14"></Label>
-                        </HorizontalStackLayout>
+                            <Label Text="{x:Static res:AppResources.lblScanCard}" TextColor="Black" VerticalOptions="EndAndExpand" FontSize="14"></Label>
+                        </StackLayout>
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ScanClickCommand}"></TapGestureRecognizer>
                         </Border.GestureRecognizers>
