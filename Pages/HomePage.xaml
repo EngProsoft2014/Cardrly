@@ -31,7 +31,7 @@
                                        TextColor="Black"></Label>
                                     <Image>
                                         <Image.Source>
-                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="25" Color="#FF7F3E"></FontImageSource>
+                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="25" Color="#FF7F3E"></FontImageSource>
                                         </Image.Source>
                                         <Image.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding GetClickCommand}"></TapGestureRecognizer>
