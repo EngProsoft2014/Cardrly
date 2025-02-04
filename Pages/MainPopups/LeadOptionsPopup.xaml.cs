@@ -50,6 +50,7 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
     private async void TapGestureRecognizer_Comment(object sender, TappedEventArgs e)
     {
         await MopupService.Instance.PopAsync();
+        await Task.Delay(100);
         await MopupService.Instance.PushAsync(new CommentPopup(Res,Rep,_service));
     }
 
@@ -85,13 +86,15 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
     private async void TapGestureRecognizer_ShareLead(object sender, TappedEventArgs e)
     {
         await MopupService.Instance.PopAsync();
+        await Task.Delay(100);
         await MopupService.Instance.PushAsync(new ShareLeadPopup(Res,Rep,_service));
     }
 
     private async void TapGestureRecognizer_ShowComments(object sender, TappedEventArgs e)
     {
-        await Navigation.PushAsync(new AllCommentPage(new AllCommentViewModel(Res,Rep,_service)));
         await MopupService.Instance.PopAsync();
+        await Task.Delay(100);
+        await Navigation.PushAsync(new AllCommentPage(new AllCommentViewModel(Res,Rep,_service)));  
     }
 
     private async void TapGestureRecognizer_Call(object sender, TappedEventArgs e)
