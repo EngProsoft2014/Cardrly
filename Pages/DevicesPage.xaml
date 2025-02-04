@@ -25,61 +25,63 @@
             <Label Text="{x:Static res:AppResources.lblMyDevices}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black"
                    VerticalOptions="CenterAndExpand" ></Label>
         </StackLayout>
-        <!--Data-->
-        <CollectionView ItemsSource="{Binding Devices}" VerticalOptions="FillAndExpand" Margin="0,20,0,0">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="20"></GridItemsLayout>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Border StrokeShape="RoundRectangle 10" Padding="20" StrokeThickness="0" BackgroundColor="White">
-                        <HorizontalStackLayout Spacing="20">
-                            <!--<Image>
-                                <Image.Source>
-                                    <FontImageSource Glyph="" FontFamily="FontIconBrand" Size="45" Color="Black"></FontImageSource>
-                                </Image.Source>
-                            </Image>-->
-                            <Image Source="{Binding UrlImageUploadVM}" Aspect="AspectFit" HeightRequest="60" >
-                                <Image.Triggers>
-                                    <DataTrigger TargetType="Image" Binding="{Binding UrlImageUploadVM}" Value="https://api.cardrly.com/">
-                                        <Setter Property="Source">
-                                            <Setter.Value>
-                                                <FontImageSource Glyph="" FontFamily="FontIconBrand" Size="45" Color="Black"></FontImageSource>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                </Image.Triggers>
-                            </Image>
-                            <VerticalStackLayout VerticalOptions="StartAndExpand" Spacing="7">
-                                <HorizontalStackLayout Spacing="5">
-                                    <Image>
-                                        <Image.Source>
-                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="15" Color="Black"></FontImageSource>
-                                        </Image.Source>
-                                    </Image>
-                                    <Label Text="{Binding DeviceType}" FontSize="14" FontAttributes="Bold" TextColor="Black"></Label>
-                                </HorizontalStackLayout>
-                                <HorizontalStackLayout Spacing="5">
-                                    <Label Text="{x:Static res:AppResources.lblActivateat}" FontSize="14" TextColor="Black"></Label>
-                                    <Label Text="{Binding CreatedDate, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="14" TextColor="Black" />
-                                </HorizontalStackLayout>
-                            </VerticalStackLayout>
-                        </HorizontalStackLayout>
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DevicesViewModel}},Path=DeletDeviceClickCommand}"
-                                                  CommandParameter="{Binding .}"></TapGestureRecognizer>
-                        </Border.GestureRecognizers>
-                    </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-            <CollectionView.EmptyView>
-                <ContentView>
-                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                        <Label Text="{x:Static res:AppResources.msgNoActivatedDevices}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
-                    </StackLayout>
-                </ContentView>
-            </CollectionView.EmptyView>
-        </CollectionView>
+        <RefreshView x:Name="RefView" Refreshing="RefView_Refreshing" Margin="0,20,0,0">
+            <!--Data-->
+            <CollectionView ItemsSource="{Binding Devices}" VerticalOptions="FillAndExpand">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="20"></GridItemsLayout>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border StrokeShape="RoundRectangle 10" Padding="20" StrokeThickness="0" BackgroundColor="White">
+                            <StackLayout Orientation="Horizontal" Spacing="20">
+                                <Image Source="{Binding UrlImageUploadVM}" Aspect="AspectFit" HeightRequest="60" >
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image" Binding="{Binding UrlImageUploadVM}" Value="https://api.cardrly.com/">
+                                            <Setter Property="Source">
+                                                <Setter.Value>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconBrand" Size="45" Color="Black"></FontImageSource>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                                <VerticalStackLayout VerticalOptions="StartAndExpand" Spacing="7">
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Image>
+                                            <Image.Source>
+                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="15" Color="Black"></FontImageSource>
+                                            </Image.Source>
+                                        </Image>
+                                        <Label Text="{Binding DeviceType}" FontSize="14" FontAttributes="Bold" TextColor="Black"></Label>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Label Text="{x:Static res:AppResources.lblActivateat}" FontSize="14" TextColor="Black"></Label>
+                                        <Label Text="{Binding CreatedDate, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="14" TextColor="Black" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                                <Image HorizontalOptions="EndAndExpand">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="" FontFamily="FontIcon" Size="20" Color="Red"></FontImageSource>
+                                    </Image.Source>
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:DevicesViewModel}},Path=DeletDeviceClickCommand}"
+                                                          CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <ContentView>
+                        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                            <Label Text="{x:Static res:AppResources.msgNoActivatedDevices}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                        </StackLayout>
+                    </ContentView>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </RefreshView>
         <!--Activate another Device Button  & Cancel Button-->
         <StackLayout Orientation="Vertical" Spacing="10" VerticalOptions="End" HorizontalOptions="FillAndExpand">
             <!--Activate another Device Button-->

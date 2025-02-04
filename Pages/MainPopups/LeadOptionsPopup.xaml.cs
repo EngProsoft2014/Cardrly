@@ -16,7 +16,7 @@ namespace Cardrly.Pages.MainPopups;
 public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
 {
     LeadResponse Res = new LeadResponse();
-
+    int saveNum = 0;
     #region Service
     readonly IGenericRepository Rep;
     readonly Services.Data.ServicesService _service;
@@ -135,5 +135,46 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
             var toast = Toast.Make($"{AppResources.msgLeadEmail}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
         }
+    }
+
+    private async void SaveToContact_Tapped(object sender, TappedEventArgs e)
+    {
+        
+        string vCardContent = @$"BEGIN:VCARD
+VERSION:3.0
+FN:{Res.FullName}
+TITLE:{Res.JobTitle}
+TEL:{Res.Phone}
+EMAIL:{Res.Email}
+ADR:{Res.Address}
+URL:{Res.Website}
+END:VCARD";
+
+        string fileName = $"Contact{saveNum}.vcf";
+        string filePath = GetDevicePath(fileName);
+
+        // Save the file
+        await File.WriteAllTextAsync(filePath, vCardContent);
+        saveNum += 1;
+        await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}",
+        $"{AppResources.msgContactsavedat} {filePath}", $"{AppResources.msgOk}");
+        
+    }
+
+    private string GetDevicePath(string fileName)
+    {
+        string directoryPath = string.Empty;
+
+#if ANDROID
+        directoryPath = "/storage/emulated/0/Download/"; // Public Downloads folder
+#elif WINDOWS
+        directoryPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+#elif MACCATALYST
+        directoryPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+#elif IOS
+        directoryPath = FileSystem.AppDataDirectory; // iOS does not allow direct access
+#endif
+
+        return Path.Combine(directoryPath, fileName);
     }
 }

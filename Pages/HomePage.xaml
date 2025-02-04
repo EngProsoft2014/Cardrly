@@ -66,7 +66,13 @@
                                                     <Label Text="{x:Static res:AppResources.lblCard}" TextColor="Gray" FontSize="13"></Label>
                                                     <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
                                                         <Picker x:Name="CardPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding CardName}"
-                                                            SelectedItem="{Binding SelectedCard}" ItemsSource="{Binding CardLst}"></Picker>
+                                                                ItemsSource="{Binding CardLst}">
+                                                            <Picker.Triggers>
+                                                                <DataTrigger TargetType="Picker" Binding="{Binding IsFoundCards}" Value="true">
+                                                                    <Setter Property="SelectedItem" Value='{Binding SelectedCard}'></Setter>
+                                                                </DataTrigger>
+                                                            </Picker.Triggers>
+                                                        </Picker>
                                                     </Border>
                                                 </VerticalStackLayout>
                                             </StackLayout>

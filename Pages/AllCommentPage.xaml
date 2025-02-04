@@ -46,6 +46,13 @@
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <ContentView>
+                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                        <Label Text="{x:Static res:AppResources.msgNoComment_here}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                    </StackLayout>
+                </ContentView>
+            </CollectionView.EmptyView>
         </CollectionView>
     </StackLayout>
     

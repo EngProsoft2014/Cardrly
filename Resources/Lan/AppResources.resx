@@ -333,6 +333,9 @@
   <data name="lblSaveContacts" xml:space="preserve">
     <value>Save Contacts</value>
   </data>
+  <data name="lblSavetoContact" xml:space="preserve">
+    <value>Save to Contact</value>
+  </data>
   <data name="lblScanCard" xml:space="preserve">
     <value>Scan Card</value>
   </data>
@@ -395,6 +398,9 @@
   </data>
   <data name="msgCan'tDeleteThisLeadNowTryagainLater" xml:space="preserve">
     <value>Can't Delete This Lead Now Try again Later.</value>
+  </data>
+  <data name="msgContactsavedat" xml:space="preserve">
+    <value>Contact saved at:</value>
   </data>
   <data name="msgDate_HomePage" xml:space="preserve">
     <value>The To Date Must be greater Than From Date.</value>
@@ -470,6 +476,9 @@
   </data>
   <data name="msgNoActivatedDevices" xml:space="preserve">
     <value>No Activated Devices</value>
+  </data>
+  <data name="msgNoComment here" xml:space="preserve">
+    <value>No Comments here</value>
   </data>
   <data name="msgNoIDfoundintheQr" xml:space="preserve">
     <value>No ID found in the Qr.</value>

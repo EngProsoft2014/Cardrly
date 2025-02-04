@@ -65,7 +65,7 @@ namespace Cardrly.ViewModels
             IsEnable = true;
         }
 
-        async Task GetAllDevices()
+        public async Task GetAllDevices()
         {
             IsEnable = false;
             string UserToken = await _service.UserToken();

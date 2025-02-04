@@ -709,6 +709,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save to Contact.
+        /// </summary>
+        internal static string lblSavetoContact {
+            get {
+                return ResourceManager.GetString("lblSavetoContact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scan Card.
         /// </summary>
         internal static string lblScanCard {
@@ -894,6 +903,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgCan_tDeleteThisLeadNowTryagainLater {
             get {
                 return ResourceManager.GetString("msgCan\'tDeleteThisLeadNowTryagainLater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact saved at:.
+        /// </summary>
+        internal static string msgContactsavedat {
+            get {
+                return ResourceManager.GetString("msgContactsavedat", resourceCulture);
             }
         }
         
@@ -1119,6 +1137,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgNoActivatedDevices {
             get {
                 return ResourceManager.GetString("msgNoActivatedDevices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Comments here.
+        /// </summary>
+        internal static string msgNoComment_here {
+            get {
+                return ResourceManager.GetString("msgNoComment here", resourceCulture);
             }
         }
         

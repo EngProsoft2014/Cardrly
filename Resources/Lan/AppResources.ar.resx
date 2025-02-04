@@ -333,6 +333,9 @@
   <data name="lblSaveContacts" xml:space="preserve">
     <value>حفظ جهات الاتصال</value>
   </data>
+  <data name="lblSavetoContact" xml:space="preserve">
+    <value>حفظ في جهة الاتصال</value>
+  </data>
   <data name="lblScanCard" xml:space="preserve">
     <value>مسح البطاقة</value>
   </data>
@@ -395,6 +398,9 @@
   </data>
   <data name="msgCan'tDeleteThisLeadNowTryagainLater" xml:space="preserve">
     <value>لا يمكن حذف هذا العميل الآن. حاول مرة أخرى لاحقًا.</value>
+  </data>
+  <data name="msgContactsavedat" xml:space="preserve">
+    <value>تم حفظ جهة الاتصال في:</value>
   </data>
   <data name="msgDate_HomePage" xml:space="preserve">
     <value>يجب أن يكون تاريخ "إلى" أكبر من تاريخ "من"</value>
@@ -470,6 +476,9 @@
   </data>
   <data name="msgNoActivatedDevices" xml:space="preserve">
     <value>لا يوجد أجهزة مفعلة</value>
+  </data>
+  <data name="msgNoComment here" xml:space="preserve">
+    <value>لا يوجد تعليقات هنا</value>
   </data>
   <data name="msgNoIDfoundintheQr" xml:space="preserve">
     <value>لم يتم العثور على معرف في Qr.</value>

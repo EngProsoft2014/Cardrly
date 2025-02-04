@@ -28,6 +28,8 @@ namespace Cardrly.ViewModels
         DateTime fromDate = DateTime.UtcNow.Date;
         [ObservableProperty]
         DateTime toDate = DateTime.UtcNow.Date;
+        [ObservableProperty]
+        bool isFoundCards = false;
         public readonly IAudioManager _audioManager;
         #endregion
 
@@ -70,10 +72,12 @@ namespace Cardrly.ViewModels
         public async void Init()
         {
             IsEnable = false;
+            SelectedCard = new CardResponse() { CardName = "NoCard"};
             await GetAllCards();
             if (CardLst.Count > 0)
             {
                 SelectedCard = CardLst[0];
+                IsFoundCards = true;
             }
             UserDialogs.Instance.ShowLoading();
             await Task.WhenAll(GetAllStatistics(),GetAccData());

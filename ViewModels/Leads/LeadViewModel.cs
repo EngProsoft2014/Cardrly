@@ -104,6 +104,7 @@ namespace Cardrly.ViewModels.Leads
             if (!string.IsNullOrEmpty(UserToken))
             {
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                
                 string Query = QueryStringHelper.ToQueryString(FilterRequest);
 
                 var json = await Rep.GetAsync<PagingLstLeadResponse>($"{ApiConstants.LeadGetAllApi}{AccId}/Lead/Page?{Query}", UserToken);
@@ -157,6 +158,8 @@ namespace Cardrly.ViewModels.Leads
                     LeadsInPage = new ObservableCollection<LeadResponse>(PagingResponse?.pagingLst.DataModel!);
 
                     Leads = new ObservableCollection<LeadResponse>(LeadsInPage.ToList());
+
+                    FilterRequest.PageNumber += 1;
                 }
             }
         }

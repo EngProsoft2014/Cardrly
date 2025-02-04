@@ -115,10 +115,11 @@ public partial class HomePage : Controls.CustomControl
         RefView.IsRefreshing = false;
     }
 
-    private void Lead_Refreshing(object sender, EventArgs e)
+    private async void Lead_Refreshing(object sender, EventArgs e)
     {
         LeadRef.IsRefreshing = true;
-        LeadViewModel.Init();
+        LeadViewModel.FilterRequest.PageNumber = 1;
+        await LeadViewModel.SearchLeads();
         LeadRef.IsRefreshing = false;
     }
 

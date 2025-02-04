@@ -26,13 +26,13 @@
                         <!--Call-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Label Text="{x:Static res:AppResources.lblCall}"
-           TextColor="#FF7F3E"
-           FontSize="16"
+                                   TextColor="#FF7F3E"
+                                   FontSize="16"
            
-           HorizontalTextAlignment="Center"
-           VerticalTextAlignment="Center"
-           HorizontalOptions="CenterAndExpand" 
-           Padding="8">
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="CenterAndExpand" 
+                                   Padding="8">
                             </Label>
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="TapGestureRecognizer_Call"></TapGestureRecognizer>
@@ -52,6 +52,21 @@
                             </Label>
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="TapGestureRecognizer_Email"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Save to Contact-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="{x:Static res:AppResources.lblSavetoContact}"
+                                    TextColor="#FF7F3E"
+                                    FontSize="16"
+                                    HorizontalTextAlignment="Center"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalOptions="CenterAndExpand" 
+                                    Padding="8">
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="SaveToContact_Tapped"></TapGestureRecognizer>
                             </StackLayout.GestureRecognizers>
                         </StackLayout>
                         <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
