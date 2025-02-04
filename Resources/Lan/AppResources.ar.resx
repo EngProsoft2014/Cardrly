@@ -477,6 +477,9 @@
   <data name="msgNoActivatedDevices" xml:space="preserve">
     <value>لا يوجد أجهزة مفعلة</value>
   </data>
+  <data name="msgNoavailableusers" xml:space="preserve">
+    <value>لا يوجد مستخدمين متاحين</value>
+  </data>
   <data name="msgNoComment here" xml:space="preserve">
     <value>لا يوجد تعليقات هنا</value>
   </data>

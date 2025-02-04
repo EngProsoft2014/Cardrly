@@ -1141,6 +1141,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No available users.
+        /// </summary>
+        internal static string msgNoavailableusers {
+            get {
+                return ResourceManager.GetString("msgNoavailableusers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Comments here.
         /// </summary>
         internal static string msgNoComment_here {
