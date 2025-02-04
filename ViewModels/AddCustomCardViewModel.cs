@@ -87,6 +87,9 @@ namespace Cardrly.ViewModels
             // Select Initial Card Theme Colors
             ThemColor.LastOrDefault()!.IsSelected = true;
             Request.LinkColor = ThemColor.LastOrDefault()!.HexCode;
+            //Add Defult Image
+            Request.ImgProfileFile = ImageSource.FromFile("usericon.png");
+            Request.ImgCoverFile = ImageSource.FromFile("defultcover.jpeg");
         }
         void Init(CardResponse card)
         {
@@ -101,9 +104,23 @@ namespace Cardrly.ViewModels
             Request.PersonName = card.PersonName;
             Request.LinkColor = card.LinkColor;
             Request.PersonNikeName = card.PersonNikeName;
-            Request.ImgProfileFile = ImageSource.FromUri(new Uri(card.UrlImgProfileVM!));
+            if (card.UrlImgProfileVM! == Utility.ServerUrl)
+            {
+                Request.ImgProfileFile = ImageSource.FromFile("usericon.png");
+            }
+            else
+            {
+                Request.ImgProfileFile = ImageSource.FromUri(new Uri(card.UrlImgProfileVM!));
+            }
+            if (card.UrlImgCoverVM! == Utility.ServerUrl)
+            {
+                Request.ImgCoverFile = ImageSource.FromFile("defultcover.jpeg");
+            }
+            else
+            {
+                Request.ImgCoverFile = ImageSource.FromUri(new Uri(card.UrlImgCoverVM!));
+            }
             IsProfileImageAdded = 2;
-            Request.ImgCoverFile = ImageSource.FromUri(new Uri(card.UrlImgCoverVM!));
             IsCoverImageAdded = 2;
             #endregion
 

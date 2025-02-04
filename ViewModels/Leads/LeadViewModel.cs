@@ -9,6 +9,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
+using Microsoft.Maui.Devices;
 using Mopups.Services;
 using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
@@ -95,6 +96,16 @@ namespace Cardrly.ViewModels.Leads
         {
             IsHasNext = true;
             await GetAllLeads();
+            MessagingCenter.Subscribe<LeadOptionsPopup, bool>(this, "DeleteLead", async (sender, message) =>
+            {
+                MessagingCenter.Unsubscribe<LeadOptionsPopup, bool>(this, "DeleteLead"); // Unsubscribe immediately
+
+                if (true)
+                {
+                    FilterRequest = new LeadFilterRequest();
+                    await SearchLeads();
+                }
+            });
         }
 
         public async Task GetAllLeads()

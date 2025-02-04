@@ -340,24 +340,6 @@ public partial class ActiveDevicePage : Controls.CustomControl
         if (Item!.DeviceName == "QR")
         {
             deviceType = Item.DeviceNumber;
-            //var page = new ScanQrPage();
-            //page.QrClose += async (QrValue) =>
-            //{
-            //    MainThread.BeginInvokeOnMainThread(async () =>
-            //    {
-            //        await App.Current!.MainPage!.Navigation.PopAsync();
-            //    });
-            //    await Task.Delay(100);
-            //    //Get Link 
-            //    var page = new InsertDevicePopup();
-            //    page.DeviceClose += async (Uri) =>
-            //    {
-            //        SetupUri = Uri;
-            //        await Model.DeviceClick(SetupUri, deviceType,QrValue);
-            //    };
-            //    await MopupService.Instance.PushAsync(page, true);
-            //};
-            //await App.Current!.MainPage!.Navigation.PushAsync(page);
             await App.Current!.MainPage!.Navigation.PushAsync(new ScanQrPage());
 
             MessagingCenter.Subscribe<ScanQrPage, string>(this, "QRCodeValue", async (sender, message) =>
@@ -382,7 +364,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
                 }
             });
         }
-        else if (Item!.DeviceName == "Stand")
+        else if (Item!.DeviceName == "Stand" || Item!.DeviceName == "CustomNFC")
         {
             var page = new InsertDevicePopup();
             page.DeviceClose += async (Uri) =>

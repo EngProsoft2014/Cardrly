@@ -6,10 +6,11 @@ using Cardrly.Resources.Lan;
 using Cardrly.ViewModels;
 using CommunityToolkit.Maui.Alerts;
 using Controls.UserDialogs.Maui;
-
+using Microsoft.Maui.ApplicationModel.Communication;
 using Mopups.Services;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Cardrly.Pages.MainPopups;
 
@@ -70,6 +71,7 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
                 {
                     var toast = Toast.Make($"{AppResources.msgLeadDeletedSuccessfully}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
+                    MessagingCenter.Send(this, "DeleteLead", true);
                 }
                 else
                 {
@@ -142,16 +144,16 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
 
     private async void SaveToContact_Tapped(object sender, TappedEventArgs e)
     {
-        
+
         string vCardContent = @$"BEGIN:VCARD
-VERSION:3.0
-FN:{Res.FullName}
-TITLE:{Res.JobTitle}
-TEL:{Res.Phone}
-EMAIL:{Res.Email}
-ADR:{Res.Address}
-URL:{Res.Website}
-END:VCARD";
+        VERSION:3.0
+        FN:{Res.FullName}
+        TITLE:{Res.JobTitle}
+        TEL:{Res.Phone}
+        EMAIL:{Res.Email}
+        ADR:{Res.Address}
+        URL:{Res.Website}
+        END:VCARD";
 
         string fileName = $"Contact{saveNum}.vcf";
         string filePath = GetDevicePath(fileName);
@@ -161,7 +163,7 @@ END:VCARD";
         saveNum += 1;
         await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}",
         $"{AppResources.msgContactsavedat} {filePath}", $"{AppResources.msgOk}");
-        
+
     }
 
     private string GetDevicePath(string fileName)

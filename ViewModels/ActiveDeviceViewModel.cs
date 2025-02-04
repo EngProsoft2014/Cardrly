@@ -72,15 +72,7 @@ namespace Cardrly.ViewModels
                 UserDialogs.Instance.HideHud();
                 if (json != null)
                 {
-                    //foreach (DevicesTypeModel item in json)
-                    //{
-                    //    if (!string.IsNullOrEmpty(item.DeviceImgUrl))
-                    //    {
-                    //        item.DeviceImgUrl = $"https://app.cardrly.com/{item.DeviceImgUrl}";
-                    //    }
-                    //}
                     DeviceModels = json;
-                    
                 }
             }
             IsEnable = true;

@@ -477,6 +477,9 @@
   <data name="msgNoActivatedDevices" xml:space="preserve">
     <value>No Activated Devices</value>
   </data>
+  <data name="msgNoavailableusers" xml:space="preserve">
+    <value>No available users</value>
+  </data>
   <data name="msgNoComment here" xml:space="preserve">
     <value>No Comments here</value>
   </data>
