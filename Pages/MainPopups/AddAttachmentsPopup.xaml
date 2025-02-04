@@ -63,9 +63,10 @@
                             </StackLayout.GestureRecognizers>
                         </StackLayout>
 
-                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <BoxView x:Name="EditImageBox" HeightRequest="0.7" HorizontalOptions="FillAndExpand"
+                                 BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
 
-                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                        <StackLayout x:Name="EditImage" Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Label 
                                     Text="{x:Static res:AppResources.lblEdit_Photo}"
                                     TextColor="#FF7F3E"

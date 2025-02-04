@@ -65,14 +65,14 @@ namespace Cardrly.ViewModels.Leads
             AddAttachmentsPopup page;
             if (Request!.ImgFile != null)
             {
-                page = new AddAttachmentsPopup(Request.ImgFile);
+                page = new AddAttachmentsPopup(false,Request.ImgFile);
             }
             else if (!string.IsNullOrEmpty(Response!.UrlImgProfileVM) & Response.UrlImgProfileVM != "usericon.png")
             {
                 UserDialogs.Instance.ShowLoading($"{AppResources.msgLoadingImage}");
                 var bytes = await StaticMember.GetImageBase64FromUrlAsync(Response.UrlImgProfileVM);
                 UserDialogs.Instance.HideHud();
-                page = new AddAttachmentsPopup(bytes);
+                page = new AddAttachmentsPopup(false, bytes);
             }
             else
             {
@@ -135,7 +135,6 @@ namespace Cardrly.ViewModels.Leads
                             var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
                         }
-                        UserDialogs.Instance.HideHud();
                     }
                     else if (AddOrUpdate == 2)
                     {
@@ -152,7 +151,6 @@ namespace Cardrly.ViewModels.Leads
                             LeadCategoryId = SelectedLeadCategory.Value
                         };
                         var json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadUpdateApi}{accid}/Lead/{Response.Id}", requestDto, UserToken);
-                        UserDialogs.Instance.HideHud();
                         if (json.Item1 != null)
                         {
                             var toast = Toast.Make($"{AppResources.msgSuccessfullyUpdateLead}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
@@ -177,18 +175,20 @@ namespace Cardrly.ViewModels.Leads
             AddAttachmentsPopup page;
             if (ScanCard!.ImgFile != null)
             {
-                page = new AddAttachmentsPopup(Request.ImgFile);
+                page = new AddAttachmentsPopup(true, Request.ImgFile);
             }
             else
             {
-                page = new AddAttachmentsPopup();
+                page = new AddAttachmentsPopup(true);
             }
             page.ImageClose += async (img, imgPath) =>
             {
                 if (!string.IsNullOrEmpty(img))
                 {
                     ScanCard.ImgFile = Convert.FromBase64String(img);
+                    
                     await UploadScanCard();
+                    
                 }
             };
             await MopupService.Instance.PushAsync(page);
@@ -226,14 +226,16 @@ namespace Cardrly.ViewModels.Leads
 
         async Task UploadScanCard()
         {
-            UserDialogs.Instance.ShowLoading();
+            
             IsEnable = false;
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 
                 string UserToken = await _service.UserToken();
                 string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
+                UserDialogs.Instance.ShowLoading();
                 var json = await Rep.PostTRAsync<LeadScanCardRequest, LeadResponse>($"{ApiConstants.LeadGetScanCardApi}{accid}/Lead/GetScanCard", ScanCard, UserToken);
+                UserDialogs.Instance.HideHud();
                 if (json.Item1 != null)
                 {
                     var toast = Toast.Make($"{AppResources.msgSuccessfullyScanCard}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
@@ -248,27 +250,27 @@ namespace Cardrly.ViewModels.Leads
             }
             
             IsEnable = true;
-            UserDialogs.Instance.HideHud();
+            
         }
 
         async Task GetAllCategories()
         {
-            UserDialogs.Instance.ShowLoading();
+            
             IsEnable = false;
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
             {
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-                
+                UserDialogs.Instance.ShowLoading();
                 var json = await Rep.GetAsync<ObservableCollection<SelectListCategory>>($"{ApiConstants.LeadCategoryCurrentApi}{AccId}/LeadCategory/current", UserToken);
-
+                UserDialogs.Instance.HideHud();
                 if (json != null)
                 {
                     ListCategories = json;
                 }
             }
             IsEnable = true;
-            UserDialogs.Instance.HideHud();
+            
         }
         #endregion
     }

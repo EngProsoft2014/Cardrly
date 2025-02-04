@@ -70,6 +70,7 @@ namespace Cardrly.ViewModels
                 new ColorModel { Name = "Amber", HexCode = "#FFC107" },
                 new ColorModel { Name = "Blue", HexCode = "#2196F3" },
                 new ColorModel { Name = "Navy", HexCode = "#0D47A1" },
+                new ColorModel { Name = "white", HexCode = "#FFFFFF" },
             };
             ThemColor = new ObservableCollection<ColorModel>() {
                 new ColorModel { Name = "Purple", HexCode = "#673AB7" },
@@ -78,6 +79,7 @@ namespace Cardrly.ViewModels
                 new ColorModel { Name = "Amber", HexCode = "#FFC107" },
                 new ColorModel { Name = "Blue", HexCode = "#2196F3" },
                 new ColorModel { Name = "Navy", HexCode = "#0D47A1" },
+                new ColorModel { Name = "white", HexCode = "#FFFFFF" },
             };
             // Select Initial Link Colors
             LinkColor.FirstOrDefault()!.IsSelected = true;
@@ -113,6 +115,7 @@ namespace Cardrly.ViewModels
                 new ColorModel { Name = "Amber", HexCode = "#FFC107" },
                 new ColorModel { Name = "Blue", HexCode = "#2196F3" },
                 new ColorModel { Name = "Navy", HexCode = "#0D47A1" },
+                new ColorModel { Name = "white", HexCode = "#FFFFFF" },
             };
             ThemColor = new ObservableCollection<ColorModel>() {
                 new ColorModel { Name = "Purple", HexCode = "#673AB7" },
@@ -121,6 +124,7 @@ namespace Cardrly.ViewModels
                 new ColorModel { Name = "Amber", HexCode = "#FFC107" },
                 new ColorModel { Name = "Blue", HexCode = "#2196F3" },
                 new ColorModel { Name = "Navy", HexCode = "#0D47A1" },
+                new ColorModel { Name = "white", HexCode = "#FFFFFF" },
             };
             // Select Initial Link Colors
             LinkColor.FirstOrDefault()!.IsSelected = true;
@@ -138,14 +142,14 @@ namespace Cardrly.ViewModels
             AddAttachmentsPopup page;
             if (Request.ImgFileProfile != null)
             {
-                page = new AddAttachmentsPopup(Request.ImgFileProfile);
+                page = new AddAttachmentsPopup(false, Request.ImgFileProfile);
             }
             else if (!string.IsNullOrEmpty(Card.UrlImgProfileVM) && Card.UrlImgProfileVM != Utility.ServerUrl)
             {
                 UserDialogs.Instance.ShowLoading($"{AppResources.msgLoadingImage}");
                 var bytes = await StaticMember.GetImageBase64FromUrlAsync(Card.UrlImgProfileVM);
                 UserDialogs.Instance.HideHud();
-                page = new AddAttachmentsPopup(bytes);
+                page = new AddAttachmentsPopup(false, bytes);
             }
             else
             {
@@ -170,14 +174,14 @@ namespace Cardrly.ViewModels
             AddAttachmentsPopup page;
             if (Request.ImgFileCover != null)
             {
-                page = new AddAttachmentsPopup(Request.ImgFileCover);
+                page = new AddAttachmentsPopup(false, Request.ImgFileCover);
             }
             else if (!string.IsNullOrEmpty(Card.UrlImgCoverVM) && Card.UrlImgCoverVM != Utility.ServerUrl)
             {
                 UserDialogs.Instance.ShowLoading($"{AppResources.msgLoadingImage}");
                 var bytes = await StaticMember.GetImageBase64FromUrlAsync(Card.UrlImgCoverVM);
                 UserDialogs.Instance.HideHud();
-                page = new AddAttachmentsPopup(bytes);
+                page = new AddAttachmentsPopup(false, bytes);
             }
             else
             {

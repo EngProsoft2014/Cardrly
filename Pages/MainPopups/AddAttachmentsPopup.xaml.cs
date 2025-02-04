@@ -15,10 +15,11 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
     public delegate void imageDelegte(string img,string imagePath);
     public event imageDelegte ImageClose;
     byte[] Image;
-    public AddAttachmentsPopup()
+    public AddAttachmentsPopup(bool IsScan = false)
 	{
 		InitializeComponent();
-
+        EditImage.IsVisible = !IsScan;
+        EditImageBox.IsVisible = !IsScan;
         string Lan = Preferences.Default.Get("Lan", "en");
 
         if (Lan == "ar")
@@ -33,10 +34,12 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
         }
     }
 
-    public AddAttachmentsPopup(byte[] bytes)
+    public AddAttachmentsPopup(bool IsScan, byte[] bytes)
     {
         InitializeComponent();
         Image = bytes;
+        EditImage.IsVisible = !IsScan;
+        EditImageBox.IsVisible = !IsScan;
     }
     private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
     {

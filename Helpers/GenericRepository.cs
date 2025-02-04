@@ -93,12 +93,6 @@ namespace Cardrly.Helpers
                     return default(T)!;
                 }
 
-                if (responseMessage.StatusCode == HttpStatusCode.NotFound)
-                {
-                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 404. System.Net.HttpStatusCode.NotFound indicates\r\nthat the requested resource requires Data.", "OK");
-                    return default(T)!;
-                    
-                }
 
                 if (responseMessage.StatusCode == HttpStatusCode.InternalServerError)
                 {

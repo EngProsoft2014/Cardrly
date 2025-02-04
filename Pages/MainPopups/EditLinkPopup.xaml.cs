@@ -65,6 +65,7 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
         LinkType.Add("Url");
         LinkType.Add("Email");
         LinkType.Add("Phone");
+        LinkType.Add("Text");
         TypePicker.ItemsSource = LinkType;
         TypePicker.SelectedIndex = CardLink.CardLinkType - 1;
 
@@ -108,6 +109,10 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
         {
             await SaveClick();
         }
+        else if (valid == "Text" && TypePicker.SelectedIndex == 3)
+        {
+            await SaveClick();
+        }
         else
         {
             var toast = Toast.Make($"{AppResources.msgThevaluenotmatchCardLinkType}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
@@ -126,6 +131,8 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
 
         // Phone number pattern (international format: +123456789 or local 123-456-7890)
         string phonePattern = @"^(\+?\d{1,3})?[-.\s]?\(?\d{2,4}\)?[-.\s]?\d{3}[-.\s]?\d{3,4}$";
+        // Any string pattern
+        string pattern = @"^[\s\S]+$"; // Matches any plain text, including new lines
 
         if (Regex.IsMatch(input, emailPattern))
         {
@@ -138,6 +145,10 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
         else if (Regex.IsMatch(input, phonePattern))
         {
             return "Phone Number";
+        }
+        else if (Regex.IsMatch(input, pattern))
+        {
+            return "Text";
         }
         else
         {

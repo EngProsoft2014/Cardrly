@@ -64,12 +64,22 @@
                             <TapGestureRecognizer Tapped="OnStartRecordingClicked"></TapGestureRecognizer>
                         </Border.GestureRecognizers>
                     </Border>
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout" Binding="{Binding AddOrUpdate}" Value="2">
+                            <Setter Property="IsVisible" Value="False"></Setter>
+                        </DataTrigger>
+                    </StackLayout.Triggers>
                 </StackLayout>
                 <!--Or Line-->
                 <StackLayout Orientation="Horizontal" Spacing="7">
                     <BoxView HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand"></BoxView>
                     <Label Text="{x:Static res:AppResources.lblOR}" TextColor="Black" VerticalTextAlignment="Center" FontSize="14"></Label>
                     <BoxView HeightRequest="1" Color="Gray" HorizontalOptions="FillAndExpand"></BoxView>
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout" Binding="{Binding AddOrUpdate}" Value="2">
+                            <Setter Property="IsVisible" Value="False"></Setter>
+                        </DataTrigger>
+                    </StackLayout.Triggers>
                 </StackLayout>
                 <!--Profile Image-->
                 <Grid HeightRequest="100" WidthRequest="120">
@@ -85,7 +95,6 @@
                         </Image.GestureRecognizers>
                     </Image>
                 </Grid>
-                
                 <!--Full Name-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
                     <Label Text="{x:Static res:AppResources.lblFullName}" TextColor="Gray" FontSize="13"></Label>
