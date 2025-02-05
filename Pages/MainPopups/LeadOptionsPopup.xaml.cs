@@ -60,13 +60,14 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
         bool ans = await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgDeleteLead}", $"{AppResources.msgOk}", $"{AppResources.msgNo}");
         if (ans)
         {
-            this.IsEnabled = false;
-            UserDialogs.Instance.ShowLoading();
+            
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
             {
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                UserDialogs.Instance.ShowLoading();
                 string res = await Rep.PostEAsync($"{ApiConstants.LeadDeleteApi}{AccId}/Lead/{Res.Id}/Delete", UserToken);
+                UserDialogs.Instance.HideHud();
                 if (res == "")
                 {
                     var toast = Toast.Make($"{AppResources.msgLeadDeletedSuccessfully}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
@@ -80,8 +81,7 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
                 }
                 await MopupService.Instance.PopAsync();
             }
-            UserDialogs.Instance.HideHud();
-            this.IsEnabled = true;
+            
         }
     }
 

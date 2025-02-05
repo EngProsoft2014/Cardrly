@@ -40,6 +40,8 @@ namespace Cardrly.ViewModels
         public ObservableCollection<CalendarEventGmail> calendarEventGmails = new ObservableCollection<CalendarEventGmail>();
         [ObservableProperty]
         public ObservableCollection<CalendarOutlookEvent> calendarOutlookEvents = new ObservableCollection<CalendarOutlookEvent>();
+        [ObservableProperty]
+        bool isFoundCards = false;
         #endregion
 
         #region Service
@@ -140,6 +142,7 @@ namespace Cardrly.ViewModels
             if (CardLst.Count > 0)
             {
                 SelectedCard = CardLst[0];
+                IsFoundCards = true;
             }
             CalendarTypes.Add(new CalendarTypeItemModel() { Name = EnumCalendarType.Calendly.ToString(), Value = (int)EnumCalendarType.Calendly });
             CalendarTypes.Add(new CalendarTypeItemModel() { Name = EnumCalendarType.Gmail.ToString(), Value = (int)EnumCalendarType.Gmail });
