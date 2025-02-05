@@ -11,11 +11,4 @@ public partial class AllCommentPage : Controls.CustomControl
 		InitializeComponent();
 		this.BindingContext = model;
 	}
-
-    protected async override void OnAppearing()
-    {
-        base.OnAppearing();
-
-        await MopupService.Instance.PopAsync();
-    }
 }

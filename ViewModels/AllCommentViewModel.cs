@@ -5,6 +5,7 @@ using Cardrly.Models.Lead;
 using Cardrly.Models.LeadComment;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Controls.UserDialogs.Maui;
+using Mopups.Services;
 using System.Collections.ObjectModel;
 
 namespace Cardrly.ViewModels
@@ -36,6 +37,7 @@ namespace Cardrly.ViewModels
         #region Method
         async void Init()
         {
+            await MopupService.Instance.PopAsync();
             await GetComment();
         }
         async Task GetComment()
