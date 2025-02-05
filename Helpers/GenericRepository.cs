@@ -266,7 +266,7 @@ namespace Cardrly.Helpers
                 jsonResult = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
                 if (responseMessage.ReasonPhrase == "No Content")
                 {
-                    return "No Content";
+                    return "";
                 }
                 else
                 {

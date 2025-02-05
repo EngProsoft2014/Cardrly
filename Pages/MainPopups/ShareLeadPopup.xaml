@@ -55,7 +55,7 @@ PositionOut="Center" />
                             </CollectionView.ItemTemplate>
                             <CollectionView.EmptyView>
                                 <ContentView>
-                                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                    <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
                                         <Label Text="{x:Static res:AppResources.msgNoavailableusers}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
                                     </StackLayout>
                                 </ContentView>

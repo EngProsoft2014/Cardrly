@@ -77,6 +77,15 @@ namespace Cardrly.ViewModels
         public async void Init()
         {
             await GetAllCards();
+            MessagingCenter.Subscribe<CardOptionPopup, bool>(this, "DeleteCard", async (sender, message) =>
+            {
+                MessagingCenter.Unsubscribe<CardOptionPopup, bool>(this, "DeleteCard"); // Unsubscribe immediately
+
+                if (true)
+                {
+                    await GetAllCards();
+                }
+            });
         }
 
         async Task GetAllCards()

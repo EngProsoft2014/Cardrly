@@ -142,7 +142,11 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
             {
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
                 UserDialogs.Instance.ShowLoading();
-                await Rep.PostEAsync($"{ApiConstants.CardDeleteApi}{AccId}/Card/{Card.Id}/Delete", UserToken);
+                string res = await Rep.PostEAsync($"{ApiConstants.CardDeleteApi}{AccId}/Card/{Card.Id}/Delete", UserToken);
+                if (res == "")
+                {
+                    MessagingCenter.Send(this, "DeleteCard", true);
+                }
                 UserDialogs.Instance.HideHud();
                 await MopupService.Instance.PopAsync();
             }

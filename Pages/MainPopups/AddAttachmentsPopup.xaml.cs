@@ -119,6 +119,7 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
 
     private async void TapGestureRecognizer_Tapped_EditImage(object sender, TappedEventArgs e)
     {
+        this.IsEnabled = false;
         if (Image != null)
         {
             var page = new ImageEditorPage(Image);
@@ -136,6 +137,7 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
             var toast = Toast.Make($"{AppResources.msgPleaseSelectImageFirst}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
         }
+        //this.IsEnabled = true;
         await MopupService.Instance.PopAsync();
     }
 }
