@@ -52,7 +52,7 @@ public partial class HomePage : Controls.CustomControl
         {
             if (homeViewModel.IsEnable == true)
             {
-                CardsView.BindingContext = cardsViewModel = new CardsViewModel(homeViewModel.CardLst, Rep, _service);
+                CardsView.BindingContext = cardsViewModel = new CardsViewModel( Rep, _service);
             }
             else
             {
