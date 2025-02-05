@@ -326,12 +326,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    async void Button_Clicked_StartWriting(object sender, System.EventArgs e)
-    {
-        await UnlockNfcTag();
-        await Publish(NFCNdefTypeFormat.WellKnown);
-        await SetNfcPassword();
-    }
+    async void Button_Clicked_StartWriting(object sender, System.EventArgs e) => await Publish(NFCNdefTypeFormat.WellKnown);
 
 
     /// <summary>
@@ -429,53 +424,6 @@ public partial class ActiveDevicePage : Controls.CustomControl
             await ShowAlert(ex.Message);
         }
     }
-
-    private async Task SetNfcPassword()
-    {
-        try
-        {
-            byte[] password = new byte[] { 0x12, 0x34, 0x56, 0x78 }; // Example password (change it)
-            byte[] command = new byte[] { 0x1B, 0x00, 0x12, 0x34, 0x56, 0x78 }; // Password command for NTAG21x
-
-            bool success = await CrossNFC.Current.SendCommandAsync(command);
-            if (success)
-            {
-                await Application.Current.MainPage.DisplayAlert("Locked", "Tag is now password-protected.", "OK");
-            }
-            else
-            {
-                await Application.Current.MainPage.DisplayAlert("Failed", "Could not lock NFC tag.", "OK");
-            }
-        }
-        catch (Exception ex)
-        {
-            await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
-        }
-    }
-
-    private async Task UnlockNfcTag()
-    {
-        try
-        {
-            byte[] password = new byte[] { 0x12, 0x34, 0x56, 0x78 }; // Use the same password set earlier
-            byte[] unlockCommand = new byte[] { 0x1B, 0x00, 0x12, 0x34, 0x56, 0x78 };
-
-            bool success = await CrossNFC.Current.SendCommandAsync(unlockCommand);
-            if (success)
-            {
-                await Application.Current.MainPage.DisplayAlert("Unlocked", "Tag is now writable.", "OK");
-            }
-            else
-            {
-                await Application.Current.MainPage.DisplayAlert("Failed", "Could not unlock NFC tag.", "OK");
-            }
-        }
-        catch (Exception ex)
-        {
-            await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
-        }
-    }
-
 
     /// <summary>
     /// Returns the tag information from NDEF record
