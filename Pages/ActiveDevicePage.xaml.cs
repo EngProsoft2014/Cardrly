@@ -11,13 +11,16 @@ using Mopups.Services;
 using Plugin.NFC;
 using System.Text;
 using ZXing.Net.Maui.Controls;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Cardrly.Pages;
 
 public partial class ActiveDevicePage : Controls.CustomControl
 {
     ActiveDeviceViewModel Model;
-    string SetupUri = "";
+
+    string SetupUri = "MyApp:Cardrly_Engprosoft_Company_USA"; // Unique prefix to recognize your data
+    //string SetupUri = "";
     int deviceType;
     string deviceId;
     int isInserted = 0;
@@ -218,9 +221,9 @@ public partial class ActiveDevicePage : Controls.CustomControl
                     await Model.DeviceClick(SetupUri, deviceType, deviceId);
                     isInserted = 1;
                 }
-                
+
                 await ShowAlert("Writing tag operation successful");
-            }  
+            }
         }
         catch (Exception ex)
         {
@@ -251,20 +254,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
               "EMAIL:engprosoftcompany@gmail.com\n" +
               $"ADR:{Model.DetailsResponse.location}\n" +
               $"URL:{Model.DetailsResponse.CardUrlVM}\n" +
-              //$"LOGO:{Card.UrlImgProfile}\n" +
               "END:VCARD";
-
-
-        //string vCardData = "BEGIN:VCARD\n" +
-        //                  "VERSION:3.0\n" +
-        //                  "FN:Tarek Gaber\n" +
-        //                  "ORG:Engprosoft company\n" +
-        //                  "TEL:+18324686031\n" +
-        //                  "EMAIL:engprosoftcompany@gmail.com\n" +
-        //                  "END:VCARD";
-
-        //string vCardData = Card.ToString();
-
 
         try
         {
@@ -292,14 +282,23 @@ public partial class ActiveDevicePage : Controls.CustomControl
             if (!format && record == null)
                 throw new Exception("Record can't be null.");
 
-            tagInfo.Records = new[] { record };
+            string tagData = System.Text.Encoding.UTF8.GetString(record.Payload);
 
-            if (format)
-                CrossNFC.Current.ClearMessage(tagInfo);
+            if (tagData.StartsWith("MyApp:"))
+            {
+                tagInfo.Records = new[] { record };
+
+                if (format)
+                    CrossNFC.Current.ClearMessage(tagInfo);
+                else
+                {
+                    CrossNFC.Current.PublishMessage(tagInfo, _makeReadOnly);
+
+                }
+            }
             else
             {
-                CrossNFC.Current.PublishMessage(tagInfo, _makeReadOnly);
-                
+                await App.Current!.MainPage!.DisplayAlert("Warning", "Sorry Can't use it here !!!", "Cancel");
             }
         }
         catch (Exception ex)
@@ -327,7 +326,13 @@ public partial class ActiveDevicePage : Controls.CustomControl
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    async void Button_Clicked_StartWriting(object sender, System.EventArgs e) => await Publish(NFCNdefTypeFormat.WellKnown);
+    async void Button_Clicked_StartWriting(object sender, System.EventArgs e)
+    {
+        await UnlockNfcTag();
+        await Publish(NFCNdefTypeFormat.WellKnown);
+        await SetNfcPassword();
+    }
+
 
     /// <summary>
     /// Start publish operation to write the tag (URI) when <see cref="Current_OnTagDiscovered(ITagInfo, bool)"/> event will be raised
@@ -388,7 +393,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
 #endif
             await Publish(NFCNdefTypeFormat.Uri);
         }
-    } 
+    }
     /// <summary>
     /// Start publish operation to write the tag (CUSTOM) when <see cref="Current_OnTagDiscovered(ITagInfo, bool)"/> event will be raised
     /// </summary>
@@ -424,6 +429,53 @@ public partial class ActiveDevicePage : Controls.CustomControl
             await ShowAlert(ex.Message);
         }
     }
+
+    private async Task SetNfcPassword()
+    {
+        try
+        {
+            byte[] password = new byte[] { 0x12, 0x34, 0x56, 0x78 }; // Example password (change it)
+            byte[] command = new byte[] { 0x1B, 0x00, 0x12, 0x34, 0x56, 0x78 }; // Password command for NTAG21x
+
+            bool success = await CrossNFC.Current.SendCommandAsync(command);
+            if (success)
+            {
+                await Application.Current.MainPage.DisplayAlert("Locked", "Tag is now password-protected.", "OK");
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Failed", "Could not lock NFC tag.", "OK");
+            }
+        }
+        catch (Exception ex)
+        {
+            await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
+        }
+    }
+
+    private async Task UnlockNfcTag()
+    {
+        try
+        {
+            byte[] password = new byte[] { 0x12, 0x34, 0x56, 0x78 }; // Use the same password set earlier
+            byte[] unlockCommand = new byte[] { 0x1B, 0x00, 0x12, 0x34, 0x56, 0x78 };
+
+            bool success = await CrossNFC.Current.SendCommandAsync(unlockCommand);
+            if (success)
+            {
+                await Application.Current.MainPage.DisplayAlert("Unlocked", "Tag is now writable.", "OK");
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Failed", "Could not unlock NFC tag.", "OK");
+            }
+        }
+        catch (Exception ex)
+        {
+            await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
+        }
+    }
+
 
     /// <summary>
     /// Returns the tag information from NDEF record
@@ -466,7 +518,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
     /// </summary>
     /// <returns>The task to be performed</returns>
     async Task StartListeningIfNotiOS()
-    
+
     {
         if (_isDeviceiOS)
         {
