@@ -916,6 +916,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Card to Active the device.
+        /// </summary>
+        internal static string msgCreateCardtoActivethedevice {
+            get {
+                return ResourceManager.GetString("msgCreateCardtoActivethedevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The To Date Must be greater Than From Date..
         /// </summary>
         internal static string msgDate_HomePage {

@@ -49,6 +49,13 @@
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <ContentView>
+                        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                            <Label Text="{x:Static res:AppResources.msgCreateCardtoActivethedevice}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                        </StackLayout>
+                    </ContentView>
+                </CollectionView.EmptyView>
             </CollectionView>
         </StackLayout>
     </ScrollView>

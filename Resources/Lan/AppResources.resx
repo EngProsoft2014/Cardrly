@@ -402,6 +402,9 @@
   <data name="msgContactsavedat" xml:space="preserve">
     <value>Contact saved at:</value>
   </data>
+  <data name="msgCreateCardtoActivethedevice" xml:space="preserve">
+    <value>Create Card to Active the device</value>
+  </data>
   <data name="msgDate_HomePage" xml:space="preserve">
     <value>The To Date Must be greater Than From Date.</value>
   </data>

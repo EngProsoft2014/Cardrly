@@ -402,6 +402,9 @@
   <data name="msgContactsavedat" xml:space="preserve">
     <value>تم حفظ جهة الاتصال في:</value>
   </data>
+  <data name="msgCreateCardtoActivethedevice" xml:space="preserve">
+    <value>إنشاء بطاقة لتنشيط الجهاز</value>
+  </data>
   <data name="msgDate_HomePage" xml:space="preserve">
     <value>يجب أن يكون تاريخ "إلى" أكبر من تاريخ "من"</value>
   </data>
