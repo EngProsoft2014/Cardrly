@@ -1,4 +1,5 @@
 ﻿using Cardrly.Helpers;
+using Cardrly.Services;
 using Cardrly.Services.Data;
 using CommunityToolkit.Maui;
 using Controls.UserDialogs.Maui;
@@ -44,6 +45,12 @@ namespace Cardrly
 
             DependencyInjection.ControlsBackground();
 
+
+#if ANDROID
+            builder.Services.AddSingleton<ISaveContact, SaveContactAndroid>(); // No need for "Platforms"
+#elif IOS
+            builder.Services.AddSingleton<ISaveContact, SaveContactiOS>(); // No need for "Platforms"
+#endif
             return builder.Build();
         }
 

@@ -14,14 +14,16 @@ namespace Cardrly
         #region Service
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
+        public static IServiceProvider Services { get; private set; }
         #endregion
-        public App(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioManager audioManager)
+        public App(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioManager audioManager, IServiceProvider serviceProvider)
         {
             try
             {
 
                 Rep = GenericRep;
                 _service = service;
+                Services = serviceProvider;
                 LoadSetting();
                 Controls.StaticMember._audioManager = audioManager;
                 BlobCache.ApplicationName = "CardrlyDB";

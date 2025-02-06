@@ -3,6 +3,7 @@ using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models.Lead;
 using Cardrly.Resources.Lan;
+using Cardrly.Services;
 using Cardrly.ViewModels;
 using CommunityToolkit.Maui.Alerts;
 using Controls.UserDialogs.Maui;
@@ -52,7 +53,7 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
     {
         await MopupService.Instance.PopAsync();
         await Task.Delay(100);
-        await MopupService.Instance.PushAsync(new CommentPopup(Res,Rep,_service));
+        await MopupService.Instance.PushAsync(new CommentPopup(Res, Rep, _service));
     }
 
     private async void TapGestureRecognizer_DeleteLead(object sender, TappedEventArgs e)
@@ -60,7 +61,7 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
         bool ans = await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgDeleteLead}", $"{AppResources.msgOk}", $"{AppResources.msgNo}");
         if (ans)
         {
-            
+
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
             {
@@ -81,7 +82,7 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
                 }
                 await MopupService.Instance.PopAsync();
             }
-            
+
         }
     }
 
@@ -89,12 +90,12 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
     {
         await MopupService.Instance.PopAsync();
         await Task.Delay(100);
-        await MopupService.Instance.PushAsync(new ShareLeadPopup(Res,Rep,_service));
+        await MopupService.Instance.PushAsync(new ShareLeadPopup(Res, Rep, _service));
     }
 
     private async void TapGestureRecognizer_ShowComments(object sender, TappedEventArgs e)
     {
-        await Navigation.PushAsync(new AllCommentPage(new AllCommentViewModel(Res,Rep,_service)));  
+        await Navigation.PushAsync(new AllCommentPage(new AllCommentViewModel(Res, Rep, _service)));
     }
 
     private async void TapGestureRecognizer_Call(object sender, TappedEventArgs e)
@@ -143,24 +144,35 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
     private async void SaveToContact_Tapped(object sender, TappedEventArgs e)
     {
 
-        string vCardContent = @$"BEGIN:VCARD
-        VERSION:3.0
-        FN:{Res.FullName}
-        TITLE:{Res.JobTitle}
-        TEL:{Res.Phone}
-        EMAIL:{Res.Email}
-        ADR:{Res.Address}
-        URL:{Res.Website}
-        END:VCARD";
+        var saveContactService = App.Services.GetService<ISaveContact>();
 
-        string fileName = $"Contact{saveNum}.vcf";
-        string filePath = GetDevicePath(fileName);
+        if (saveContactService != null)
+        {
+            await saveContactService.SaveContactMethod(Res);
+        }
+        else
+        {
+            await Application.Current!.MainPage!.DisplayAlert("Error", "Service not found!", "OK");
+        }
 
-        // Save the file
-        await File.WriteAllTextAsync(filePath, vCardContent);
-        saveNum += 1;
-        await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}",
-        $"{AppResources.msgContactsavedat} {filePath}", $"{AppResources.msgOk}");
+        //string vCardContent = @$"BEGIN:VCARD
+        //VERSION:3.0
+        //FN:{Res.FullName}
+        //TITLE:{Res.JobTitle}
+        //TEL:{Res.Phone}
+        //EMAIL:{Res.Email}
+        //ADR:{Res.Address}
+        //URL:{Res.Website}
+        //END:VCARD";
+
+        //string fileName = $"Contact{saveNum}.vcf";
+        //string filePath = GetDevicePath(fileName);
+
+        //// Save the file
+        //await File.WriteAllTextAsync(filePath, vCardContent);
+        //saveNum += 1;
+        //await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}",
+        //$"{AppResources.msgContactsavedat} {filePath}", $"{AppResources.msgOk}");
 
     }
 

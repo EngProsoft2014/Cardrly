@@ -1,10 +1,13 @@
-﻿using Android.App;
+﻿using Android;
+using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Content.Res;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
+using AndroidX.Core.App;
+using AndroidX.Core.Content;
 using Plugin.NFC;
 
 namespace Cardrly
@@ -12,7 +15,7 @@ namespace Cardrly
     [Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTop, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
     public class MainActivity : MauiAppCompatActivity
     {
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             // Plugin NFC : Initialisation
             CrossNFC.Init(this);
@@ -31,6 +34,9 @@ namespace Cardrly
                 Console.WriteLine($"Android Exception: {e.Exception.Message}");
                 e.Handled = true;
             };
+
+
+            await RequestContactsPermission();
         }
 
         protected override void OnResume()
@@ -59,5 +65,14 @@ namespace Cardrly
             base.AttachBaseContext(@base);
         }
 
+        public async Task<bool> RequestContactsPermission()
+        {
+            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteContacts) != Permission.Granted)
+            {
+                ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.WriteContacts }, 1);
+                return false;
+            }
+            return true;
+        }
     }
 }
