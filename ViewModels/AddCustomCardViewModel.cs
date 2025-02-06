@@ -274,6 +274,9 @@ namespace Cardrly.ViewModels
                             var toast = Toast.Make($"{AppResources.msgSuccessfullyAddCard}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
 
+                            MessagingCenter.Send(this, "AddCard", true);
+                            await App.Current!.MainPage!.Navigation.PopAsync();
+
                         }
                         else if (json.Item2 != null)
                         {
