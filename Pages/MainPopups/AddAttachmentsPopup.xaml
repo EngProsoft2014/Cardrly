@@ -63,7 +63,7 @@
                             </StackLayout.GestureRecognizers>
                         </StackLayout>
 
-                        <BoxView x:Name="EditImageBox" HeightRequest="0.7" HorizontalOptions="FillAndExpand"
+                        <!--<BoxView x:Name="EditImageBox" HeightRequest="0.7" HorizontalOptions="FillAndExpand"
                                  BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
 
                         <StackLayout x:Name="EditImage" Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
@@ -82,7 +82,7 @@
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_EditImage"></TapGestureRecognizer>
                             </StackLayout.GestureRecognizers>
-                        </StackLayout>
+                        </StackLayout>-->
                     </StackLayout>
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="25"></RoundRectangle>

@@ -18,8 +18,8 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
     public AddAttachmentsPopup(bool IsScan = false)
 	{
 		InitializeComponent();
-        EditImage.IsVisible = !IsScan;
-        EditImageBox.IsVisible = !IsScan;
+        //EditImage.IsVisible = !IsScan;
+        //EditImageBox.IsVisible = !IsScan;
         string Lan = Preferences.Default.Get("Lan", "en");
 
         if (Lan == "ar")
@@ -38,8 +38,8 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
     {
         InitializeComponent();
         Image = bytes;
-        EditImage.IsVisible = !IsScan;
-        EditImageBox.IsVisible = !IsScan;
+        //EditImage.IsVisible = !IsScan;
+        //EditImageBox.IsVisible = !IsScan;
     }
     private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
     {
@@ -117,27 +117,27 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
         await MopupService.Instance.PopAsync();
     }
 
-    private async void TapGestureRecognizer_Tapped_EditImage(object sender, TappedEventArgs e)
-    {
-        this.IsEnabled = false;
-        if (Image != null)
-        {
-            var page = new ImageEditorPage(Image);
-            page.ImageEditClose += (img,Loc) =>
-            {
-                if (!string.IsNullOrEmpty(img) & !string.IsNullOrEmpty(Loc))
-                {
-                    ImageClose.Invoke(img,Loc);
-                }
-            };
-            await App.Current!.MainPage!.Navigation.PushAsync(page);
-        }
-        else
-        {
-            var toast = Toast.Make($"{AppResources.msgPleaseSelectImageFirst}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-            await toast.Show();
-        }
-        //this.IsEnabled = true;
-        await MopupService.Instance.PopAsync();
-    }
+    //private async void TapGestureRecognizer_Tapped_EditImage(object sender, TappedEventArgs e)
+    //{
+    //    this.IsEnabled = false;
+    //    if (Image != null)
+    //    {
+    //        var page = new ImageEditorPage(Image);
+    //        page.ImageEditClose += (img,Loc) =>
+    //        {
+    //            if (!string.IsNullOrEmpty(img) & !string.IsNullOrEmpty(Loc))
+    //            {
+    //                ImageClose.Invoke(img,Loc);
+    //            }
+    //        };
+    //        await App.Current!.MainPage!.Navigation.PushAsync(page);
+    //    }
+    //    else
+    //    {
+    //        var toast = Toast.Make($"{AppResources.msgPleaseSelectImageFirst}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+    //        await toast.Show();
+    //    }
+    //    //this.IsEnabled = true;
+    //    await MopupService.Instance.PopAsync();
+    //}
 }

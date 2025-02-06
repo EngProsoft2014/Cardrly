@@ -68,7 +68,7 @@ namespace Cardrly
             Services.AddTransient<AllCommentPage>();
             Services.AddTransient<DevicesPage>();
             Services.AddTransient<HomePage>();
-            Services.AddTransient<ImageEditorPage>();
+            //Services.AddTransient<ImageEditorPage>();
             Services.AddTransient<LoginPage>();
             Services.AddTransient<ScanQrPage>();
             #endregion
