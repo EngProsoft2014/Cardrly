@@ -19,8 +19,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
 {
     ActiveDeviceViewModel Model;
 
-    string SetupUri = "MyApp:Cardrly_Engprosoft_Company_USA"; // Unique prefix to recognize your data
-    //string SetupUri = "";
+    string SetupUri = "";
     int deviceType;
     string deviceId;
     int isInserted = 0;
@@ -282,23 +281,14 @@ public partial class ActiveDevicePage : Controls.CustomControl
             if (!format && record == null)
                 throw new Exception("Record can't be null.");
 
-            string tagData = System.Text.Encoding.UTF8.GetString(record.Payload);
+            tagInfo.Records = new[] { record };
 
-            if (tagData.StartsWith("MyApp:"))
-            {
-                tagInfo.Records = new[] { record };
-
-                if (format)
-                    CrossNFC.Current.ClearMessage(tagInfo);
-                else
-                {
-                    CrossNFC.Current.PublishMessage(tagInfo, _makeReadOnly);
-
-                }
-            }
+            if (format)
+                CrossNFC.Current.ClearMessage(tagInfo);
             else
             {
-                await App.Current!.MainPage!.DisplayAlert("Warning", "Sorry Can't use it here !!!", "Cancel");
+                CrossNFC.Current.PublishMessage(tagInfo, _makeReadOnly);
+
             }
         }
         catch (Exception ex)
