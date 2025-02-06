@@ -149,47 +149,11 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
         if (saveContactService != null)
         {
             await saveContactService.SaveContactMethod(Res);
+            await MopupService.Instance.PopAsync();
         }
         else
         {
-            await Application.Current!.MainPage!.DisplayAlert("Error", "Service not found!", "OK");
+            await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgServicenotfound}", $"{AppResources.msgOk}");
         }
-
-        //string vCardContent = @$"BEGIN:VCARD
-        //VERSION:3.0
-        //FN:{Res.FullName}
-        //TITLE:{Res.JobTitle}
-        //TEL:{Res.Phone}
-        //EMAIL:{Res.Email}
-        //ADR:{Res.Address}
-        //URL:{Res.Website}
-        //END:VCARD";
-
-        //string fileName = $"Contact{saveNum}.vcf";
-        //string filePath = GetDevicePath(fileName);
-
-        //// Save the file
-        //await File.WriteAllTextAsync(filePath, vCardContent);
-        //saveNum += 1;
-        //await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}",
-        //$"{AppResources.msgContactsavedat} {filePath}", $"{AppResources.msgOk}");
-
-    }
-
-    private string GetDevicePath(string fileName)
-    {
-        string directoryPath = string.Empty;
-
-#if ANDROID
-        directoryPath = "/storage/emulated/0/Download/"; // Public Downloads folder
-#elif WINDOWS
-        directoryPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-#elif MACCATALYST
-        directoryPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-#elif IOS
-        directoryPath = FileSystem.AppDataDirectory; // iOS does not allow direct access
-#endif
-
-        return Path.Combine(directoryPath, fileName);
     }
 }

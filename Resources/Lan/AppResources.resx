@@ -501,6 +501,9 @@
   <data name="msgServicedown" xml:space="preserve">
     <value>Service is currently down. Please try again later.</value>
   </data>
+  <data name="msgServicenotfound" xml:space="preserve">
+    <value>Service not found!</value>
+  </data>
   <data name="msgSpeechnotrecognizedPleasetryagain" xml:space="preserve">
     <value>Speech not recognized. Please try again.</value>
   </data>

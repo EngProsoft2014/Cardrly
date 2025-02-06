@@ -15,14 +15,29 @@ namespace Cardrly
     {
         public async Task SaveContactMethod(LeadResponse contact)
         {
-            
             try
             {
                 var newContact = new CNMutableContact
                 {
                     GivenName = contact.FullName,
                     JobTitle = contact.JobTitle,
-                    OrganizationName = contact.Website
+                    OrganizationName = contact.Website,
+                    EmailAddresses = new CNLabeledValue<NSString>[]
+                    {
+                        new CNLabeledValue<NSString>(CNLabelKey.Home, new NSString(contact.Email))
+                    },
+                    PostalAddresses = new CNLabeledValue<CNPostalAddress>[]
+                    {
+                        new CNLabeledValue<CNPostalAddress>(CNLabelKey.Home, new CNMutablePostalAddress()
+                        {
+                            City = contact.Address ?? string.Empty
+                        })
+                    },
+                    UrlAddresses = new CNLabeledValue<NSString>[]
+                    {
+                        new CNLabeledValue<NSString>(CNLabelKey.Home, new NSString(contact.Website))
+                    },
+                    PhoneticOrganizationName = contact.Company,
                 };
 
                 // Add phone number
@@ -30,8 +45,8 @@ namespace Cardrly
                 {
                     newContact.PhoneNumbers = new[]
                     {
-                    new CNLabeledValue<CNPhoneNumber>(CNLabelKey.Home, new CNPhoneNumber(contact.Phone))
-                };
+                        new CNLabeledValue<CNPhoneNumber>(CNLabelKey.Home, new CNPhoneNumber(contact.Phone))
+                    };
                 }
 
                 // Add email
@@ -39,8 +54,8 @@ namespace Cardrly
                 {
                     newContact.EmailAddresses = new[]
                     {
-                    new CNLabeledValue<NSString>(CNLabelKey.Home, new NSString(contact.Email))
-                };
+                        new CNLabeledValue<NSString>(CNLabelKey.Home, new NSString(contact.Email))
+                    };
                 }
 
                 var store = new CNContactStore();

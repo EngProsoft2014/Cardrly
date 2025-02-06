@@ -26,7 +26,7 @@ namespace Cardrly
                 intent.PutExtra(ContactsContract.Intents.Insert.Phone, contact.Phone);
                 intent.PutExtra(ContactsContract.Intents.Insert.Email, contact.Email);
                 intent.PutExtra(ContactsContract.Intents.Insert.Postal, contact.Address);
-                intent.PutExtra(ContactsContract.Intents.Insert.Company, contact.Website);
+                intent.PutExtra(ContactsContract.Intents.Insert.Company, contact.Company);
 
                 intent.SetFlags(ActivityFlags.NewTask);
                 MauiApp.Platform.CurrentActivity.StartActivity(intent);

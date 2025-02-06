@@ -501,6 +501,9 @@
   <data name="msgServicedown" xml:space="preserve">
     <value>الخدمة متوقفة حاليًا. يرجى المحاولة مرة أخرى لاحقًا.</value>
   </data>
+  <data name="msgServicenotfound" xml:space="preserve">
+    <value>لم يتم العثور على الخدمة!</value>
+  </data>
   <data name="msgSpeechnotrecognizedPleasetryagain" xml:space="preserve">
     <value>لم يتم التعرف على الكلام. يرجى المحاولة مرة أخرى.</value>
   </data>

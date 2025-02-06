@@ -1213,6 +1213,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service not found!.
+        /// </summary>
+        internal static string msgServicenotfound {
+            get {
+                return ResourceManager.GetString("msgServicenotfound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Speech not recognized. Please try again..
         /// </summary>
         internal static string msgSpeechnotrecognizedPleasetryagain {
