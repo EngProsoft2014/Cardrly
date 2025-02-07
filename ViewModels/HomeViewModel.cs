@@ -30,6 +30,10 @@ namespace Cardrly.ViewModels
         DateTime toDate = DateTime.UtcNow.Date;
         [ObservableProperty]
         bool isFoundCards = false;
+        [ObservableProperty]
+        int isCheckOrGo = 1; // 1: check, 2: go;
+        [ObservableProperty]
+        bool _isAnimating = false; // Flag to control animation
         public readonly IAudioManager _audioManager;
         #endregion
 
@@ -62,6 +66,7 @@ namespace Cardrly.ViewModels
             {
                 UserDialogs.Instance.ShowLoading();
                 await GetAllStatistics();
+                IsCheckOrGo = 1;
                 UserDialogs.Instance.HideHud();
             }
         }
@@ -104,7 +109,8 @@ namespace Cardrly.ViewModels
                     BoardResponse = json;
                 }
             }
-            
+            IsCheckOrGo = 1;
+            IsAnimating = false;
         }
 
         public async Task GetAccData()
@@ -124,6 +130,8 @@ namespace Cardrly.ViewModels
                     AccResponse.ExpireProgress = (json.DayOperationExpireAcc / (double)json.DayOperationAcc) * 100;
                 }
             }
+            IsCheckOrGo = 1;
+            IsAnimating = false;
         }
 
         public async Task GetAllCards()
@@ -140,6 +148,8 @@ namespace Cardrly.ViewModels
                     CardLst = json;
                 }
             }
+            IsCheckOrGo = 1;
+            IsAnimating = false;
         }
         #endregion
     }

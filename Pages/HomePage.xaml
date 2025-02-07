@@ -29,10 +29,19 @@
                                 <StackLayout Orientation="Horizontal">
                                     <Label Text="{x:Static res:AppResources.hdrHome}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                                        TextColor="Black"></Label>
-                                    <Image>
+                                    <Image x:Name="LoadIcon">
                                         <Image.Source>
-                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="25" Color="#FF7F3E"></FontImageSource>
+                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="25" Color="#FF7F3E"></FontImageSource>
                                         </Image.Source>
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image" Binding="{Binding IsCheckOrGo}" Value="2">
+                                                <Setter Property="Source">
+                                                    <Setter.Value>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconBrand" Size="25" Color="#FF7F3E"></FontImageSource>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Image.Triggers>
                                         <Image.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding GetClickCommand}"></TapGestureRecognizer>
                                         </Image.GestureRecognizers>
@@ -49,7 +58,7 @@
                                                     <Label Text="{x:Static res:AppResources.lblFrom}" TextColor="Gray" FontSize="13"></Label>
                                                     <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
                                                         <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
-                                                                Date="{Binding FromDate}"></DatePicker>
+                                                                    Date="{Binding FromDate}" DateSelected="DatePicker_Home"></DatePicker>
                                                     </Border>
 
                                                 </VerticalStackLayout>
@@ -58,7 +67,7 @@
                                                     <Label Text="{x:Static res:AppResources.lblTo}" TextColor="Gray" FontSize="13"></Label>
                                                     <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
                                                         <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
-                                                                Date="{Binding ToDate}"></DatePicker>
+                                                                Date="{Binding ToDate}" DateSelected="DatePicker_Home"></DatePicker>
                                                     </Border>
                                                 </VerticalStackLayout>
                                                 <!--Select Card-->
@@ -66,7 +75,7 @@
                                                     <Label Text="{x:Static res:AppResources.lblCard}" TextColor="Gray" FontSize="13"></Label>
                                                     <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
                                                         <Picker x:Name="CardPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding CardName}"
-                                                                ItemsSource="{Binding CardLst}">
+                                                                ItemsSource="{Binding CardLst}" SelectedIndexChanged="CardPicker_Home">
                                                             <Picker.Triggers>
                                                                 <DataTrigger TargetType="Picker" Binding="{Binding IsFoundCards}" Value="true">
                                                                     <Setter Property="SelectedItem" Value='{Binding SelectedCard}'></Setter>

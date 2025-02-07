@@ -1,6 +1,7 @@
 ﻿
 using Cardrly.Constants;
 using Cardrly.Helpers;
+using Cardrly.Mode_s.Card;
 using Cardrly.Models.Lead;
 using Cardrly.Pages;
 using Cardrly.Pages.MainPopups;
@@ -27,6 +28,8 @@ namespace Cardrly.ViewModels.Leads
         public LeadFilterRequest filterRequest = new LeadFilterRequest();
         [ObservableProperty]
         PagingLstLeadResponse pagingResponse = new PagingLstLeadResponse();
+        [ObservableProperty]
+        CardDetailsResponse myCardDetails = new CardDetailsResponse();
         public readonly IAudioManager _audioManager;
 
         public bool IsHasNext { get; set; }
@@ -52,7 +55,17 @@ namespace Cardrly.ViewModels.Leads
         [RelayCommand]
         async Task AddLeadClick()
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new AddLeadsPage(new AddLeadViewModel(Rep, _service), _audioManager));
+            await GetAccountCard();
+            if (!string.IsNullOrEmpty(MyCardDetails.Id))
+            {
+                await App.Current!.MainPage!.Navigation.PushAsync(new AddLeadsPage(new AddLeadViewModel(Rep, _service), _audioManager));
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.msgPleaseCreateCardFirst_}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+            
         }
         [RelayCommand]
         async Task ActiveClick(LeadResponse lead)
@@ -77,17 +90,23 @@ namespace Cardrly.ViewModels.Leads
                 UserDialogs.Instance.HideHud();
             }
         }
-
         [RelayCommand]
         async Task SelectClick(LeadResponse lead)
         {
             await App.Current!.MainPage!.Navigation.PushAsync(new AddLeadsPage(new AddLeadViewModel(lead, Rep, _service), _audioManager));
         }
-
         [RelayCommand]
         async Task MoreOptionClick(LeadResponse res)
         {
             await MopupService.Instance.PushAsync(new LeadOptionsPopup(res, Rep, _service));
+        }
+        [RelayCommand]
+        async Task GetLoadMore()
+        {
+            if (IsHasNext)
+            {
+                await GetAllLeads();
+            }
         }
         #endregion
 
@@ -115,7 +134,6 @@ namespace Cardrly.ViewModels.Leads
                 }
             });
         }
-
         public async Task GetAllLeads()
         {
             UserDialogs.Instance.ShowLoading();
@@ -182,13 +200,23 @@ namespace Cardrly.ViewModels.Leads
                 }
             }
         }
-        [RelayCommand]
-        async Task GetLoadMore()
+        async Task GetAccountCard()
         {
-            if (IsHasNext)
+            IsEnable = false;
+            string UserToken = await _service.UserToken();
+            if (!string.IsNullOrEmpty(UserToken))
             {
-                await GetAllLeads();
+                string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                string UserId = Preferences.Default.Get(ApiConstants.userid, "");
+                UserDialogs.Instance.ShowLoading();
+                var json = await Rep.GetAsync<CardDetailsResponse>($"{ApiConstants.CardGetByUserApi}{AccId}/Card/User/{UserId}", UserToken);
+                UserDialogs.Instance.HideHud();
+                if (json != null)
+                {
+                    MyCardDetails = json;
+                }
             }
+            IsEnable = true;
         }
         #endregion
     }

@@ -48,7 +48,7 @@
                             <StackLayout Orientation="Horizontal" Spacing="10">
                                 <Image>
                                     <Image.Source>
-                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="25"></FontImageSource>
+                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="25"></FontImageSource>
                                     </Image.Source>
                                 </Image>
                                 <!--Icon-->

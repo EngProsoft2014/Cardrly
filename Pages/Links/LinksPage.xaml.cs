@@ -33,6 +33,6 @@ public partial class LinksPage : Controls.CustomControl
                 sortRequests.Add(new CardLinkSortRequest { Id = item.Id , SortNumber = newIndex });
             }
         }
-        await Model.OrderList(Model.CardDetails.Id, sortRequests);
+        Model.OrderList(Model.CardDetails.Id, sortRequests);
     }
 }

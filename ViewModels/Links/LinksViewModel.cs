@@ -144,7 +144,6 @@ namespace Cardrly.ViewModels.Links
 
         public async Task OrderList(string CardId, List<CardLinkSortRequest> sortRequest)
         {
-            IsEnable = false;
             UserDialogs.Instance.ShowLoading();
             string UserToken = await _service.UserToken();
             if (UserToken != null)
@@ -164,7 +163,6 @@ namespace Cardrly.ViewModels.Links
                 }
             }
             UserDialogs.Instance.HideHud();
-            IsEnable = true;
         }
         #endregion
     }

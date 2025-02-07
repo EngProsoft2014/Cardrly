@@ -1,8 +1,10 @@
 using Cardrly.Helpers;
+using Cardrly.Resources.Lan;
 using Cardrly.ViewModels;
 using Cardrly.ViewModels.Leads;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
+using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 using Mopups.Services;
 using static Cardrly.Models.Calendar.CalendlyResponseModel;
 using static Cardrly.Models.Calendar.GmailResponseModel;
@@ -38,6 +40,7 @@ public partial class HomePage : Controls.CustomControl
         LeadView.FlowDirection = this.FlowDirection;
         CalendarView.FlowDirection = this.FlowDirection;
         MoreView.FlowDirection = this.FlowDirection;
+        
     }
 
     #region Methods
@@ -52,7 +55,7 @@ public partial class HomePage : Controls.CustomControl
         {
             if (homeViewModel.IsEnable == true)
             {
-                CardsView.BindingContext = cardsViewModel = new CardsViewModel( Rep, _service);
+                CardsView.BindingContext = cardsViewModel = new CardsViewModel(Rep, _service);
             }
             else
             {
@@ -101,7 +104,7 @@ public partial class HomePage : Controls.CustomControl
         Dispatcher.Dispatch(() =>
         {
             Action action = () => Application.Current!.Quit();
-            Controls.StaticMember.ShowSnackBar("Do you want to exit the program", Controls.StaticMember.SnackBarColor, Controls.StaticMember.SnackBarTextColor, action);
+            Controls.StaticMember.ShowSnackBar($"{AppResources.msgDoYouWantToLogout}", Controls.StaticMember.SnackBarColor, Controls.StaticMember.SnackBarTextColor, action);
         });
 
         // Return true to prevent the default behavior
@@ -154,4 +157,45 @@ public partial class HomePage : Controls.CustomControl
         CalendarViewModel.IsPassed = 2;
     }
     #endregion
+
+    private void DatePicker_Home(object sender, DateChangedEventArgs e)
+    {
+        homeViewModel.IsCheckOrGo = 2;
+        StartButtonAnimation();
+    }
+
+    private void CardPicker_Home(object sender, EventArgs e)
+    {
+        homeViewModel.IsCheckOrGo = 2;
+        StartButtonAnimation();
+    }
+
+    private async void StartButtonAnimation()
+    {
+        homeViewModel.IsAnimating = true;
+        // When Animation is Run 
+        while (homeViewModel.IsAnimating)
+        {
+            await Task.WhenAll(
+            LoadIcon.ScaleTo(1.1, 500, Easing.CubicInOut),  // Smooth scale up
+            LoadIcon.RotateTo(5, 500, Easing.CubicInOut),   // Slight rotation
+            LoadIcon.FadeTo(0.8, 500, Easing.CubicInOut)    // Soft fade
+        );
+
+            await Task.WhenAll(
+                LoadIcon.ScaleTo(1.0, 500, Easing.CubicInOut),  // Smooth scale down
+                LoadIcon.RotateTo(-5, 500, Easing.CubicInOut),  // Rotate in other direction
+                LoadIcon.FadeTo(1.0, 500, Easing.CubicInOut)    // Restore opacity
+            );
+
+            await LoadIcon.RotateTo(0, 300, Easing.CubicInOut); // Reset rotation smoothly
+        }
+        // When Animation is Stoped 
+        // Ensure a smooth transition back to normal state 
+        await Task.WhenAll(
+            LoadIcon.ScaleTo(1.0, 300, Easing.CubicInOut),
+            LoadIcon.RotateTo(0, 300, Easing.CubicInOut),
+            LoadIcon.FadeTo(1.0, 300, Easing.CubicInOut)
+        );
+    }
 }

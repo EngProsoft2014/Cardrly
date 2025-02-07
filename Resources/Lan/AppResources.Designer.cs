@@ -907,11 +907,29 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contact saved.
+        /// </summary>
+        internal static string msgContactSaved {
+            get {
+                return ResourceManager.GetString("msgContactSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact saved at:.
         /// </summary>
         internal static string msgContactsavedat {
             get {
                 return ResourceManager.GetString("msgContactsavedat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The contact was not saved because the data is incomplete..
+        /// </summary>
+        internal static string msgcontactwasnotsaved {
+            get {
+                return ResourceManager.GetString("msgcontactwasnotsaved", resourceCulture);
             }
         }
         
@@ -1182,6 +1200,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgOk {
             get {
                 return ResourceManager.GetString("msgOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please Create a Card First..
+        /// </summary>
+        internal static string msgPleaseCreateCardFirst_ {
+            get {
+                return ResourceManager.GetString("msgPleaseCreateCardFirst.", resourceCulture);
             }
         }
         

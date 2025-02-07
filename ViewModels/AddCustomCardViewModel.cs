@@ -228,6 +228,12 @@ namespace Cardrly.ViewModels
                 
                 string UserToken = await _service.UserToken();
                 string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
+                if (string.IsNullOrEmpty(Request!.CardName))
+                {
+                    var toast = Toast.Make($"{AppResources.msgFRCardName}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
+                { 
                 if (AddOrUpdate == 1)
                 {
                     if (string.IsNullOrEmpty(Request!.Email))
@@ -238,11 +244,6 @@ namespace Cardrly.ViewModels
                     else if (string.IsNullOrEmpty(Request!.Password))
                     {
                         var toast = Toast.Make($"{AppResources.msgFRPassword}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
-                    }
-                    else if (string.IsNullOrEmpty(Request!.CardName))
-                    {
-                        var toast = Toast.Make($"{AppResources.msgFRCardName}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
                     }
                     else
@@ -273,7 +274,6 @@ namespace Cardrly.ViewModels
                         {
                             var toast = Toast.Make($"{AppResources.msgSuccessfullyAddCard}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
-
                             MessagingCenter.Send(this, "AddCard", true);
                             await App.Current!.MainPage!.Navigation.PopAsync();
 
@@ -311,6 +311,8 @@ namespace Cardrly.ViewModels
                     {
                         var toast = Toast.Make($"{AppResources.msgSuccessfullyUpdateCard}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
+                        MessagingCenter.Send(this, "AddCard", true);
+                        await App.Current!.MainPage!.Navigation.PopAsync();
 
                     }
                     else if (json.Item2 != null)
@@ -319,7 +321,7 @@ namespace Cardrly.ViewModels
                         await toast.Show();
                     }
                 }
-
+                }
             }
             UserDialogs.Instance.HideHud();
             IsEnable = true;

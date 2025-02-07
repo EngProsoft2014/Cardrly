@@ -399,8 +399,14 @@
   <data name="msgCan'tDeleteThisLeadNowTryagainLater" xml:space="preserve">
     <value>Can't Delete This Lead Now Try again Later.</value>
   </data>
+  <data name="msgContactSaved" xml:space="preserve">
+    <value>Contact saved</value>
+  </data>
   <data name="msgContactsavedat" xml:space="preserve">
     <value>Contact saved at:</value>
+  </data>
+  <data name="msgcontactwasnotsaved" xml:space="preserve">
+    <value>The contact was not saved because the data is incomplete.</value>
   </data>
   <data name="msgCreateCardtoActivethedevice" xml:space="preserve">
     <value>Create Card to Active the device</value>
@@ -491,6 +497,9 @@
   </data>
   <data name="msgOk" xml:space="preserve">
     <value>Ok</value>
+  </data>
+  <data name="msgPleaseCreateCardFirst." xml:space="preserve">
+    <value>Please Create a Card First.</value>
   </data>
   <data name="msgPleaseSelectImageFirst" xml:space="preserve">
     <value>Please Select Image First</value>

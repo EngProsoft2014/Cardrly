@@ -67,11 +67,11 @@ namespace Cardrly
                     throw new Exception(error.LocalizedDescription);
                 }
 
-                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", "Contact saved!", $"{AppResources.msgOk}");
+                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgContactSaved}", $"{AppResources.msgOk}");
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", ex.Message, $"{AppResources.msgOk}");
+                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgcontactwasnotsaved}", $"{AppResources.msgOk}");
             }
         }
     }

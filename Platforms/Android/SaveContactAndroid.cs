@@ -34,7 +34,7 @@ namespace Cardrly
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", ex.Message, $"{AppResources.msgOk}");
+                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgcontactwasnotsaved}", $"{AppResources.msgOk}");
             }
         }
 

@@ -399,8 +399,14 @@
   <data name="msgCan'tDeleteThisLeadNowTryagainLater" xml:space="preserve">
     <value>لا يمكن حذف هذا العميل الآن. حاول مرة أخرى لاحقًا.</value>
   </data>
+  <data name="msgContactSaved" xml:space="preserve">
+    <value>تم حفظ جهة الاتصال</value>
+  </data>
   <data name="msgContactsavedat" xml:space="preserve">
     <value>تم حفظ جهة الاتصال في:</value>
+  </data>
+  <data name="msgcontactwasnotsaved" xml:space="preserve">
+    <value>لم يتم حفظ جهة الاتصال لأن البيانات غير كاملة.</value>
   </data>
   <data name="msgCreateCardtoActivethedevice" xml:space="preserve">
     <value>إنشاء بطاقة لتنشيط الجهاز</value>
@@ -491,6 +497,9 @@
   </data>
   <data name="msgOk" xml:space="preserve">
     <value>نعم</value>
+  </data>
+  <data name="msgPleaseCreateCardFirst." xml:space="preserve">
+    <value>يرجى إنشاء بطاقة أولاً.</value>
   </data>
   <data name="msgPleaseSelectImageFirst" xml:space="preserve">
     <value>الرجاء اختيار الصورة أولا</value>
