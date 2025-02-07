@@ -109,6 +109,14 @@ namespace Cardrly.ViewModels.Links
         public async void Init(string CardId)
         {
             await GetAllCards(CardId);
+            MessagingCenter.Subscribe<EditLinkPopup, bool>(this, "CreateLink", async (sender, message) =>
+            {
+
+                if (true)
+                {
+                    await GetAllCards(CardId);
+                }
+            });
         }
 
         async Task GetAllCards(string CardId)

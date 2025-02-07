@@ -98,7 +98,15 @@ namespace Cardrly.ViewModels.Leads
             await GetAllLeads();
             MessagingCenter.Subscribe<LeadOptionsPopup, bool>(this, "DeleteLead", async (sender, message) =>
             {
-                MessagingCenter.Unsubscribe<LeadOptionsPopup, bool>(this, "DeleteLead"); // Unsubscribe immediately
+
+                if (true)
+                {
+                    FilterRequest = new LeadFilterRequest();
+                    await SearchLeads();
+                }
+            });
+            MessagingCenter.Subscribe<AddLeadViewModel, bool>(this, "CreateLead", async (sender, message) =>
+            {
 
                 if (true)
                 {

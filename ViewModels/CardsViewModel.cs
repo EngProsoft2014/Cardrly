@@ -81,7 +81,6 @@ namespace Cardrly.ViewModels
             //DeleteCard
             MessagingCenter.Subscribe<CardOptionPopup, bool>(this, "DeleteCard", async (sender, message) =>
             {
-                MessagingCenter.Unsubscribe<CardOptionPopup, bool>(this, "DeleteCard"); // Unsubscribe immediately
 
                 if (true)
                 {
@@ -92,7 +91,6 @@ namespace Cardrly.ViewModels
             //AddCard
             MessagingCenter.Subscribe<AddCustomCardViewModel, bool>(this, "AddCard", async (sender, message) =>
             {
-                MessagingCenter.Unsubscribe<AddCustomCardViewModel, bool>(this, "AddCard"); // Unsubscribe immediately
 
                 if (true)
                 {

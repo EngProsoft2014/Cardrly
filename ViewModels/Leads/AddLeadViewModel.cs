@@ -128,6 +128,7 @@ namespace Cardrly.ViewModels.Leads
                         {
                             var toast = Toast.Make($"{AppResources.msgSuccessfullyAddLead}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
+                            MessagingCenter.Send(this, "CreateLead", true);
                             await App.Current!.MainPage!.Navigation.PopAsync();
                         }
                         else if (json.Item2 != null)
@@ -155,7 +156,8 @@ namespace Cardrly.ViewModels.Leads
                         {
                             var toast = Toast.Make($"{AppResources.msgSuccessfullyUpdateLead}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
-
+                            MessagingCenter.Send(this, "CreateLead", true);
+                            await App.Current!.MainPage!.Navigation.PopAsync();
                         }
                         else if (json.Item2 != null)
                         {

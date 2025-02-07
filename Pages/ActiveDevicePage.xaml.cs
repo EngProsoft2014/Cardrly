@@ -334,7 +334,6 @@ public partial class ActiveDevicePage : Controls.CustomControl
 
             MessagingCenter.Subscribe<ScanQrPage, string>(this, "QRCodeValue", async (sender, message) =>
             {
-                MessagingCenter.Unsubscribe<ScanQrPage, string>(this, "QRCodeValue"); // Unsubscribe immediately
 
                 if (Guid.TryParse(message, out Guid parseGuid))
                 {

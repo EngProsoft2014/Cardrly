@@ -177,6 +177,7 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
                 {
                     var toast = Toast.Make($"{AppResources.msgSuccessfullyUpdateLink}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
+                    MessagingCenter.Send(this, "CreateLink", true);
                     await MopupService.Instance.PopAsync();
                 }
                 else if (json.Item2 != null)
@@ -193,6 +194,7 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
                 {
                     var toast = Toast.Make($"{AppResources.msgSuccessfullyAddLink}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
+                    MessagingCenter.Send(this, "CreateLink", true);
                     await MopupService.Instance.PopAsync();
                 }
                 else if (json.Item2 != null)
