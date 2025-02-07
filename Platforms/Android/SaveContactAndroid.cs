@@ -1,6 +1,7 @@
 ﻿using Android.Content;
 using Android.Provider;
 using Cardrly.Models.Lead;
+using Cardrly.Resources.Lan;
 using Cardrly.Services;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace Cardrly
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert("Error", ex.Message, "OK");
+                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", ex.Message, $"{AppResources.msgOk}");
             }
         }
 

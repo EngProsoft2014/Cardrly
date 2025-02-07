@@ -1,4 +1,5 @@
 ﻿using Cardrly.Models.Lead;
+using Cardrly.Resources.Lan;
 using Cardrly.Services;
 using Contacts;
 using Foundation;
@@ -22,10 +23,6 @@ namespace Cardrly
                     GivenName = contact.FullName,
                     JobTitle = contact.JobTitle,
                     OrganizationName = contact.Website,
-                    EmailAddresses = new CNLabeledValue<NSString>[]
-                    {
-                        new CNLabeledValue<NSString>(CNLabelKey.Home, new NSString(contact.Email))
-                    },
                     PostalAddresses = new CNLabeledValue<CNPostalAddress>[]
                     {
                         new CNLabeledValue<CNPostalAddress>(CNLabelKey.Home, new CNMutablePostalAddress()
@@ -70,11 +67,11 @@ namespace Cardrly
                     throw new Exception(error.LocalizedDescription);
                 }
 
-                await Application.Current!.MainPage!.DisplayAlert("Success", "Contact saved!", "OK");
+                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", "Contact saved!", $"{AppResources.msgOk}");
             }
             catch (Exception ex)
             {
-                await Application.Current!.MainPage!.DisplayAlert("Error", ex.Message, "OK");
+                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", ex.Message, $"{AppResources.msgOk}");
             }
         }
     }
