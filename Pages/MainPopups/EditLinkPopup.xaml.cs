@@ -14,8 +14,16 @@ namespace Cardrly.Pages.MainPopups;
 
 public partial class EditLinkPopup : Mopups.Pages.PopupPage
 {
+    //public class LinkTypeModel
+    //{
+    //    public int Id { get; set; }
+    //    public string Name { get; set; }
+    //}
+
     CardLinkResponse CardLink = new CardLinkResponse();
     CardLinkResponse CardLinkRef = new CardLinkResponse();
+    //List<LinkTypeModel> LinkType = new List<LinkTypeModel>();
+
     List<string> LinkType = new List<string>();
     int IsUpdat = 0; // 1 - Add & 0 - Update
 
@@ -62,6 +70,12 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
 
     void LoadData()
     {
+
+        //LinkType.Add(new LinkTypeModel() { Id = 1, Name = "Url" });
+        //LinkType.Add(new LinkTypeModel() { Id = 2, Name = "Email" });
+        //LinkType.Add(new LinkTypeModel() { Id = 3, Name = "Phone" });
+        //LinkType.Add(new LinkTypeModel() { Id = 4, Name = "Text" });
+
         LinkType.Add("Url");
         LinkType.Add("Email");
         LinkType.Add("Phone");
