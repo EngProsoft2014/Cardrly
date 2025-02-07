@@ -225,7 +225,7 @@ namespace Cardrly.ViewModels
             IsEnable = false;
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                
+
                 string UserToken = await _service.UserToken();
                 string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
                 if (string.IsNullOrEmpty(Request!.CardName))
@@ -233,22 +233,62 @@ namespace Cardrly.ViewModels
                     var toast = Toast.Make($"{AppResources.msgFRCardName}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
-                { 
-                if (AddOrUpdate == 1)
+                else
                 {
-                    if (string.IsNullOrEmpty(Request!.Email))
+                    if (AddOrUpdate == 1)
                     {
-                        var toast = Toast.Make($"{AppResources.msgFREmail}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
+                        if (string.IsNullOrEmpty(Request!.Email))
+                        {
+                            var toast = Toast.Make($"{AppResources.msgFREmail}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            await toast.Show();
+                        }
+                        else if (string.IsNullOrEmpty(Request!.Password))
+                        {
+                            var toast = Toast.Make($"{AppResources.msgFRPassword}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            await toast.Show();
+                        }
+                        else
+                        {
+                            UserDialogs.Instance.ShowLoading();
+                            CardRequestDto requestDto = new CardRequestDto()
+                            {
+                                PersonName = Request.PersonName,
+                                Cardlayout = Request.Cardlayout,
+                                CardName = Request.CardName,
+                                Bio = Request.Bio,
+                                CardTheme = Request.CardTheme,
+                                ExtensionCover = Request.ExtensionCover,
+                                ExtensionProfile = Request.ExtensionProfile,
+                                FontStyle = Request.FontStyle,
+                                ImgFileCover = Request.ImgFileCover,
+                                ImgFileProfile = Request.ImgFileProfile,
+                                JobTitle = Request.JobTitle,
+                                LinkColor = Request.LinkColor,
+                                location = Request.location,
+                                PersonNikeName = Request.PersonNikeName,
+                                Email = Request.Email,
+                                Password = Request.Password
+                            };
+                            var json = await Rep.PostTRAsync<CardRequestDto, CardResponse>($"{ApiConstants.CardUpdateApi}{accid}/Card", requestDto, UserToken);
+                            UserDialogs.Instance.HideHud();
+                            if (json.Item1 != null)
+                            {
+                                var toast = Toast.Make($"{AppResources.msgSuccessfullyAddCard}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                                await toast.Show();
+                                MessagingCenter.Send(this, "AddCard", true);
+                                await App.Current!.MainPage!.Navigation.PopAsync();
+
+                            }
+                            else if (json.Item2 != null)
+                            {
+                                var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                                await toast.Show();
+                            }
+                        }
+
                     }
-                    else if (string.IsNullOrEmpty(Request!.Password))
+                    else if (AddOrUpdate == 2)
                     {
-                        var toast = Toast.Make($"{AppResources.msgFRPassword}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
-                    }
-                    else
-                    {
-                        UserDialogs.Instance.ShowLoading();
                         CardRequestDto requestDto = new CardRequestDto()
                         {
                             PersonName = Request.PersonName,
@@ -265,14 +305,12 @@ namespace Cardrly.ViewModels
                             LinkColor = Request.LinkColor,
                             location = Request.location,
                             PersonNikeName = Request.PersonNikeName,
-                            Email = Request.Email,
-                            Password = Request.Password
                         };
-                        var json = await Rep.PostTRAsync<CardRequestDto, CardResponse>($"{ApiConstants.CardUpdateApi}{accid}/Card", requestDto, UserToken);
+                        var json = await Rep.PostTRAsync<CardRequestDto, CardResponse>($"{ApiConstants.CardUpdateApi}{accid}/Card/{Card.Id}", requestDto, UserToken);
                         UserDialogs.Instance.HideHud();
                         if (json.Item1 != null)
                         {
-                            var toast = Toast.Make($"{AppResources.msgSuccessfullyAddCard}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            var toast = Toast.Make($"{AppResources.msgSuccessfullyUpdateCard}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
                             MessagingCenter.Send(this, "AddCard", true);
                             await App.Current!.MainPage!.Navigation.PopAsync();
@@ -284,43 +322,6 @@ namespace Cardrly.ViewModels
                             await toast.Show();
                         }
                     }
-
-                }
-                else if (AddOrUpdate == 2)
-                {
-                    CardRequestDto requestDto = new CardRequestDto()
-                    {
-                        PersonName = Request.PersonName,
-                        Cardlayout = Request.Cardlayout,
-                        CardName = Request.CardName,
-                        Bio = Request.Bio,
-                        CardTheme = Request.CardTheme,
-                        ExtensionCover = Request.ExtensionCover,
-                        ExtensionProfile = Request.ExtensionProfile,
-                        FontStyle = Request.FontStyle,
-                        ImgFileCover = Request.ImgFileCover,
-                        ImgFileProfile = Request.ImgFileProfile,
-                        JobTitle = Request.JobTitle,
-                        LinkColor = Request.LinkColor,
-                        location = Request.location,
-                        PersonNikeName = Request.PersonNikeName,
-                    };
-                    var json = await Rep.PostTRAsync<CardRequestDto, CardResponse>($"{ApiConstants.CardUpdateApi}{accid}/Card/{Card.Id}", requestDto, UserToken);
-                    UserDialogs.Instance.HideHud();
-                    if (json.Item1 != null)
-                    {
-                        var toast = Toast.Make($"{AppResources.msgSuccessfullyUpdateCard}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
-                        MessagingCenter.Send(this, "AddCard", true);
-                        await App.Current!.MainPage!.Navigation.PopAsync();
-
-                    }
-                    else if (json.Item2 != null)
-                    {
-                        var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
-                    }
-                }
                 }
             }
             UserDialogs.Instance.HideHud();

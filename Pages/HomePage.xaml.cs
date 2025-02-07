@@ -4,7 +4,6 @@ using Cardrly.ViewModels;
 using Cardrly.ViewModels.Leads;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
-using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 using Mopups.Services;
 using static Cardrly.Models.Calendar.CalendlyResponseModel;
 using static Cardrly.Models.Calendar.GmailResponseModel;
@@ -40,7 +39,7 @@ public partial class HomePage : Controls.CustomControl
         LeadView.FlowDirection = this.FlowDirection;
         CalendarView.FlowDirection = this.FlowDirection;
         MoreView.FlowDirection = this.FlowDirection;
-        
+
     }
 
     #region Methods
@@ -173,29 +172,50 @@ public partial class HomePage : Controls.CustomControl
     private async void StartButtonAnimation()
     {
         homeViewModel.IsAnimating = true;
-        // When Animation is Run 
-        while (homeViewModel.IsAnimating)
-        {
-            await Task.WhenAll(
-            LoadIcon.ScaleTo(1.1, 500, Easing.CubicInOut),  // Smooth scale up
-            LoadIcon.RotateTo(5, 500, Easing.CubicInOut),   // Slight rotation
-            LoadIcon.FadeTo(0.8, 500, Easing.CubicInOut)    // Soft fade
-        );
+        //// When Animation is Run 
+        //while (homeViewModel.IsAnimating)
+        //{
+        //    await Task.WhenAll(
+        //    LoadIcon.ScaleTo(1.1, 500, Easing.CubicInOut),  // Smooth scale up
+        //    LoadIcon.RotateTo(5, 500, Easing.CubicInOut),   // Slight rotation
+        //    LoadIcon.FadeTo(0.8, 500, Easing.CubicInOut)    // Soft fade
+        //    );
 
-            await Task.WhenAll(
-                LoadIcon.ScaleTo(1.0, 500, Easing.CubicInOut),  // Smooth scale down
-                LoadIcon.RotateTo(-5, 500, Easing.CubicInOut),  // Rotate in other direction
-                LoadIcon.FadeTo(1.0, 500, Easing.CubicInOut)    // Restore opacity
-            );
+        //    await Task.WhenAll(
+        //        LoadIcon.ScaleTo(1.0, 500, Easing.CubicInOut),  // Smooth scale down
+        //        LoadIcon.RotateTo(-5, 500, Easing.CubicInOut),  // Rotate in other direction
+        //        LoadIcon.FadeTo(1.0, 500, Easing.CubicInOut)    // Restore opacity
+        //    );
 
-            await LoadIcon.RotateTo(0, 300, Easing.CubicInOut); // Reset rotation smoothly
-        }
-        // When Animation is Stoped 
-        // Ensure a smooth transition back to normal state 
+        //    await LoadIcon.RotateTo(0, 300, Easing.CubicInOut); // Reset rotation smoothly
+        //}
+        //// When Animation is Stoped 
+        //// Ensure a smooth transition back to normal state 
+        //await Task.WhenAll(
+        //    LoadIcon.ScaleTo(1.0, 300, Easing.CubicInOut),
+        //    LoadIcon.RotateTo(0, 300, Easing.CubicInOut),
+        //    LoadIcon.FadeTo(1.0, 300, Easing.CubicInOut)
+        //);
+
+
+        // Initial position (Move button below its normal place)
+        LoadIcon.TranslationY = 100;
+        LoadIcon.Opacity = 0;
+
         await Task.WhenAll(
-            LoadIcon.ScaleTo(1.0, 300, Easing.CubicInOut),
-            LoadIcon.RotateTo(0, 300, Easing.CubicInOut),
-            LoadIcon.FadeTo(1.0, 300, Easing.CubicInOut)
+            LoadIcon.TranslateTo(0, 0, 700, Easing.BounceOut), // Move up with bounce effect
+            LoadIcon.FadeTo(1, 700, Easing.CubicOut)           // Fade in smoothly
         );
+
+        await Task.Delay(100);
+
+        LoadIcon.TranslationY = -100;
+        LoadIcon.Opacity = 0;
+
+        await Task.WhenAll(
+            LoadIcon.TranslateTo(0, 0, 700, Easing.BounceOut), // Move up with bounce effect
+            LoadIcon.FadeTo(1, 700, Easing.CubicOut)           // Fade in smoothly
+        );
+
     }
 }

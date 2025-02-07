@@ -31,13 +31,13 @@
                                        TextColor="Black"></Label>
                                     <Image x:Name="LoadIcon">
                                         <Image.Source>
-                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="25" Color="#FF7F3E"></FontImageSource>
+                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="22" Color="#5ac465"></FontImageSource>
                                         </Image.Source>
                                         <Image.Triggers>
                                             <DataTrigger TargetType="Image" Binding="{Binding IsCheckOrGo}" Value="2">
                                                 <Setter Property="Source">
                                                     <Setter.Value>
-                                                        <FontImageSource Glyph="" FontFamily="FontIconBrand" Size="25" Color="#FF7F3E"></FontImageSource>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconBrand" Size="32" Color="#FF7F3E"></FontImageSource>
                                                     </Setter.Value>
                                                 </Setter>
                                             </DataTrigger>
