@@ -108,7 +108,7 @@ public partial class ShareLeadPopup : Mopups.Pages.PopupPage
             }
             else
             {
-                var toast = Toast.Make($"Failed to change status", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                var toast = Toast.Make($"{AppResources.msgFailedToChangeStatus}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
             }
             this.IsEnabled = true;
