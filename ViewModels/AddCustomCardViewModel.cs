@@ -172,7 +172,7 @@ namespace Cardrly.ViewModels
             {
                 page = new AddAttachmentsPopup();
             }
-            page.ImageClose += async (img, imgPath) =>
+            page.ImageClose += (img, imgPath) =>
             {
                 if (!string.IsNullOrEmpty(img))
                 {
@@ -204,7 +204,7 @@ namespace Cardrly.ViewModels
             {
                 page = new AddAttachmentsPopup();
             }
-            page.ImageClose += async (img, imgPath) =>
+            page.ImageClose += (img, imgPath) =>
             {
                 if (!string.IsNullOrEmpty(img))
                 {

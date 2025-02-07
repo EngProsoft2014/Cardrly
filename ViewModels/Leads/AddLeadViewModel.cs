@@ -78,7 +78,7 @@ namespace Cardrly.ViewModels.Leads
             {
                 page = new AddAttachmentsPopup();
             }
-            page.ImageClose += async (img, imgPath) =>
+            page.ImageClose += (img, imgPath) =>
             {
                 if (!string.IsNullOrEmpty(img))
                 {
