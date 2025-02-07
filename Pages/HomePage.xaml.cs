@@ -42,6 +42,7 @@ public partial class HomePage : Controls.CustomControl
 
     }
 
+
     #region Methods
     private void SfTabView_SelectionChanged(object sender, Syncfusion.Maui.TabView.TabSelectionChangedEventArgs e)
     {
@@ -160,12 +161,14 @@ public partial class HomePage : Controls.CustomControl
     private void DatePicker_Home(object sender, DateChangedEventArgs e)
     {
         homeViewModel.IsCheckOrGo = 2;
+
         StartButtonAnimation();
     }
 
     private void CardPicker_Home(object sender, EventArgs e)
     {
         homeViewModel.IsCheckOrGo = 2;
+
         StartButtonAnimation();
     }
 
@@ -198,24 +201,30 @@ public partial class HomePage : Controls.CustomControl
         //);
 
 
-        // Initial position (Move button below its normal place)
-        LoadIcon.TranslationY = 100;
-        LoadIcon.Opacity = 0;
+        await Task.Run(async () =>
+        {
+            await MainThread.InvokeOnMainThreadAsync(async () =>
+            {
+                LoadIcon.TranslationY = 100;
+                LoadIcon.Opacity = 0;
 
-        await Task.WhenAll(
-            LoadIcon.TranslateTo(0, 0, 700, Easing.BounceOut), // Move up with bounce effect
-            LoadIcon.FadeTo(1, 700, Easing.CubicOut)           // Fade in smoothly
-        );
+                await Task.WhenAll(
+                    LoadIcon.TranslateTo(0, 0, 700, Easing.BounceOut), // Move up with bounce effect
+                    LoadIcon.FadeTo(1, 700, Easing.CubicOut)           // Fade in smoothly
+                );
 
-        await Task.Delay(100);
+                await Task.Delay(100);
 
-        LoadIcon.TranslationY = -100;
-        LoadIcon.Opacity = 0;
+                LoadIcon.TranslationY = -100;
+                LoadIcon.Opacity = 0;
 
-        await Task.WhenAll(
-            LoadIcon.TranslateTo(0, 0, 700, Easing.BounceOut), // Move up with bounce effect
-            LoadIcon.FadeTo(1, 700, Easing.CubicOut)           // Fade in smoothly
-        );
+                await Task.WhenAll(
+                    LoadIcon.TranslateTo(0, 0, 700, Easing.BounceOut), // Move up with bounce effect
+                    LoadIcon.FadeTo(1, 700, Easing.CubicOut)           // Fade in smoothly
+                );
+
+            });
+        });
 
     }
 }
