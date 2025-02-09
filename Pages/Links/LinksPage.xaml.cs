@@ -11,6 +11,7 @@ public partial class LinksPage : Controls.CustomControl
 	{
 		InitializeComponent();
         Model = model;
+        
 	}
 
     private void RefreshView_Refreshing(object sender, EventArgs e)
