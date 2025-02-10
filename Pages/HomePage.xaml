@@ -474,8 +474,8 @@
                                 </StackLayout>
                                 <!--Data Menu-->
                                 <ScrollView VerticalOptions="FillAndExpand">
-                                    <StackLayout Spacing="10">
-                                        <CollectionView x:Name="CalenderCollcView" VerticalOptions="FillAndExpand" >
+                                    <Grid VerticalOptions="FillAndExpand">
+                                        <CollectionView x:Name="CalenderCollcView" VerticalOptions="FillAndExpand" IsVisible="{Binding IsShowCollection}">
                                             <CollectionView.ItemsLayout>
                                                 <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
                                             </CollectionView.ItemsLayout>
@@ -580,13 +580,13 @@
                                                     </Border>
                                                 </DataTemplate>
                                             </CollectionView.ItemTemplate>
-                                            <CollectionView.EmptyView>
+                                            <!--<CollectionView.EmptyView>
                                                 <ContentView>
                                                     <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
                                                         <Label Text="{x:Static res:AppResources.PlcNoAvailableEvents}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
                                                     </StackLayout>
                                                 </ContentView>
-                                            </CollectionView.EmptyView>
+                                            </CollectionView.EmptyView>-->
                                             <CollectionView.Triggers>
                                                 <DataTrigger TargetType="CollectionView" Binding="{Binding SelectedProvider.Value}" Value="3">
                                                     <Setter Property="ItemsSource" Value="{Binding CalendlyResponses}"></Setter>
@@ -599,7 +599,17 @@
                                                 </DataTrigger>
                                             </CollectionView.Triggers>
                                         </CollectionView>
-                                    </StackLayout>
+
+                                        <StackLayout x:Name="stkNoData" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="False">
+                                            <Label Text="{x:Static res:AppResources.PlcNoAvailableAppointments}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                            <StackLayout.Triggers>
+                                                <DataTrigger TargetType="StackLayout" Binding="{Binding IsShowCollection}" Value="False">
+                                                    <Setter Property="IsVisible" Value="True"></Setter>
+                                                </DataTrigger>
+                                            </StackLayout.Triggers>
+                                        </StackLayout>
+                                        
+                                    </Grid>
                                 </ScrollView>
                             </StackLayout>
                         </ContentView>

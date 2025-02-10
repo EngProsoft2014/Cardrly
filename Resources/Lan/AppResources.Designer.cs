@@ -529,7 +529,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invite.
+        ///   Looks up a localized string similar to Invite to Cardrly.
         /// </summary>
         internal static string lblInvite {
             get {
@@ -1434,6 +1434,15 @@ namespace Cardrly.Resources.Lan {
         internal static string No_Internet_connection {
             get {
                 return ResourceManager.GetString("No_Internet_connection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Available Appointments.
+        /// </summary>
+        internal static string PlcNoAvailableAppointments {
+            get {
+                return ResourceManager.GetString("PlcNoAvailableAppointments", resourceCulture);
             }
         }
         

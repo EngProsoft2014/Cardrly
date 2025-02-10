@@ -55,7 +55,7 @@
                             </StackLayout.GestureRecognizers>
                         </StackLayout>
                         <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
-                        <!--Invite-->
+                        <!--Invite to Cardrly-->
                         <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
                             <Label Text="{x:Static res:AppResources.lblInvite}"
 TextColor="#FF7F3E"

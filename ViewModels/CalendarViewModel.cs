@@ -33,6 +33,8 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         string toDate;
         [ObservableProperty]
+        bool isShowCollection = false;
+        [ObservableProperty]
         public ObservableCollection<CalendarCalendlyResponse> calendlyResponses = new ObservableCollection<CalendarCalendlyResponse>();
         [ObservableProperty]
         public ObservableCollection<CalendarEventGmail> calendarEventGmails = new ObservableCollection<CalendarEventGmail>();
@@ -190,6 +192,11 @@ namespace Cardrly.ViewModels
             else if (SelectedProvider.Value == 1)
             {
                 await GetGmailData();
+            }
+
+            if(CalendlyResponses.Count > 0 || CalendarOutlookEvents.Count > 0 || CalendarEventGmails.Count > 0)
+            {
+                IsShowCollection = true;
             }
             UserDialogs.Instance.HideHud();
             IsEnable = true;

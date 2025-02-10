@@ -274,7 +274,7 @@
     <value>المساعدة والدعم</value>
   </data>
   <data name="lblInvite" xml:space="preserve">
-    <value>يدعو</value>
+    <value>دعوة إلى كاردرلى</value>
   </data>
   <data name="lblIs ShareToUsers" xml:space="preserve">
     <value>هل المشاركة للمستخدمين</value>
@@ -575,6 +575,9 @@
   </data>
   <data name="No_Internet_connection" xml:space="preserve">
     <value>لا يوجد اتصال بالإنترنت</value>
+  </data>
+  <data name="PlcNoAvailableAppointments" xml:space="preserve">
+    <value>لا توجد مواعيد متاحة</value>
   </data>
   <data name="plcNoAvailableCards" xml:space="preserve">
     <value>لا توجد بطاقات متاحة</value>
