@@ -460,12 +460,12 @@
                         <ContentView x:Name="CalendarView" IsEnabled="{Binding IsEnable}" Margin="20">
                             <StackLayout Spacing="20">
                                 <!--Header-->
-                                <StackLayout Orientation="Horizontal">
+                                <StackLayout Orientation="Horizontal" Spacing="10">
                                     <Label Text="{x:Static res:AppResources.hdrCalendar}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                                            TextColor="Black"></Label>
                                     <Image HorizontalOptions="End">
                                         <Image.Source>
-                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="25" Color="#FF7F3E"></FontImageSource>
+                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="22" Color="#FF7F3E"></FontImageSource>
                                         </Image.Source>
                                         <Image.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding FilterClickCommand}"></TapGestureRecognizer>

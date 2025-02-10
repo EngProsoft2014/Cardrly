@@ -198,6 +198,10 @@ namespace Cardrly.ViewModels
             {
                 IsShowCollection = true;
             }
+            else
+            {
+                IsShowCollection = false;
+            }
             UserDialogs.Instance.HideHud();
             IsEnable = true;
         }
