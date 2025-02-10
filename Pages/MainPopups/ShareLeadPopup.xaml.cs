@@ -64,7 +64,7 @@ public partial class ShareLeadPopup : Mopups.Pages.PopupPage
         {
             UserDialogs.Instance.ShowLoading();
             string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-            var json = await Rep.GetAsync<ObservableCollection<LeadAssignResponse>>($"{ApiConstants.LeadAssignGetAllApi}{AccId}/Lead/{leadResponse.Id}/LeadAssign", UserToken);
+            var json = await Rep.GetAsync<ObservableCollection<LeadAssignResponse>>($"{ApiConstants.LeadAssignGetAllApi}{AccId}/Lead/{leadResponse.Id}/LeadAssign", UserToken);    
             if (json != null)
             {
                 foreach (LeadAssignResponse res in json)
@@ -73,8 +73,10 @@ public partial class ShareLeadPopup : Mopups.Pages.PopupPage
                 }
                 leadAssignResponses = json;
             }
+
+            UserDialogs.Instance.HideHud();
         }
-        UserDialogs.Instance.HideHud();
+        
         this.IsEnabled = true;
     }
     #endregion

@@ -289,6 +289,7 @@ namespace Cardrly.ViewModels
                     }
                     else if (AddOrUpdate == 2)
                     {
+                        UserDialogs.Instance.ShowLoading();
                         CardRequestDto requestDto = new CardRequestDto()
                         {
                             PersonName = Request.PersonName,
@@ -324,7 +325,7 @@ namespace Cardrly.ViewModels
                     }
                 }
             }
-            UserDialogs.Instance.HideHud();
+            
             IsEnable = true;
         }
 

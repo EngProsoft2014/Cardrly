@@ -53,9 +53,10 @@ namespace Cardrly.ViewModels
                 {
                     LeadComments = json;
                 }
+                UserDialogs.Instance.HideHud();
             }
             IsEnable = true;
-            UserDialogs.Instance.HideHud();
+            
         } 
         #endregion
     }

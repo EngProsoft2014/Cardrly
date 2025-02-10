@@ -96,13 +96,14 @@ namespace Cardrly.ViewModels
             bool result = await App.Current!.MainPage!.DisplayAlert($"{AppResources.msgDeleteDevice}" , $"{AppResources.msgDeleteDevice_qu}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
             if (result)
             {
-                UserDialogs.Instance.ShowLoading();
                 IsEnable = false;
                 string UserToken = await _service.UserToken();
                 if (!string.IsNullOrEmpty(UserToken))
                 {
+                    UserDialogs.Instance.ShowLoading();
                     string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
                     string response = await Rep.PostEAsync($"{ApiConstants.DevicesDeleteApi}{AccId}/Card/{DetailsResponse.Id}/Devices/{res.Id}/Delete", UserToken);
+                    UserDialogs.Instance.HideHud();
                     if (response == "")
                     {
                         UserDialogs.Instance.ShowLoading();
@@ -116,7 +117,7 @@ namespace Cardrly.ViewModels
                     }
                 }
                 IsEnable = true;
-                UserDialogs.Instance.HideHud();
+                
             }
         }
         [RelayCommand]

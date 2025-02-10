@@ -182,9 +182,10 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
                 ValueOf = ValueEn.Text,
             };
             string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
-            UserDialogs.Instance.ShowLoading();
+           
             if (IsUpdat == 0 )
             {
+                UserDialogs.Instance.ShowLoading();
                 var json = await Rep.PostTRAsync<CardLinkRequest, CardLinkResponse>($"{ApiConstants.CardLinkUpdateApi}{accid}/Card/{CardLinkRef.CardId}/CardLink/{CardLinkRef.Id}", requestDto, UserToken);
                 UserDialogs.Instance.HideHud();
                 if (json.Item1 != null)
@@ -202,6 +203,7 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
             }
             else if(IsUpdat == 1)
             {
+                UserDialogs.Instance.ShowLoading();
                 var json = await Rep.PostTRAsync<CardLinkRequest, CardLinkResponse>($"{ApiConstants.CardLinkUpdateApi}{accid}/Card/{CardLinkRef.CardId}/CardLink", requestDto, UserToken);
                 UserDialogs.Instance.HideHud();
                 if (json.Item1 != null)
