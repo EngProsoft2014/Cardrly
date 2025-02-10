@@ -53,15 +53,26 @@ PositionOut="Center" />
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
-                            <CollectionView.EmptyView>
-                                <ContentView>
-                                    <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+                            <!--<CollectionView.EmptyView>
+                                <ContentView VerticalOptions="FillAndExpand">
+                                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="FillAndExpand">
                                         <Label Text="{x:Static res:AppResources.msgNoavailableusers}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
                                     </StackLayout>
                                 </ContentView>
-                            </CollectionView.EmptyView>
+                            </CollectionView.EmptyView>-->
+
                         </CollectionView>
+
+                        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="FillAndExpand" IsVisible="False">
+                            <Label Text="{x:Static res:AppResources.msgNoavailableusers}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                            <StackLayout.Triggers>
+                                <DataTrigger TargetType="StackLayout" Binding="{Binding Source={x:Reference UserColc},Path=IsVisible}" Value="False">
+                                    <Setter Property="IsVisible" Value="True"></Setter>
+                                </DataTrigger>
+                            </StackLayout.Triggers>
+                        </StackLayout>
                     </StackLayout>
+
 
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="12"></RoundRectangle>

@@ -73,20 +73,19 @@ namespace Cardrly.ViewModels.Leads
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
             {
-                IsEnable = false;
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
                 UserDialogs.Instance.ShowLoading();
                 string ressponse = await Rep.PostEAsync($"{ApiConstants.LeadToggleApi}{AccId}/Lead/{lead.Id}/ToggleActive", UserToken);
                 if (ressponse == "")
                 {
-                    Init();
+                    FilterRequest = new LeadFilterRequest();
+                    await SearchLeads();
                 }
                 else
                 {
                     var toast = Toast.Make($"{AppResources.msgFailedToChangeStatus}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
-                IsEnable = true;
                 UserDialogs.Instance.HideHud();
             }
         }

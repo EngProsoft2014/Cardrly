@@ -174,6 +174,9 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
     {
         if (Connectivity.NetworkAccess == NetworkAccess.Internet)
         {
+            this.IsEnabled = false;
+            this.CloseWhenBackgroundIsClicked = false;  
+
             string UserToken = await _service.UserToken();
             var requestDto = new CardLinkRequest
             {
@@ -185,15 +188,14 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
            
             if (IsUpdat == 0 )
             {
-                UserDialogs.Instance.ShowLoading();
                 var json = await Rep.PostTRAsync<CardLinkRequest, CardLinkResponse>($"{ApiConstants.CardLinkUpdateApi}{accid}/Card/{CardLinkRef.CardId}/CardLink/{CardLinkRef.Id}", requestDto, UserToken);
-                UserDialogs.Instance.HideHud();
+
                 if (json.Item1 != null)
                 {
                     var toast = Toast.Make($"{AppResources.msgSuccessfullyUpdateLink}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
-                    MessagingCenter.Send(this, "CreateLink", true);
                     await MopupService.Instance.PopAsync();
+                    MessagingCenter.Send(this, "CreateLink", true);
                 }
                 else if (json.Item2 != null)
                 {
@@ -203,15 +205,14 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
             }
             else if(IsUpdat == 1)
             {
-                UserDialogs.Instance.ShowLoading();
                 var json = await Rep.PostTRAsync<CardLinkRequest, CardLinkResponse>($"{ApiConstants.CardLinkUpdateApi}{accid}/Card/{CardLinkRef.CardId}/CardLink", requestDto, UserToken);
-                UserDialogs.Instance.HideHud();
+
                 if (json.Item1 != null)
                 {
                     var toast = Toast.Make($"{AppResources.msgSuccessfullyAddLink}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
-                    MessagingCenter.Send(this, "CreateLink", true);
                     await MopupService.Instance.PopAsync();
+                    MessagingCenter.Send(this, "CreateLink", true);
                 }
                 else if (json.Item2 != null)
                 {
@@ -219,8 +220,9 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
                     await toast.Show();
                 }
             }
-            
-            
+
+            this.IsEnabled = true;
+            this.CloseWhenBackgroundIsClicked = true;
         }
     }
 }

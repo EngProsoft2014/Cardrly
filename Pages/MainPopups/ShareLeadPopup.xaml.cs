@@ -65,13 +65,17 @@ public partial class ShareLeadPopup : Mopups.Pages.PopupPage
             UserDialogs.Instance.ShowLoading();
             string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
             var json = await Rep.GetAsync<ObservableCollection<LeadAssignResponse>>($"{ApiConstants.LeadAssignGetAllApi}{AccId}/Lead/{leadResponse.Id}/LeadAssign", UserToken);    
-            if (json != null)
+            if (json != null && json.Count > 0)
             {
                 foreach (LeadAssignResponse res in json)
                 {
                     res.IsAdded = !string.IsNullOrEmpty(res.Id);
                 }
                 leadAssignResponses = json;
+            }
+            else
+            {
+                UserColc.IsVisible = false;
             }
 
             UserDialogs.Instance.HideHud();
