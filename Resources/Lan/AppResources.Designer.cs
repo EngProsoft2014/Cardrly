@@ -529,6 +529,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invite.
+        /// </summary>
+        internal static string lblInvite {
+            get {
+                return ResourceManager.GetString("lblInvite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is Share To Users.
         /// </summary>
         internal static string lblIs_ShareToUsers {

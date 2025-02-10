@@ -146,7 +146,6 @@ public partial class HomePage : Controls.CustomControl
         CalendarViewModel.CalendlyResponses = new System.Collections.ObjectModel.ObservableCollection<CalendarCalendlyResponse>();
         CalendarViewModel.CalendarEventGmails = new System.Collections.ObjectModel.ObservableCollection<CalendarEventGmail>();
         CalendarViewModel.CalendarOutlookEvents = new System.Collections.ObjectModel.ObservableCollection<Models.Calendar.OutLookResponseModel.CalendarOutlookEvent>();
-        CalendarViewModel.IsPassed = 2;
     }
 
     private void CalenderCardPicker_SelectedIndexChanged(object sender, EventArgs e)
@@ -154,7 +153,6 @@ public partial class HomePage : Controls.CustomControl
         CalendarViewModel.CalendlyResponses = new System.Collections.ObjectModel.ObservableCollection<CalendarCalendlyResponse>();
         CalendarViewModel.CalendarEventGmails = new System.Collections.ObjectModel.ObservableCollection<CalendarEventGmail>();
         CalendarViewModel.CalendarOutlookEvents = new System.Collections.ObjectModel.ObservableCollection<Models.Calendar.OutLookResponseModel.CalendarOutlookEvent>();
-        CalendarViewModel.IsPassed = 2;
     }
     #endregion
 

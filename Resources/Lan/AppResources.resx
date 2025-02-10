@@ -273,6 +273,9 @@
   <data name="lblHelpSupport" xml:space="preserve">
     <value>Help &amp; Support</value>
   </data>
+  <data name="lblInvite" xml:space="preserve">
+    <value>Invite</value>
+  </data>
   <data name="lblIs ShareToUsers" xml:space="preserve">
     <value>Is Share To Users</value>
   </data>

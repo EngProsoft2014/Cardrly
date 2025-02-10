@@ -273,6 +273,9 @@
   <data name="lblHelpSupport" xml:space="preserve">
     <value>المساعدة والدعم</value>
   </data>
+  <data name="lblInvite" xml:space="preserve">
+    <value>يدعو</value>
+  </data>
   <data name="lblIs ShareToUsers" xml:space="preserve">
     <value>هل المشاركة للمستخدمين</value>
   </data>

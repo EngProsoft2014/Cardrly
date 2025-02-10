@@ -156,4 +156,10 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
             await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgServicenotfound}", $"{AppResources.msgOk}");
         }
     }
+
+    private async void TapGestureRecognizer_Invite(object sender, TappedEventArgs e)
+    {
+        await MopupService.Instance.PopAsync();
+        await Share.RequestAsync("https://app.cardrly.com/");
+    }
 }
