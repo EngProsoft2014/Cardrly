@@ -277,7 +277,7 @@
                                                         <!--Card Data-->
                                                         <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="{Binding CardTheme}" Margin="0,30,0,0">
                                                             <StackLayout Orientation="Horizontal" Spacing="15">
-                                                                <StackLayout HorizontalOptions="FillAndExpand" WidthRequest="{OnPlatform iOS=340}">
+                                                                <StackLayout HorizontalOptions="FillAndExpand">
                                                                     <!--Cover Iamge-->
                                                                     <Image Source="{Binding UrlImgCoverVM}" HeightRequest="100" HorizontalOptions="FillAndExpand" 
                                                                        Aspect="AspectFill"></Image>
