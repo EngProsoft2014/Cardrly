@@ -9,7 +9,6 @@ using Android.Views;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
 using Plugin.NFC;
-using Plugin.Firebase.CloudMessaging;
 
 namespace Cardrly
 {
@@ -26,9 +25,6 @@ namespace Cardrly
             Microsoft.Maui.ApplicationModel.Platform.Init(this, savedInstanceState);
 
             this.Window?.AddFlags(WindowManagerFlags.Fullscreen);
-
-            HandleIntent(Intent);
-            CreateNotificationChannelIfNeeded();
 
             //DependencyInjection.ControlsBackground();
 
@@ -57,7 +53,6 @@ namespace Cardrly
 
             // Plugin NFC: Tag Discovery Interception
             CrossNFC.OnNewIntent(intent);
-            HandleIntent(intent);
         }
 
         protected override void AttachBaseContext(Context? @base)
@@ -80,27 +75,5 @@ namespace Cardrly
             return true;
         }
 
-
-        private static void HandleIntent(Intent intent)
-        {
-            FirebaseCloudMessagingImplementation.OnNewIntent(intent);
-        }
-
-        private void CreateNotificationChannelIfNeeded()
-        {
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
-            {
-                CreateNotificationChannel();
-            }
-        }
-
-        private void CreateNotificationChannel()
-        {
-            var channelId = $"{PackageName}.general";
-            var notificationManager = (NotificationManager)GetSystemService(NotificationService);
-            var channel = new NotificationChannel(channelId, "General", NotificationImportance.Default);
-            notificationManager.CreateNotificationChannel(channel);
-            FirebaseCloudMessagingImplementation.ChannelId = channelId;
-        }
     }
 }

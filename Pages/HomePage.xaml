@@ -277,12 +277,12 @@
                                                         <!--Card Data-->
                                                         <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="{Binding CardTheme}" Margin="0,30,0,0">
                                                             <StackLayout Orientation="Horizontal" Spacing="15">
-                                                                <StackLayout HorizontalOptions="FillAndExpand">
+                                                                <StackLayout HorizontalOptions="FillAndExpand" Padding="0">
                                                                     <!--Cover Iamge-->
                                                                     <Image Source="{Binding UrlImgCoverVM}" HeightRequest="100" HorizontalOptions="FillAndExpand" 
                                                                        Aspect="AspectFill"></Image>
                                                                     <Grid HorizontalOptions="FillAndExpand">
-                                                                        <VerticalStackLayout >
+                                                                        <VerticalStackLayout>
                                                                             <!--Profile Iamge-->
                                                                             <Border StrokeShape="RoundRectangle 50" WidthRequest="85" HorizontalOptions="CenterAndExpand" TranslationY="-45" HeightRequest="85">
                                                                                 <Image  Source="{Binding UrlImgProfileVM}" Aspect="AspectFill" HeightRequest="85"></Image>

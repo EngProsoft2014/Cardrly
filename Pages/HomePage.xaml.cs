@@ -7,7 +7,6 @@ using Controls.UserDialogs.Maui;
 using Mopups.Services;
 using static Cardrly.Models.Calendar.CalendlyResponseModel;
 using static Cardrly.Models.Calendar.GmailResponseModel;
-using Plugin.Firebase.CloudMessaging;
 
 namespace Cardrly.Pages;
 
@@ -40,15 +39,9 @@ public partial class HomePage : Controls.CustomControl
         LeadView.FlowDirection = this.FlowDirection;
         CalendarView.FlowDirection = this.FlowDirection;
         MoreView.FlowDirection = this.FlowDirection;
-        Init();
+
     }
 
-    async void Init()
-    {
-        await CrossFirebaseCloudMessaging.Current.CheckIfValidAsync();
-        var token = await CrossFirebaseCloudMessaging.Current.GetTokenAsync();
-        Console.WriteLine($"FCM token: {token}");
-    }
 
     #region Methods
     private void SfTabView_SelectionChanged(object sender, Syncfusion.Maui.TabView.TabSelectionChangedEventArgs e)
