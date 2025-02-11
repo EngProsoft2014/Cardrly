@@ -1,5 +1,6 @@
 
 using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Models.Lead;
 using Cardrly.Resources.Lan;
@@ -165,6 +166,7 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
 
     private async void TapGestureRecognizer_Reminder(object sender, TappedEventArgs e)
     {
-
+        // Scheduled send
+        StaticMember.notificationManager.SendNotification("Notification title goes here", "Notification messages goes here.", DateTime.Now.AddSeconds(10));
     }
 }

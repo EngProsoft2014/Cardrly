@@ -1,8 +1,10 @@
 ﻿using Akavache;
 using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Extensions;
 using Cardrly.Helpers;
 using Cardrly.Pages;
+using Cardrly.Services;
 using Cardrly.ViewModels;
 using Plugin.Maui.Audio;
 using System.Globalization;
@@ -16,7 +18,8 @@ namespace Cardrly
         readonly Services.Data.ServicesService _service;
         public static IServiceProvider Services { get; private set; }
         #endregion
-        public App(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioManager audioManager, IServiceProvider serviceProvider)
+        public App(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioManager audioManager, IServiceProvider serviceProvider,
+            INotificationManagerService  notificationManagerService)
         {
             try
             {
@@ -24,6 +27,7 @@ namespace Cardrly
                 Rep = GenericRep;
                 _service = service;
                 Services = serviceProvider;
+                StaticMember.notificationManager = notificationManagerService;
                 LoadSetting();
                 Controls.StaticMember._audioManager = audioManager;
                 BlobCache.ApplicationName = "CardrlyDB";

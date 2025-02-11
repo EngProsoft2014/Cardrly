@@ -11,6 +11,7 @@ using AndroidX.Core.Content;
 using Plugin.NFC;
 using Plugin.Firebase.CloudMessaging;
 using Firebase;
+using Cardrly.Services;
 namespace Cardrly
 {
     [Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTop, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
@@ -37,8 +38,8 @@ namespace Cardrly
                 Console.WriteLine($"Android Exception: {e.Exception.Message}");
                 e.Handled = true;
             };
-            
 
+            CreateNotificationFromIntent(Intent);
             //Request Notification Permission
             if (Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu)
             {
@@ -66,6 +67,7 @@ namespace Cardrly
             // Plugin NFC: Tag Discovery Interception
             CrossNFC.OnNewIntent(intent);
             HandleIntent(intent);
+            CreateNotificationFromIntent(intent);
         }
 
         protected override void AttachBaseContext(Context? @base)
@@ -110,5 +112,16 @@ namespace Cardrly
             FirebaseCloudMessagingImplementation.ChannelId = channelId;
         }
 
+        static void CreateNotificationFromIntent(Intent intent)
+        {
+            if (intent?.Extras != null)
+            {
+                string title = intent.GetStringExtra(Cardrly.Platforms.Android.NotificationManagerService.TitleKey);
+                string message = intent.GetStringExtra(Cardrly.Platforms.Android.NotificationManagerService.MessageKey);
+
+                var service = IPlatformApplication.Current.Services.GetService<INotificationManagerService>();
+                service.ReceiveNotification(title, message);
+            }
+        }
     }
 }

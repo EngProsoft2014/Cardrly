@@ -2,6 +2,7 @@
 using Cardrly.Pages;
 using Cardrly.Pages.Links;
 using Cardrly.Pages.MainPopups;
+using Cardrly.Services;
 using Cardrly.Services.Data;
 using Cardrly.ViewModels;
 using Cardrly.ViewModels.Leads;
@@ -86,9 +87,14 @@ namespace Cardrly
             Services.AddTransient<GmailDetailsPopup>();
 
             #endregion
-            
+
             #endregion
 
+#if ANDROID
+            Services.AddTransient<INotificationManagerService, Cardrly.Platforms.Android.NotificationManagerService>();
+#elif IOS
+            Services.AddTransient<INotificationManagerService, Cardrly.Platforms.iOS.NotificationManagerService>();        
+#endif
             Services.AddSingleton<IAudioManager, AudioManager>();
             return Services;
         }

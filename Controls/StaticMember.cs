@@ -4,6 +4,7 @@ using Akavache;
 using Cardrly.Helpers;
 using Cardrly.Pages;
 using Cardrly.Resources.Lan;
+using Cardrly.Services;
 using Cardrly.Services.Data;
 using Cardrly.ViewModels;
 using CommunityToolkit.Maui.Core;
@@ -15,6 +16,7 @@ namespace Cardrly.Controls
     static class StaticMember
     {
         public static IAudioManager _audioManager;
+        public static INotificationManagerService notificationManager;
 
         #region Const Variables
         public static string SnackBarColor = "#FF7F3E";
