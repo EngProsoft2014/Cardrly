@@ -12,6 +12,8 @@ using ZXing.Net.Maui.Controls;
 using Microsoft.Maui.LifecycleEvents;
 using Plugin.Firebase.CloudMessaging;
 
+
+
 #if IOS
 using Plugin.Firebase.Core.Platforms.iOS;
 #elif ANDROID

@@ -10,6 +10,7 @@ using AndroidX.Core.App;
 using AndroidX.Core.Content;
 using Plugin.NFC;
 using Plugin.Firebase.CloudMessaging;
+using Firebase;
 namespace Cardrly
 {
     [Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTop, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
@@ -26,6 +27,8 @@ namespace Cardrly
 
             this.Window?.AddFlags(WindowManagerFlags.Fullscreen);
 
+            HandleIntent(Intent);
+            CreateNotificationChannelIfNeeded();
             //DependencyInjection.ControlsBackground();
 
             // Handle uncaught exceptions
@@ -34,9 +37,7 @@ namespace Cardrly
                 Console.WriteLine($"Android Exception: {e.Exception.Message}");
                 e.Handled = true;
             };
-
-            HandleIntent(Intent);
-            CreateNotificationChannelIfNeeded();
+            
 
             //Request Notification Permission
             if (Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu)

@@ -70,11 +70,11 @@ namespace Cardrly.ViewModels
                 IsCheckOrGo = 1;
                 UserDialogs.Instance.HideHud();
             }
-
+            /*
             //get token for test
             await CrossFirebaseCloudMessaging.Current.CheckIfValidAsync();
             var token = await CrossFirebaseCloudMessaging.Current.GetTokenAsync();
-            await Share.RequestAsync(token);
+            await Share.RequestAsync(token);*/
 
         }
 
