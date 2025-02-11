@@ -8,6 +8,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
+using Plugin.Firebase.CloudMessaging;
 using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 
@@ -69,6 +70,12 @@ namespace Cardrly.ViewModels
                 IsCheckOrGo = 1;
                 UserDialogs.Instance.HideHud();
             }
+
+            //get token for test
+            await CrossFirebaseCloudMessaging.Current.CheckIfValidAsync();
+            var token = await CrossFirebaseCloudMessaging.Current.GetTokenAsync();
+            await Share.RequestAsync(token);
+
         }
 
         #endregion

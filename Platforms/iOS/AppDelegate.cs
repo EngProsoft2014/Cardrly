@@ -1,5 +1,6 @@
 ﻿using Foundation;
 using UIKit;
+using UserNotifications;
 
 namespace Cardrly
 {
@@ -32,6 +33,22 @@ namespace Cardrly
                 };
                 window.AddGestureRecognizer(tapRecognizer);
             }
+
+            // Request permission for notifications
+            UNUserNotificationCenter.Current.RequestAuthorization(
+                UNAuthorizationOptions.Alert | UNAuthorizationOptions.Badge | UNAuthorizationOptions.Sound,
+                (granted, error) =>
+                {
+                    if (granted)
+                    {
+                        Console.WriteLine("Notification permission granted.");
+                        InvokeOnMainThread(UIApplication.SharedApplication.RegisterForRemoteNotifications);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Notification permission denied.");
+                    }
+                });
 
             return result;
         }

@@ -51,5 +51,7 @@
 		</array>
 		<key>CFBundleVersion</key>
 		<string>1.0.0.19</string>
+		<key>NSUserNotificationUsageDescription</key>
+		<string>We need notification permissions to send you updates.</string>
 	</dict>
 </plist>
