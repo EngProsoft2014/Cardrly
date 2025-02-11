@@ -68,10 +68,6 @@
 	  <None Remove="Platforms\iOS\GoogleService-Info.plist" />
 	  <None Remove="Resources\Splash\images.svg" />
 	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
-		<GoogleServicesJson Include="google-services.json" />
-	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-ios'">
 		<BundleResource Include="GoogleService-Info.plist" />
 	</ItemGroup>
