@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "429981615453",
+    "project_id": "cardrlynotification",
+    "storage_bucket": "cardrlynotification.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429981615453:android:dc3b07e2dfbb70c0a5d4b4",
+        "android_client_info": {
+          "package_name": "com.companyname.cardrly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9MbDhCzAhpRhamyWdKn7LCKan1qOA-Js"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
