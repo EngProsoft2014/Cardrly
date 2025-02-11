@@ -333,6 +333,9 @@
   <data name="lblPickPhoto" xml:space="preserve">
     <value>Pick Photo</value>
   </data>
+  <data name="lblReminder" xml:space="preserve">
+    <value>Reminder</value>
+  </data>
   <data name="lblSaveContacts" xml:space="preserve">
     <value>Save Contacts</value>
   </data>

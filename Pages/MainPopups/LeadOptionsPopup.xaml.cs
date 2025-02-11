@@ -162,4 +162,9 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
         await MopupService.Instance.PopAsync();
         await Share.RequestAsync("https://app.cardrly.com/");
     }
+
+    private async void TapGestureRecognizer_Reminder(object sender, TappedEventArgs e)
+    {
+
+    }
 }

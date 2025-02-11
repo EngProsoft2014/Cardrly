@@ -333,6 +333,9 @@
   <data name="lblPickPhoto" xml:space="preserve">
     <value>إختر الصورة</value>
   </data>
+  <data name="lblReminder" xml:space="preserve">
+    <value>تذكير</value>
+  </data>
   <data name="lblSaveContacts" xml:space="preserve">
     <value>حفظ جهات الاتصال</value>
   </data>
