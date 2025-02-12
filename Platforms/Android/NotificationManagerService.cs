@@ -92,8 +92,8 @@ namespace Cardrly.Platforms.Android
                 .SetContentIntent(pendingIntent)
                 .SetContentTitle(title)
                 .SetContentText(message)
-                .SetLargeIcon(BitmapFactory.DecodeResource(Platform.AppContext.Resources,Resource.Drawable.abc_cab_background_top_material ))
-                .SetSmallIcon(Resource.Drawable.abc_control_background_material);
+                .SetLargeIcon(BitmapFactory.DecodeResource(Platform.AppContext.Resources,Resource.Drawable.images ))
+                .SetSmallIcon(Resource.Drawable.images);
 
             Notification notification = builder.Build();
             compatManager.Notify(messageId++, notification);

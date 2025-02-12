@@ -167,6 +167,6 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
     private async void TapGestureRecognizer_Reminder(object sender, TappedEventArgs e)
     {
         // Scheduled send
-        StaticMember.notificationManager.SendNotification("Notification title goes here", "Notification messages goes here.", DateTime.Now.AddSeconds(10));
+        StaticMember.notificationManager.SendNotification("Follow Up - Lead Name", "Hey Tarek, this is a reminder to follow up with Lead name. Tab here to view.", DateTime.Now.AddSeconds(10));
     }
 }

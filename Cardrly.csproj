@@ -84,7 +84,10 @@
 		<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-ios'">
-		<BundleResource Include="Platforms\iOS\GoogleService-Info.plist" />
+		<BundleResource Include="Platforms/iOS/GoogleService-Info.plist">
+			<Link>GoogleService-Info.plist</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</BundleResource>
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
 	  <GoogleServicesJson Include="Platforms\Android\google-services.json" />

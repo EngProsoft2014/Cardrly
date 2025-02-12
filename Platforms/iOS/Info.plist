@@ -53,5 +53,14 @@
 		<string>1.0.0.19</string>
 		<key>NSUserNotificationUsageDescription</key>
 		<string>We need notification permissions to send you updates.</string>
+
+		<key>FirebaseAppDelegateProxyEnabled</key>
+		<false/>
+
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>fetch</string>
+			<string>remote-notification</string>
+		</array>
 	</dict>
 </plist>

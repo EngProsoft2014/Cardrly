@@ -41,9 +41,9 @@ PositionOut="Center" />
             Padding="10">
 
                     </Label>
-                    <Border.GestureRecognizers>
+                    <!--<Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="TapGestureRecognizer_Cancel"></TapGestureRecognizer>
-                    </Border.GestureRecognizers>
+                    </Border.GestureRecognizers>-->
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="20"></RoundRectangle>
                     </Border.StrokeShape>
