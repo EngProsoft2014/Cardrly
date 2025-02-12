@@ -71,10 +71,10 @@ namespace Cardrly.ViewModels
                 UserDialogs.Instance.HideHud();
             }
            
-            //get token for test
-            await CrossFirebaseCloudMessaging.Current.CheckIfValidAsync();
-            var token = await CrossFirebaseCloudMessaging.Current.GetTokenAsync();
-            await Share.RequestAsync(token);
+            ////get token for test
+            //await CrossFirebaseCloudMessaging.Current.CheckIfValidAsync();
+            //var token = await CrossFirebaseCloudMessaging.Current.GetTokenAsync();
+            //await Share.RequestAsync(token);
 
         }
 
