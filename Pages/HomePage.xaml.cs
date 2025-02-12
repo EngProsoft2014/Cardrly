@@ -1,5 +1,10 @@
 using Cardrly.Controls;
 using Cardrly.Helpers;
+#if ANDROID
+using Cardrly.Platforms.Android;
+#elif IOS
+using Cardrly.Platforms.iOS;
+#endif
 using Cardrly.Resources.Lan;
 using Cardrly.ViewModels;
 using Cardrly.ViewModels.Leads;
@@ -39,6 +44,15 @@ public partial class HomePage : Controls.CustomControl
         LeadView.FlowDirection = this.FlowDirection;
         CalendarView.FlowDirection = this.FlowDirection;
         MoreView.FlowDirection = this.FlowDirection;
+#if ANDROID || IOS
+        MessagingCenter.Subscribe<NotificationManagerService, bool>(this, "NoifcationClicked", async (sender, message) =>
+        {
+            if (true)
+            {
+                tabHome.SelectedIndex = 2;
+            }
+        });
+#endif
     }
 
 
@@ -172,32 +186,6 @@ public partial class HomePage : Controls.CustomControl
     private async void StartButtonAnimation()
     {
         homeViewModel.IsAnimating = true;
-        //// When Animation is Run 
-        //while (homeViewModel.IsAnimating)
-        //{
-        //    await Task.WhenAll(
-        //    LoadIcon.ScaleTo(1.1, 500, Easing.CubicInOut),  // Smooth scale up
-        //    LoadIcon.RotateTo(5, 500, Easing.CubicInOut),   // Slight rotation
-        //    LoadIcon.FadeTo(0.8, 500, Easing.CubicInOut)    // Soft fade
-        //    );
-
-        //    await Task.WhenAll(
-        //        LoadIcon.ScaleTo(1.0, 500, Easing.CubicInOut),  // Smooth scale down
-        //        LoadIcon.RotateTo(-5, 500, Easing.CubicInOut),  // Rotate in other direction
-        //        LoadIcon.FadeTo(1.0, 500, Easing.CubicInOut)    // Restore opacity
-        //    );
-
-        //    await LoadIcon.RotateTo(0, 300, Easing.CubicInOut); // Reset rotation smoothly
-        //}
-        //// When Animation is Stoped 
-        //// Ensure a smooth transition back to normal state 
-        //await Task.WhenAll(
-        //    LoadIcon.ScaleTo(1.0, 300, Easing.CubicInOut),
-        //    LoadIcon.RotateTo(0, 300, Easing.CubicInOut),
-        //    LoadIcon.FadeTo(1.0, 300, Easing.CubicInOut)
-        //);
-
-
         await Task.Run(async () =>
         {
             await MainThread.InvokeOnMainThreadAsync(async () =>
@@ -222,6 +210,5 @@ public partial class HomePage : Controls.CustomControl
 
             });
         });
-
     }
 }

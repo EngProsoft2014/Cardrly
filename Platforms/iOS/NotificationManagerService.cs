@@ -84,6 +84,7 @@ namespace Cardrly.Platforms.iOS
                 Message = message
             };
             NotificationReceived?.Invoke(null, args);
+            MessagingCenter.Send(this, "NoifcationClicked", true);
         }
 
         NSDateComponents GetNSDateComponents(DateTime dateTime)

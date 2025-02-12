@@ -78,12 +78,13 @@ namespace Cardrly.Platforms.Android
                 Message = message,
             };
             NotificationReceived?.Invoke(null, args);
+            MessagingCenter.Send(this, "NoifcationClicked", true);
             /*
             var GenericRepository = App.Services.GetService<IGenericRepository>();
             var ServicesService = new ServicesService(GenericRepository);
-            var page = new HomePage(new ViewModels.HomeViewModel(GenericRepository,ServicesService, StaticMember._audioManager),GenericRepository, ServicesService);
+            var page = new HomePage(new ViewModels.HomeViewModel(GenericRepository,ServicesService, StaticMember._audioManager,2),GenericRepository, ServicesService);
             App.Current!.MainPage = new NavigationPage(page);*/
-            
+
         }
 
         public void Show(string title, string message)

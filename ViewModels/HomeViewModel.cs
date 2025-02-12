@@ -35,6 +35,8 @@ namespace Cardrly.ViewModels
         int isCheckOrGo = 1; // 1: check, 2: go;
         [ObservableProperty]
         bool _isAnimating = false; // Flag to control animation
+        [ObservableProperty]
+        int tabBarIndex = 0;
         public readonly IAudioManager _audioManager;
         #endregion
 
@@ -44,13 +46,13 @@ namespace Cardrly.ViewModels
         #endregion
 
         #region Cons
-        public HomeViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioManager audioManager)
+        public HomeViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioManager audioManager, int Index = 0)
         {
             Rep = GenericRep;
             _service = service;
             // Initialize audio manager
             _audioManager = audioManager;
-            Init();
+            Init(Index);
         }
         #endregion
 
@@ -81,7 +83,7 @@ namespace Cardrly.ViewModels
         #endregion
 
         #region Methodes
-        public async void Init()
+        public async void Init(int Index)
         {
             IsEnable = false;
             SelectedCard = new CardResponse() { CardName = "NoCard"};
@@ -95,6 +97,7 @@ namespace Cardrly.ViewModels
             await Task.WhenAll(GetAllStatistics(),GetAccData());
             UserDialogs.Instance.HideHud();
             IsEnable = true;
+            TabBarIndex = Index;
         }
 
         async Task GetAllStatistics()
