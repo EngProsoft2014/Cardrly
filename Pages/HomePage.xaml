@@ -362,7 +362,7 @@
                                 <!--Add Lead Button-->
                                 <Image>
                                     <Image.Source>
-                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E"></FontImageSource>
+                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E" Size="25"></FontImageSource>
                                     </Image.Source>
                                     <Image.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding AddLeadClickCommand}"></TapGestureRecognizer>

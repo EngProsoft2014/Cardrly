@@ -183,6 +183,21 @@
   <data name="hdrSelectLanguage" xml:space="preserve">
     <value>Select Language</value>
   </data>
+  <data name="lbl1day" xml:space="preserve">
+    <value>1 day</value>
+  </data>
+  <data name="lbl1hour" xml:space="preserve">
+    <value>1 hour</value>
+  </data>
+  <data name="lbl1month" xml:space="preserve">
+    <value>1 month</value>
+  </data>
+  <data name="lbl1week" xml:space="preserve">
+    <value>1 week</value>
+  </data>
+  <data name="lbl3days" xml:space="preserve">
+    <value>3 days</value>
+  </data>
   <data name="lblACD" xml:space="preserve">
     <value>Activate Cardrly Device</value>
   </data>
@@ -317,6 +332,9 @@
   </data>
   <data name="lblName" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="lblNow" xml:space="preserve">
+    <value>Now</value>
   </data>
   <data name="lblOR" xml:space="preserve">
     <value>OR</value>

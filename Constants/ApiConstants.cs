@@ -17,6 +17,7 @@
         public static string userPermision = "userPermision";
         public static string userCategory = "userCategory"; //1 = system , 2 = Travel Agency , 3 = Distributor
         public static string AccountId = "AccountId";
+        public static string AccountName = "AccountName";
         //End Preferences Key 
         #endregion
 

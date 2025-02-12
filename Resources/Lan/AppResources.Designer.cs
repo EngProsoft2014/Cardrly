@@ -259,6 +259,51 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1 day.
+        /// </summary>
+        internal static string lbl1day {
+            get {
+                return ResourceManager.GetString("lbl1day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1 hour.
+        /// </summary>
+        internal static string lbl1hour {
+            get {
+                return ResourceManager.GetString("lbl1hour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1 month.
+        /// </summary>
+        internal static string lbl1month {
+            get {
+                return ResourceManager.GetString("lbl1month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1 week.
+        /// </summary>
+        internal static string lbl1week {
+            get {
+                return ResourceManager.GetString("lbl1week", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3 days.
+        /// </summary>
+        internal static string lbl3days {
+            get {
+                return ResourceManager.GetString("lbl3days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activate Cardrly Device.
         /// </summary>
         internal static string lblACD {
@@ -660,6 +705,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblName {
             get {
                 return ResourceManager.GetString("lblName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Now.
+        /// </summary>
+        internal static string lblNow {
+            get {
+                return ResourceManager.GetString("lblNow", resourceCulture);
             }
         }
         

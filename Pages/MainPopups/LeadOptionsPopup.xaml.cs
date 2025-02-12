@@ -18,6 +18,7 @@ namespace Cardrly.Pages.MainPopups;
 
 public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
 {
+    string Name = Preferences.Default.Get(ApiConstants.AccountName, "");
     LeadResponse Res = new LeadResponse();
     int saveNum = 0;
     #region Service
@@ -166,7 +167,13 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
 
     private async void TapGestureRecognizer_Reminder(object sender, TappedEventArgs e)
     {
-        // Scheduled send
-        StaticMember.notificationManager.SendNotification("Follow Up - Lead Name", "Hey Tarek, this is a reminder to follow up with Lead name. Tab here to view.", DateTime.Now.AddSeconds(10));
+        await MopupService.Instance.PopAsync();
+        var page = new ReminderPopup();
+        page.ReminderClose += async (date) =>
+        {
+            // Scheduled send
+            StaticMember.notificationManager.SendNotification($"Follow Up - {Res.FullName}", $"Hey {Name}, this is a reminder to follow up with {Res.FullName}. Tab here to view.", date);
+        };
+        await MopupService.Instance.PushAsync(page);
     }
 }

@@ -47,11 +47,14 @@
 		<MauiIcon Include="Resources\AppIcon\images.svg" Color="#FFFFFF" ForegroundScale="0.65" />
 		
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\images.svg" Color="White" />
-			
+		<MauiSplashScreen Include="Resources\Splash\images.svg" Color="White" />	
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
+		<MauiImage Update="Resources\Images\image.svg">
+		  <Color>#FFFFFF</Color>
+		  <ForegroundScale>0.65</ForegroundScale>
+		</MauiImage>
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -66,7 +69,6 @@
 
 	<ItemGroup>
 	  <None Remove="Platforms\Android\google-services.json" />
-	  <None Remove="Resources\Splash\images.svg" />
 	</ItemGroup>
 
 	
@@ -91,10 +93,6 @@
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
 	  <GoogleServicesJson Include="Platforms\Android\google-services.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiSplashScreen Include="Resources\Splash\images.svg" />
 	</ItemGroup>
 	
 

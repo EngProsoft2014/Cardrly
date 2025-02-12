@@ -1,3 +1,4 @@
+using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Resources.Lan;
 using Cardrly.ViewModels;
@@ -32,14 +33,12 @@ public partial class HomePage : Controls.CustomControl
         Rep = GenericRep;
         _service = service;
         HomeView.BindingContext = model;
-
         // Add Flow Direction For Content View 
         HomeView.FlowDirection = this.FlowDirection;
         CardsView.FlowDirection = this.FlowDirection;
         LeadView.FlowDirection = this.FlowDirection;
         CalendarView.FlowDirection = this.FlowDirection;
         MoreView.FlowDirection = this.FlowDirection;
-
     }
 
 

@@ -73,6 +73,7 @@ namespace Cardrly.ViewModels
                         Preferences.Default.Set(ApiConstants.userPermision, UserResponse.UserPermision);
                         Preferences.Default.Set(ApiConstants.userCategory, UserResponse.UserCategory);
                         Preferences.Default.Set(ApiConstants.AccountId, UserResponse.AccountId);
+                        Preferences.Default.Set(ApiConstants.AccountName, UserResponse.Account!.Name);
 
                         await BlobCache.LocalMachine.InsertObject(ServicesService.UserTokenServiceKey, UserResponse?.Token, DateTimeOffset.Now.AddMinutes(43200));
 

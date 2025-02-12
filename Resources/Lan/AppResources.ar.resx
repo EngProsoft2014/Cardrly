@@ -183,6 +183,21 @@
   <data name="hdrSelectLanguage" xml:space="preserve">
     <value>اختر اللغة</value>
   </data>
+  <data name="lbl1day" xml:space="preserve">
+    <value>يوم 1</value>
+  </data>
+  <data name="lbl1hour" xml:space="preserve">
+    <value>ساعة 1</value>
+  </data>
+  <data name="lbl1month" xml:space="preserve">
+    <value>1 شهر</value>
+  </data>
+  <data name="lbl1week" xml:space="preserve">
+    <value>اسبوع 1</value>
+  </data>
+  <data name="lbl3days" xml:space="preserve">
+    <value>3 أيام</value>
+  </data>
   <data name="lblACD" xml:space="preserve">
     <value>تفعيل جهاز كارديلي</value>
   </data>
@@ -317,6 +332,9 @@
   </data>
   <data name="lblName" xml:space="preserve">
     <value>الاسم</value>
+  </data>
+  <data name="lblNow" xml:space="preserve">
+    <value>الآن</value>
   </data>
   <data name="lblOR" xml:space="preserve">
     <value>أو</value>

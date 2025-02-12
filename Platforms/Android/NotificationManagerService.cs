@@ -3,8 +3,12 @@ using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using AndroidX.Core.App;
+using Cardrly.Controls;
+using Cardrly.Helpers;
 using Cardrly.Models;
+using Cardrly.Pages;
 using Cardrly.Services;
+using Cardrly.Services.Data;
 
 namespace Cardrly.Platforms.Android
 {
@@ -66,7 +70,7 @@ namespace Cardrly.Platforms.Android
             }
         }
 
-        public void ReceiveNotification(string title, string message)
+        public async void ReceiveNotification(string title, string message)
         {
             var args = new NotificationEventArgs()
             {
@@ -74,6 +78,12 @@ namespace Cardrly.Platforms.Android
                 Message = message,
             };
             NotificationReceived?.Invoke(null, args);
+            /*
+            var GenericRepository = App.Services.GetService<IGenericRepository>();
+            var ServicesService = new ServicesService(GenericRepository);
+            var page = new HomePage(new ViewModels.HomeViewModel(GenericRepository,ServicesService, StaticMember._audioManager),GenericRepository, ServicesService);
+            App.Current!.MainPage = new NavigationPage(page);*/
+            
         }
 
         public void Show(string title, string message)
@@ -92,8 +102,8 @@ namespace Cardrly.Platforms.Android
                 .SetContentIntent(pendingIntent)
                 .SetContentTitle(title)
                 .SetContentText(message)
-                .SetLargeIcon(BitmapFactory.DecodeResource(Platform.AppContext.Resources,Resource.Drawable.images ))
-                .SetSmallIcon(Resource.Drawable.images);
+                //.SetLargeIcon(BitmapFactory.DecodeResource(Platform.AppContext.Resources,Resource.Drawable.image))
+                .SetSmallIcon(Resource.Drawable.image);
 
             Notification notification = builder.Build();
             compatManager.Notify(messageId++, notification);
