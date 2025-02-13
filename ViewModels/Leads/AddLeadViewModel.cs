@@ -46,6 +46,7 @@ namespace Cardrly.ViewModels.Leads
             _service = service;
             AddOrUpdate = 1;
             Request.ImagefileProfile = ImageSource.FromFile("usericon.png");
+            Init();
         }
 
         public AddLeadViewModel(LeadResponse leadResponse, IGenericRepository GenericRep, Services.Data.ServicesService service)
@@ -187,6 +188,10 @@ namespace Cardrly.ViewModels.Leads
         #endregion
 
         #region Mehtods
+        async void Init()
+        {
+            await GetAllCategories();
+        }
         async void Init(LeadResponse lead)
         {
             await GetAllCategories();
@@ -196,7 +201,7 @@ namespace Cardrly.ViewModels.Leads
             Request.Email = lead.Email;
             Request.FullName = lead.FullName;
             Request.Phone = lead.Phone;
-            if (ListCategories.Count > 0)
+            if (ListCategories.Count > 0 && !string.IsNullOrEmpty(lead.LeadCategoryId))
             {
                 SelectedLeadCategory = ListCategories.FirstOrDefault(i => i.Value == lead.LeadCategoryId)!;
             }

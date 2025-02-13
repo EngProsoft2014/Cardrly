@@ -1,4 +1,4 @@
-using Cardrly.Controls;
+﻿using Cardrly.Controls;
 using Cardrly.Helpers;
 #if ANDROID
 using Cardrly.Platforms.Android;
@@ -11,6 +11,7 @@ using Cardrly.ViewModels.Leads;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
+using System;
 using static Cardrly.Models.Calendar.CalendlyResponseModel;
 using static Cardrly.Models.Calendar.GmailResponseModel;
 
@@ -44,21 +45,54 @@ public partial class HomePage : Controls.CustomControl
         LeadView.FlowDirection = this.FlowDirection;
         CalendarView.FlowDirection = this.FlowDirection;
         MoreView.FlowDirection = this.FlowDirection;
-#if ANDROID || IOS
-        MessagingCenter.Subscribe<NotificationManagerService, bool>(this, "NoifcationClicked", async (sender, message) =>
-        {
-            if (true)
-            {
-                tabHome.SelectedIndex = 2;
-            }
-        });
-#endif
+
+        //#if ANDROID || IOS
+        //        MessagingCenter.Subscribe<NotificationManagerService, bool>(this, "NoifcationClicked", async (sender, message) =>
+        //        {
+        //            if (true)
+        //            {
+        //                tabHome.SelectedIndex = 2;
+        //            }
+        //        });
+        //#endif
+
+        //tabHome.SelectedIndex = StaticMember.TabIndex;
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        //string num = Preferences.Default.Get("NotificationLead", "0");
+        //if(int.Parse(num) == 2)
+        //{
+        //    StaticMember.TabIndex = 2;
+        //}
+
+        //Preferences.Default.Remove("NotificationTabIndex"); // Clear the stored value
+
+        //if (StaticMember.TabIndex != tabHome.SelectedIndex)
+        //{
+        //    MainThread.BeginInvokeOnMainThread(() =>
+        //    {
+        //        tabHome.SelectedIndex = StaticMember.TabIndex; // Move to the correct tab
+        //        if (StaticMember.TabIndex == 2)
+        //        {
+        //            LeadView.BindingContext = LeadViewModel = new LeadViewModel(Rep, _service, homeViewModel._audioManager);
+        //        }
+        //    });
+        //}
+    }
+
+    //private bool isHandlingSelectionChange = false;
 
     #region Methods
     private void SfTabView_SelectionChanged(object sender, Syncfusion.Maui.TabView.TabSelectionChangedEventArgs e)
     {
+        //if (isHandlingSelectionChange)
+        //    return; // 🔹 Prevent re-entering the method when changing index manually
+
+        //isHandlingSelectionChange = true; // 🔹 Start handling selection
 
         if (e.NewIndex == 0)
         {

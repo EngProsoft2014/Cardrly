@@ -17,6 +17,7 @@ namespace Cardrly.Controls
     {
         public static IAudioManager _audioManager;
         public static INotificationManagerService notificationManager;
+        //public static int TabIndex = 0;
 
         #region Const Variables
         public static string SnackBarColor = "#FF7F3E";

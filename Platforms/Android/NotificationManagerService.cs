@@ -78,7 +78,9 @@ namespace Cardrly.Platforms.Android
                 Message = message,
             };
             NotificationReceived?.Invoke(null, args);
-            MessagingCenter.Send(this, "NoifcationClicked", true);
+            //MessagingCenter.Send(this, "NoifcationClicked", 2);
+            //Preferences.Default.Set("NotificationLead", "2");
+            //MessagingCenter.Send(this, "NoifcationClicked", true);
             /*
             var GenericRepository = App.Services.GetService<IGenericRepository>();
             var ServicesService = new ServicesService(GenericRepository);
