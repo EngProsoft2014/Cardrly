@@ -34,7 +34,6 @@
 		
 		<key>NSContactsUsageDescription</key>
 		<string>We need access to your contacts to save the contact information.</string>
-		
 		<key>NSCameraUsageDescription</key>
 		<string>We require access to your camera to allow you to capture photos for your profile For example, you can use a picture to upload as your profile image</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
@@ -53,10 +52,8 @@
 		<string>1.0.0.19</string>
 		<key>NSUserNotificationUsageDescription</key>
 		<string>We need notification permissions to send you updates.</string>
-
 		<key>FirebaseAppDelegateProxyEnabled</key>
 		<false/>
-
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>fetch</string>

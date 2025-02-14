@@ -44,22 +44,6 @@ namespace Cardrly.Platforms.iOS
                 Badge = 1
             };
 
-            // Add Image Attachment
-            var imageName = "images.svg"; // Replace with your image name
-            var imagePath = Path.Combine(NSBundle.MainBundle.BundlePath, imageName);
-
-            if (File.Exists(imagePath))
-            {
-                var imageUrl = NSUrl.FromFilename(imagePath);
-                NSError error;
-                // Explicitly use named parameters to remove ambiguity
-                var attachment = UNNotificationAttachment.FromIdentifier(identifier: "image", url: imageUrl, options: null, error: out error);
-                if (attachment != null)
-                {
-                    content.Attachments = new UNNotificationAttachment[] { attachment };
-                }
-            }
-
             UNNotificationTrigger trigger;
             if (notifyTime != null)
                 // Create a calendar-based trigger.
@@ -84,7 +68,6 @@ namespace Cardrly.Platforms.iOS
                 Message = message
             };
             NotificationReceived?.Invoke(null, args);
-            //MessagingCenter.Send(this, "NoifcationClicked", true);
         }
 
         NSDateComponents GetNSDateComponents(DateTime dateTime)
