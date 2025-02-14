@@ -6,7 +6,7 @@
 		<array>
 			<string>TAG</string>
 		</array>
-		<key>aps-environment</key>
-		<string>production</string>
+		<!--<key>aps-environment</key>
+		<string>production</string>-->
 	</dict>
 </plist>
