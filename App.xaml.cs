@@ -8,6 +8,11 @@ using Cardrly.Services;
 using Cardrly.ViewModels;
 using Plugin.Maui.Audio;
 using System.Globalization;
+#if ANDROID
+using Cardrly.Platforms.Android;
+#elif IOS
+using Cardrly.Platforms.iOS;
+#endif
 
 namespace Cardrly
 {
@@ -23,7 +28,6 @@ namespace Cardrly
         {
             try
             {
-
                 Rep = GenericRep;
                 _service = service;
                 Services = serviceProvider;
@@ -73,6 +77,10 @@ namespace Cardrly
                 await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service));
                 return;
             }
+            else
+            {
+                //await HandleNotify();
+            }
         }
 
         protected async override void OnResume()
@@ -83,6 +91,10 @@ namespace Cardrly
                 // Connection to internet is Not available
                 await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service));
                 return;
+            }
+            else
+            {
+                //await HandleNotify();
             }
         }
 
@@ -101,5 +113,22 @@ namespace Cardrly
             }
         }
 
+
+        async Task HandleNotify()
+        {
+#if ANDROID || IOS
+            MessagingCenter.Subscribe<NotificationManagerService, int>(this, "NoifcationClicked", async (sender, message) =>
+            {
+                if (message == 2)
+                {
+                    //Controls.StaticMember.TabIndex = message;
+
+                    await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, StaticMember._audioManager), Rep, _service));
+
+                }
+            });
+#endif
+
+        }
     }
 }

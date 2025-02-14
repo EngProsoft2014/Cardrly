@@ -12,6 +12,7 @@ using Plugin.NFC;
 using Plugin.Firebase.CloudMessaging;
 using Firebase;
 using Cardrly.Services;
+using Cardrly.Platforms.Android;
 namespace Cardrly
 {
     [Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTop, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
@@ -39,7 +40,8 @@ namespace Cardrly
                 e.Handled = true;
             };
 
-            CreateNotificationFromIntent(Intent);
+            //CreateNotificationFromIntent(Intent);
+
             //Request Notification Permission
             if (Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu)
             {
@@ -67,7 +69,7 @@ namespace Cardrly
             // Plugin NFC: Tag Discovery Interception
             CrossNFC.OnNewIntent(intent);
             HandleIntent(intent);
-            CreateNotificationFromIntent(intent);
+            //CreateNotificationFromIntent(intent);
         }
 
         protected override void AttachBaseContext(Context? @base)
@@ -123,5 +125,7 @@ namespace Cardrly
                 service.ReceiveNotification(title, message);
             }
         }
+
+
     }
 }
