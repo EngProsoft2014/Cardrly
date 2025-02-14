@@ -172,7 +172,7 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
         page.ReminderClose += async (date) =>
         {
             // Scheduled send
-            StaticMember.notificationManager.SendNotification($"Follow Up - {Res.FullName}", $"Hey {Name}, this is a reminder to follow up with {Res.FullName}. Tab here to view.", date);
+            StaticMember.notificationManager.SendNotification($"Follow Up - {Res.FullName}", $"Hey {Name}, this is a reminder to follow up with {Res.FullName}. Tab here to view.", date.AddSeconds(5));
         };
         await MopupService.Instance.PushAsync(page);
     }

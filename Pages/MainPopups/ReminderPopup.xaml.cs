@@ -33,6 +33,31 @@ public partial class ReminderPopup : Mopups.Pages.PopupPage
     private async void Colc_Tapped(object sender, TappedEventArgs e)
     {
 		var item = (ReminderModel)e.Parameter;
+        //Update the date based on the selected item
+        if (item.Name == AppResources.lblNow)
+		{
+			item.Date = DateTime.Now;
+        }
+		else if (item.Name == AppResources.lbl1hour)
+		{
+            item.Date = DateTime.Now.AddHours(1);
+        }
+        else if (item.Name == AppResources.lbl1day)
+        {
+            item.Date = DateTime.Now.AddDays(1);
+        }
+        else if (item.Name == AppResources.lbl3days)
+        {
+            item.Date = DateTime.Now.AddDays(3);
+        }
+        else if (item.Name == AppResources.lbl1week)
+        {
+            item.Date = DateTime.Now.AddDays(7);
+        }
+        else if (item.Name == AppResources.lbl1month)
+        {
+            item.Date = DateTime.Now.AddMonths(1);
+        }
         await MopupService.Instance.PopAsync();
 		ReminderClose.Invoke(item!.Date);
     }
