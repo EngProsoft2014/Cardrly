@@ -61,4 +61,9 @@ public partial class ReminderPopup : Mopups.Pages.PopupPage
         await MopupService.Instance.PopAsync();
 		ReminderClose.Invoke(item!.Date);
     }
+
+    private async void TapGestureRecognizer_Cancel(object sender, EventArgs e)
+    {
+        await MopupService.Instance.PopAsync();
+    }
 }
