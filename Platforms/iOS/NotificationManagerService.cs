@@ -41,7 +41,7 @@ namespace Cardrly.Platforms.iOS
                 Title = title,
                 Subtitle = "",
                 Body = message,
-                Badge = 1
+                //Badge = 1
             };
 
             UNNotificationTrigger trigger;
