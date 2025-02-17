@@ -1,4 +1,5 @@
 ﻿using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Mode_s.Card;
 using Cardrly.Models;
@@ -18,7 +19,7 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         ObservableCollection<DevicesTypeModel> deviceModels = new ObservableCollection<DevicesTypeModel>();
         [ObservableProperty]
-        public CardDetailsResponse detailsResponse = new CardDetailsResponse(); 
+        public CardDetailsResponse detailsResponse = new CardDetailsResponse();
         #endregion
 
         #region Service
@@ -77,9 +78,9 @@ namespace Cardrly.ViewModels
             }
             IsEnable = true;
         }
-        public async Task DeviceClick(string uri,int deviceType,string DeviceId)
+        public async Task DeviceClick(string uri, int deviceType, string DeviceId)
         {
-            
+
             IsEnable = false;
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
@@ -99,13 +100,13 @@ namespace Cardrly.ViewModels
                 }
                 else
                 {
-                        var toast = Toast.Make($"{res.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
-                   
+                    var toast = Toast.Make($"{res.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+
                 }
                 IsEnable = true;
             }
-            
+
         }
         #endregion
     }

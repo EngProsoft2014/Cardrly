@@ -1,4 +1,5 @@
 ﻿using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Enums;
 using Cardrly.Helpers;
 using Cardrly.Mode_s.Card;
@@ -74,33 +75,49 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         public async Task CalendlyItemClick(object item)
         {
-            if (item is CalendarCalendlyResponse)
+            if (StaticMember.CheckPermission(ApiConstants.GetEventsCalendar))
             {
-                await MopupService.Instance.PushAsync(new CalendlyDetailsPopup((CalendarCalendlyResponse)item));
+                if (item is CalendarCalendlyResponse)
+                {
+                    await MopupService.Instance.PushAsync(new CalendlyDetailsPopup((CalendarCalendlyResponse)item));
+                }
+                else if (item is CalendarEventGmail)
+                {
+                    await MopupService.Instance.PushAsync(new GmailDetailsPopup((CalendarEventGmail)item));
+                }
+                else if (item is CalendarOutlookEvent)
+                {
+                    await MopupService.Instance.PushAsync(new OutLookDetailsPopup((CalendarOutlookEvent)item));
+                }
             }
-            else if (item is CalendarEventGmail)
+            else
             {
-                await MopupService.Instance.PushAsync(new GmailDetailsPopup((CalendarEventGmail)item));
+                var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
             }
-            else if (item is CalendarOutlookEvent)
-            {
-                await MopupService.Instance.PushAsync(new OutLookDetailsPopup((CalendarOutlookEvent)item));
-            }
-
         }
         [RelayCommand]
         public async Task FilterClick()
         {
-            var page = new CalendrFilterPopup(CalendarTypes, CardLst);
-            page.FilterClose += async (from, To, CalenderType, Card) =>
+            if (StaticMember.CheckPermission(ApiConstants.GetCalendar))
             {
-                FromDate = from;
-                ToDate = To;
-                SelectedProvider = CalenderType;
-                SelectedCard = Card;
-                await GetData();
-            };
-            await MopupService.Instance.PushAsync(page);
+                var page = new CalendrFilterPopup(CalendarTypes, CardLst);
+                page.FilterClose += async (from, To, CalenderType, Card) =>
+                {
+                    FromDate = from;
+                    ToDate = To;
+                    SelectedProvider = CalenderType;
+                    SelectedCard = Card;
+                    await GetData();
+                };
+                await MopupService.Instance.PushAsync(page);
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+
         }
         #endregion
 
@@ -176,34 +193,43 @@ namespace Cardrly.ViewModels
         }
         public async Task GetData()
         {
-            IsEnable = false;
-            CalendlyResponses = new ObservableCollection<CalendarCalendlyResponse>();
-            CalendarOutlookEvents = new ObservableCollection<CalendarOutlookEvent>();
-            CalendarEventGmails = new ObservableCollection<CalendarEventGmail>();
-            UserDialogs.Instance.ShowLoading();
-            if (SelectedProvider.Value == 3)
+            if (StaticMember.CheckPermission(ApiConstants.GetCalendar))
             {
-                await GetCalendlyData();
-            }
-            else if (SelectedProvider.Value == 2)
-            {
-                await GetOutLookData();
-            }
-            else if (SelectedProvider.Value == 1)
-            {
-                await GetGmailData();
-            }
+                IsEnable = false;
+                CalendlyResponses = new ObservableCollection<CalendarCalendlyResponse>();
+                CalendarOutlookEvents = new ObservableCollection<CalendarOutlookEvent>();
+                CalendarEventGmails = new ObservableCollection<CalendarEventGmail>();
+                UserDialogs.Instance.ShowLoading();
+                if (SelectedProvider.Value == 3)
+                {
+                    await GetCalendlyData();
+                }
+                else if (SelectedProvider.Value == 2)
+                {
+                    await GetOutLookData();
+                }
+                else if (SelectedProvider.Value == 1)
+                {
+                    await GetGmailData();
+                }
 
-            if(CalendlyResponses.Count > 0 || CalendarOutlookEvents.Count > 0 || CalendarEventGmails.Count > 0)
-            {
-                IsShowCollection = true;
+                if (CalendlyResponses.Count > 0 || CalendarOutlookEvents.Count > 0 || CalendarEventGmails.Count > 0)
+                {
+                    IsShowCollection = true;
+                }
+                else
+                {
+                    IsShowCollection = false;
+                }
+                UserDialogs.Instance.HideHud();
+                IsEnable = true;
+
             }
             else
             {
-                IsShowCollection = false;
+                var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
             }
-            UserDialogs.Instance.HideHud();
-            IsEnable = true;
         }
         #endregion
     }

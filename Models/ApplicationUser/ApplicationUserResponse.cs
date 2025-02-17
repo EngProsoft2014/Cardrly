@@ -1,4 +1,5 @@
 ﻿using Cardrly.Mode_s.Account;
+using Cardrly.Models.Permision;
 
 namespace Cardrly.Mode_s.ApplicationUser
 {
@@ -9,7 +10,7 @@ namespace Cardrly.Mode_s.ApplicationUser
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string? UserCategory { get; set; }
-        public string? UserPermision { get; set; }
+        public List<PermissionsValues>? Permissions { get; set; }
         public string? Token { get; set; }
         public int ExpiresIn { get; set; }
         public bool IsDisabled { get; set; }

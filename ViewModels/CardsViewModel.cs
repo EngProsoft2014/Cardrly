@@ -9,6 +9,8 @@ using Cardrly.Pages;
 using Cardrly.Pages.MainPopups;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Alerts;
+using Cardrly.Controls;
+using Cardrly.Resources.Lan;
 
 namespace Cardrly.ViewModels
 {
@@ -16,7 +18,7 @@ namespace Cardrly.ViewModels
     {
         #region Prop
         [ObservableProperty]
-        ObservableCollection<CardResponse> cardLst = new ObservableCollection<CardResponse>(); 
+        ObservableCollection<CardResponse> cardLst = new ObservableCollection<CardResponse>();
         #endregion
 
         #region Service
@@ -30,17 +32,26 @@ namespace Cardrly.ViewModels
             Rep = GenericRep;
             _service = service;
             Init();
-        } 
+        }
         #endregion
 
         #region RelayCommand
         [RelayCommand]
         async Task AddCardClick()
         {
-            var vm = new AddCustomCardViewModel(Rep, _service);
-            var page = new AddCustomCardPage(vm);
-            page.BindingContext = vm;
-            await App.Current!.MainPage!.Navigation.PushAsync(page);
+            if (StaticMember.CheckPermission(ApiConstants.AddCards))
+            {
+                var vm = new AddCustomCardViewModel(Rep, _service);
+                var page = new AddCustomCardPage(vm);
+                page.BindingContext = vm;
+                await App.Current!.MainPage!.Navigation.PushAsync(page);
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+
         }
         [RelayCommand]
         async Task CardPreViewClick(CardResponse card)
@@ -66,18 +77,33 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task EditCardClick(CardResponse card)
         {
-            var vm = new AddCustomCardViewModel(card,Rep,_service);
-            var page = new AddCustomCardPage(vm);
-            page.BindingContext = vm;
-            await App.Current!.MainPage!.Navigation.PushAsync(page);
+            if (StaticMember.CheckPermission(ApiConstants.UpdateCards))
+            {
+                var vm = new AddCustomCardViewModel(card, Rep, _service);
+                var page = new AddCustomCardPage(vm);
+                page.BindingContext = vm;
+                await App.Current!.MainPage!.Navigation.PushAsync(page);
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
         }
         #endregion
 
         #region Methodes
         public async void Init()
         {
-            await GetAllCards();
-
+            if (StaticMember.CheckPermission(ApiConstants.GetCards))
+            {
+                await GetAllCards();
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
             //DeleteCard
             MessagingCenter.Subscribe<CardOptionPopup, bool>(this, "DeleteCard", async (sender, message) =>
             {
@@ -105,7 +131,7 @@ namespace Cardrly.ViewModels
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
             {
-                string AccId = Preferences.Default.Get(ApiConstants.AccountId,"");
+                string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
                 UserDialogs.Instance.ShowLoading();
                 var json = await Rep.GetAsync<ObservableCollection<CardResponse>>($"{ApiConstants.CardGetAllApi}{AccId}/Card", UserToken);
                 UserDialogs.Instance.HideHud();
@@ -115,7 +141,7 @@ namespace Cardrly.ViewModels
                 }
             }
             IsEnable = true;
-        } 
+        }
         #endregion
     }
 }

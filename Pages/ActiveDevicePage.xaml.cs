@@ -1,3 +1,5 @@
+using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Mode_s.Card;
 using Cardrly.Models;
 using Cardrly.Models.Devices;
@@ -326,56 +328,64 @@ public partial class ActiveDevicePage : Controls.CustomControl
     /// <param name="e"></param>
     async void Button_Clicked_StartWriting_Uri(object sender, TappedEventArgs e)
     {
-        var Item = e.Parameter as DevicesTypeModel;
-        if (Item!.DeviceName == "QR")
+        if (StaticMember.CheckPermission(ApiConstants.AddDevices))
         {
-            deviceType = Item.DeviceNumber;
-            await App.Current!.MainPage!.Navigation.PushAsync(new ScanQrPage());
-
-            MessagingCenter.Subscribe<ScanQrPage, string>(this, "QRCodeValue", async (sender, message) =>
+            var Item = e.Parameter as DevicesTypeModel;
+            if (Item!.DeviceName == "QR")
             {
+                deviceType = Item.DeviceNumber;
+                await App.Current!.MainPage!.Navigation.PushAsync(new ScanQrPage());
 
-                if (Guid.TryParse(message, out Guid parseGuid))
+                MessagingCenter.Subscribe<ScanQrPage, string>(this, "QRCodeValue", async (sender, message) =>
                 {
-                    var existingPopup = MopupService.Instance.PopupStack.FirstOrDefault(p => p is InsertDevicePopup);
 
-                    if (existingPopup == null)
+                    if (Guid.TryParse(message, out Guid parseGuid))
                     {
-                        var page2 = new InsertDevicePopup();
-                        //Get Link  
-                        page2.DeviceClose += async (Uri) =>
+                        var existingPopup = MopupService.Instance.PopupStack.FirstOrDefault(p => p is InsertDevicePopup);
+
+                        if (existingPopup == null)
                         {
-                            SetupUri = Uri;
-                            await Model.DeviceClick(SetupUri, deviceType, message);
-                        };
-                        await MopupService.Instance.PushAsync(page2, true);
+                            var page2 = new InsertDevicePopup();
+                            //Get Link  
+                            page2.DeviceClose += async (Uri) =>
+                            {
+                                SetupUri = Uri;
+                                await Model.DeviceClick(SetupUri, deviceType, message);
+                            };
+                            await MopupService.Instance.PushAsync(page2, true);
+                        }
                     }
-                }
-            });
-        }
-        else if (Item!.DeviceName == "Stand" || Item!.DeviceName == "CustomNFC")
-        {
-            var page = new InsertDevicePopup();
-            page.DeviceClose += async (Uri) =>
+                });
+            }
+            else if (Item!.DeviceName == "Stand" || Item!.DeviceName == "CustomNFC")
             {
-                SetupUri = Uri;
+                var page = new InsertDevicePopup();
+                page.DeviceClose += async (Uri) =>
+                {
+                    SetupUri = Uri;
 #if ANDROID
                 var toast = Toast.Make($"Near the stand now.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
 #endif
-                await Publish(NFCNdefTypeFormat.Uri);
-            };
-            await MopupService.Instance.PushAsync(page, true);
-        }
-        else
-        {
-            SetupUri = Model.DetailsResponse.CardUrlVM!;
-            deviceType = Item.DeviceNumber;
+                    await Publish(NFCNdefTypeFormat.Uri);
+                };
+                await MopupService.Instance.PushAsync(page, true);
+            }
+            else
+            {
+                SetupUri = Model.DetailsResponse.CardUrlVM!;
+                deviceType = Item.DeviceNumber;
 #if ANDROID
                 var toast = Toast.Make($"Near the Device now.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
 #endif
-            await Publish(NFCNdefTypeFormat.Uri);
+                await Publish(NFCNdefTypeFormat.Uri);
+            }
+        }
+        else
+        {
+            var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            await toast.Show();
         }
     }
     /// <summary>

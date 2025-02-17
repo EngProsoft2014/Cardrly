@@ -1,5 +1,6 @@
 ﻿
 using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Enums;
 using Cardrly.Helpers;
 using Cardrly.Mode_s.Card;
@@ -22,7 +23,7 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         ObservableCollection<DevicesResponse> devices = new ObservableCollection<DevicesResponse>();
         [ObservableProperty]
-        public CardDetailsResponse detailsResponse = new CardDetailsResponse(); 
+        public CardDetailsResponse detailsResponse = new CardDetailsResponse();
         #endregion
 
         #region Service
@@ -42,10 +43,19 @@ namespace Cardrly.ViewModels
         #region Methods
         async void Init()
         {
-            UserDialogs.Instance.ShowLoading();
-            await GetAccountCard();
-            await GetAllDevices();
-            UserDialogs.Instance.HideHud();
+            if (StaticMember.CheckPermission(ApiConstants.GetDevices))
+            {
+                UserDialogs.Instance.ShowLoading();
+                await GetAccountCard();
+                await GetAllDevices();
+                UserDialogs.Instance.HideHud();
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+
         }
 
         async Task GetAccountCard()
@@ -93,38 +103,46 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task DeletDeviceClick(DevicesResponse res)
         {
-            bool result = await App.Current!.MainPage!.DisplayAlert($"{AppResources.msgDeleteDevice}" , $"{AppResources.msgDeleteDevice_qu}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
-            if (result)
+            if (StaticMember.CheckPermission(ApiConstants.DeleteDevices))
             {
-                IsEnable = false;
-                string UserToken = await _service.UserToken();
-                if (!string.IsNullOrEmpty(UserToken))
+                bool result = await App.Current!.MainPage!.DisplayAlert($"{AppResources.msgDeleteDevice}", $"{AppResources.msgDeleteDevice_qu}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
+                if (result)
                 {
-                    UserDialogs.Instance.ShowLoading();
-                    string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-                    string response = await Rep.PostEAsync($"{ApiConstants.DevicesDeleteApi}{AccId}/Card/{DetailsResponse.Id}/Devices/{res.Id}/Delete", UserToken);
-                    UserDialogs.Instance.HideHud();
-                    if (response == "")
+                    IsEnable = false;
+                    string UserToken = await _service.UserToken();
+                    if (!string.IsNullOrEmpty(UserToken))
                     {
                         UserDialogs.Instance.ShowLoading();
-                        await GetAllDevices();
+                        string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                        string response = await Rep.PostEAsync($"{ApiConstants.DevicesDeleteApi}{AccId}/Card/{DetailsResponse.Id}/Devices/{res.Id}/Delete", UserToken);
                         UserDialogs.Instance.HideHud();
+                        if (response == "")
+                        {
+                            UserDialogs.Instance.ShowLoading();
+                            await GetAllDevices();
+                            UserDialogs.Instance.HideHud();
+                        }
+                        else
+                        {
+                            var toast = Toast.Make($"{AppResources.msgTheDeviceHasNotBeenDeleted_}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            await toast.Show();
+                        }
                     }
-                    else
-                    {
-                        var toast = Toast.Make($"{AppResources.msgTheDeviceHasNotBeenDeleted_}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
-                    }
+                    IsEnable = true;
+
                 }
-                IsEnable = true;
-                
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
             }
         }
         [RelayCommand]
         async Task CancelClick()
         {
             await App.Current!.MainPage!.Navigation.PopAsync();
-        } 
+        }
         #endregion
     }
 }

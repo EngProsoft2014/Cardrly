@@ -118,7 +118,69 @@
         #endregion
 
         #region Calender
-        public static string CalnderGetByApi = "Account/"; 
+        public static string CalnderGetByApi = "Account/";
+        #endregion
+
+        #region Permission
+
+        // == Account == 
+        public const string GetAccount = "Account:Get";
+        public const string AddAccount = "Account:Add";
+        public const string UpdateAccount = "Account:Update";
+        public const string DeleteAccount = "Account:Delete";
+
+        // == AccountLinks == 
+        public const string GetAccountLinks = "AccountLinks:Get";
+        public const string AddAccountLinks = "AccountLinks:Add";
+        public const string UpdateAccountLinks = "AccountLinks:Update";
+        public const string DeleteAccountLinks = "AccountLinks:Delete";
+
+        // == Cards == 
+        public const string GetCards = "Cards:Get";
+        public const string AddCards = "Cards:Add";
+        public const string UpdateCards = "Cards:Update";
+        public const string DeleteCards = "Cards:Delete";
+
+        // == Leads ==
+        public const string GetLeads = "Leads:Get";
+        public const string AddLeads = "Leads:Add";
+        public const string UpdateLeads = "Leads:Update";
+        public const string DeleteLeads = "Leads:Delete";
+
+        // == Users == 
+        public const string GetUsers = "Users:Get";
+        public const string AddUsers = "Users:Add";
+        public const string UpdateUsers = "Users:Update";
+        public const string DeleteUsers = "Users:Delete";
+
+        // == Calendar ==
+        public const string GetCalendar = "Calendar:Get";
+        public const string GetEventsCalendar = "Calendar:GetEvents";
+        public const string UpdateCalendar = "Calendar:Update";
+
+        // == Devices == 
+        public const string GetDevices = "Devices:Get";
+        public const string AddDevices = "Devices:Add";
+        public const string DeleteDevices = "Devices:Delete";
+
+        // == LeadCategory ==
+        public const string GetLeadCategory = "LeadCategory:Get";
+        public const string AddLeadCategory = "LeadCategory:Add";
+        public const string UpdateLeadCategory = "LeadCategory:Update";
+        public const string DeleteLeadCategory = "LeadCategory:Delete";
+
+        // == MarketingCampaign ==
+        public const string GetMarketingCampaign = "MarketingCampaign:Get";
+        public const string GetAIMarketingCampaign = "MarketingCampaign:GetAI";
+        public const string SentMarketingCampaign = "MarketingCampaign:Sent";
+        public const string AddMarketingCampaign = "MarketingCampaign:Add";
+        public const string UpdateMarketingCampaign = "MarketingCampaign:Update";
+        public const string DeleteMarketingCampaign = "MarketingCampaign:Delete";
+
+        // == Marketing == 
+        public const string GetMarketing = "Marketing:Get";
+        public const string UpdateMarketing = "Marketing:Update";
+
         #endregion
     }
 }

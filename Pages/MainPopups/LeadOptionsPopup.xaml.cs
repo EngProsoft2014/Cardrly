@@ -60,31 +60,39 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
 
     private async void TapGestureRecognizer_DeleteLead(object sender, TappedEventArgs e)
     {
-        bool ans = await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgDeleteLead}", $"{AppResources.msgOk}", $"{AppResources.msgNo}");
-        if (ans)
+        if (StaticMember.CheckPermission(ApiConstants.DeleteLeads))
         {
-
-            string UserToken = await _service.UserToken();
-            if (!string.IsNullOrEmpty(UserToken))
+            bool ans = await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgDeleteLead}", $"{AppResources.msgOk}", $"{AppResources.msgNo}");
+            if (ans)
             {
-                string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-                UserDialogs.Instance.ShowLoading();
-                string res = await Rep.PostEAsync($"{ApiConstants.LeadDeleteApi}{AccId}/Lead/{Res.Id}/Delete", UserToken);
-                UserDialogs.Instance.HideHud();
-                if (res == "")
-                {
-                    var toast = Toast.Make($"{AppResources.msgLeadDeletedSuccessfully}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                    await toast.Show();
-                    MessagingCenter.Send(this, "DeleteLead", true);
-                }
-                else
-                {
-                    var toast = Toast.Make($"{AppResources.msgCan_tDeleteThisLeadNowTryagainLater}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                    await toast.Show();
-                }
-                await MopupService.Instance.PopAsync();
-            }
 
+                string UserToken = await _service.UserToken();
+                if (!string.IsNullOrEmpty(UserToken))
+                {
+                    string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                    UserDialogs.Instance.ShowLoading();
+                    string res = await Rep.PostEAsync($"{ApiConstants.LeadDeleteApi}{AccId}/Lead/{Res.Id}/Delete", UserToken);
+                    UserDialogs.Instance.HideHud();
+                    if (res == "")
+                    {
+                        var toast = Toast.Make($"{AppResources.msgLeadDeletedSuccessfully}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();
+                        MessagingCenter.Send(this, "DeleteLead", true);
+                    }
+                    else
+                    {
+                        var toast = Toast.Make($"{AppResources.msgCan_tDeleteThisLeadNowTryagainLater}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();
+                    }
+                    await MopupService.Instance.PopAsync();
+                }
+
+            }
+        }
+        else
+        {
+            var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            await toast.Show();
         }
     }
 

@@ -11,6 +11,7 @@ using System.Reactive.Linq;
 using Cardrly.Constants;
 using Plugin.Maui.Audio;
 using Cardrly.Resources.Lan;
+using Newtonsoft.Json;
 
 namespace Cardrly.ViewModels
 {
@@ -70,12 +71,12 @@ namespace Cardrly.ViewModels
                         Preferences.Default.Set(ApiConstants.userid, UserResponse.Id);
                         Preferences.Default.Set(ApiConstants.email, UserResponse.Email);
                         Preferences.Default.Set(ApiConstants.username, UserResponse.UserName);
-                        Preferences.Default.Set(ApiConstants.userPermision, UserResponse.UserPermision);
+                        Preferences.Default.Set(ApiConstants.userPermision, JsonConvert.SerializeObject(UserResponse.Permissions));
                         Preferences.Default.Set(ApiConstants.userCategory, UserResponse.UserCategory);
                         Preferences.Default.Set(ApiConstants.AccountId, UserResponse.AccountId);
                         Preferences.Default.Set(ApiConstants.AccountName, UserResponse.Account!.Name);
 
-                        await BlobCache.LocalMachine.InsertObject(ServicesService.UserTokenServiceKey, UserResponse?.Token, DateTimeOffset.Now.AddMinutes(43200));
+                        await BlobCache.LocalMachine.InsertObject(ServicesService.UserTokenServiceKey, UserResponse?.Token, DateTimeOffset.Now.AddMinutes(2592000));
 
                         var page = new HomePage(new HomeViewModel(Rep, _service,_audioManager), Rep,_service);
                         await App.Current!.MainPage!.Navigation.PushAsync(page);

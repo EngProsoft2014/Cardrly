@@ -3,9 +3,11 @@ using Cardrly.Constants;
 using Cardrly.Controls;
 using Cardrly.Extensions;
 using Cardrly.Helpers;
+using Cardrly.Models.Permision;
 using Cardrly.Pages;
 using Cardrly.Services;
 using Cardrly.ViewModels;
+using Newtonsoft.Json;
 using Plugin.Maui.Audio;
 using System.Globalization;
 #if ANDROID
@@ -112,7 +114,6 @@ namespace Cardrly
                 TranslateExtension.Instance.SetCulture(cal);
             }
         }
-
 
         async Task HandleNotify()
         {

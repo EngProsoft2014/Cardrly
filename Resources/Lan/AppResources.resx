@@ -522,6 +522,9 @@
   <data name="msgOk" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="msgPermissionToDoAction" xml:space="preserve">
+    <value>You don't have permission to do this action.</value>
+  </data>
   <data name="msgPleaseCreateCardFirst." xml:space="preserve">
     <value>Please Create a Card First.</value>
   </data>
@@ -593,6 +596,9 @@
   </data>
   <data name="msgYes" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="mshPermissionToViewData" xml:space="preserve">
+    <value>You don't have permission to view this data.</value>
   </data>
   <data name="No_Internet_connection" xml:space="preserve">
     <value>No Internet connection!</value>

@@ -11,6 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Cardrly.Mode_s.CardLink;
 using System.Globalization;
 using Cardrly.Resources.Lan;
+using Cardrly.Controls;
 
 
 namespace Cardrly.Pages.MainPopups;
@@ -108,13 +109,22 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
     }
     private async void TapGestureRecognizer_EditCaed(object sender, TappedEventArgs e)
     {
-        this.IsEnabled = false;
-        var vm = new AddCustomCardViewModel(Card, Rep, _service);
-        var page = new AddCustomCardPage(vm);
-        page.BindingContext = vm;
-        await App.Current!.MainPage!.Navigation.PushAsync(page);
-        await MopupService.Instance.PopAsync();
-        this.IsEnabled = true;
+        if (StaticMember.CheckPermission(ApiConstants.UpdateCards))
+        {
+            this.IsEnabled = false;
+            var vm = new AddCustomCardViewModel(Card, Rep, _service);
+            var page = new AddCustomCardPage(vm);
+            page.BindingContext = vm;
+            await App.Current!.MainPage!.Navigation.PushAsync(page);
+            await MopupService.Instance.PopAsync();
+            this.IsEnabled = true;
+        }
+        else
+        {
+            var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            await toast.Show();
+        }
+
     }
 
     private async void TapGestureRecognizer_PreviewCard(object sender, TappedEventArgs e)
@@ -133,24 +143,32 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
 
     private async void TapGestureRecognizer_DeleteCard(object sender, TappedEventArgs e)
     {
-        bool ans = await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgWarning_qu}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
-        if (ans)
+        if (StaticMember.CheckPermission(ApiConstants.DeleteCards))
         {
-            this.IsEnabled = false;
-            string UserToken = await _service.UserToken();
-            if (!string.IsNullOrEmpty(UserToken))
+            bool ans = await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgWarning_qu}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
+            if (ans)
             {
-                string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-                UserDialogs.Instance.ShowLoading();
-                string res = await Rep.PostEAsync($"{ApiConstants.CardDeleteApi}{AccId}/Card/{Card.Id}/Delete", UserToken);
-                if (res == "")
+                this.IsEnabled = false;
+                string UserToken = await _service.UserToken();
+                if (!string.IsNullOrEmpty(UserToken))
                 {
-                    MessagingCenter.Send(this, "DeleteCard", true);
+                    string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                    UserDialogs.Instance.ShowLoading();
+                    string res = await Rep.PostEAsync($"{ApiConstants.CardDeleteApi}{AccId}/Card/{Card.Id}/Delete", UserToken);
+                    if (res == "")
+                    {
+                        MessagingCenter.Send(this, "DeleteCard", true);
+                    }
+                    UserDialogs.Instance.HideHud();
+                    await MopupService.Instance.PopAsync();
                 }
-                UserDialogs.Instance.HideHud();
-                await MopupService.Instance.PopAsync();
+                this.IsEnabled = true;
             }
-            this.IsEnabled = true;
+        }
+        else
+        {
+            var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+            await toast.Show();
         }
     }
 

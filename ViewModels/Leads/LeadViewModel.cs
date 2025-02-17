@@ -1,5 +1,6 @@
 ﻿
 using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Mode_s.Card;
 using Cardrly.Models.Lead;
@@ -55,44 +56,68 @@ namespace Cardrly.ViewModels.Leads
         [RelayCommand]
         async Task AddLeadClick()
         {
-            await GetAccountCard();
-            if (!string.IsNullOrEmpty(MyCardDetails.Id))
+            if (StaticMember.CheckPermission(ApiConstants.AddLeads))
             {
-                await App.Current!.MainPage!.Navigation.PushAsync(new AddLeadsPage(new AddLeadViewModel(Rep, _service), _audioManager));
+                await GetAccountCard();
+                if (!string.IsNullOrEmpty(MyCardDetails.Id))
+                {
+                    await App.Current!.MainPage!.Navigation.PushAsync(new AddLeadsPage(new AddLeadViewModel(Rep, _service), _audioManager));
+                }
+                else
+                {
+                    var toast = Toast.Make($"{AppResources.msgPleaseCreateCardFirst_}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
             }
             else
             {
-                var toast = Toast.Make($"{AppResources.msgPleaseCreateCardFirst_}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
             }
-            
         }
         [RelayCommand]
         async Task ActiveClick(LeadResponse lead)
         {
-            string UserToken = await _service.UserToken();
-            if (!string.IsNullOrEmpty(UserToken))
+            if (StaticMember.CheckPermission(ApiConstants.UpdateLeads))
             {
-                string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-                UserDialogs.Instance.ShowLoading();
-                string ressponse = await Rep.PostEAsync($"{ApiConstants.LeadToggleApi}{AccId}/Lead/{lead.Id}/ToggleActive", UserToken);
-                if (ressponse == "")
+                string UserToken = await _service.UserToken();
+                if (!string.IsNullOrEmpty(UserToken))
                 {
-                    FilterRequest = new LeadFilterRequest();
-                    await SearchLeads();
+                    string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                    UserDialogs.Instance.ShowLoading();
+                    string ressponse = await Rep.PostEAsync($"{ApiConstants.LeadToggleApi}{AccId}/Lead/{lead.Id}/ToggleActive", UserToken);
+                    if (ressponse == "")
+                    {
+                        FilterRequest = new LeadFilterRequest();
+                        await SearchLeads();
+                    }
+                    else
+                    {
+                        var toast = Toast.Make($"{AppResources.msgFailedToChangeStatus}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();
+                    }
+                    UserDialogs.Instance.HideHud();
                 }
-                else
-                {
-                    var toast = Toast.Make($"{AppResources.msgFailedToChangeStatus}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                    await toast.Show();
-                }
-                UserDialogs.Instance.HideHud();
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
             }
         }
         [RelayCommand]
         async Task SelectClick(LeadResponse lead)
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new AddLeadsPage(new AddLeadViewModel(lead, Rep, _service), _audioManager));
+            if (StaticMember.CheckPermission(ApiConstants.UpdateLeads))
+            {
+                await App.Current!.MainPage!.Navigation.PushAsync(new AddLeadsPage(new AddLeadViewModel(lead, Rep, _service), _audioManager));
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+
         }
         [RelayCommand]
         async Task MoreOptionClick(LeadResponse res)
@@ -113,7 +138,15 @@ namespace Cardrly.ViewModels.Leads
         public async void Init()
         {
             IsHasNext = true;
-            await GetAllLeads();
+            if (StaticMember.CheckPermission(ApiConstants.GetLeads))
+            {
+                await GetAllLeads();
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
             MessagingCenter.Subscribe<LeadOptionsPopup, bool>(this, "DeleteLead", async (sender, message) =>
             {
 
@@ -140,7 +173,7 @@ namespace Cardrly.ViewModels.Leads
             if (!string.IsNullOrEmpty(UserToken))
             {
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-                
+
                 string Query = QueryStringHelper.ToQueryString(FilterRequest);
 
                 var json = await Rep.GetAsync<PagingLstLeadResponse>($"{ApiConstants.LeadGetAllApi}{AccId}/Lead/Page?{Query}", UserToken);
@@ -170,33 +203,40 @@ namespace Cardrly.ViewModels.Leads
 
                 FilterRequest.PageNumber += 1;
             }
-
             UserDialogs.Instance.HideHud();
         }
         public async Task SearchLeads()
         {
-            string UserToken = await _service.UserToken();
-            if (!string.IsNullOrEmpty(UserToken))
+            if (StaticMember.CheckPermission(ApiConstants.GetLeads))
             {
-                string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
-                string Query = QueryStringHelper.ToQueryString(FilterRequest);
-
-                var json = await Rep.GetAsync<PagingLstLeadResponse>($"{ApiConstants.LeadGetAllApi}{AccId}/Lead/Page?{Query}", UserToken);
-
-                if (json != null)
+                string UserToken = await _service.UserToken();
+                if (!string.IsNullOrEmpty(UserToken))
                 {
-                    PagingResponse = json;
+                    string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                    string Query = QueryStringHelper.ToQueryString(FilterRequest);
 
-                    //IsHasNext = json.pagingLst.HasNextPages;
+                    var json = await Rep.GetAsync<PagingLstLeadResponse>($"{ApiConstants.LeadGetAllApi}{AccId}/Lead/Page?{Query}", UserToken);
 
-                    IsHasNext = PagingResponse.pagingLst.DataModel.Count > 0 ? true : false;
+                    if (json != null)
+                    {
+                        PagingResponse = json;
 
-                    LeadsInPage = new ObservableCollection<LeadResponse>(PagingResponse?.pagingLst.DataModel!);
+                        //IsHasNext = json.pagingLst.HasNextPages;
 
-                    Leads = new ObservableCollection<LeadResponse>(LeadsInPage.ToList());
+                        IsHasNext = PagingResponse.pagingLst.DataModel.Count > 0 ? true : false;
 
-                    FilterRequest.PageNumber += 1;
+                        LeadsInPage = new ObservableCollection<LeadResponse>(PagingResponse?.pagingLst.DataModel!);
+
+                        Leads = new ObservableCollection<LeadResponse>(LeadsInPage.ToList());
+
+                        FilterRequest.PageNumber += 1;
+                    }
                 }
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
             }
         }
         async Task GetAccountCard()

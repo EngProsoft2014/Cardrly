@@ -2,6 +2,7 @@
 
 using Akavache;
 using Cardrly.Helpers;
+using Cardrly.Models.Permision;
 using Cardrly.Pages;
 using Cardrly.Resources.Lan;
 using Cardrly.Services;
@@ -26,6 +27,8 @@ namespace Cardrly.Controls
         public static int WayOfPhotosPopup { get; set; } = 0;
         public static bool ShowSendOfferBtn { get; set; } = false;
         public static DateTime EndRequestStatic { get; set; }
+
+        public static List<PermissionsValues> LstPermissions = new List<PermissionsValues>();
         #endregion
 
         #region SnackBar Setting
@@ -107,6 +110,14 @@ namespace Cardrly.Controls
                     }
                 }
             }
+        }
+
+        public static bool CheckPermission(string PermissionTag)
+        {
+            if (StaticMember.LstPermissions.Any(P => P.ClaimValue == PermissionTag))
+                return true;
+
+            return false;
         }
     }
 }

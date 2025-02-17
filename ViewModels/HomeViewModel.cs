@@ -1,13 +1,16 @@
 ﻿using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Mode_s.Account;
 using Cardrly.Mode_s.Card;
 using Cardrly.Models.Home;
+using Cardrly.Models.Permision;
 using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
+using Newtonsoft.Json;
 using Plugin.Firebase.CloudMessaging;
 using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
@@ -46,6 +49,7 @@ namespace Cardrly.ViewModels
         #region Cons
         public HomeViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioManager audioManager)
         {
+            LoadPermissions();
             Rep = GenericRep;
             _service = service;
             // Initialize audio manager
@@ -157,6 +161,15 @@ namespace Cardrly.ViewModels
             }
             IsCheckOrGo = 1;
             IsAnimating = false;
+        }
+
+        void LoadPermissions()
+        {
+            string List = Preferences.Default.Get(ApiConstants.userPermision, "");
+            if (!string.IsNullOrEmpty(List))
+            {
+                StaticMember.LstPermissions = JsonConvert.DeserializeObject<List<PermissionsValues>>(List)!;
+            }
         }
         #endregion
     }

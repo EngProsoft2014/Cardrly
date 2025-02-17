@@ -1276,6 +1276,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission to do this action..
+        /// </summary>
+        internal static string msgPermissionToDoAction {
+            get {
+                return ResourceManager.GetString("msgPermissionToDoAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please Create a Card First..
         /// </summary>
         internal static string msgPleaseCreateCardFirst_ {
@@ -1488,6 +1497,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgYes {
             get {
                 return ResourceManager.GetString("msgYes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permission to view this data..
+        /// </summary>
+        internal static string mshPermissionToViewData {
+            get {
+                return ResourceManager.GetString("mshPermissionToViewData", resourceCulture);
             }
         }
         
