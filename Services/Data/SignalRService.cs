@@ -1,44 +1,84 @@
-﻿using Microsoft.AspNet.SignalR.Client;
+﻿
+using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.CognitiveServices.Speech;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
 
-namespace TripBliss.Services.Data
+namespace Cardrly.Services.Data
 {
     public class SignalRService
     {
         private readonly HubConnection _hubConnection;
-        private readonly IHubProxy _hubProxy;
-        public event Action<string, string,string ,string> OnMessageReceived;
+        readonly Services.Data.ServicesService _service;
 
-        public SignalRService()
+        public event Action<string, string> OnMessageReceived;
+
+        public SignalRService(ServicesService service)
         {
+            _service = service;
 
-            _hubConnection = new HubConnection("https://fixproapi.engprosoft.net/");
-            _hubProxy = _hubConnection.CreateHubProxy("ChatHub");
-
-            _hubProxy.On<string, string,string,string>("ReceiveMessage", (user, message, userFrom, userTo) =>
+            _hubConnection = new HubConnectionBuilder()
+                .WithUrl(Helpers.Utility.ServerUrl + "authHub", options =>
                 {
-                    // Handle received message
-                    OnMessageReceived?.Invoke(user, message, userFrom, userTo);
-                });
+                    options.AccessTokenProvider = async () => await GetAccessTokenAsync();
+                    options.Transports = HttpTransportType.LongPolling; // You can choose WebSockets or other transports
+                })
+                .WithAutomaticReconnect()
+                .Build();
+
+            _hubConnection.On<string, string>("ForceLogOut", (userId, email) =>
+            {
+                OnMessageReceived?.Invoke(userId, email);
+            });
+        }
+
+        private async Task<string> GetAccessTokenAsync()
+        {
+            // Fetch token from secure storage or authentication provider
+            return await _service.UserToken();
         }
 
         public async Task StartAsync()
         {
-            await _hubConnection.Start();
+            try
+            {
+                await _hubConnection.StartAsync();
+                Console.WriteLine("SignalR connected.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"SignalR connection failed: {ex.Message}");
+            }
         }
 
         public async Task Disconnect()
         {
-             _hubConnection.Stop();
+            try
+            {
+                await _hubConnection.StopAsync();
+                Console.WriteLine("SignalR disconnected.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"SignalR disconnection failed: {ex.Message}");
+            }
         }
 
         public async Task SendMessage(string user, string message)
         {
-            await _hubProxy.Invoke("SendMessage", user, message);
+            try
+            {
+                await _hubConnection.InvokeAsync("SendMessage", user, message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"SendMessage failed: {ex.Message}");
+            }
         }
     }
+
 }
