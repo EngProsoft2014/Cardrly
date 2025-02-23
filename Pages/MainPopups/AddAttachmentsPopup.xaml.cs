@@ -114,7 +114,7 @@ public partial class AddAttachmentsPopup : Mopups.Pages.PopupPage
         {
             await DisplayAlert($"{AppResources.msgWarning}", ex.Message, $"{AppResources.msgOk}");
         }
-        await MopupService.Instance.PopAsync();
+        
     }
 
     //private async void TapGestureRecognizer_Tapped_EditImage(object sender, TappedEventArgs e)

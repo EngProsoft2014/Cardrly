@@ -177,6 +177,8 @@ namespace Cardrly.ViewModels.Leads
             {
                 if (!string.IsNullOrEmpty(img))
                 {
+                    await MopupService.Instance.PopAsync();
+
                     ScanCard.ImgFile = Convert.FromBase64String(img);
                     
                     await UploadScanCard();
