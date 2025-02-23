@@ -9,8 +9,8 @@ using Android.Views;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
 using Plugin.NFC;
-using Plugin.Firebase.CloudMessaging;
-using Firebase;
+//using Plugin.Firebase.CloudMessaging;
+//using Firebase;
 using Cardrly.Services;
 using Cardrly.Platforms.Android;
 namespace Cardrly
@@ -94,7 +94,7 @@ namespace Cardrly
 
         private static void HandleIntent(Intent intent)
         {
-            FirebaseCloudMessagingImplementation.OnNewIntent(intent);
+            //FirebaseCloudMessagingImplementation.OnNewIntent(intent);
         }
 
         private void CreateNotificationChannelIfNeeded()
@@ -111,7 +111,7 @@ namespace Cardrly
             var notificationManager = (NotificationManager)GetSystemService(NotificationService);
             var channel = new NotificationChannel(channelId, "General", NotificationImportance.Default);
             notificationManager.CreateNotificationChannel(channel);
-            FirebaseCloudMessagingImplementation.ChannelId = channelId;
+            //FirebaseCloudMessagingImplementation.ChannelId = channelId;
         }
 
         static void CreateNotificationFromIntent(Intent intent)

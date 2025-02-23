@@ -11,7 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Newtonsoft.Json;
-using Plugin.Firebase.CloudMessaging;
+//using Plugin.Firebase.CloudMessaging;
 using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 
