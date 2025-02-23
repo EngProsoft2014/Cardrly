@@ -85,6 +85,10 @@
 		<CodesignKey>Apple Distribution: ENG PRO SOFT, LLC (YZWTVALFLW)</CodesignKey>
 		<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
 	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
+	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	</PropertyGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-ios'">
 		<BundleResource Include="Platforms/iOS/GoogleService-Info.plist">
 			<Link>GoogleService-Info.plist</Link>
