@@ -120,7 +120,7 @@ namespace Cardrly.ViewModels.Leads
                         Email = Request.Email,
                         ImgFile = Request.ImgFile,
                         Website = Request.Website,
-                        LeadCategoryId = SelectedLeadCategory.Value
+                        LeadCategoryId = SelectedLeadCategory?.Value
                     };
                     (LeadResponse, ErrorResult) json = (new LeadResponse(), new ErrorResult());
                     if (AddOrUpdate == 1)

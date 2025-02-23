@@ -158,8 +158,8 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
 
         if (saveContactService != null)
         {
-            await saveContactService.SaveContactMethod(Res);
             await MopupService.Instance.PopAsync();
+            await saveContactService.SaveContactMethod(Res);   
         }
         else
         {
