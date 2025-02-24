@@ -225,6 +225,9 @@
   <data name="lblBillingActivity" xml:space="preserve">
     <value>Billing Activity</value>
   </data>
+  <data name="lblBillingInfo" xml:space="preserve">
+    <value>Billing Info</value>
+  </data>
   <data name="lblBio" xml:space="preserve">
     <value>Bio</value>
   </data>
@@ -350,6 +353,9 @@
   </data>
   <data name="lblNow" xml:space="preserve">
     <value>Now</value>
+  </data>
+  <data name="lblOn" xml:space="preserve">
+    <value>On</value>
   </data>
   <data name="lblOR" xml:space="preserve">
     <value>OR</value>
@@ -644,6 +650,9 @@
   </data>
   <data name="plcUserName" xml:space="preserve">
     <value>User Name</value>
+  </data>
+  <data name="RenewalAmount" xml:space="preserve">
+    <value>Renewal Amount </value>
   </data>
   <data name="Retry" xml:space="preserve">
     <value>Retry</value>

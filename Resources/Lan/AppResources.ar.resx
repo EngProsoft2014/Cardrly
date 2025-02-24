@@ -225,6 +225,9 @@
   <data name="lblBillingActivity" xml:space="preserve">
     <value>نشاط الفوترة</value>
   </data>
+  <data name="lblBillingInfo" xml:space="preserve">
+    <value>معلومات الفواتير</value>
+  </data>
   <data name="lblBio" xml:space="preserve">
     <value>السيرة الذاتية</value>
   </data>
@@ -350,6 +353,9 @@
   </data>
   <data name="lblNow" xml:space="preserve">
     <value>الآن</value>
+  </data>
+  <data name="lblOn" xml:space="preserve">
+    <value>فى</value>
   </data>
   <data name="lblOR" xml:space="preserve">
     <value>أو</value>
@@ -644,6 +650,9 @@
   </data>
   <data name="plcUserName" xml:space="preserve">
     <value>اسم المستخدم</value>
+  </data>
+  <data name="RenewalAmount" xml:space="preserve">
+    <value>مبلغ التجديد</value>
   </data>
   <data name="Retry" xml:space="preserve">
     <value>إعادة المحاولة</value>

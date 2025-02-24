@@ -34,8 +34,25 @@
                     <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White"
                             Margin="0,0,0,15">
                         <StackLayout>
-                            <Label Text="{Binding Name}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                            <Label Text="{Binding NextBillingDate}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                            <Label Text="{Binding Name}" TextColor="Black" FontAttributes="Bold" FontSize="14" VerticalTextAlignment="Center"></Label>
+                            <Label TextColor="Black" FontSize="14" VerticalTextAlignment="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{x:Static res:AppResources.RenewalAmount}"></Span>
+                                        <Span Text=" "></Span>
+                                        <Span Text="{Binding Amount}" FontAttributes="Bold"></Span>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label TextColor="Black" FontSize="14" VerticalTextAlignment="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{x:Static res:AppResources.lblOn}"></Span>
+                                        <Span Text=" "></Span>
+                                        <Span Text="{Binding NextBillingDate}"></Span>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
                         </StackLayout>
                     </Border>
                 </DataTemplate>
@@ -55,7 +72,7 @@
                             <HorizontalStackLayout Spacing="3">
                                 <Label Text="{x:Static res:AppResources.lblDate}" TextColor="Gray" FontSize="13" VerticalTextAlignment="Center"></Label>
                                 <Label Text=":" TextColor="Black" FontSize="13" VerticalTextAlignment="Center"></Label>
-                                <Label Text="{Binding CreatedAt}" TextColor="Black" FontSize="13" VerticalTextAlignment="Center"></Label>
+                                <Label Text="{Binding CreatedAtView}" TextColor="Black" FontSize="13" VerticalTextAlignment="Center"></Label>
                             </HorizontalStackLayout>
                             <StackLayout Orientation="Horizontal">
                                 <HorizontalStackLayout Spacing="3">

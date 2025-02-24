@@ -385,6 +385,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Billing Info.
+        /// </summary>
+        internal static string lblBillingInfo {
+            get {
+                return ResourceManager.GetString("lblBillingInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bio.
         /// </summary>
         internal static string lblBio {
@@ -759,6 +768,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblNow {
             get {
                 return ResourceManager.GetString("lblNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On.
+        /// </summary>
+        internal static string lblOn {
+            get {
+                return ResourceManager.GetString("lblOn", resourceCulture);
             }
         }
         
@@ -1641,6 +1659,15 @@ namespace Cardrly.Resources.Lan {
         internal static string plcUserName {
             get {
                 return ResourceManager.GetString("plcUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Renewal Amount .
+        /// </summary>
+        internal static string RenewalAmount {
+            get {
+                return ResourceManager.GetString("RenewalAmount", resourceCulture);
             }
         }
         

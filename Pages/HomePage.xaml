@@ -674,7 +674,7 @@
                                     <!--Billing-->
                                     <VerticalStackLayout>
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="{x:Static res:AppResources.lblBilling}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
+                                            <Label Text="{x:Static res:AppResources.lblBillingInfo}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
                                             <Image HorizontalOptions="EndAndExpand">
                                                 <Image.Source>
                                                     <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>

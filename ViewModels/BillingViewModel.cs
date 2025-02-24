@@ -12,7 +12,7 @@ namespace Cardrly.ViewModels
     {
         #region Prop
         [ObservableProperty]
-        public CustomerPaymentDetailsModel paymentDetailsModels = new CustomerPaymentDetailsModel(); 
+        public CustomerPaymentDetailsModel paymentDetailsModels = new CustomerPaymentDetailsModel();
         #endregion
 
         #region Service
