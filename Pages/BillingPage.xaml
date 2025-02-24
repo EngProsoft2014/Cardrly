@@ -38,18 +38,18 @@
                             <Label TextColor="Black" FontSize="14" VerticalTextAlignment="Center">
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="{x:Static res:AppResources.RenewalAmount}"></Span>
+                                        <Span Text="{x:Static res:AppResources.RenewalAmount}" TextColor="Black" FontSize="14"></Span>
                                         <Span Text=" "></Span>
-                                        <Span Text="{Binding Amount}" FontAttributes="Bold"></Span>
+                                        <Span Text="{Binding Amount}" FontAttributes="Bold" TextColor="Black" FontSize="14"></Span>
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
                             <Label TextColor="Black" FontSize="14" VerticalTextAlignment="Center">
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="{x:Static res:AppResources.lblOn}"></Span>
+                                        <Span Text="{x:Static res:AppResources.lblOn}" TextColor="Black" FontSize="14"></Span>
                                         <Span Text=" "></Span>
-                                        <Span Text="{Binding NextBillingDate}"></Span>
+                                        <Span Text="{Binding NextBillingDate}" TextColor="Black" FontSize="14"></Span>
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
