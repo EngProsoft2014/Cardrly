@@ -182,5 +182,9 @@
         public const string UpdateMarketing = "Marketing:Update";
 
         #endregion
+
+        #region Stripe
+        public static string StripeGetBillingApi = "Stripe/"; 
+        #endregion
     }
 }

@@ -201,6 +201,9 @@
   <data name="lblACD" xml:space="preserve">
     <value>Activate Cardrly Device</value>
   </data>
+  <data name="lblAction" xml:space="preserve">
+    <value>Action</value>
+  </data>
   <data name="lblActivateat" xml:space="preserve">
     <value>Activate at</value>
   </data>
@@ -212,6 +215,15 @@
   </data>
   <data name="lblAddress" xml:space="preserve">
     <value>Address</value>
+  </data>
+  <data name="lblAmount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="lblBilling" xml:space="preserve">
+    <value>Billing</value>
+  </data>
+  <data name="lblBillingActivity" xml:space="preserve">
+    <value>Billing Activity</value>
   </data>
   <data name="lblBio" xml:space="preserve">
     <value>Bio</value>
@@ -251,6 +263,9 @@
   </data>
   <data name="lblContact" xml:space="preserve">
     <value>Contact</value>
+  </data>
+  <data name="lblDate" xml:space="preserve">
+    <value>Date</value>
   </data>
   <data name="lblDeleteCard" xml:space="preserve">
     <value>Delete Card</value>
@@ -386,6 +401,9 @@
   </data>
   <data name="lblStarRecording" xml:space="preserve">
     <value>Start Recording</value>
+  </data>
+  <data name="lblSubscriptions" xml:space="preserve">
+    <value>Subscriptions</value>
   </data>
   <data name="lblTakePhoto" xml:space="preserve">
     <value>Take Photo</value>

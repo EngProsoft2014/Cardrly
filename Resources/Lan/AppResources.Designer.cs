@@ -313,6 +313,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Action.
+        /// </summary>
+        internal static string lblAction {
+            get {
+                return ResourceManager.GetString("lblAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activate at.
         /// </summary>
         internal static string lblActivateat {
@@ -345,6 +354,33 @@ namespace Cardrly.Resources.Lan {
         internal static string lblAddress {
             get {
                 return ResourceManager.GetString("lblAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount.
+        /// </summary>
+        internal static string lblAmount {
+            get {
+                return ResourceManager.GetString("lblAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Billing.
+        /// </summary>
+        internal static string lblBilling {
+            get {
+                return ResourceManager.GetString("lblBilling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Billing Activity.
+        /// </summary>
+        internal static string lblBillingActivity {
+            get {
+                return ResourceManager.GetString("lblBillingActivity", resourceCulture);
             }
         }
         
@@ -462,6 +498,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblContact {
             get {
                 return ResourceManager.GetString("lblContact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        internal static string lblDate {
+            get {
+                return ResourceManager.GetString("lblDate", resourceCulture);
             }
         }
         
@@ -867,6 +912,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblStarRecording {
             get {
                 return ResourceManager.GetString("lblStarRecording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subscriptions.
+        /// </summary>
+        internal static string lblSubscriptions {
+            get {
+                return ResourceManager.GetString("lblSubscriptions", resourceCulture);
             }
         }
         

@@ -285,7 +285,7 @@
                                                                         <VerticalStackLayout>
                                                                             <!--Profile Iamge-->
                                                                             <Border StrokeShape="RoundRectangle 50" WidthRequest="90" HorizontalOptions="CenterAndExpand" TranslationY="-45" HeightRequest="90">
-                                                                                <Image  Source="{Binding UrlImgProfileVM}" Aspect="AspectFill" HeightRequest="90"></Image>
+                                                                                <Image  Source="{Binding UrlImgProfileVM}" Aspect="Fill" HeightRequest="90"></Image>
                                                                             </Border>
                                                                             <!--Card Data-->
                                                                             <VerticalStackLayout HorizontalOptions="CenterAndExpand" Margin="10,0,0,0" TranslationY="-35">
@@ -665,6 +665,28 @@
                                             </Image>
                                             <StackLayout.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding DeviceClickCommand}"></TapGestureRecognizer>
+                                            </StackLayout.GestureRecognizers>
+                                        </StackLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                                <!--Billing-->
+                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
+                                    <!--Billing-->
+                                    <VerticalStackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{x:Static res:AppResources.lblBilling}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
+                                            <Image HorizontalOptions="EndAndExpand">
+                                                <Image.Source>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                </Image.Source>
+                                                <Image.Triggers>
+                                                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                        <Setter Property="Rotation" Value="180"></Setter>
+                                                    </DataTrigger>
+                                                </Image.Triggers>
+                                            </Image>
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BillingClickCommand}"></TapGestureRecognizer>
                                             </StackLayout.GestureRecognizers>
                                         </StackLayout>
                                     </VerticalStackLayout>

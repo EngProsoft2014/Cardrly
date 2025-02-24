@@ -91,6 +91,11 @@ namespace Cardrly.ViewModels
                 await toast.Show();
             }
         }
+        [RelayCommand]
+        async Task BillingClick()
+        {
+            await App.Current!.MainPage!.Navigation.PushAsync(new BillingPage(new BillingViewModel(Rep, _service)));
+        }
         #endregion
     }
 }

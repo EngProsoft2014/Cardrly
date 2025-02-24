@@ -201,6 +201,9 @@
   <data name="lblACD" xml:space="preserve">
     <value>تفعيل جهاز كارديلي</value>
   </data>
+  <data name="lblAction" xml:space="preserve">
+    <value>الإجراء</value>
+  </data>
   <data name="lblActivateat" xml:space="preserve">
     <value>تفعيل في</value>
   </data>
@@ -212,6 +215,15 @@
   </data>
   <data name="lblAddress" xml:space="preserve">
     <value>العنوان</value>
+  </data>
+  <data name="lblAmount" xml:space="preserve">
+    <value>المبلغ</value>
+  </data>
+  <data name="lblBilling" xml:space="preserve">
+    <value>الفواتير</value>
+  </data>
+  <data name="lblBillingActivity" xml:space="preserve">
+    <value>نشاط الفوترة</value>
   </data>
   <data name="lblBio" xml:space="preserve">
     <value>السيرة الذاتية</value>
@@ -251,6 +263,9 @@
   </data>
   <data name="lblContact" xml:space="preserve">
     <value>الاتصال</value>
+  </data>
+  <data name="lblDate" xml:space="preserve">
+    <value>التاريخ</value>
   </data>
   <data name="lblDeleteCard" xml:space="preserve">
     <value>حذف البطاقة</value>
@@ -386,6 +401,9 @@
   </data>
   <data name="lblStarRecording" xml:space="preserve">
     <value>بدء التسجيل</value>
+  </data>
+  <data name="lblSubscriptions" xml:space="preserve">
+    <value>الاشتراكات</value>
   </data>
   <data name="lblTakePhoto" xml:space="preserve">
     <value>التقط الصورة</value>

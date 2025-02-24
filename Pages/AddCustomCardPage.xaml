@@ -53,7 +53,7 @@
                 <Grid HeightRequest="100" WidthRequest="100">
                     <Border StrokeShape="RoundRectangle 50" HeightRequest="100" WidthRequest="100" HorizontalOptions="FillAndExpand" BackgroundColor="White"
                         StrokeThickness="1" TranslationY="-50" Stroke="#FF7F3E">
-                        <Image Source="{Binding Request.ImgProfileFile}" Aspect="AspectFill"></Image>
+                        <Image Source="{Binding Request.ImgProfileFile}" Aspect="Fill"></Image>
                     </Border>
                     <Image WidthRequest="25" HorizontalOptions="EndAndExpand" Margin="0,0,0,10">
                         <Image.Source>
