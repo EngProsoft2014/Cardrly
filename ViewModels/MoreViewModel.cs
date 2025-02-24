@@ -8,6 +8,9 @@ using Cardrly.Resources.Lan;
 using Mopups.Services;
 using Cardrly.Pages.MainPopups;
 using CommunityToolkit.Maui.Alerts;
+using Cardrly.Controls;
+using Controls.UserDialogs.Maui;
+using Cardrly.Constants;
 
 namespace Cardrly.ViewModels
 {
@@ -94,7 +97,16 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task BillingClick()
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new BillingPage(new BillingViewModel(Rep, _service)));
+            if (StaticMember.CheckPermission(ApiConstants.GetStripe))
+            {
+                await App.Current!.MainPage!.Navigation.PushAsync(new BillingPage(new BillingViewModel(Rep, _service)));
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+            
         }
         #endregion
     }

@@ -181,6 +181,8 @@
         public const string GetMarketing = "Marketing:Get";
         public const string UpdateMarketing = "Marketing:Update";
 
+        // == Marketing == 
+        public const string GetStripe = "Stripe:Get";
         #endregion
 
         #region Stripe
