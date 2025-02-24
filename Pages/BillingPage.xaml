@@ -60,7 +60,7 @@
         </CollectionView>
         <!--Billing Activity-->
         <Label Text="{x:Static res:AppResources.lblBillingActivity}" TextColor="Black" FontSize="16" FontAttributes="Bold" VerticalTextAlignment="Center"
-               Margin="0,0,0,10"></Label>
+               Margin="0,10,0,10"></Label>
         <CollectionView ItemsSource="{Binding PaymentDetailsModels.PaymentHistory}">
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
