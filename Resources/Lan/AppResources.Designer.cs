@@ -259,6 +259,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Info.
+        /// </summary>
+        internal static string Info {
+            get {
+                return ResourceManager.GetString("Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 1 day.
         /// </summary>
         internal static string lbl1day {
@@ -1285,6 +1294,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You’ve been logged out.(account is Changed permissions).
+        /// </summary>
+        internal static string MsgloggedOut {
+            get {
+                return ResourceManager.GetString("MsgloggedOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Microphone access is required to record audio..
         /// </summary>
         internal static string msgMicrophoneaccessisrequiredtorecordaudio_ {
@@ -1591,6 +1609,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your password is invalid.
+        /// </summary>
+        internal static string PasswordInvalid {
+            get {
+                return ResourceManager.GetString("PasswordInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Available Appointments.
         /// </summary>
         internal static string PlcNoAvailableAppointments {
@@ -1677,6 +1704,15 @@ namespace Cardrly.Resources.Lan {
         internal static string Retry {
             get {
                 return ResourceManager.GetString("Retry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your Token expired, Please Enter Your Password.
+        /// </summary>
+        internal static string Your_Token_expired_Please_Enter_Your_Password {
+            get {
+                return ResourceManager.GetString("Your_Token_expired_Please_Enter_Your_Password", resourceCulture);
             }
         }
     }

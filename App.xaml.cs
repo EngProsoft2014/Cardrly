@@ -12,6 +12,8 @@ using Plugin.Maui.Audio;
 using System.Globalization;
 using Cardrly.Services.Data;
 using System.Reactive.Linq;
+using Cardrly.Resources.Lan;
+
 
 
 #if ANDROID
@@ -100,11 +102,9 @@ namespace Cardrly
                 await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service));
                 return;
             }
-            else
-            {
-                await SignalRservice();
-                //await HandleNotify();
-            }
+
+            // Ensure SignalR reconnects after coming from background
+            await SignalRservice();
         }
 
         protected async override void OnSleep()
@@ -131,16 +131,32 @@ namespace Cardrly
 
         public async Task SignalRservice()
         {
-            _signalRService = new SignalRService(_service);
+            if(_signalRService == null)
+            {
+                _signalRService = new SignalRService(_service);
+            }
 
+            // Ensure the event is always attached
+            _signalRService.OnMessageReceived -= _signalRService_OnMessageReceived;
             _signalRService.OnMessageReceived += _signalRService_OnMessageReceived;
 
-            await _signalRService.StartAsync();
+            // Check if already connected
+            if (_signalRService.IsConnected == false)
+            {
+                await _signalRService.StartAsync();
+            }
         }
 
         public async Task SignalRNotservice()
         {
-            _signalRService.OnMessageReceived -= _signalRService_OnMessageReceived;
+            if (_signalRService != null)
+            {
+                _signalRService.OnMessageReceived -= _signalRService_OnMessageReceived;
+
+                await _signalRService.Disconnect();
+
+                _signalRService = null; // Ensure it's fully disposed
+            }        
         }
 
         private async void _signalRService_OnMessageReceived(string userId, string email)
@@ -160,7 +176,7 @@ namespace Cardrly
 
                         Preferences.Default.Set("Lan", LangValueToKeep);
                         await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, StaticMember._audioManager)));
-                        await App.Current!.MainPage!.DisplayAlert("Alert", "You’ve been logged out.\r\n(account is Changed permissions)\r\n", "Ok");
+                        await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.MsgloggedOut, AppResources.msgOk);
                     }
                 }
             });

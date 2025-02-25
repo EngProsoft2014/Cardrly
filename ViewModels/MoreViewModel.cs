@@ -11,11 +11,15 @@ using CommunityToolkit.Maui.Alerts;
 using Cardrly.Controls;
 using Controls.UserDialogs.Maui;
 using Cardrly.Constants;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Cardrly.ViewModels
 {
     public partial class MoreViewModel : BaseViewModel
     {
+        [ObservableProperty]
+        bool isShowBullingInfo;
+
         readonly IAudioManager _audioManager;
         #region Service
         readonly IGenericRepository Rep;
@@ -29,6 +33,8 @@ namespace Cardrly.ViewModels
             _service = service;
             // Initialize audio manager
             _audioManager = audioManager;
+
+            IsShowBullingInfo = StaticMember.CheckPermission(ApiConstants.GetStripe) == true ? true : false;      
         }
         #endregion
 

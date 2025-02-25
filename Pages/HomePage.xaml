@@ -670,7 +670,7 @@
                                     </VerticalStackLayout>
                                 </Border>
                                 <!--Billing-->
-                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
+                                <Border StrokeShape="RoundRectangle 15" IsVisible="{Binding IsShowBullingInfo}" BackgroundColor="White" Padding="10">
                                     <!--Billing-->
                                     <VerticalStackLayout>
                                         <StackLayout Orientation="Horizontal">

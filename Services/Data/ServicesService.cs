@@ -57,7 +57,7 @@ namespace Cardrly.Services.Data
                 {        
                     if (!string.IsNullOrEmpty(Preferences.Default.Get(ApiConstants.username, "")))
                     {
-                        string Pass = await App.Current!.MainPage!.DisplayPromptAsync("Info", "Cardrly.Resources.Language.AppResources.Your_Token_expired_Please_Enter_Your_Password", "Cardrly.Resources.Language.AppResources.OK", "TripBliss.Resources.Language.AppResources.Cancel");
+                        string Pass = await App.Current!.MainPage!.DisplayPromptAsync(Resources.Lan.AppResources.Info, Resources.Lan.AppResources.Your_Token_expired_Please_Enter_Your_Password, Cardrly.Resources.Lan.AppResources.msgOk , Resources.Lan.AppResources.btnCancel);
 
                         ApplicationUserLoginRequest model = new ApplicationUserLoginRequest()
                         {
@@ -79,7 +79,7 @@ namespace Cardrly.Services.Data
                         }
                         else
                         {
-                            var toast = Toast.Make("Cardrly.Resources.Language.AppResources.PasswordInvalid", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            var toast = Toast.Make(Resources.Lan.AppResources.PasswordInvalid, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
                         }
                     }

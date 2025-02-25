@@ -12,8 +12,10 @@ namespace Cardrly.Services.Data
 {
     public class SignalRService
     {
+
         private readonly HubConnection _hubConnection;
         readonly Services.Data.ServicesService _service;
+        private bool _isReconnecting = false;
 
         public event Action<string, string> OnMessageReceived;
 
@@ -22,13 +24,20 @@ namespace Cardrly.Services.Data
             _service = service;
 
             _hubConnection = new HubConnectionBuilder()
-                .WithUrl(Helpers.Utility.ServerUrl + "authHub", options =>
+                .WithUrl(Helpers.Utility.ServerUrl + "authHub",options =>
                 {
-                    options.AccessTokenProvider = async () => await GetAccessTokenAsync();
-                    options.Transports = HttpTransportType.LongPolling; // You can choose WebSockets or other transports
+                    options.AccessTokenProvider = async () => await _service.UserToken();
+                    options.Transports = HttpTransportType.WebSockets; // You can choose WebSockets or other transports
                 })
                 .WithAutomaticReconnect()
                 .Build();
+
+            _hubConnection.Closed += async (error) =>
+            {
+                Console.WriteLine("SignalR Disconnected. Retrying in 2 seconds...");
+                await Task.Delay(2000);
+                await StartAsync();
+            };
 
             _hubConnection.On<string, string>("ForceLogOut", (userId, email) =>
             {
@@ -36,22 +45,30 @@ namespace Cardrly.Services.Data
             });
         }
 
-        private async Task<string> GetAccessTokenAsync()
-        {
-            // Fetch token from secure storage or authentication provider
-            return await _service.UserToken();
-        }
+        public bool IsConnected => _hubConnection?.State == HubConnectionState.Connected;
 
         public async Task StartAsync()
         {
+            if (_hubConnection.State == HubConnectionState.Connected || _isReconnecting)
+            {
+                Console.WriteLine("SignalR is already connected or reconnecting.");
+                return;
+            }
+
+            _isReconnecting = true;
+
             try
             {
                 await _hubConnection.StartAsync();
-                Console.WriteLine("SignalR connected.");
+                Console.WriteLine("✅ SignalR Connected.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"SignalR connection failed: {ex.Message}");
+                Console.WriteLine($"❌ SignalR Connection Failed: {ex.Message}");
+            }
+            finally
+            {
+                _isReconnecting = false;
             }
         }
 
@@ -59,12 +76,16 @@ namespace Cardrly.Services.Data
         {
             try
             {
-                await _hubConnection.StopAsync();
-                Console.WriteLine("SignalR disconnected.");
+                if (_hubConnection != null)
+                {
+                    await _hubConnection.StopAsync();
+                    await _hubConnection.DisposeAsync();
+                    Console.WriteLine("🔴 SignalR Disconnected.");
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"SignalR disconnection failed: {ex.Message}");
+                Console.WriteLine($"⚠️ SignalR Disconnection Failed: {ex.Message}");
             }
         }
 

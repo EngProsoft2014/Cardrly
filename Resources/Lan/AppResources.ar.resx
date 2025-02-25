@@ -183,6 +183,9 @@
   <data name="hdrSelectLanguage" xml:space="preserve">
     <value>اختر اللغة</value>
   </data>
+  <data name="Info" xml:space="preserve">
+    <value>بيانات</value>
+  </data>
   <data name="lbl1day" xml:space="preserve">
     <value>يوم 1</value>
   </data>
@@ -525,6 +528,9 @@
   <data name="msgLoadingImage" xml:space="preserve">
     <value>تحميل الصورة</value>
   </data>
+  <data name="MsgloggedOut" xml:space="preserve">
+    <value>لقد تم تسجيل خروجك. (تم تغيير أذونات الحساب)</value>
+  </data>
   <data name="msgMicrophoneaccessisrequiredtorecordaudio." xml:space="preserve">
     <value>يجب الوصول إلى الميكروفون لتسجيل الصوت.</value>
   </data>
@@ -627,6 +633,9 @@
   <data name="No_Internet_connection" xml:space="preserve">
     <value>لا يوجد اتصال بالإنترنت</value>
   </data>
+  <data name="PasswordInvalid" xml:space="preserve">
+    <value>كلمة المرور غير صحيحة</value>
+  </data>
   <data name="PlcNoAvailableAppointments" xml:space="preserve">
     <value>لا توجد مواعيد متاحة</value>
   </data>
@@ -656,5 +665,8 @@
   </data>
   <data name="Retry" xml:space="preserve">
     <value>إعادة المحاولة</value>
+  </data>
+  <data name="Your_Token_expired_Please_Enter_Your_Password" xml:space="preserve">
+    <value>انتهت صلاحية الرمز الخاص بك، يرجى إدخال كلمة المرور الخاصة بك</value>
   </data>
 </root>

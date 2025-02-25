@@ -183,6 +183,9 @@
   <data name="hdrSelectLanguage" xml:space="preserve">
     <value>Select Language</value>
   </data>
+  <data name="Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
   <data name="lbl1day" xml:space="preserve">
     <value>1 day</value>
   </data>
@@ -525,6 +528,9 @@
   <data name="msgLoadingImage" xml:space="preserve">
     <value>Loading Image</value>
   </data>
+  <data name="MsgloggedOut" xml:space="preserve">
+    <value>You’ve been logged out.(account is Changed permissions)</value>
+  </data>
   <data name="msgMicrophoneaccessisrequiredtorecordaudio." xml:space="preserve">
     <value>Microphone access is required to record audio.</value>
   </data>
@@ -627,6 +633,9 @@
   <data name="No_Internet_connection" xml:space="preserve">
     <value>No Internet connection!</value>
   </data>
+  <data name="PasswordInvalid" xml:space="preserve">
+    <value>Your password is invalid</value>
+  </data>
   <data name="PlcNoAvailableAppointments" xml:space="preserve">
     <value>No Available Appointments</value>
   </data>
@@ -656,5 +665,8 @@
   </data>
   <data name="Retry" xml:space="preserve">
     <value>Retry</value>
+  </data>
+  <data name="Your_Token_expired_Please_Enter_Your_Password" xml:space="preserve">
+    <value>Your Token expired, Please Enter Your Password</value>
   </data>
 </root>
