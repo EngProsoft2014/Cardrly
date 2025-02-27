@@ -13,6 +13,7 @@ using System.Globalization;
 using Cardrly.Services.Data;
 using System.Reactive.Linq;
 using Cardrly.Resources.Lan;
+using CommunityToolkit.Maui.Alerts;
 
 
 
@@ -33,7 +34,7 @@ namespace Cardrly
         public static IServiceProvider Services { get; private set; }
         #endregion
         public App(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioManager audioManager, IServiceProvider serviceProvider,
-            INotificationManagerService  notificationManagerService)
+            INotificationManagerService notificationManagerService)
         {
             try
             {
@@ -50,10 +51,18 @@ namespace Cardrly
                 InitializeComponent();
                 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(ApiConstants.syncFusionLicence);
                 string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
-
-                if (string.IsNullOrEmpty(AccountId))
+                string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
+                if (!string.IsNullOrEmpty(Stringdate))
                 {
-                    MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
+                    DateOnly date = DateOnly.Parse(Stringdate);
+                    if (string.IsNullOrEmpty(AccountId) || date < DateOnly.FromDateTime(DateTime.Now))
+                    {
+                        MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
+                    }
+                    else
+                    {
+                        MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, audioManager), Rep, _service));
+                    }
                 }
                 else
                 {
@@ -61,7 +70,7 @@ namespace Cardrly
                 }
                 Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 // Maui Team 
             }
@@ -131,7 +140,7 @@ namespace Cardrly
 
         public async Task SignalRservice()
         {
-            if(_signalRService == null)
+            if (_signalRService == null)
             {
                 _signalRService = new SignalRService(_service);
             }
@@ -156,7 +165,7 @@ namespace Cardrly
                 await _signalRService.Disconnect();
 
                 _signalRService = null; // Ensure it's fully disposed
-            }        
+            }
         }
 
         private async void _signalRService_OnMessageReceived(string userId, string email)

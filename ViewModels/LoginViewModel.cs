@@ -13,6 +13,7 @@ using Plugin.Maui.Audio;
 using Cardrly.Resources.Lan;
 using Newtonsoft.Json;
 
+
 namespace Cardrly.ViewModels
 {
     public partial class LoginViewModel : BaseViewModel
@@ -59,32 +60,39 @@ namespace Cardrly.ViewModels
             {
                 UserDialogs.Instance.ShowLoading();
                 var json = await Rep.PostTRAsync<ApplicationUserLoginRequest, ApplicationUserResponse>(ApiConstants.LoginApi, model);
-
+                
                 if (json.Item1 != null)
                 {
                     UserResponse = json.Item1;
-
-                    if (!string.IsNullOrEmpty(UserResponse?.Id))
+                    if (UserResponse.Account!.ExpireDateAcc >= DateOnly.FromDateTime(DateTime.Now))
                     {
-                        Controls.StaticMember.WayOfTab = 0;
+                        if (!string.IsNullOrEmpty(UserResponse?.Id))
+                        {
+                            Controls.StaticMember.WayOfTab = 0;
 
-                        Preferences.Default.Set(ApiConstants.userid, UserResponse.Id);
-                        Preferences.Default.Set(ApiConstants.email, UserResponse.Email);
-                        Preferences.Default.Set(ApiConstants.username, UserResponse.UserName);
-                        Preferences.Default.Set(ApiConstants.userPermision, JsonConvert.SerializeObject(UserResponse.Permissions));
-                        Preferences.Default.Set(ApiConstants.userCategory, UserResponse.UserCategory);
-                        Preferences.Default.Set(ApiConstants.AccountId, UserResponse.AccountId);
-                        Preferences.Default.Set(ApiConstants.AccountName, UserResponse.Account!.Name);
+                            Preferences.Default.Set(ApiConstants.userid, UserResponse.Id);
+                            Preferences.Default.Set(ApiConstants.email, UserResponse.Email);
+                            Preferences.Default.Set(ApiConstants.username, UserResponse.UserName);
+                            Preferences.Default.Set(ApiConstants.userPermision, JsonConvert.SerializeObject(UserResponse.Permissions));
+                            Preferences.Default.Set(ApiConstants.userCategory, UserResponse.UserCategory);
+                            Preferences.Default.Set(ApiConstants.AccountId, UserResponse.AccountId);
+                            Preferences.Default.Set(ApiConstants.AccountName, UserResponse.Account!.Name);
+                            Preferences.Default.Set(ApiConstants.ExpireDate, Convert.ToString(UserResponse.Account!.ExpireDateAcc));
 
-                        await BlobCache.LocalMachine.InsertObject(ServicesService.UserTokenServiceKey, UserResponse?.Token, DateTimeOffset.Now.AddMinutes(2592000));
+                            await BlobCache.LocalMachine.InsertObject(ServicesService.UserTokenServiceKey, UserResponse?.Token, DateTimeOffset.Now.AddMinutes(2592000));
 
-                        var page = new HomePage(new HomeViewModel(Rep, _service,_audioManager), Rep,_service);
-                        await App.Current!.MainPage!.Navigation.PushAsync(page);
+                            var page = new HomePage(new HomeViewModel(Rep, _service, _audioManager), Rep, _service);
+                            await App.Current!.MainPage!.Navigation.PushAsync(page);
+                        }
+                    }
+                    else
+                    {
+                        var toast = Toast.Make($"{AppResources.msgAccountHasExpired}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();
                     }
                 }
                 else
                 {
-
                     var toast = Toast.Make($"{json.Item2?.errors?.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }

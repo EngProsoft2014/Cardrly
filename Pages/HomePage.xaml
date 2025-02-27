@@ -114,7 +114,7 @@
                                                     <VerticalStackLayout Spacing="10" >
                                                         <StackLayout Orientation="Horizontal" Spacing="3">
                                                             <Label Text="{x:Static res:AppResources.lblExpire}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                            <Label Text="{Binding AccResponse.DayOperationExpireAcc}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
+                                                            <Label Text="{Binding AccResponse.RemmingDays}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
                                                             <Label Text="{x:Static res:AppResources.lblFrom}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
                                                             <Label Text="{Binding AccResponse.DayOperationAcc}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
                                                         </StackLayout>

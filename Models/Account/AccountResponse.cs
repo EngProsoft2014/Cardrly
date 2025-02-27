@@ -9,6 +9,7 @@ namespace Cardrly.Mode_s.Account
         private double? _usersProgress;
         private double? _cardProgress;
         private double? _expireProgress;
+        private int? _remmingDays;
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; } = string.Empty;
         public string? Address { get; set; }
@@ -60,7 +61,18 @@ namespace Cardrly.Mode_s.Account
                 }
             }
         }
-
+        public int? RemmingDays
+        {
+            get => _remmingDays;
+            set
+            {
+                if (_remmingDays != value)
+                {
+                    _remmingDays = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

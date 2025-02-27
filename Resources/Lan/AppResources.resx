@@ -438,6 +438,9 @@
   <data name="lblWebSite" xml:space="preserve">
     <value>WebSite</value>
   </data>
+  <data name="msgAccountHasExpired" xml:space="preserve">
+    <value>Account Has Expired</value>
+  </data>
   <data name="msgAnerroroccurred" xml:space="preserve">
     <value>An error occurred:</value>
   </data>

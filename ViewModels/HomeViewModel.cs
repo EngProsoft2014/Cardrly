@@ -138,7 +138,8 @@ namespace Cardrly.ViewModels
                     AccResponse = json;
                     AccResponse.CardProgress = ((json.CurrentCountCards / (double)json.CountCards) * 100);
                     AccResponse.UsersProgress = Convert.ToInt32((json.CurrentCountUsers / (double)json.CountUsers) * 100);
-                    AccResponse.ExpireProgress = (json.DayOperationExpireAcc / (double)json.DayOperationAcc) * 100;
+                    AccResponse.ExpireProgress = ((json.DayOperationAcc - json.DayOperationExpireAcc) / (double)json.DayOperationAcc) * 100;
+                    AccResponse.RemmingDays = json.DayOperationAcc - json.DayOperationExpireAcc;
                 }
             }
             IsCheckOrGo = 1;

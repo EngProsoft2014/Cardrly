@@ -1024,6 +1024,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account Has Expired.
+        /// </summary>
+        internal static string msgAccountHasExpired {
+            get {
+                return ResourceManager.GetString("msgAccountHasExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred:.
         /// </summary>
         internal static string msgAnerroroccurred {

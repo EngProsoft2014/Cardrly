@@ -438,6 +438,9 @@
   <data name="lblWebSite" xml:space="preserve">
     <value>موقع إلكتروني</value>
   </data>
+  <data name="msgAccountHasExpired" xml:space="preserve">
+    <value>انتهت صلاحية الحساب</value>
+  </data>
   <data name="msgAnerroroccurred" xml:space="preserve">
     <value>حدث خطأ:</value>
   </data>
