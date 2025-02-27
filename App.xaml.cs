@@ -66,7 +66,7 @@ namespace Cardrly
                 }
                 else
                 {
-                    MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, audioManager), Rep, _service));
+                    MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
                 }
                 Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             }
