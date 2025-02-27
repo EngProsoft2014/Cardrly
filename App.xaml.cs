@@ -57,6 +57,7 @@ namespace Cardrly
                     DateOnly date = DateOnly.Parse(Stringdate);
                     if (string.IsNullOrEmpty(AccountId) || date < DateOnly.FromDateTime(DateTime.Now))
                     {
+                        Preferences.Default.Clear();
                         MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
                     }
                     else
@@ -66,6 +67,7 @@ namespace Cardrly
                 }
                 else
                 {
+                    Preferences.Default.Clear();
                     MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
                 }
                 Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
