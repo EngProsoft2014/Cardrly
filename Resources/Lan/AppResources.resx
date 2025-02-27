@@ -480,6 +480,9 @@
   <data name="msgDeviceAddedSuccessfully" xml:space="preserve">
     <value>Device Added Successfully.</value>
   </data>
+  <data name="msgDontGetAccount" xml:space="preserve">
+    <value>There is no data for this account.</value>
+  </data>
   <data name="msgDoYouWantToLogout" xml:space="preserve">
     <value>Do you want to Logout ?</value>
   </data>

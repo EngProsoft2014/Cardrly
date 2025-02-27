@@ -480,6 +480,9 @@
   <data name="msgDeviceAddedSuccessfully" xml:space="preserve">
     <value>تمت إضافة الجهاز بنجاح.</value>
   </data>
+  <data name="msgDontGetAccount" xml:space="preserve">
+    <value>لا توجد بيانات لهذا الحساب</value>
+  </data>
   <data name="msgDoYouWantToLogout" xml:space="preserve">
     <value>هل تريد تسجيل الخروج ؟</value>
   </data>

@@ -1150,6 +1150,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no data for this account..
+        /// </summary>
+        internal static string msgDontGetAccount {
+            get {
+                return ResourceManager.GetString("msgDontGetAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you want to Logout ?.
         /// </summary>
         internal static string msgDoYouWantToLogout {
