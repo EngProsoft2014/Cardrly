@@ -201,6 +201,9 @@
   <data name="lbl3days" xml:space="preserve">
     <value>3 days</value>
   </data>
+  <data name="lblAccessDenied" xml:space="preserve">
+    <value>Access Denied</value>
+  </data>
   <data name="lblACD" xml:space="preserve">
     <value>Activate Cardrly Device</value>
   </data>
@@ -477,8 +480,17 @@
   <data name="msgDeleteLead" xml:space="preserve">
     <value>Are you sure to delete This Lead?</value>
   </data>
+  <data name="msgDeveloperOptionOn" xml:space="preserve">
+    <value>Developer Options are enabled. Please disable them to continue using this app.</value>
+  </data>
   <data name="msgDeviceAddedSuccessfully" xml:space="preserve">
     <value>Device Added Successfully.</value>
+  </data>
+  <data name="msgDevicejailbroken" xml:space="preserve">
+    <value>Your device is jailbroken. For security reasons, this app cannot run on jailbroken devices.</value>
+  </data>
+  <data name="msgDeviceRooted" xml:space="preserve">
+    <value>Your device is rooted. For security reasons, this app cannot run on rooted devices.</value>
   </data>
   <data name="msgDontGetAccount" xml:space="preserve">
     <value>There is no data for this account.</value>

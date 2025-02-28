@@ -313,6 +313,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Access Denied.
+        /// </summary>
+        internal static string lblAccessDenied {
+            get {
+                return ResourceManager.GetString("lblAccessDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activate Cardrly Device.
         /// </summary>
         internal static string lblACD {
@@ -1141,11 +1150,38 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Developer Options are enabled. Please disable them to continue using this app..
+        /// </summary>
+        internal static string msgDeveloperOptionOn {
+            get {
+                return ResourceManager.GetString("msgDeveloperOptionOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Device Added Successfully..
         /// </summary>
         internal static string msgDeviceAddedSuccessfully {
             get {
                 return ResourceManager.GetString("msgDeviceAddedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your device is jailbroken. For security reasons, this app cannot run on jailbroken devices..
+        /// </summary>
+        internal static string msgDevicejailbroken {
+            get {
+                return ResourceManager.GetString("msgDevicejailbroken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your device is rooted. For security reasons, this app cannot run on rooted devices..
+        /// </summary>
+        internal static string msgDeviceRooted {
+            get {
+                return ResourceManager.GetString("msgDeviceRooted", resourceCulture);
             }
         }
         

@@ -1,3 +1,4 @@
+using Cardrly.Resources.Lan;
 using Cardrly.ViewModels;
 using Syncfusion.Maui.Core.Carousel;
 
@@ -30,7 +31,7 @@ public partial class LoginPage : Controls.CustomControl
         Dispatcher.Dispatch(() =>
         {
             Action action = () => Application.Current!.Quit();
-            Controls.StaticMember.ShowSnackBar("Do you want to exit the program", Controls.StaticMember.SnackBarColor, Controls.StaticMember.SnackBarTextColor, action);
+            Controls.StaticMember.ShowSnackBar($"{AppResources.msgDoYouWantToLogout}", Controls.StaticMember.SnackBarColor, Controls.StaticMember.SnackBarTextColor, action);
         });
 
         // Return true to prevent the default behavior

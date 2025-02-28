@@ -9,12 +9,11 @@ using Cardrly.ViewModels.Leads;
 using Cardrly.ViewModels.Links;
 using Microsoft.Maui.Handlers;
 using Plugin.Maui.Audio;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+#if ANDROID
+using Cardrly.Platforms.Android;
+#elif IOS
+using Cardrly.Platforms.iOS;
+#endif
 namespace Cardrly
 {
     public static class DependencyInjection
@@ -23,6 +22,7 @@ namespace Cardrly
         {
             #region ServiceServices
             Services.AddSingleton<ServicesService>();
+            
             #endregion
 
             #region GenericRepository
@@ -91,9 +91,13 @@ namespace Cardrly
             #endregion
 
 #if ANDROID
+
+            Services.AddScoped<IRootChecker, RootChecker>();
+            Services.AddScoped<IDeveloperOptionsChecker, DeveloperOptionsChecker>();
             Services.AddTransient<INotificationManagerService, Cardrly.Platforms.Android.NotificationManagerService>();
 #elif IOS
-            Services.AddTransient<INotificationManagerService, Cardrly.Platforms.iOS.NotificationManagerService>();        
+            Services.AddTransient<INotificationManagerService, Cardrly.Platforms.iOS.NotificationManagerService>();
+            Services.AddScoped<IJailbreakChecker, JailbreakChecker>();
 #endif
             Services.AddSingleton<IAudioManager, AudioManager>();
             return Services;

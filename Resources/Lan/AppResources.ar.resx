@@ -201,6 +201,9 @@
   <data name="lbl3days" xml:space="preserve">
     <value>3 أيام</value>
   </data>
+  <data name="lblAccessDenied" xml:space="preserve">
+    <value>تم الرفض</value>
+  </data>
   <data name="lblACD" xml:space="preserve">
     <value>تفعيل جهاز كارديلي</value>
   </data>
@@ -477,8 +480,17 @@
   <data name="msgDeleteLead" xml:space="preserve">
     <value>هل أنت متأكد من حذف هذا العميل؟</value>
   </data>
+  <data name="msgDeveloperOptionOn" xml:space="preserve">
+    <value>تم تمكين خيارات المطور. يرجى تعطيلها لمواصلة استخدام هذا التطبيق.</value>
+  </data>
   <data name="msgDeviceAddedSuccessfully" xml:space="preserve">
     <value>تمت إضافة الجهاز بنجاح.</value>
+  </data>
+  <data name="msgDevicejailbroken" xml:space="preserve">
+    <value>جهازك مخترق. لأسباب أمنية، لا يمكن تشغيل هذا التطبيق على الأجهزة المخترقة.</value>
+  </data>
+  <data name="msgDeviceRooted" xml:space="preserve">
+    <value>تم عمل روت لجهازك. ولأسباب أمنية، لا يمكن تشغيل هذا التطبيق على الأجهزة التي تم عمل روت لها.</value>
   </data>
   <data name="msgDontGetAccount" xml:space="preserve">
     <value>لا توجد بيانات لهذا الحساب</value>
