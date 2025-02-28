@@ -76,14 +76,14 @@ namespace Cardrly
                     MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
                 }
                 Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
-                
+
             }
             catch (Exception ex)
             {
                 // Maui Team 
             }
         }
-        private void OnSecurityStatusChanged(bool isSecure,string msg)
+        private void OnSecurityStatusChanged(bool isSecure, string msg)
         {
             MainThread.BeginInvokeOnMainThread(() =>
             {
@@ -93,14 +93,11 @@ namespace Cardrly
                     App.Current!.MainPage!.Navigation.PushAsync(new Security_WarningPage(msg));
                     NavToSecurePage = 1;
                 }
-                else if(!isSecure)
+                else if (!isSecure && NavToSecurePage == 1)
                 {
                     // Navigate back to the main app when secure again
-                    if (NavToSecurePage == 1)
-                    {
-                        App.Current!.MainPage!.Navigation.PopAsync();
-                        NavToSecurePage = 0;
-                    }
+                    App.Current!.MainPage!.Navigation.PopAsync();
+                    NavToSecurePage = 0;
                 }
             });
         }
@@ -118,7 +115,7 @@ namespace Cardrly
         protected async override void OnStart()
         {
             base.OnStart();
-            
+
             await _securityService.StartSecurityMonitoring();
             if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             {
@@ -145,7 +142,7 @@ namespace Cardrly
             // Ensure SignalR reconnects after coming from background
             await _securityService?.StartSecurityMonitoring();
             await SignalRservice();
-            
+
         }
 
         protected async override void OnSleep()
