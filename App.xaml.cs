@@ -32,7 +32,6 @@ namespace Cardrly
         readonly Services.Data.ServicesService _service;
         private SignalRService _signalRService;
         public static IServiceProvider Services { get; private set; }
-        private SecurityService _securityService;
         #endregion
         int NavToSecurePage = 0;
         public App(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioManager audioManager, IServiceProvider serviceProvider,
@@ -43,7 +42,6 @@ namespace Cardrly
                 Rep = GenericRep;
                 _service = service;
                 Services = serviceProvider;
-                _securityService = new SecurityService();
                 StaticMember.notificationManager = notificationManagerService;
                 LoadSetting();
                 Controls.StaticMember._audioManager = audioManager;
@@ -54,7 +52,6 @@ namespace Cardrly
                 InitializeComponent();
                 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(ApiConstants.syncFusionLicence);
                 // Subscribe to security status changes
-                _securityService.SecurityStatusChanged += OnSecurityStatusChanged;
                 string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
                 string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
                 if (!string.IsNullOrEmpty(Stringdate))
@@ -83,24 +80,25 @@ namespace Cardrly
                 // Maui Team 
             }
         }
-        private void OnSecurityStatusChanged(bool isSecure, string msg)
-        {
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                if (isSecure && NavToSecurePage == 0)
-                {
-                    // Navigate to Block Screen if security is compromised
-                    App.Current!.MainPage!.Navigation.PushAsync(new Security_WarningPage(msg));
-                    NavToSecurePage = 1;
-                }
-                else if (!isSecure && NavToSecurePage == 1)
-                {
-                    // Navigate back to the main app when secure again
-                    App.Current!.MainPage!.Navigation.PopAsync();
-                    NavToSecurePage = 0;
-                }
-            });
-        }
+
+        //private void OnSecurityStatusChanged(bool isSecure, string msg)
+        //{
+        //    MainThread.BeginInvokeOnMainThread(() =>
+        //    {
+        //        if (isSecure && NavToSecurePage == 0)
+        //        {
+        //            // Navigate to Block Screen if security is compromised
+        //            App.Current!.MainPage!.Navigation.PushAsync(new Security_WarningPage(msg));
+        //            NavToSecurePage = 1;
+        //        }
+        //        else if (!isSecure && NavToSecurePage == 1)
+        //        {
+        //            // Navigate back to the main app when secure again
+        //            App.Current!.MainPage!.Navigation.PopAsync();
+        //            NavToSecurePage = 0;
+        //        }
+        //    });
+        //}
 
         private async void Connectivity_ConnectivityChanged(object? sender, ConnectivityChangedEventArgs e)
         {
@@ -115,8 +113,6 @@ namespace Cardrly
         protected async override void OnStart()
         {
             base.OnStart();
-
-            await _securityService.StartSecurityMonitoring();
             if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             {
                 // Connection to internet is Not available
@@ -140,7 +136,6 @@ namespace Cardrly
                 return;
             }
             // Ensure SignalR reconnects after coming from background
-            await _securityService?.StartSecurityMonitoring();
             await SignalRservice();
 
         }
@@ -148,7 +143,6 @@ namespace Cardrly
         protected async override void OnSleep()
         {
             base.OnSleep();
-            _securityService?.StopSecurityMonitoring();
             await SignalRNotservice();
         }
 

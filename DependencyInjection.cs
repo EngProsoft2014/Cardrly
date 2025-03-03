@@ -92,12 +92,9 @@ namespace Cardrly
 
 #if ANDROID
 
-            Services.AddScoped<IRootChecker, RootChecker>();
-            Services.AddScoped<IDeveloperOptionsChecker, DeveloperOptionsChecker>();
             Services.AddTransient<INotificationManagerService, Cardrly.Platforms.Android.NotificationManagerService>();
 #elif IOS
             Services.AddTransient<INotificationManagerService, Cardrly.Platforms.iOS.NotificationManagerService>();
-            Services.AddScoped<IJailbreakChecker, JailbreakChecker>();
 #endif
             Services.AddSingleton<IAudioManager, AudioManager>();
             return Services;
