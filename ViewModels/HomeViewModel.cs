@@ -5,11 +5,13 @@ using Cardrly.Mode_s.Account;
 using Cardrly.Mode_s.Card;
 using Cardrly.Models.Home;
 using Cardrly.Models.Permision;
+using Cardrly.Pages.MainPopups;
 using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
+using Mopups.Services;
 using Newtonsoft.Json;
 //using Plugin.Firebase.CloudMessaging;
 using Plugin.Maui.Audio;
@@ -74,7 +76,9 @@ namespace Cardrly.ViewModels
                 IsCheckOrGo = 1;
                 UserDialogs.Instance.HideHud();
             }
-           
+
+            //await MopupService.Instance.PushAsync(new UpdatePopup());
+
             ////get token for test
             //await CrossFirebaseCloudMessaging.Current.CheckIfValidAsync();
             //var token = await CrossFirebaseCloudMessaging.Current.GetTokenAsync();

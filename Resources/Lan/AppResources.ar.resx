@@ -225,6 +225,9 @@
   <data name="lblAmount" xml:space="preserve">
     <value>المبلغ</value>
   </data>
+  <data name="lblAnotherUpgrade" xml:space="preserve">
+    <value>ترقية أخرى لك! 🚀</value>
+  </data>
   <data name="lblBilling" xml:space="preserve">
     <value>الفواتير</value>
   </data>
@@ -312,6 +315,9 @@
   <data name="lblHelpSupport" xml:space="preserve">
     <value>المساعدة والدعم</value>
   </data>
+  <data name="lblIfyouupdatedlasttime" xml:space="preserve">
+    <value>إذا قمت بالتحديث في المرة السابقة، فهذا رائع، هذا الإصدار أفضل!</value>
+  </data>
   <data name="lblInvite" xml:space="preserve">
     <value>دعوة إلى كاردرلى</value>
   </data>
@@ -335,6 +341,9 @@
   </data>
   <data name="lblLeadsRegistered" xml:space="preserve">
     <value>العملاء المسجلون</value>
+  </data>
+  <data name="lblLet us know if you'd like any tweaks" xml:space="preserve">
+    <value>أخبرنا إذا كنت ترغب في أي تعديلات! 😊</value>
   </data>
   <data name="lblLink" xml:space="preserve">
     <value>الرابط</value>
@@ -423,6 +432,9 @@
   <data name="lblTCDS" xml:space="preserve">
     <value>العدد الإجمالي حسب نظام الجهاز</value>
   </data>
+  <data name="lblThismakesitclear" xml:space="preserve">
+    <value>يوضح هذا أن هذا تحديث ثانٍ مع الحفاظ على طابعه الجذاب.</value>
+  </data>
   <data name="lblTimeZone" xml:space="preserve">
     <value>المنطقة الزمنية</value>
   </data>
@@ -431,6 +443,9 @@
   </data>
   <data name="lblTotalClicks" xml:space="preserve">
     <value>إجمالي النقرات</value>
+  </data>
+  <data name="lblUpdatenow" xml:space="preserve">
+    <value>قم بالتحديث الآن للحصول على تجربة أكثر سلاسة وتحسينات جديدة ومثيرة في المستقبل! 🔥✨</value>
   </data>
   <data name="lblUsers" xml:space="preserve">
     <value>المستخدمون</value>

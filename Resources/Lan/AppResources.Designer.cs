@@ -385,6 +385,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Another Upgrade for you! 🚀.
+        /// </summary>
+        internal static string lblAnotherUpgrade {
+            get {
+                return ResourceManager.GetString("lblAnotherUpgrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Billing.
         /// </summary>
         internal static string lblBilling {
@@ -646,6 +655,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If you updated last time, great this one&apos;s even better!.
+        /// </summary>
+        internal static string lblIfyouupdatedlasttime {
+            get {
+                return ResourceManager.GetString("lblIfyouupdatedlasttime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invite to Cardrly.
         /// </summary>
         internal static string lblInvite {
@@ -714,6 +732,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblLeadsRegistered {
             get {
                 return ResourceManager.GetString("lblLeadsRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Let us know if you&apos;d like any tweaks! 😊.
+        /// </summary>
+        internal static string lblLet_us_know_if_you_d_like_any_tweaks {
+            get {
+                return ResourceManager.GetString("lblLet us know if you\'d like any tweaks", resourceCulture);
             }
         }
         
@@ -979,6 +1006,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This makes it clear that it&apos;s a second update while keeping it engaging..
+        /// </summary>
+        internal static string lblThismakesitclear {
+            get {
+                return ResourceManager.GetString("lblThismakesitclear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time Zone.
         /// </summary>
         internal static string lblTimeZone {
@@ -1002,6 +1038,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblTotalClicks {
             get {
                 return ResourceManager.GetString("lblTotalClicks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update now for a smoother experience and exciting new improvements ahead! 🔥✨.
+        /// </summary>
+        internal static string lblUpdatenow {
+            get {
+                return ResourceManager.GetString("lblUpdatenow", resourceCulture);
             }
         }
         

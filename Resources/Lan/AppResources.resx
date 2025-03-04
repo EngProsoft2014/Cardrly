@@ -225,6 +225,9 @@
   <data name="lblAmount" xml:space="preserve">
     <value>Amount</value>
   </data>
+  <data name="lblAnotherUpgrade" xml:space="preserve">
+    <value>Another Upgrade for you! 🚀</value>
+  </data>
   <data name="lblBilling" xml:space="preserve">
     <value>Billing</value>
   </data>
@@ -312,6 +315,9 @@
   <data name="lblHelpSupport" xml:space="preserve">
     <value>Help &amp; Support</value>
   </data>
+  <data name="lblIfyouupdatedlasttime" xml:space="preserve">
+    <value>If you updated last time, great this one's even better!</value>
+  </data>
   <data name="lblInvite" xml:space="preserve">
     <value>Invite to Cardrly</value>
   </data>
@@ -335,6 +341,9 @@
   </data>
   <data name="lblLeadsRegistered" xml:space="preserve">
     <value>Leads Registered</value>
+  </data>
+  <data name="lblLet us know if you'd like any tweaks" xml:space="preserve">
+    <value>Let us know if you'd like any tweaks! 😊</value>
   </data>
   <data name="lblLink" xml:space="preserve">
     <value>Link</value>
@@ -423,6 +432,9 @@
   <data name="lblTCDS" xml:space="preserve">
     <value>Total Count by Device System</value>
   </data>
+  <data name="lblThismakesitclear" xml:space="preserve">
+    <value>This makes it clear that it's a second update while keeping it engaging.</value>
+  </data>
   <data name="lblTimeZone" xml:space="preserve">
     <value>Time Zone</value>
   </data>
@@ -431,6 +443,9 @@
   </data>
   <data name="lblTotalClicks" xml:space="preserve">
     <value>Total Clicks</value>
+  </data>
+  <data name="lblUpdatenow" xml:space="preserve">
+    <value>Update now for a smoother experience and exciting new improvements ahead! 🔥✨</value>
   </data>
   <data name="lblUsers" xml:space="preserve">
     <value>Users</value>
