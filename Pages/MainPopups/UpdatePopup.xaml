@@ -5,6 +5,7 @@
              xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
              xmlns:res="clr-namespace:Cardrly.Resources.Lan"
              x:Class="Cardrly.Pages.MainPopups.UpdatePopup"
+             CloseWhenBackgroundIsClicked="False"
              NavigationPage.HasNavigationBar="False" 
              BackgroundColor="#90000000"
              Title="UpdatePopup">
