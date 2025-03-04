@@ -14,6 +14,8 @@ using Cardrly.Services.Data;
 using System.Reactive.Linq;
 using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
+using static Android.Util.EventLogTags;
+
 
 
 
@@ -122,7 +124,6 @@ namespace Cardrly
             else
             {
                 await SignalRservice();
-                //await HandleNotify();
             }
         }
 
@@ -161,6 +162,7 @@ namespace Cardrly
             }
         }
 
+
         public async Task SignalRservice()
         {
             if (_signalRService == null)
@@ -168,9 +170,13 @@ namespace Cardrly
                 _signalRService = new SignalRService(_service);
             }
 
-            // Ensure the event is always attached
-            _signalRService.OnMessageReceived -= _signalRService_OnMessageReceived;
-            _signalRService.OnMessageReceived += _signalRService_OnMessageReceived;
+            // Logout
+            _signalRService.OnMessageReceivedLogout -= _signalRService_OnMessageReceivedLogout;
+            _signalRService.OnMessageReceivedLogout += _signalRService_OnMessageReceivedLogout;
+
+            // UpdateVersion
+            _signalRService.OnMessageReceivedUpdateVersion -= _signalRService_OnMessageReceivedUpdateVersion;
+            _signalRService.OnMessageReceivedUpdateVersion += _signalRService_OnMessageReceivedUpdateVersion;
 
             // Check if already connected
             if (_signalRService.IsConnected == false)
@@ -183,7 +189,11 @@ namespace Cardrly
         {
             if (_signalRService != null)
             {
-                _signalRService.OnMessageReceived -= _signalRService_OnMessageReceived;
+                // Logout
+                _signalRService.OnMessageReceivedLogout -= _signalRService_OnMessageReceivedLogout;
+
+                // UpdateVersion
+                _signalRService.OnMessageReceivedUpdateVersion -= _signalRService_OnMessageReceivedUpdateVersion;
 
                 await _signalRService.Disconnect();
 
@@ -191,15 +201,16 @@ namespace Cardrly
             }
         }
 
-        private async void _signalRService_OnMessageReceived(string userId, string email)
+        // Logout
+        private async void _signalRService_OnMessageReceivedLogout(string GuidKey)
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
                 string Id = Preferences.Default.Get(ApiConstants.userid, "");
-                string Email = Preferences.Default.Get(ApiConstants.email, "");
-                if (Id != "" && Email != "")
+
+                if (Id != "")
                 {
-                    if (!string.IsNullOrEmpty(userId) && userId == Id && !string.IsNullOrEmpty(email) && email.ToLower() == Email.ToLower())
+                    if (!string.IsNullOrEmpty(GuidKey) && GuidKey == Id)
                     {
                         string LangValueToKeep = Preferences.Default.Get("Lan", "en");
                         Preferences.Default.Clear();
@@ -214,6 +225,17 @@ namespace Cardrly
             });
 
         }
+
+        // UpdateVersion
+        private async void _signalRService_OnMessageReceivedUpdateVersion(string GuidKey, string VersionNumber, string Description, string RealseDate)
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                
+            });
+
+        }
+
 
         async Task HandleNotify()
         {

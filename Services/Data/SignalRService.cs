@@ -17,7 +17,8 @@ namespace Cardrly.Services.Data
         readonly Services.Data.ServicesService _service;
         private bool _isReconnecting = false;
 
-        public event Action<string, string> OnMessageReceived;
+        public event Action<string> OnMessageReceivedLogout;
+        public event Action<string, string, string, string> OnMessageReceivedUpdateVersion;
 
         public SignalRService(ServicesService service)
         {
@@ -39,9 +40,14 @@ namespace Cardrly.Services.Data
                 await StartAsync();
             };
 
-            _hubConnection.On<string, string>("ForceLogOut", (userId, email) =>
+            _hubConnection.On<string>("ForceLogOut", (GuidKey) =>
             {
-                OnMessageReceived?.Invoke(userId, email);
+                OnMessageReceivedLogout?.Invoke(GuidKey);
+            });
+
+            _hubConnection.On<string,string, string, string>("UpdateVersion", (GuidKey, VersionNumber, Description, RealseDate) =>
+            {
+                OnMessageReceivedUpdateVersion?.Invoke(GuidKey, VersionNumber, Description, RealseDate);
             });
         }
 
