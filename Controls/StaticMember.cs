@@ -1,6 +1,7 @@
 ﻿
 
 using Akavache;
+using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models.Permision;
 using Cardrly.Pages;
@@ -9,8 +10,13 @@ using Cardrly.Services;
 using Cardrly.Services.Data;
 using Cardrly.ViewModels;
 using CommunityToolkit.Maui.Core;
+using Controls.UserDialogs.Maui;
+using Microsoft.IdentityModel.Tokens;
 using Plugin.Maui.Audio;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reactive.Linq;
+using static Android.Graphics.ColorSpace;
+
 
 namespace Cardrly.Controls
 {
@@ -118,6 +124,44 @@ namespace Cardrly.Controls
                 return true;
 
             return false;
+        }
+
+        public static string? GuidKeyFromToken(string token)
+        {
+            var tokenhandler = new JwtSecurityTokenHandler();
+            var symmetricSecurityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(ApiConstants.KeyJwtInApi));
+            try
+            {
+                tokenhandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    IssuerSigningKey = symmetricSecurityKey,
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero, //do not stop token when time still work
+                }, out SecurityToken validatedToken);
+
+                var jwtToken = (JwtSecurityToken)validatedToken;
+
+                return (jwtToken.Claims.FirstOrDefault(x => x.Type == "GuidKey")?.Value!);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async static Task DeleteUserSession(IGenericRepository GenericRep, ServicesService service)
+        {
+            UserDialogs.Instance.ShowLoading();
+
+            string UserToken = await service.UserToken();
+            if (!string.IsNullOrEmpty(UserToken))
+            {
+                await GenericRep.PostEAsync(ApiConstants.UserSessionDeleteApi, UserToken);
+            }
+
+            UserDialogs.Instance.HideHud();
         }
     }
 }

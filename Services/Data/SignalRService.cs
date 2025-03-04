@@ -1,4 +1,5 @@
 ﻿
+using Cardrly.Constants;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.CognitiveServices.Speech;
@@ -42,7 +43,10 @@ namespace Cardrly.Services.Data
 
             _hubConnection.On<string>("ForceLogOut", (GuidKey) =>
             {
-                OnMessageReceivedLogout?.Invoke(GuidKey);
+                string Id = Preferences.Default.Get(ApiConstants.GuidKey, "");
+
+                if (!string.IsNullOrEmpty(Id) && GuidKey == Id)
+                    OnMessageReceivedLogout?.Invoke(GuidKey);
             });
 
             _hubConnection.On<string,string, string, string>("UpdateVersion", (GuidKey, VersionNumber, Description, RealseDate) =>
@@ -67,6 +71,22 @@ namespace Cardrly.Services.Data
             {
                 await _hubConnection.StartAsync();
                 Console.WriteLine("✅ SignalR Connected.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ SignalR Connection Failed: {ex.Message}");
+            }
+            finally
+            {
+                _isReconnecting = false;
+            }
+        }
+
+        public async Task InvokeNotifyDisconnectyAsync(string guidKey)
+        {
+            try
+            {
+                await _hubConnection.InvokeAsync("NotifyDisconnect", guidKey);
             }
             catch (Exception ex)
             {

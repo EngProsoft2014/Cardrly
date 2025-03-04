@@ -123,6 +123,7 @@
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="27.2.5" />
 		<PackageReference Include="Syncfusion.Maui.ProgressBar" Version="27.2.5" />
 		<PackageReference Include="Syncfusion.Maui.TabView" Version="27.2.5" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.7.1" />
 		<PackageReference Include="ZXing.Net.Maui.Controls" Version="0.4.0" />
 	</ItemGroup>
 	
@@ -130,6 +131,9 @@
 	<ItemGroup>
 	  <Compile Update="Pages\AddLeadsPage.xaml.cs">
 	    <DependentUpon>AddLeadsPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\MainPopups\UpdateVersionPopup.xaml.cs">
+	    <DependentUpon>UpdateVersionPopup.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Resources\Lan\AppResources.Designer.cs">
 	    <DesignTime>True</DesignTime>
@@ -218,7 +222,7 @@
 	  <MauiXaml Update="Pages\AddLeadsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\MainPopups\UpdatePopup.xaml">
+	  <MauiXaml Update="Pages\MainPopups\UpdateVersionPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\NoInternetPage.xaml">

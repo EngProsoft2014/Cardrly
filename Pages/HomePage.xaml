@@ -762,7 +762,7 @@
                                                 </Image.Triggers>
                                             </Image>
                                             <StackLayout.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding ExitClickCommand}"></TapGestureRecognizer>
+                                                <TapGestureRecognizer Command="{Binding LogoutClickCommand}"></TapGestureRecognizer>
                                             </StackLayout.GestureRecognizers>
                                         </StackLayout>
                                     </VerticalStackLayout>

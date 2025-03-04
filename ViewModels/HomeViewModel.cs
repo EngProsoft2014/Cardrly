@@ -77,7 +77,7 @@ namespace Cardrly.ViewModels
                 UserDialogs.Instance.HideHud();
             }
 
-           // await MopupService.Instance.PushAsync(new UpdatePopup());
+            // await MopupService.Instance.PushAsync(new UpdateVersionPopup());
 
             ////get token for test
             //await CrossFirebaseCloudMessaging.Current.CheckIfValidAsync();

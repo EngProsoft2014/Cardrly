@@ -7,6 +7,8 @@
         //public const string syncFusionLicence = "Ngo9BigBOggjHTQxAR8/V1NCaF1cWWhIfkxwWmFZfVpgfF9GZ1ZUTGYuP1ZhSXxXdkxhWn5Xc3BQRmVbUUE="; //Version= 24.x.x
         public const string syncFusionLicence = "Ngo9BigBOggjHTQxAR8/V1NDaF5cWWtCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXZcc3VcRWldUkN0V0Y="; //Version= 27.x.x
 
+        public static string KeyJwtInApi = "iwGuW8GAcuMJXlH6oLLeos3vhIcvd8sR";
+
 
         #region Preferences Keys
         // Preferences Key
@@ -19,6 +21,7 @@
         public static string AccountId = "AccountId";
         public static string AccountName = "AccountName";
         public static string ExpireDate = "ExpireDate";
+        public static string GuidKey = "GuidKey";
         //End Preferences Key 
         #endregion
 
@@ -187,7 +190,9 @@
         #endregion
 
         #region Stripe
-        public static string StripeGetBillingApi = "Stripe/"; 
+        public static string StripeGetBillingApi = "Stripe/";
         #endregion
+
+        public static string UserSessionDeleteApi = "UserSession/Delete";
     }
 }

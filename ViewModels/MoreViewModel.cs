@@ -41,7 +41,7 @@ namespace Cardrly.ViewModels
         #region RelayCommand
 
         [RelayCommand]
-        Task ExitClick()
+        Task LogoutClick()
         {
             Action action = async () =>
             {
@@ -49,6 +49,8 @@ namespace Cardrly.ViewModels
                 Preferences.Default.Clear();
                 await BlobCache.LocalMachine.InvalidateAll();
                 await BlobCache.LocalMachine.Vacuum();
+
+                await StaticMember.DeleteUserSession(Rep, _service);
 
                 Preferences.Default.Set("Lan", LangValueToKeep);
                 await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service,_audioManager)));

@@ -14,9 +14,6 @@ using Cardrly.Services.Data;
 using System.Reactive.Linq;
 using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
-using static Android.Util.EventLogTags;
-
-
 
 
 #if ANDROID
@@ -206,32 +203,26 @@ namespace Cardrly
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
-                string Id = Preferences.Default.Get(ApiConstants.userid, "");
+                string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+                Preferences.Default.Clear();
+                await BlobCache.LocalMachine.InvalidateAll();
+                await BlobCache.LocalMachine.Vacuum();
 
-                if (Id != "")
-                {
-                    if (!string.IsNullOrEmpty(GuidKey) && GuidKey == Id)
-                    {
-                        string LangValueToKeep = Preferences.Default.Get("Lan", "en");
-                        Preferences.Default.Clear();
-                        await BlobCache.LocalMachine.InvalidateAll();
-                        await BlobCache.LocalMachine.Vacuum();
+                await _signalRService.InvokeNotifyDisconnectyAsync(GuidKey);
 
-                        Preferences.Default.Set("Lan", LangValueToKeep);
-                        await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, StaticMember._audioManager)));
-                        await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.MsgloggedOut, AppResources.msgOk);
-                    }
-                }
+                Preferences.Default.Set("Lan", LangValueToKeep);
+                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, StaticMember._audioManager)));
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.MsgloggedOut, AppResources.msgOk);
             });
-
         }
+
 
         // UpdateVersion
         private async void _signalRService_OnMessageReceivedUpdateVersion(string GuidKey, string VersionNumber, string Description, string RealseDate)
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
-                
+
             });
 
         }

@@ -81,7 +81,9 @@ namespace Cardrly.ViewModels
                                 Preferences.Default.Set(ApiConstants.AccountName, UserResponse.Account!.Name);
                                 Preferences.Default.Set(ApiConstants.ExpireDate, Convert.ToString(UserResponse.Account!.ExpireDateAcc));
 
-                                await BlobCache.LocalMachine.InsertObject(ServicesService.UserTokenServiceKey, UserResponse?.Token, DateTimeOffset.Now.AddMinutes(2592000));
+                                await BlobCache.LocalMachine.InsertObject(ServicesService.UserTokenServiceKey, UserResponse?.Token, DateTimeOffset.Now.AddMinutes(43200));
+
+                                Preferences.Default.Set(ApiConstants.GuidKey, Controls.StaticMember.GuidKeyFromToken(UserResponse?.Token)); 
 
                                 var page = new HomePage(new HomeViewModel(Rep, _service, _audioManager), Rep, _service);
                                 await App.Current!.MainPage!.Navigation.PushAsync(page);

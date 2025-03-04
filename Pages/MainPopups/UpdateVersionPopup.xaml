@@ -4,11 +4,11 @@
              xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
              xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
              xmlns:res="clr-namespace:Cardrly.Resources.Lan"
-             x:Class="Cardrly.Pages.MainPopups.UpdatePopup"
+             x:Class="Cardrly.Pages.MainPopups.UpdateVersionPopup"
              CloseWhenBackgroundIsClicked="False"
              NavigationPage.HasNavigationBar="False" 
              BackgroundColor="#90000000"
-             Title="UpdatePopup">
+             Title="UpdateVersionPopup">
     <mopups:PopupPage.Animation>
         <mopupsanim:MoveAnimation
        DurationIn="700"
