@@ -38,6 +38,7 @@ namespace Cardrly.ViewModels
         }
         #endregion
 
+
         #region RelayCommand
 
         [RelayCommand]
@@ -45,12 +46,12 @@ namespace Cardrly.ViewModels
         {
             Action action = async () =>
             {
+                await StaticMember.DeleteUserSession(Rep, _service);
+
                 string LangValueToKeep = Preferences.Default.Get("Lan", "en");
                 Preferences.Default.Clear();
                 await BlobCache.LocalMachine.InvalidateAll();
                 await BlobCache.LocalMachine.Vacuum();
-
-                await StaticMember.DeleteUserSession(Rep, _service);
 
                 Preferences.Default.Set("Lan", LangValueToKeep);
                 await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service,_audioManager)));

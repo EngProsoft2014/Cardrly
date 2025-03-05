@@ -19,7 +19,7 @@ namespace Cardrly.Services.Data
         private bool _isReconnecting = false;
 
         public event Action<string> OnMessageReceivedLogout;
-        public event Action<string, string, string, string> OnMessageReceivedUpdateVersion;
+        public event Action<string, string, string, string, string, string, string> OnMessageReceivedUpdateVersion;
 
         public SignalRService(ServicesService service)
         {
@@ -49,9 +49,20 @@ namespace Cardrly.Services.Data
                     OnMessageReceivedLogout?.Invoke(GuidKey);
             });
 
-            _hubConnection.On<string,string, string, string>("UpdateVersion", (GuidKey, VersionNumber, Description, RealseDate) =>
+            _hubConnection.On<string,string, string, string, string, string, string>("UpdateVersion", (GuidKey, Name, VersionNumber, VersionBuild, DescriptionEN, DescriptionAR, ReleaseDate) =>
             {
-                OnMessageReceivedUpdateVersion?.Invoke(GuidKey, VersionNumber, Description, RealseDate);
+                string Id = Preferences.Default.Get(ApiConstants.GuidKey, "");
+
+                if(!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(GuidKey) && !string.IsNullOrEmpty(Id) && GuidKey == Id)
+                {
+                    string currentVersion = VersionTracking.CurrentVersion;
+                    string versionBuild = VersionTracking.CurrentBuild;
+                    if ((Name.ToLower() == "android" && DeviceInfo.Platform == DevicePlatform.Android) || (Name.ToLower() == "ios" && DeviceInfo.Platform == DevicePlatform.iOS))
+                    {
+                        if (currentVersion != VersionNumber.Trim() || versionBuild != VersionBuild.Trim())
+                            OnMessageReceivedUpdateVersion?.Invoke(GuidKey, Name, VersionNumber, VersionBuild, DescriptionEN, DescriptionAR, ReleaseDate);
+                    }
+                }
             });
         }
 
@@ -87,6 +98,22 @@ namespace Cardrly.Services.Data
             try
             {
                 await _hubConnection.InvokeAsync("NotifyDisconnect", guidKey);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ SignalR Connection Failed: {ex.Message}");
+            }
+            finally
+            {
+                _isReconnecting = false;
+            }
+        }
+
+        public async Task NotifyUpdatedVersionMobile(string guidKey)
+        {
+            try
+            {
+                await _hubConnection.InvokeAsync("NotifyUpdatedVersionMobile", guidKey);
             }
             catch (Exception ex)
             {

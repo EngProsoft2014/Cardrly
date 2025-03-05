@@ -193,6 +193,8 @@
         public static string StripeGetBillingApi = "Stripe/";
         #endregion
 
-        public static string UserSessionDeleteApi = "UserSession/Delete";
+        #region UserSessionDeleteApi
+        public static string UserSessionDeleteApi = "UserSession/Delete"; 
+        #endregion
     }
 }

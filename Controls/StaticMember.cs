@@ -1,8 +1,8 @@
 ﻿
-
 using Akavache;
 using Cardrly.Constants;
 using Cardrly.Helpers;
+using Cardrly.Models;
 using Cardrly.Models.Permision;
 using Cardrly.Pages;
 using Cardrly.Resources.Lan;
@@ -15,7 +15,6 @@ using Microsoft.IdentityModel.Tokens;
 using Plugin.Maui.Audio;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reactive.Linq;
-using static Android.Graphics.ColorSpace;
 
 
 namespace Cardrly.Controls
@@ -35,6 +34,7 @@ namespace Cardrly.Controls
         public static DateTime EndRequestStatic { get; set; }
 
         public static List<PermissionsValues> LstPermissions = new List<PermissionsValues>();
+        public static List<UpdateVersionModel> LstUpdateVersions = new List<UpdateVersionModel>();
         #endregion
 
         #region SnackBar Setting
@@ -151,17 +151,21 @@ namespace Cardrly.Controls
             }
         }
 
-        public async static Task DeleteUserSession(IGenericRepository GenericRep, ServicesService service)
+
+        public static async Task DeleteUserSession(IGenericRepository GenericRep, Services.Data.ServicesService service)
         {
-            UserDialogs.Instance.ShowLoading();
-
-            string UserToken = await service.UserToken();
-            if (!string.IsNullOrEmpty(UserToken))
+            try
             {
-                await GenericRep.PostEAsync(ApiConstants.UserSessionDeleteApi, UserToken);
+                string UserToken = await service.UserToken();
+                if (!string.IsNullOrEmpty(UserToken))
+                {
+                    await GenericRep.PostEAsync(ApiConstants.UserSessionDeleteApi, UserToken);
+                }
             }
+            catch (Exception)
+            {
 
-            UserDialogs.Instance.HideHud();
+            }
         }
     }
 }

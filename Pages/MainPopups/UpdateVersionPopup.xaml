@@ -23,14 +23,16 @@
                 <Border StrokeShape="RoundRectangle 15" Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
                     <VerticalStackLayout Spacing="15" Padding="10">
                         <Label Text="{x:Static res:AppResources.lblAnotherUpgrade}" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" TextColor="Black"/>
-                        <Label Text="{x:Static res:AppResources.lblIfyouupdatedlasttime}" HorizontalTextAlignment="Center" TextColor="Black"/>
-                        <Label Text="{x:Static res:AppResources.lblUpdatenow}" HorizontalTextAlignment="Center" TextColor="Black" />
+
+                        <Label x:Name="lblMsg" Text="{x:Static res:AppResources.lblIfyouupdatedlasttime}" LineHeight="1.5" FontSize="14" HorizontalTextAlignment="Center" TextColor="Black"/>
+                        
+                        <!--<Label x:Name="lblMsg" Text="{x:Static res:AppResources.lblIfyouupdatedlasttime}" FontSize="14" HorizontalTextAlignment="Center" TextColor="Black"/>-->
+                        <!--<Label Text="{x:Static res:AppResources.lblUpdatenow}" HorizontalTextAlignment="Center" TextColor="Black" />
                         <Label Text="{x:Static res:AppResources.lblThismakesitclear}" HorizontalTextAlignment="Center" TextColor="Black"/>
-                        <Label Text="{x:Static res:AppResources.lblLet_us_know_if_you_d_like_any_tweaks}" HorizontalTextAlignment="Center" TextColor="Black"/>
-                        <Button Text="IOS | Version 1.0.20" BorderWidth="1" TextColor="Black" BorderColor="Black" 
-                                BackgroundColor="Transparent"/>
-                        <Button Text="Android | Version 1.0.22" BackgroundColor="Transparent" TextColor="#FF7F3E" 
-                                BorderColor="#FF7F3E" BorderWidth="1"/>
+                        <Label Text="{x:Static res:AppResources.lblLet_us_know_if_you_d_like_any_tweaks}" HorizontalTextAlignment="Center" TextColor="Black"/>-->
+                        
+                        <Button x:Name="btnStoreLink" BackgroundColor="Transparent" FontSize="14" TextColor="#FF7F3E" 
+                                BorderColor="#FF7F3E" BorderWidth="1" Clicked="btnStoreLink_Clicked"/>
                     </VerticalStackLayout>
                 </Border>
 

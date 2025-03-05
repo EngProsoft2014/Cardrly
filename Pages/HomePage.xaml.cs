@@ -1,17 +1,25 @@
-﻿using Cardrly.Controls;
+﻿using Akavache;
+using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Helpers;
+using Cardrly.Models;
+using Cardrly.Pages.MainPopups;
+
 #if ANDROID
 using Cardrly.Platforms.Android;
 #elif IOS
 using Cardrly.Platforms.iOS;
 #endif
 using Cardrly.Resources.Lan;
+using Cardrly.Services.Data;
 using Cardrly.ViewModels;
 using Cardrly.ViewModels.Leads;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
+using Newtonsoft.Json;
 using System;
+using System.Reactive.Linq;
 using static Cardrly.Models.Calendar.CalendlyResponseModel;
 using static Cardrly.Models.Calendar.GmailResponseModel;
 
@@ -24,6 +32,7 @@ public partial class HomePage : Controls.CustomControl
     HomeViewModel homeViewModel;
     LeadViewModel LeadViewModel;
     CalendarViewModel CalendarViewModel;
+    private SignalRService _signalRService;
     #endregion
 
     #region Service
@@ -59,34 +68,85 @@ public partial class HomePage : Controls.CustomControl
         //tabHome.SelectedIndex = StaticMember.TabIndex;
     }
 
-    protected override void OnAppearing()
+    protected async override void OnAppearing()
     {
         base.OnAppearing();
 
-        //string num = Preferences.Default.Get("NotificationLead", "0");
-        //if(int.Parse(num) == 2)
-        //{
-        //    StaticMember.TabIndex = 2;
-        //}
-
-        //Preferences.Default.Remove("NotificationTabIndex"); // Clear the stored value
-
-        //if (StaticMember.TabIndex != tabHome.SelectedIndex)
-        //{
-        //    MainThread.BeginInvokeOnMainThread(() =>
-        //    {
-        //        tabHome.SelectedIndex = StaticMember.TabIndex; // Move to the correct tab
-        //        if (StaticMember.TabIndex == 2)
-        //        {
-        //            LeadView.BindingContext = LeadViewModel = new LeadViewModel(Rep, _service, homeViewModel._audioManager);
-        //        }
-        //    });
-        //}
+        await SignalRservice();
     }
 
-    //private bool isHandlingSelectionChange = false;
 
     #region Methods
+
+    public async Task SignalRservice()
+    {
+        if (_signalRService == null)
+        {
+            _signalRService = new SignalRService(_service);
+        }
+
+        // Logout
+        _signalRService.OnMessageReceivedLogout -= _signalRService_OnMessageReceivedLogout;
+        _signalRService.OnMessageReceivedLogout += _signalRService_OnMessageReceivedLogout;
+
+        // UpdateVersion
+        _signalRService.OnMessageReceivedUpdateVersion -= _signalRService_OnMessageReceivedUpdateVersion;
+        _signalRService.OnMessageReceivedUpdateVersion += _signalRService_OnMessageReceivedUpdateVersion;
+
+        await _signalRService.StartAsync();
+    }
+
+
+    // Logout
+    private async void _signalRService_OnMessageReceivedLogout(string GuidKey)
+    {
+        Device.BeginInvokeOnMainThread(async () =>
+        {
+            string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+            Preferences.Default.Clear();
+            await BlobCache.LocalMachine.InvalidateAll();
+            await BlobCache.LocalMachine.Vacuum();
+
+            await _signalRService.InvokeNotifyDisconnectyAsync(GuidKey);
+
+            Preferences.Default.Set("Lan", LangValueToKeep);
+            await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, StaticMember._audioManager)));
+            await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.MsgloggedOut, AppResources.msgOk);
+        });
+    }
+
+
+    // UpdateVersion
+    private async void _signalRService_OnMessageReceivedUpdateVersion(string GuidKey, string Name, string VersionNumber, string VersionBuild, string DescriptionEN, string DescriptionAR, string ReleaseDate)
+    {
+        Device.BeginInvokeOnMainThread(async () =>
+        {
+            UpdateVersionModel oUpdateVersionModel = new UpdateVersionModel
+            {
+                Name = Name,
+                VersionNumber = VersionNumber,
+                VersionBuild = VersionBuild,
+                Description = DescriptionEN,
+                DescriptionAr = DescriptionAR,
+                ReleaseDate = DateTime.Parse(ReleaseDate)
+            };
+
+            //await _signalRService.NotifyUpdatedVersionMobile(GuidKey);
+            await StaticMember.DeleteUserSession(Rep, _service);
+
+            string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+            Preferences.Default.Clear();
+            await BlobCache.LocalMachine.InvalidateAll();
+            await BlobCache.LocalMachine.Vacuum();
+
+            Preferences.Default.Set("Lan", LangValueToKeep);
+            await MopupService.Instance.PushAsync(new UpdateVersionPopup(oUpdateVersionModel));
+        });
+
+    }
+
+
+
     private void SfTabView_SelectionChanged(object sender, Syncfusion.Maui.TabView.TabSelectionChangedEventArgs e)
     {
         //if (isHandlingSelectionChange)

@@ -1,4 +1,5 @@
 ﻿using Cardrly.Mode_s.Account;
+using Cardrly.Models;
 using Cardrly.Models.Permision;
 
 namespace Cardrly.Mode_s.ApplicationUser
@@ -17,5 +18,6 @@ namespace Cardrly.Mode_s.ApplicationUser
         public bool EmailConfirmed { get; set; }
         public string AccountId { get; set; } = string.Empty;
         public AccountResponse? Account { get; set; }
+        public List<UpdateVersionModel> VersionAppMobile { get; set; } = [];
     }
 }

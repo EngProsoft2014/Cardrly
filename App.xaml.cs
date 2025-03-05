@@ -29,7 +29,6 @@ namespace Cardrly
         #region Service
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
-        private SignalRService _signalRService;
         public static IServiceProvider Services { get; private set; }
         #endregion
         int NavToSecurePage = 0;
@@ -118,10 +117,6 @@ namespace Cardrly
                 await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service));
                 return;
             }
-            else
-            {
-                await SignalRservice();
-            }
         }
 
         protected async override void OnResume()
@@ -133,15 +128,11 @@ namespace Cardrly
                 await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service));
                 return;
             }
-            // Ensure SignalR reconnects after coming from background
-            await SignalRservice();
-
         }
 
         protected async override void OnSleep()
         {
             base.OnSleep();
-            await SignalRNotservice();
         }
 
         void LoadSetting()
@@ -157,74 +148,6 @@ namespace Cardrly
                 CultureInfo cal = new CultureInfo("en");
                 TranslateExtension.Instance.SetCulture(cal);
             }
-        }
-
-
-        public async Task SignalRservice()
-        {
-            if (_signalRService == null)
-            {
-                _signalRService = new SignalRService(_service);
-            }
-
-            // Logout
-            _signalRService.OnMessageReceivedLogout -= _signalRService_OnMessageReceivedLogout;
-            _signalRService.OnMessageReceivedLogout += _signalRService_OnMessageReceivedLogout;
-
-            // UpdateVersion
-            _signalRService.OnMessageReceivedUpdateVersion -= _signalRService_OnMessageReceivedUpdateVersion;
-            _signalRService.OnMessageReceivedUpdateVersion += _signalRService_OnMessageReceivedUpdateVersion;
-
-            // Check if already connected
-            if (_signalRService.IsConnected == false)
-            {
-                await _signalRService.StartAsync();
-            }
-        }
-
-        public async Task SignalRNotservice()
-        {
-            if (_signalRService != null)
-            {
-                // Logout
-                _signalRService.OnMessageReceivedLogout -= _signalRService_OnMessageReceivedLogout;
-
-                // UpdateVersion
-                _signalRService.OnMessageReceivedUpdateVersion -= _signalRService_OnMessageReceivedUpdateVersion;
-
-                await _signalRService.Disconnect();
-
-                _signalRService = null; // Ensure it's fully disposed
-            }
-        }
-
-        // Logout
-        private async void _signalRService_OnMessageReceivedLogout(string GuidKey)
-        {
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                string LangValueToKeep = Preferences.Default.Get("Lan", "en");
-                Preferences.Default.Clear();
-                await BlobCache.LocalMachine.InvalidateAll();
-                await BlobCache.LocalMachine.Vacuum();
-
-                await _signalRService.InvokeNotifyDisconnectyAsync(GuidKey);
-
-                Preferences.Default.Set("Lan", LangValueToKeep);
-                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, StaticMember._audioManager)));
-                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.MsgloggedOut, AppResources.msgOk);
-            });
-        }
-
-
-        // UpdateVersion
-        private async void _signalRService_OnMessageReceivedUpdateVersion(string GuidKey, string VersionNumber, string Description, string RealseDate)
-        {
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-
-            });
-
         }
 
 

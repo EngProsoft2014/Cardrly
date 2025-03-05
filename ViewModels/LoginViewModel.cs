@@ -12,6 +12,10 @@ using Cardrly.Constants;
 using Plugin.Maui.Audio;
 using Cardrly.Resources.Lan;
 using Newtonsoft.Json;
+using Cardrly.Controls;
+using Cardrly.Pages.MainPopups;
+using Mopups.Services;
+using SkiaSharp;
 
 
 namespace Cardrly.ViewModels
@@ -70,23 +74,42 @@ namespace Cardrly.ViewModels
                         {
                             if (!string.IsNullOrEmpty(UserResponse?.Id))
                             {
-                                Controls.StaticMember.WayOfTab = 0;
+                                if (UserResponse.VersionAppMobile != null && UserResponse.VersionAppMobile.Count > 0)
+                                {
+                                    string currentVersion = VersionTracking.CurrentVersion;
+                                    string versionBuild = VersionTracking.CurrentBuild;
 
-                                Preferences.Default.Set(ApiConstants.userid, UserResponse.Id);
-                                Preferences.Default.Set(ApiConstants.email, UserResponse.Email);
-                                Preferences.Default.Set(ApiConstants.username, UserResponse.UserName);
-                                Preferences.Default.Set(ApiConstants.userPermision, JsonConvert.SerializeObject(UserResponse.Permissions));
-                                Preferences.Default.Set(ApiConstants.userCategory, UserResponse.UserCategory);
-                                Preferences.Default.Set(ApiConstants.AccountId, UserResponse.AccountId);
-                                Preferences.Default.Set(ApiConstants.AccountName, UserResponse.Account!.Name);
-                                Preferences.Default.Set(ApiConstants.ExpireDate, Convert.ToString(UserResponse.Account!.ExpireDateAcc));
+                                    if (DeviceInfo.Platform == DevicePlatform.Android)
+                                    {
+                                        var version = UserResponse.VersionAppMobile.Find(f => f.Name.ToLower() == "android");
 
-                                await BlobCache.LocalMachine.InsertObject(ServicesService.UserTokenServiceKey, UserResponse?.Token, DateTimeOffset.Now.AddMinutes(43200));
+                                        if (currentVersion != version.VersionNumber.Trim() || versionBuild != version.VersionBuild.Trim())
+                                        {
+                                            await MopupService.Instance.PushAsync(new UpdateVersionPopup(version));
+                                        }
+                                        else
+                                        {
+                                            await SetData(UserResponse);
+                                            var page = new HomePage(new HomeViewModel(Rep, _service, _audioManager), Rep, _service);
+                                            await App.Current!.MainPage!.Navigation.PushAsync(page);
+                                        }
+                                    }
+                                    else if (DeviceInfo.Platform == DevicePlatform.iOS)
+                                    {
+                                        var version = UserResponse.VersionAppMobile.Find(f => f.Name.ToLower() == "ios");
 
-                                Preferences.Default.Set(ApiConstants.GuidKey, Controls.StaticMember.GuidKeyFromToken(UserResponse?.Token)); 
-
-                                var page = new HomePage(new HomeViewModel(Rep, _service, _audioManager), Rep, _service);
-                                await App.Current!.MainPage!.Navigation.PushAsync(page);
+                                        if (currentVersion != version.VersionNumber.Trim() || versionBuild != version.VersionBuild.Trim())
+                                        {
+                                            await MopupService.Instance.PushAsync(new UpdateVersionPopup(version));
+                                        }
+                                        else
+                                        {
+                                            await SetData(UserResponse);
+                                            var page = new HomePage(new HomeViewModel(Rep, _service, _audioManager), Rep, _service);
+                                            await App.Current!.MainPage!.Navigation.PushAsync(page);
+                                        }
+                                    }
+                                }                    
                             }
                         }
                         else
@@ -110,6 +133,24 @@ namespace Cardrly.ViewModels
                 UserDialogs.Instance.HideHud();
             }
             IsEnable = true;
+        }
+
+        public async Task SetData(ApplicationUserResponse userResponse)
+        {
+            StaticMember.WayOfTab = 0;
+
+            Preferences.Default.Set(ApiConstants.userid, userResponse.Id);
+            Preferences.Default.Set(ApiConstants.email, userResponse.Email);
+            Preferences.Default.Set(ApiConstants.username, userResponse.UserName);
+            Preferences.Default.Set(ApiConstants.userPermision, JsonConvert.SerializeObject(userResponse.Permissions));
+            Preferences.Default.Set(ApiConstants.userCategory, userResponse.UserCategory);
+            Preferences.Default.Set(ApiConstants.AccountId, userResponse.AccountId);
+            Preferences.Default.Set(ApiConstants.AccountName, userResponse.Account!.Name);
+            Preferences.Default.Set(ApiConstants.ExpireDate, Convert.ToString(userResponse.Account!.ExpireDateAcc));
+
+            await BlobCache.LocalMachine.InsertObject(ServicesService.UserTokenServiceKey, userResponse?.Token, DateTimeOffset.Now.AddMinutes(43200));
+
+            Preferences.Default.Set(ApiConstants.GuidKey, Controls.StaticMember.GuidKeyFromToken(userResponse?.Token));
         }
         #endregion
     }
