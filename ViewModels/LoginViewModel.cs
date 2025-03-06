@@ -70,7 +70,7 @@ namespace Cardrly.ViewModels
                     UserResponse = json.Item1;
                     if(UserResponse.Account != null)
                     {
-                        if (UserResponse.Account.ExpireDateAcc > DateOnly.FromDateTime(DateTime.Now))
+                        if (UserResponse.Account.ExpireDateAcc > DateOnly.FromDateTime(DateTime.UtcNow))
                         {
                             if (!string.IsNullOrEmpty(UserResponse?.Id))
                             {
