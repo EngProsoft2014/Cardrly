@@ -55,7 +55,7 @@ namespace Cardrly
                 if (!string.IsNullOrEmpty(Stringdate))
                 {
                     DateOnly date = DateOnly.Parse(Stringdate);
-                    if (string.IsNullOrEmpty(Stringdate) || date > DateOnly.FromDateTime(DateTime.UtcNow))
+                    if (string.IsNullOrEmpty(AccountId) || string.IsNullOrEmpty(Stringdate) || date > DateOnly.FromDateTime(DateTime.UtcNow))
                     {
                         Preferences.Default.Clear();
                         MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
@@ -127,6 +127,38 @@ namespace Cardrly
                 // Connection to internet is Not available
                 await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service));
                 return;
+            }
+            else
+            {
+                string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
+                if (!string.IsNullOrEmpty(Stringdate))
+                {
+                    DateOnly date = DateOnly.Parse(Stringdate);
+                    if (string.IsNullOrEmpty(Stringdate) || date > DateOnly.FromDateTime(DateTime.UtcNow))
+                    {
+                        string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+                        Preferences.Default.Clear();
+                        await BlobCache.LocalMachine.InvalidateAll();
+                        await BlobCache.LocalMachine.Vacuum();
+
+                        Preferences.Default.Set("Lan", LangValueToKeep);
+                        await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, StaticMember._audioManager)));
+                    }
+                    else
+                    {
+                        await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, StaticMember._audioManager), Rep, _service));
+                    }
+                }
+                else
+                {
+                    string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+                    Preferences.Default.Clear();
+                    await BlobCache.LocalMachine.InvalidateAll();
+                    await BlobCache.LocalMachine.Vacuum();
+
+                    Preferences.Default.Set("Lan", LangValueToKeep);
+                    await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, StaticMember._audioManager)));
+                }
             }
         }
 
