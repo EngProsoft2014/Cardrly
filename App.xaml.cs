@@ -55,7 +55,7 @@ namespace Cardrly
                 if (!string.IsNullOrEmpty(Stringdate))
                 {
                     DateOnly date = DateOnly.Parse(Stringdate);
-                    if (string.IsNullOrEmpty(Stringdate) || date >= DateOnly.FromDateTime(DateTime.Now))
+                    if (string.IsNullOrEmpty(Stringdate) || date > DateOnly.FromDateTime(DateTime.Now))
                     {
                         Preferences.Default.Clear();
                         MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
