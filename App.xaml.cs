@@ -144,10 +144,6 @@ namespace Cardrly
                         Preferences.Default.Set("Lan", LangValueToKeep);
                         await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, StaticMember._audioManager)));
                     }
-                    else
-                    {
-                        await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, StaticMember._audioManager), Rep, _service));
-                    }
                 }
                 else
                 {
