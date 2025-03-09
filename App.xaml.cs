@@ -54,8 +54,8 @@ namespace Cardrly
                 string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
                 if (!string.IsNullOrEmpty(Stringdate))
                 {
-                    DateOnly date = DateOnly.Parse(Stringdate);
-                    if (string.IsNullOrEmpty(AccountId) || string.IsNullOrEmpty(Stringdate) || date > DateOnly.FromDateTime(DateTime.UtcNow))
+                    DateOnly ExpireDate = DateOnly.Parse(Stringdate);
+                    if (string.IsNullOrEmpty(AccountId) || string.IsNullOrEmpty(Stringdate) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow))
                     {
                         Preferences.Default.Clear();
                         MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
@@ -133,8 +133,8 @@ namespace Cardrly
                 string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
                 if (!string.IsNullOrEmpty(Stringdate))
                 {
-                    DateOnly date = DateOnly.Parse(Stringdate);
-                    if (string.IsNullOrEmpty(Stringdate) || date > DateOnly.FromDateTime(DateTime.UtcNow))
+                    DateOnly ExpireDate = DateOnly.Parse(Stringdate);
+                    if (string.IsNullOrEmpty(Stringdate) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow))
                     {
                         string LangValueToKeep = Preferences.Default.Get("Lan", "en");
                         Preferences.Default.Clear();

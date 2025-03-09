@@ -81,7 +81,7 @@
                                 </DataTrigger>
                             </VerticalStackLayout.Triggers>
                         </VerticalStackLayout>
-                        <!--Password-->
+                        <!--Password--><!--
                         <VerticalStackLayout HorizontalOptions="FillAndExpand">
                             <Label Text="{x:Static res:AppResources.plcPassword}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                             <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Black" HeightRequest="40">
@@ -93,7 +93,7 @@ Text="{Binding Request.Password}"></Entry>
                                     <Setter Property="IsVisible" Value="False"></Setter>
                                 </DataTrigger>
                             </VerticalStackLayout.Triggers>
-                        </VerticalStackLayout>
+                        </VerticalStackLayout>-->
                         <!--Card Name-->
                         <VerticalStackLayout HorizontalOptions="FillAndExpand" Margin="0,0,0,0" >
                             <Label Text="{x:Static res:AppResources.lblCardName}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
