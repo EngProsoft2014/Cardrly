@@ -145,16 +145,6 @@ namespace Cardrly
                         await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, StaticMember._audioManager)));
                     }
                 }
-                else
-                {
-                    string LangValueToKeep = Preferences.Default.Get("Lan", "en");
-                    Preferences.Default.Clear();
-                    await BlobCache.LocalMachine.InvalidateAll();
-                    await BlobCache.LocalMachine.Vacuum();
-
-                    Preferences.Default.Set("Lan", LangValueToKeep);
-                    await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, StaticMember._audioManager)));
-                }
             }
         }
 
