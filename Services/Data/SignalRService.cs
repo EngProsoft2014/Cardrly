@@ -30,6 +30,12 @@ namespace Cardrly.Services.Data
                 {
                     options.AccessTokenProvider = async () => await _service.UserToken();
                     options.Transports = HttpTransportType.WebSockets; // You can choose WebSockets or other transports
+
+                    // Add custom headers
+                    options.Headers["DeviceType"] = "Mobile";
+                    options.Headers["OS"] = DeviceInfo.Platform.ToString();
+                    options.Headers["CurrentVersion"] = AppInfo.VersionString;
+                    options.Headers["BuildVersion"] = AppInfo.BuildString;
                 })
                 .WithAutomaticReconnect()
                 .Build();
@@ -55,12 +61,19 @@ namespace Cardrly.Services.Data
 
                 if(!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(GuidKey) && !string.IsNullOrEmpty(Id) && GuidKey == Id)
                 {
-                    string currentVersion = VersionTracking.CurrentVersion;
-                    string versionBuild = VersionTracking.CurrentBuild;
-                    if ((Name.ToLower() == "android" && DeviceInfo.Platform == DevicePlatform.Android) || (Name.ToLower() == "ios" && DeviceInfo.Platform == DevicePlatform.iOS))
+                    int VersionNumberParse = int.Parse(VersionNumber.Trim().Replace(".", ""));
+                    int VersionBuildParse = int.Parse(VersionBuild.Trim().Replace(".", ""));
+
+                    int currentVersionParse = int.Parse(AppInfo.VersionString.Replace(".", ""));
+                    int currentBuildParse = int.Parse(AppInfo.BuildString.Replace(".", ""));
+
+                    if ((Name.ToLower() == "android" && DeviceInfo.Platform == DevicePlatform.Android) && (currentBuildParse < VersionBuildParse))
                     {
-                        if (currentVersion != VersionNumber.Trim() || versionBuild != VersionBuild.Trim())
-                            OnMessageReceivedUpdateVersion?.Invoke(GuidKey, Name, VersionNumber, VersionBuild, DescriptionEN, DescriptionAR, ReleaseDate);
+                        OnMessageReceivedUpdateVersion?.Invoke(GuidKey, Name, VersionNumber, VersionBuild, DescriptionEN, DescriptionAR, ReleaseDate);
+                    }
+                    else if((Name.ToLower() == "ios" && DeviceInfo.Platform == DevicePlatform.iOS) && (currentVersionParse < VersionNumberParse))
+                    {
+                        OnMessageReceivedUpdateVersion?.Invoke(GuidKey, Name, VersionNumber, VersionBuild, DescriptionEN, DescriptionAR, ReleaseDate);
                     }
                 }
             });

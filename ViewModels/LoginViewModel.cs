@@ -16,6 +16,7 @@ using Cardrly.Controls;
 using Cardrly.Pages.MainPopups;
 using Mopups.Services;
 using SkiaSharp;
+using Cardrly.Models;
 
 
 namespace Cardrly.ViewModels
@@ -76,37 +77,59 @@ namespace Cardrly.ViewModels
                             {
                                 if (UserResponse.VersionAppMobile != null && UserResponse.VersionAppMobile.Count > 0)
                                 {
-                                    string currentVersion = VersionTracking.CurrentVersion;
-                                    string versionBuild = VersionTracking.CurrentBuild;
+                                    int currentVersionParse = int.Parse(AppInfo.VersionString.Replace(".", ""));
+                                    int currentBuildParse = int.Parse(AppInfo.BuildString.Replace(".", ""));
 
+                                    //Android
                                     if (DeviceInfo.Platform == DevicePlatform.Android)
                                     {
                                         var version = UserResponse.VersionAppMobile.Find(f => f.Name.ToLower() == "android");
 
-                                        if (currentVersion != version.VersionNumber.Trim() || versionBuild != version.VersionBuild.Trim())
+                                        if(version != null)
                                         {
-                                            await MopupService.Instance.PushAsync(new UpdateVersionPopup(version));
+                                            int VersionNumberParse = int.Parse(version!.VersionNumber.Trim().Replace(".", ""));
+                                            int VersionBuildParse = int.Parse(version!.VersionBuild.Trim().Replace(".", ""));
+
+                                            if (currentBuildParse < VersionBuildParse)
+                                            {
+                                                await MopupService.Instance.PushAsync(new UpdateVersionPopup(version));
+                                            }
+                                            else
+                                            {
+                                                await SetData(UserResponse);
+                                                var page = new HomePage(new HomeViewModel(Rep, _service, _audioManager), Rep, _service);
+                                                await App.Current!.MainPage!.Navigation.PushAsync(page);
+                                            }
                                         }
                                         else
                                         {
-                                            await SetData(UserResponse);
-                                            var page = new HomePage(new HomeViewModel(Rep, _service, _audioManager), Rep, _service);
-                                            await App.Current!.MainPage!.Navigation.PushAsync(page);
+                                            await MopupService.Instance.PushAsync(new UpdateVersionPopup(new UpdateVersionModel()));
                                         }
+
                                     }
-                                    else if (DeviceInfo.Platform == DevicePlatform.iOS)
+                                    else if (DeviceInfo.Platform == DevicePlatform.iOS) // iOS
                                     {
                                         var version = UserResponse.VersionAppMobile.Find(f => f.Name.ToLower() == "ios");
 
-                                        if (currentVersion != version.VersionNumber.Trim() || versionBuild != version.VersionBuild.Trim())
+                                        if (version != null)
                                         {
-                                            await MopupService.Instance.PushAsync(new UpdateVersionPopup(version));
+                                            int VersionNumberParse = int.Parse(version!.VersionNumber.Trim().Replace(".", ""));
+                                            int VersionBuildParse = int.Parse(version!.VersionBuild.Trim().Replace(".", ""));
+
+                                            if (currentVersionParse < VersionNumberParse)
+                                            {
+                                                await MopupService.Instance.PushAsync(new UpdateVersionPopup(version));
+                                            }
+                                            else
+                                            {
+                                                await SetData(UserResponse);
+                                                var page = new HomePage(new HomeViewModel(Rep, _service, _audioManager), Rep, _service);
+                                                await App.Current!.MainPage!.Navigation.PushAsync(page);
+                                            }
                                         }
                                         else
                                         {
-                                            await SetData(UserResponse);
-                                            var page = new HomePage(new HomeViewModel(Rep, _service, _audioManager), Rep, _service);
-                                            await App.Current!.MainPage!.Navigation.PushAsync(page);
+                                            await MopupService.Instance.PushAsync(new UpdateVersionPopup(new UpdateVersionModel()));
                                         }
                                     }
                                 }                    

@@ -597,8 +597,7 @@
                                             </StackLayout.Triggers>
                                         </StackLayout>
                                         <!--Expender-->
-                                        <Border BackgroundColor="#FF7F3E" Padding="5" VerticalOptions="End" HorizontalOptions="End" 
-        Margin="20">
+                                        <Border BackgroundColor="#FF7F3E" Stroke="Transparent" Padding="3" VerticalOptions="End" HorizontalOptions="End" Margin="20">
                                             <xct:Expander>
                                                 <xct:Expander.Header>
                                                     <Image Margin="8">
@@ -632,7 +631,7 @@
                                                 <RoundRectangle CornerRadius="{OnPlatform Android=100, iOS=23}"></RoundRectangle>
                                             </Border.StrokeShape>
                                             <Border.Shadow>
-                                                <Shadow Offset="1,2" Brush="{OnPlatform Android=Black, iOS=Gray}" Radius="5" Opacity="1"></Shadow>
+                                                <Shadow Offset="1,2" Brush="{OnPlatform Android=Gray, iOS=LightGray}" Radius="5" Opacity="1"></Shadow>
                                             </Border.Shadow>
                                         </Border>
                                     </Grid>

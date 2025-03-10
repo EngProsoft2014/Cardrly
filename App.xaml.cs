@@ -49,29 +49,26 @@ namespace Cardrly
                 GlobalExceptionHandler.RegisterGlobalExceptionHandlers();
                 InitializeComponent();
                 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(ApiConstants.syncFusionLicence);
+
+                string v = AppInfo.VersionString;
+                string b = AppInfo.BuildString;
+
                 // Subscribe to security status changes
                 string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
                 string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
-                if (!string.IsNullOrEmpty(Stringdate))
-                {
-                    bool IsExpireDate = DateOnly.TryParseExact(Stringdate, "M/d/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly ExpireDate);
-                    if (string.IsNullOrEmpty(AccountId) || string.IsNullOrEmpty(Stringdate) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow) || IsExpireDate == false)
-                    {
-                        Preferences.Default.Clear();
-                        MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
-                    }
-                    else
-                    {
-                        MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, audioManager), Rep, _service));
-                    }
-                }
-                else
+
+                bool IsExpireDate = DateOnly.TryParseExact(Stringdate, "M/d/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly ExpireDate);
+                if (string.IsNullOrEmpty(AccountId) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow) || IsExpireDate == false)
                 {
                     Preferences.Default.Clear();
                     MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
                 }
-                Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+                else
+                {
+                    MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, audioManager), Rep, _service));
+                }
 
+                Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             }
             catch (Exception ex)
             {
