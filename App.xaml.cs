@@ -55,7 +55,7 @@ namespace Cardrly
                 if (!string.IsNullOrEmpty(Stringdate))
                 {
                     bool IsExpireDate = DateOnly.TryParseExact(Stringdate, "M/d/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly ExpireDate);
-                    if (string.IsNullOrEmpty(AccountId) || string.IsNullOrEmpty(Stringdate) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow))
+                    if (string.IsNullOrEmpty(AccountId) || string.IsNullOrEmpty(Stringdate) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow) || IsExpireDate == false)
                     {
                         Preferences.Default.Clear();
                         MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
@@ -75,7 +75,8 @@ namespace Cardrly
             }
             catch (Exception ex)
             {
-                // Maui Team 
+                Preferences.Default.Clear();
+                MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
             }
         }
 
