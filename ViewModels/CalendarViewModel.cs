@@ -4,6 +4,7 @@ using Cardrly.Enums;
 using Cardrly.Helpers;
 using Cardrly.Mode_s.Card;
 using Cardrly.Models.Calendar;
+using Cardrly.Pages;
 using Cardrly.Pages.MainPopups;
 using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
@@ -118,6 +119,11 @@ namespace Cardrly.ViewModels
                 await toast.Show();
             }
 
+        }
+        [RelayCommand]
+        public async Task AddEventClick()
+        {
+            await App.Current!.MainPage!.Navigation.PushAsync(new AddEventPage(new AddEventViewModel(Rep,_service)));
         }
         #endregion
 

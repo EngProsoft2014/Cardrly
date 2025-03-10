@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Controls="clr-namespace:Cardrly.Controls"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+             x:Class="Cardrly.Pages.AddEventPage"
+             Title="AddEventPage">
+
+    <StackLayout Margin="20">
+        <!--Header-->
+        <StackLayout Orientation="Horizontal">
+            <Image>
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="Add Event" FontAutoScalingEnabled="False" TextColor="Black" FontSize="18" FontAttributes="Bold"
+                   HorizontalOptions="CenterAndExpand"></Label>
+        </StackLayout>
+        <ScrollView VerticalOptions="FillAndExpand">
+            <StackLayout VerticalOptions="FillAndExpand" Spacing="0">
+                <!--Summary-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                    <Label Text="Summary" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                               Text="{Binding Request.Summary}"></Entry>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Location-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                    <Label Text="Location" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" 
+                               Text="{Binding Request.Location}"></Entry>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Start Date-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                    <Label Text="Start Date" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                        <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></DatePicker>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Start Time-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                    <Label Text="Start Time" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                        <TimePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></TimePicker>
+                    </Border>
+                </VerticalStackLayout>
+                <!--End Date-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                    <Label Text="End Date" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                        <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></DatePicker>
+                    </Border>
+                </VerticalStackLayout>
+                <!--End Time-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                    <Label Text="End Time" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                        <TimePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></TimePicker>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Attendees-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                    <Label Text="Attendees" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" 
+                               Text="{Binding Request.Attendees}"></Entry>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Description-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                    <Label Text="Description" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="120">
+                        <Editor Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" 
+                                Text="{Binding Request.Description}"></Editor>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Conference-->
+                <HorizontalStackLayout VerticalOptions="End" Spacing="10">
+                    <CheckBox Color="#FF7F3E" IsChecked="{Binding Request.ConferenceData}"/>
+                    <Label Text="Conference" TextColor="Black" FontSize="14" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <!--Save Button-->
+                <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnSave}" FontSize="16" FontAttributes="Bold" Margin="0,20,0,20"
+                         BackgroundColor="#FF7F3E" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"
+                         Command="{Binding SaveClickCommand}" CommandParameter="{Binding Request}"></Button>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+
+</Controls:CustomControl>

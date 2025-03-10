@@ -54,7 +54,7 @@ namespace Cardrly
                 string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
                 if (!string.IsNullOrEmpty(Stringdate))
                 {
-                    DateOnly ExpireDate = DateOnly.Parse(Stringdate);
+                    bool IsExpireDate = DateOnly.TryParseExact(Stringdate, "M/d/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly ExpireDate);
                     if (string.IsNullOrEmpty(AccountId) || string.IsNullOrEmpty(Stringdate) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow))
                     {
                         Preferences.Default.Clear();
