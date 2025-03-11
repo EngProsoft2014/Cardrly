@@ -1,24 +1,38 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Cardrly.ViewModels
 {
     public partial class TimeZoneViewModel : BaseViewModel
     {
         [ObservableProperty]
-        List<string> timeZones = new List<string>();
+        List<string> allTimeZones = new List<string>();
+        [ObservableProperty]
+        List<string> viewLst = new List<string>();
+        [ObservableProperty]
+        int numberOfPage = 1;
         public TimeZoneViewModel()
         {
             Init();
         }
-
+        [RelayCommand]
+        async Task GetLoadMore()
+        {
+            NumberOfPage = NumberOfPage + 1;
+            ViewLst.AddRange(AllTimeZones.Skip((NumberOfPage - 1) * 20).Take(NumberOfPage * 20).ToList());
+        }
+        [RelayCommand]
+        async Task SelectedItemClick(string item)
+        {
+            if (!string.IsNullOrEmpty(item))
+            {
+                MessagingCenter.Send(this, "TimeZoneSelected", item);
+                await App.Current!.MainPage!.Navigation.PopAsync();
+            }
+        }
         void Init()
         {
-            TimeZones = new List<string>
+            AllTimeZones = new List<string>
     {
         "Africa/Abidjan",
         "Africa/Accra",
@@ -493,6 +507,7 @@ namespace Cardrly.ViewModels
         "WET",
         "Zulu"
 };
+            ViewLst = AllTimeZones.Take(20).ToList();
         }
 
     }

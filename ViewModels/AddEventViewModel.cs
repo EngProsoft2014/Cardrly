@@ -124,6 +124,13 @@ namespace Cardrly.ViewModels
             }
             UserDialogs.Instance.HideHud();
             IsEnable = true;
+            MessagingCenter.Subscribe<TimeZoneViewModel, string>(this, "TimeZoneSelected", async (sender, message) =>
+            {
+                if (message != null)
+                {
+                    Request.TimeZone = message;
+                }
+            });
         }
 
         public async Task GetAllCards()

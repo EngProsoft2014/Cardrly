@@ -4,9 +4,16 @@ namespace Cardrly.Pages;
 
 public partial class TimeZonePage : Controls.CustomControl
 {
-	public TimeZonePage(TimeZoneViewModel model)
+    TimeZoneViewModel Model;
+    public TimeZonePage(TimeZoneViewModel model)
 	{
 		InitializeComponent();
 		this.BindingContext = model;
+        Model = model;
+    }
+
+    private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        Calc.ItemsSource = Model.AllTimeZones.Where(x => x.ToLower().Contains(e.NewTextValue.ToLower()));
     }
 }

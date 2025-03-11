@@ -49,10 +49,6 @@ namespace Cardrly
                 GlobalExceptionHandler.RegisterGlobalExceptionHandlers();
                 InitializeComponent();
                 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(ApiConstants.syncFusionLicence);
-
-                string v = AppInfo.VersionString;
-                string b = AppInfo.BuildString;
-
                 // Subscribe to security status changes
                 string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
                 string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
@@ -131,7 +127,7 @@ namespace Cardrly
                 string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
                 if (!string.IsNullOrEmpty(Stringdate))
                 {
-                    DateOnly ExpireDate = DateOnly.Parse(Stringdate);
+                    bool IsExpireDate = DateOnly.TryParseExact(Stringdate, "M/d/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly ExpireDate);
                     if (string.IsNullOrEmpty(Stringdate) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow))
                     {
                         string LangValueToKeep = Preferences.Default.Get("Lan", "en");
