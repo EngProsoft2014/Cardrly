@@ -123,7 +123,7 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         public async Task AddEventClick()
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new AddEventPage(new AddEventViewModel(Rep,_service)));
+            await App.Current!.MainPage!.Navigation.PushAsync(new AddEventPage(new AddEventViewModel(Rep,_service,CalendarTypes)));
         }
         #endregion
 
@@ -139,6 +139,14 @@ namespace Cardrly.ViewModels
             //await UpComingClick();
             UserDialogs.Instance.HideHud();
             IsEnable = true;
+            MessagingCenter.Subscribe<AddEventViewModel, CardResponse>(this, "AddEvent", async (sender, message) =>
+            {
+                if (message != null)
+                {
+                    SelectedCard = message;
+                    await GetGmailData();
+                }
+            });
         }
         public async Task GetAllCards()
         {

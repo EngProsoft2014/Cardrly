@@ -186,6 +186,9 @@
   <data name="Info" xml:space="preserve">
     <value>بيانات</value>
   </data>
+  <data name="lblEndTime" xml:space="preserve">
+    <value>وقت النهاية</value>
+  </data>
   <data name="lbl1day" xml:space="preserve">
     <value>يوم 1</value>
   </data>
@@ -290,6 +293,9 @@
   </data>
   <data name="lblEmail" xml:space="preserve">
     <value>البريد الإلكتروني</value>
+  </data>
+  <data name="lblEndDate" xml:space="preserve">
+    <value>تاريخ النهاية</value>
   </data>
   <data name="lblEvent Name" xml:space="preserve">
     <value>اسم الحدث</value>
@@ -423,8 +429,17 @@
   <data name="lblStarRecording" xml:space="preserve">
     <value>بدء التسجيل</value>
   </data>
+  <data name="lblStartDate" xml:space="preserve">
+    <value>تاريخ البداية</value>
+  </data>
+  <data name="lblStartTime" xml:space="preserve">
+    <value>وقت البداية</value>
+  </data>
   <data name="lblSubscriptions" xml:space="preserve">
     <value>الاشتراكات</value>
+  </data>
+  <data name="lblSummary" xml:space="preserve">
+    <value>موجز</value>
   </data>
   <data name="lblTakePhoto" xml:space="preserve">
     <value>التقط الصورة</value>
@@ -519,6 +534,9 @@
   <data name="msgErrorduringspeechrecognition" xml:space="preserve">
     <value>خطأ أثناء التعرف على الكلام:</value>
   </data>
+  <data name="msgErrorinstartandenddate" xml:space="preserve">
+    <value>خطأ في تاريخ البداية والنهاية</value>
+  </data>
   <data name="msgFailedToChangeStatus" xml:space="preserve">
     <value>فشل في تغيير الحالة.</value>
   </data>
@@ -527,6 +545,9 @@
   </data>
   <data name="msgFRComment" xml:space="preserve">
     <value>الحقل المطلوب : التعليق</value>
+  </data>
+  <data name="msgFRDescription" xml:space="preserve">
+    <value>الحقل المطلوب : الوصف</value>
   </data>
   <data name="msgFREmail" xml:space="preserve">
     <value>الحقل المطلوب : البريد الإلكتروني</value>
@@ -537,11 +558,17 @@
   <data name="msgFRLink" xml:space="preserve">
     <value>الحقل المطلوب : الرابط</value>
   </data>
+  <data name="msgFRLocation" xml:space="preserve">
+    <value>الحقل المطلوب : الموقع</value>
+  </data>
   <data name="msgFromDateShouldbeStartFromNow" xml:space="preserve">
     <value>يجب أن يبدأ تاريخ "من" من الآن</value>
   </data>
   <data name="msgFRPassword" xml:space="preserve">
     <value>الحقل المطلوب : كلمة المرور</value>
+  </data>
+  <data name="msgFRSummary" xml:space="preserve">
+    <value>الحقل المطلوب : الملخص</value>
   </data>
   <data name="msgFRUserName" xml:space="preserve">
     <value>الحقل المطلوب : اسم المستخدم</value>
@@ -701,5 +728,17 @@
   </data>
   <data name="Your_Token_expired_Please_Enter_Your_Password" xml:space="preserve">
     <value>انتهت صلاحية الرمز الخاص بك، يرجى إدخال كلمة المرور الخاصة بك</value>
+  </data>
+  <data name="lblAttendees" xml:space="preserve">
+    <value>الحضور</value>
+  </data>
+  <data name="lblDescription" xml:space="preserve">
+    <value>الوصف</value>
+  </data>
+  <data name="lblConference" xml:space="preserve">
+    <value>مؤتمر</value>
+  </data>
+  <data name="lblAddEvent" xml:space="preserve">
+    <value>إضافة حدث</value>
   </data>
 </root>

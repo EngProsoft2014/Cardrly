@@ -367,6 +367,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Event.
+        /// </summary>
+        internal static string lblAddEvent {
+            get {
+                return ResourceManager.GetString("lblAddEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address.
         /// </summary>
         internal static string lblAddress {
@@ -390,6 +399,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblAnotherUpgrade {
             get {
                 return ResourceManager.GetString("lblAnotherUpgrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attendees.
+        /// </summary>
+        internal static string lblAttendees {
+            get {
+                return ResourceManager.GetString("lblAttendees", resourceCulture);
             }
         }
         
@@ -529,6 +547,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Conference.
+        /// </summary>
+        internal static string lblConference {
+            get {
+                return ResourceManager.GetString("lblConference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact.
         /// </summary>
         internal static string lblContact {
@@ -565,6 +592,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string lblDescription {
+            get {
+                return ResourceManager.GetString("lblDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Photo.
         /// </summary>
         internal static string lblEdit_Photo {
@@ -579,6 +615,24 @@ namespace Cardrly.Resources.Lan {
         internal static string lblEmail {
             get {
                 return ResourceManager.GetString("lblEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Date.
+        /// </summary>
+        internal static string lblEndDate {
+            get {
+                return ResourceManager.GetString("lblEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Time.
+        /// </summary>
+        internal static string lblEndTime {
+            get {
+                return ResourceManager.GetString("lblEndTime", resourceCulture);
             }
         }
         
@@ -979,11 +1033,38 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start Date.
+        /// </summary>
+        internal static string lblStartDate {
+            get {
+                return ResourceManager.GetString("lblStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Time.
+        /// </summary>
+        internal static string lblStartTime {
+            get {
+                return ResourceManager.GetString("lblStartTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Subscriptions.
         /// </summary>
         internal static string lblSubscriptions {
             get {
                 return ResourceManager.GetString("lblSubscriptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Summary.
+        /// </summary>
+        internal static string lblSummary {
+            get {
+                return ResourceManager.GetString("lblSummary", resourceCulture);
             }
         }
         
@@ -1267,6 +1348,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error in start and end date.
+        /// </summary>
+        internal static string msgErrorinstartandenddate {
+            get {
+                return ResourceManager.GetString("msgErrorinstartandenddate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed To Change Status..
         /// </summary>
         internal static string msgFailedToChangeStatus {
@@ -1290,6 +1380,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgFRComment {
             get {
                 return ResourceManager.GetString("msgFRComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Required : Description.
+        /// </summary>
+        internal static string msgFRDescription {
+            get {
+                return ResourceManager.GetString("msgFRDescription", resourceCulture);
             }
         }
         
@@ -1321,6 +1420,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Field Required : Location.
+        /// </summary>
+        internal static string msgFRLocation {
+            get {
+                return ResourceManager.GetString("msgFRLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;From&quot; Date Should be Start From Now.
         /// </summary>
         internal static string msgFromDateShouldbeStartFromNow {
@@ -1335,6 +1443,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgFRPassword {
             get {
                 return ResourceManager.GetString("msgFRPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Required : Summary.
+        /// </summary>
+        internal static string msgFRSummary {
+            get {
+                return ResourceManager.GetString("msgFRSummary", resourceCulture);
             }
         }
         

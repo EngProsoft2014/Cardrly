@@ -22,14 +22,49 @@
                     <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
             </Image>
-            <Label Text="Add Event" FontAutoScalingEnabled="False" TextColor="Black" FontSize="18" FontAttributes="Bold"
+            <Label Text="{x:Static res:AppResources.lblAddEvent}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="18" FontAttributes="Bold"
                    HorizontalOptions="CenterAndExpand"></Label>
         </StackLayout>
         <ScrollView VerticalOptions="FillAndExpand">
-            <StackLayout VerticalOptions="FillAndExpand" Spacing="0">
+            <StackLayout VerticalOptions="FillAndExpand" Spacing="0" Margin="0,15,0,0">
+                <!--Provider-->
+                <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
+                    <Label Text="{x:Static res:AppResources.lblCard}" TextColor="Gray" FontSize="13"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" 
+                            HeightRequest="40" Grid.Column="0" VerticalOptions="EndAndExpand">
+                        <Picker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemsSource="{Binding CalendarTypes}"
+                                ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCalendarType}"></Picker>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Select Card-->
+                <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
+                    <Label Text="{x:Static res:AppResources.lblCard}" TextColor="Gray" FontSize="13"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
+                        <Picker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding CardName}"
+                                ItemsSource="{Binding CardLst}">
+                            <Picker.Triggers>
+                                <DataTrigger TargetType="Picker" Binding="{Binding IsFoundCards}" Value="true">
+                                    <Setter Property="SelectedItem" Value='{Binding SelectedCard}'></Setter>
+                                </DataTrigger>
+                            </Picker.Triggers>
+                        </Picker>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Time Zone-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                    <Label Text="{x:Static res:AppResources.lblTimeZone}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                               Text="{Binding Request.TimeZone}" IsReadOnly="True">
+                            <Entry.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TimeZoneClickCommand}"></TapGestureRecognizer>
+                            </Entry.GestureRecognizers>
+                        </Entry>
+                    </Border>
+                </VerticalStackLayout>
                 <!--Summary-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                    <Label Text="Summary" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Label Text="{x:Static res:AppResources.lblSummary}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                     <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                                Text="{Binding Request.Summary}"></Entry>
@@ -37,7 +72,7 @@
                 </VerticalStackLayout>
                 <!--Location-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                    <Label Text="Location" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Label Text="{x:Static res:AppResources.lblLocation}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                     <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" 
                                Text="{Binding Request.Location}"></Entry>
@@ -45,35 +80,35 @@
                 </VerticalStackLayout>
                 <!--Start Date-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                    <Label Text="Start Date" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Label Text="{x:Static res:AppResources.lblStartDate}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                     <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
-                        <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></DatePicker>
+                        <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Date="{Binding Request.Start}"></DatePicker>
                     </Border>
                 </VerticalStackLayout>
                 <!--Start Time-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                    <Label Text="Start Time" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Label Text="{x:Static res:AppResources.lblStartTime}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                     <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
-                        <TimePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></TimePicker>
+                        <TimePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Time="{Binding StartTime}"></TimePicker>
                     </Border>
                 </VerticalStackLayout>
                 <!--End Date-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                    <Label Text="End Date" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Label Text="{x:Static res:AppResources.lblEndDate}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                     <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
-                        <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></DatePicker>
+                        <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Date="{Binding Request.End}"></DatePicker>
                     </Border>
                 </VerticalStackLayout>
                 <!--End Time-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                    <Label Text="End Time" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Label Text="{x:Static res:AppResources.lblEndTime}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                     <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
-                        <TimePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></TimePicker>
+                        <TimePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Time="{Binding EndTime}"></TimePicker>
                     </Border>
                 </VerticalStackLayout>
                 <!--Attendees-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                    <Label Text="Attendees" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Label Text="{x:Static res:AppResources.lblAttendees}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                     <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
                         <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" 
                                Text="{Binding Request.Attendees}"></Entry>
@@ -81,7 +116,7 @@
                 </VerticalStackLayout>
                 <!--Description-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                    <Label Text="Description" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Label Text="{x:Static res:AppResources.lblDescription}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                     <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="120">
                         <Editor Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" 
                                 Text="{Binding Request.Description}"></Editor>
@@ -90,7 +125,7 @@
                 <!--Conference-->
                 <HorizontalStackLayout VerticalOptions="End" Spacing="10">
                     <CheckBox Color="#FF7F3E" IsChecked="{Binding Request.ConferenceData}"/>
-                    <Label Text="Conference" TextColor="Black" FontSize="14" VerticalOptions="Center" />
+                    <Label Text="{x:Static res:AppResources.lblConference}" TextColor="Black" FontSize="14" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <!--Save Button-->
                 <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnSave}" FontSize="16" FontAttributes="Bold" Margin="0,20,0,20"

@@ -186,6 +186,9 @@
   <data name="Info" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="lblEndTime" xml:space="preserve">
+    <value>End Time</value>
+  </data>
   <data name="lbl1day" xml:space="preserve">
     <value>1 day</value>
   </data>
@@ -290,6 +293,9 @@
   </data>
   <data name="lblEmail" xml:space="preserve">
     <value>Email</value>
+  </data>
+  <data name="lblEndDate" xml:space="preserve">
+    <value>End Date</value>
   </data>
   <data name="lblEvent Name" xml:space="preserve">
     <value>Event Name</value>
@@ -423,8 +429,17 @@
   <data name="lblStarRecording" xml:space="preserve">
     <value>Start Recording</value>
   </data>
+  <data name="lblStartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="lblStartTime" xml:space="preserve">
+    <value>Start Time</value>
+  </data>
   <data name="lblSubscriptions" xml:space="preserve">
     <value>Subscriptions</value>
+  </data>
+  <data name="lblSummary" xml:space="preserve">
+    <value>Summary</value>
   </data>
   <data name="lblTakePhoto" xml:space="preserve">
     <value>Take Photo</value>
@@ -519,6 +534,9 @@
   <data name="msgErrorduringspeechrecognition" xml:space="preserve">
     <value>Error during speech recognition:</value>
   </data>
+  <data name="msgErrorinstartandenddate" xml:space="preserve">
+    <value>Error in start and end date</value>
+  </data>
   <data name="msgFailedToChangeStatus" xml:space="preserve">
     <value>Failed To Change Status.</value>
   </data>
@@ -527,6 +545,9 @@
   </data>
   <data name="msgFRComment" xml:space="preserve">
     <value>Field Required : Comment</value>
+  </data>
+  <data name="msgFRDescription" xml:space="preserve">
+    <value>Field Required : Description</value>
   </data>
   <data name="msgFREmail" xml:space="preserve">
     <value>Field Required : Email</value>
@@ -537,11 +558,17 @@
   <data name="msgFRLink" xml:space="preserve">
     <value>Field Required : Link</value>
   </data>
+  <data name="msgFRLocation" xml:space="preserve">
+    <value>Field Required : Location</value>
+  </data>
   <data name="msgFromDateShouldbeStartFromNow" xml:space="preserve">
     <value>"From" Date Should be Start From Now</value>
   </data>
   <data name="msgFRPassword" xml:space="preserve">
     <value>Field Required : Password</value>
+  </data>
+  <data name="msgFRSummary" xml:space="preserve">
+    <value>Field Required : Summary</value>
   </data>
   <data name="msgFRUserName" xml:space="preserve">
     <value>Field Required : User Name</value>
@@ -701,5 +728,17 @@
   </data>
   <data name="Your_Token_expired_Please_Enter_Your_Password" xml:space="preserve">
     <value>Your Token expired, Please Enter Your Password</value>
+  </data>
+  <data name="lblAttendees" xml:space="preserve">
+    <value>Attendees</value>
+  </data>
+  <data name="lblDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="lblConference" xml:space="preserve">
+    <value>Conference</value>
+  </data>
+  <data name="lblAddEvent" xml:space="preserve">
+    <value>Add Event</value>
   </data>
 </root>
