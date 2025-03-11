@@ -18,17 +18,14 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task GetLoadMore()
         {
-            NumberOfPage = NumberOfPage + 1;
+            NumberOfPage++;
             ViewLst.AddRange(AllTimeZones.Skip((NumberOfPage - 1) * 20).Take(NumberOfPage * 20).ToList());
         }
         [RelayCommand]
         async Task SelectedItemClick(string item)
         {
-            if (!string.IsNullOrEmpty(item))
-            {
-                MessagingCenter.Send(this, "TimeZoneSelected", item);
-                await App.Current!.MainPage!.Navigation.PopAsync();
-            }
+            MessagingCenter.Send(this, "TimeZoneSelected", item);
+            await App.Current!.MainPage!.Navigation.PopAsync();
         }
         void Init()
         {
