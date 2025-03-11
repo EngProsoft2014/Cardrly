@@ -1,14 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 
 namespace Cardrly.ViewModels
 {
     public partial class TimeZoneViewModel : BaseViewModel
     {
         [ObservableProperty]
-        List<string> allTimeZones = new List<string>();
+        ObservableCollection<string> allTimeZones = new ObservableCollection<string>();
         [ObservableProperty]
-        List<string> viewLst = new List<string>();
+        ObservableCollection<string> viewLst = new ObservableCollection<string>();
         [ObservableProperty]
         int numberOfPage = 1;
         public TimeZoneViewModel()
@@ -17,9 +18,12 @@ namespace Cardrly.ViewModels
         }
         [RelayCommand]
         async Task GetLoadMore()
-        {
+        {    
+            var list = AllTimeZones.Skip((NumberOfPage) * 20).Take(20).ToList();
+
+            list.ToList().ForEach(f => ViewLst.Add(f));
+
             NumberOfPage++;
-            ViewLst.AddRange(AllTimeZones.Skip((NumberOfPage - 1) * 20).Take(NumberOfPage * 20).ToList());
         }
         [RelayCommand]
         async Task SelectedItemClick(string item)
@@ -29,7 +33,7 @@ namespace Cardrly.ViewModels
         }
         void Init()
         {
-            AllTimeZones = new List<string>
+            AllTimeZones = new ObservableCollection<string>
     {
         "Africa/Abidjan",
         "Africa/Accra",
@@ -504,7 +508,7 @@ namespace Cardrly.ViewModels
         "WET",
         "Zulu"
 };
-            ViewLst = AllTimeZones.Take(20).ToList();
+            ViewLst = new ObservableCollection<string>(AllTimeZones.Take(20).ToList());
         }
 
     }
