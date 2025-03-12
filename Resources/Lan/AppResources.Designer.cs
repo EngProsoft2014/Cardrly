@@ -925,6 +925,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Provider.
+        /// </summary>
+        internal static string lblProvider {
+            get {
+                return ResourceManager.GetString("lblProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reminder.
         /// </summary>
         internal static string lblReminder {
@@ -1834,6 +1843,42 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select an attendees.
+        /// </summary>
+        internal static string plcAttendees {
+            get {
+                return ResourceManager.GetString("plcAttendees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a card.
+        /// </summary>
+        internal static string plcCard {
+            get {
+                return ResourceManager.GetString("plcCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a description.
+        /// </summary>
+        internal static string plcDescription {
+            get {
+                return ResourceManager.GetString("plcDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a location.
+        /// </summary>
+        internal static string plcLocation {
+            get {
+                return ResourceManager.GetString("plcLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Available Appointments.
         /// </summary>
         internal static string PlcNoAvailableAppointments {
@@ -1888,11 +1933,38 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select a provider.
+        /// </summary>
+        internal static string plcProvider {
+            get {
+                return ResourceManager.GetString("plcProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         internal static string plcSearch {
             get {
                 return ResourceManager.GetString("plcSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a summary.
+        /// </summary>
+        internal static string plcSummary {
+            get {
+                return ResourceManager.GetString("plcSummary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a time zone.
+        /// </summary>
+        internal static string plcTimeZone {
+            get {
+                return ResourceManager.GetString("plcTimeZone", resourceCulture);
             }
         }
         

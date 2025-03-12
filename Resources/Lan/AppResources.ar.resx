@@ -741,4 +741,28 @@
   <data name="lblAddEvent" xml:space="preserve">
     <value>إضافة حدث</value>
   </data>
+  <data name="lblProvider" xml:space="preserve">
+    <value>مقدم الخدمة</value>
+  </data>
+  <data name="plcTimeZone" xml:space="preserve">
+    <value>حدد المنطقة الزمنية</value>
+  </data>
+  <data name="plcSummary" xml:space="preserve">
+    <value>حدد ملخصًا</value>
+  </data>
+  <data name="plcLocation" xml:space="preserve">
+    <value>حدد موقعا</value>
+  </data>
+  <data name="plcAttendees" xml:space="preserve">
+    <value>حدد الحضور</value>
+  </data>
+  <data name="plcDescription" xml:space="preserve">
+    <value>حدد الوصف</value>
+  </data>
+  <data name="plcProvider" xml:space="preserve">
+    <value>اختر مزود الخدمة</value>
+  </data>
+  <data name="plcCard" xml:space="preserve">
+    <value>اختر بطاقة</value>
+  </data>
 </root>

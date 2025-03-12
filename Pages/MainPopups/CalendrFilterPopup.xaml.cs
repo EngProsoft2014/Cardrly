@@ -5,6 +5,8 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Mopups.Services;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace Cardrly.Pages.MainPopups;
 
@@ -15,13 +17,23 @@ public partial class CalendrFilterPopup : Mopups.Pages.PopupPage
     public CalendrFilterPopup(ObservableCollection<CalendarTypeItemModel> calendarTypes,ObservableCollection<CardResponse> cardLst)
 	{
 		InitializeComponent();
-        this.BindingContext = this;
+        //this.BindingContext = this;
         ProviderPicker.ItemsSource = calendarTypes;
-        ProviderPicker.SelectedItem = calendarTypes[0];
+        //ProviderPicker.SelectedItem = calendarTypes[0];
         CalenderCardPicker.ItemsSource = cardLst;
-        if (cardLst.Count > 0)
+        //if (cardLst.Count > 0)
+        //{
+        //    CalenderCardPicker.SelectedItem = cardLst[0];
+        //}
+
+        string Lan = Preferences.Default.Get("Lan", "en");
+        if (Lan == "ar")
         {
-            CalenderCardPicker.SelectedItem = cardLst[0];
+            this.FlowDirection = FlowDirection.RightToLeft;
+        }
+        else
+        {
+            this.FlowDirection = FlowDirection.LeftToRight;
         }
     }
 
@@ -38,5 +50,22 @@ public partial class CalendrFilterPopup : Mopups.Pages.PopupPage
             FilterClose?.Invoke(FromPicker.Date.ToString("yyyy-MM-dd"), ToPicker.Date.ToString("yyyy-MM-dd"), (CalendarTypeItemModel)ProviderPicker.SelectedItem, (CardResponse)CalenderCardPicker.SelectedItem);
         }
         
+    }
+
+    private void ProviderPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        PlaceholderProviderLabel.IsVisible = ProviderPicker.SelectedIndex == -1;
+    }
+
+    private void CalenderCardPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        PlaceholderCardLabel.IsVisible = CalenderCardPicker.SelectedIndex == -1;
+    }
+
+    private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    {
+        this.IsEnabled = false;
+        await MopupService.Instance.PopAsync();
+        this.IsEnabled = true;
     }
 }

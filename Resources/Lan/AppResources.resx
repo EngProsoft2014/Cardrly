@@ -741,4 +741,28 @@
   <data name="lblAddEvent" xml:space="preserve">
     <value>Add Event</value>
   </data>
+  <data name="lblProvider" xml:space="preserve">
+    <value>Provider</value>
+  </data>
+  <data name="plcTimeZone" xml:space="preserve">
+    <value>Select a time zone</value>
+  </data>
+  <data name="plcSummary" xml:space="preserve">
+    <value>Select a summary</value>
+  </data>
+  <data name="plcLocation" xml:space="preserve">
+    <value>Select a location</value>
+  </data>
+  <data name="plcAttendees" xml:space="preserve">
+    <value>Select an attendees</value>
+  </data>
+  <data name="plcDescription" xml:space="preserve">
+    <value>Select a description</value>
+  </data>
+  <data name="plcProvider" xml:space="preserve">
+    <value>Select a provider</value>
+  </data>
+  <data name="plcCard" xml:space="preserve">
+    <value>Select a card</value>
+  </data>
 </root>

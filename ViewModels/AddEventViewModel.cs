@@ -49,7 +49,7 @@ namespace Cardrly.ViewModels
             Rep = GenericRep;
             _service = service;
             CalendarTypes = calTypes;
-            SelectedCalendarType = calTypes[0];
+            //SelectedCalendarType = calTypes[0];
             Init();
         }
         #endregion
@@ -106,7 +106,7 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         public async Task TimeZoneClick()
         {
-            await App.Current.MainPage.Navigation.PushAsync(new TimeZonePage(new TimeZoneViewModel()));
+            await App.Current!.MainPage!.Navigation.PushAsync(new TimeZonePage(new TimeZoneViewModel()));
         }
         #endregion
 
@@ -119,7 +119,7 @@ namespace Cardrly.ViewModels
             await GetAllCards();
             if (CardLst.Count > 0)
             {
-                SelectedCard = CardLst[0];
+                //SelectedCard = CardLst[0];
                 IsFoundCards = true;
             }
             UserDialogs.Instance.HideHud();
