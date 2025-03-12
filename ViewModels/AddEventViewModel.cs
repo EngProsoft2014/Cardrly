@@ -23,9 +23,9 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         CalendarGmailRequest request = new CalendarGmailRequest();
         [ObservableProperty]
-        TimeSpan startTime = DateTime.Now.TimeOfDay;
+        TimeSpan startTime = DateTime.Now.AddHours(1).TimeOfDay;
         [ObservableProperty]
-        TimeSpan endTime = DateTime.Now.AddHours(1).TimeOfDay;
+        TimeSpan endTime = DateTime.Now.AddHours(2).TimeOfDay;
         [ObservableProperty]
         CardResponse selectedCard = new CardResponse();
         [ObservableProperty]
@@ -63,9 +63,14 @@ namespace Cardrly.ViewModels
             {
                 Request.Start = Request.Start + StartTime;
                 Request.End = Request.End + EndTime;
-                if (Request.Start > Request.End)
+                if (Request.Start > Request.End || Request.Start < DateTime.UtcNow)
                 {
                     var toast = Toast.Make($"{AppResources.msgErrorinstartandenddate}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
+                else if (string.IsNullOrEmpty(Request.TimeZone))
+                {
+                    var toast = Toast.Make($"{AppResources.msgFRTimeZone}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
                 else if (string.IsNullOrEmpty(Request.Summary))

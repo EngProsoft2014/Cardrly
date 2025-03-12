@@ -765,4 +765,7 @@
   <data name="plcCard" xml:space="preserve">
     <value>Select a card</value>
   </data>
+  <data name="msgFRTimeZone" xml:space="preserve">
+    <value>Field Required : Time Zone</value>
+  </data>
 </root>

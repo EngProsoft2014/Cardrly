@@ -1465,6 +1465,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Field Required : Time Zone.
+        /// </summary>
+        internal static string msgFRTimeZone {
+            get {
+                return ResourceManager.GetString("msgFRTimeZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field Required : User Name.
         /// </summary>
         internal static string msgFRUserName {

@@ -104,14 +104,14 @@
                     <StackLayout HorizontalOptions="FillAndExpand">
                         <Label Text="{x:Static res:AppResources.lblStartDate}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
                         <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
-                            <DatePicker TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False" Date="{Binding Request.Start}"></DatePicker>
+                            <DatePicker x:Name="StartDatePicker" TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False" Date="{Binding Request.Start}"></DatePicker>
                         </Border>
                     </StackLayout>
                     <!--Start Time-->
                     <StackLayout HorizontalOptions="FillAndExpand">
                         <Label Text="{x:Static res:AppResources.lblStartTime}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
                         <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
-                            <TimePicker TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False" Time="{Binding StartTime}"></TimePicker>
+                            <TimePicker x:Name="StartTimePicker" TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False" Time="{Binding StartTime}"></TimePicker>
                         </Border>
                     </StackLayout>
                 </StackLayout>
@@ -121,14 +121,14 @@
                     <StackLayout HorizontalOptions="FillAndExpand">
                         <Label Text="{x:Static res:AppResources.lblEndDate}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
                         <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
-                            <DatePicker TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False" Date="{Binding Request.End}"></DatePicker>
+                            <DatePicker x:Name="EndDatePicker" TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False" Date="{Binding Request.End}"></DatePicker>
                         </Border>
                     </StackLayout>
                     <!--End Time-->
                     <StackLayout HorizontalOptions="FillAndExpand">
                         <Label Text="{x:Static res:AppResources.lblEndTime}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
                         <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
-                            <TimePicker TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False" Time="{Binding EndTime}"></TimePicker>
+                            <TimePicker x:Name="EndTimePicker" TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False" Time="{Binding EndTime}"></TimePicker>
                         </Border>
                     </StackLayout>
                 </StackLayout>

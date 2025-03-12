@@ -765,4 +765,7 @@
   <data name="plcCard" xml:space="preserve">
     <value>اختر بطاقة</value>
   </data>
+  <data name="msgFRTimeZone" xml:space="preserve">
+    <value>الحقل المطلوب: المنطقة الزمنية</value>
+  </data>
 </root>

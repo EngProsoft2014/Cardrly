@@ -30,10 +30,14 @@ public partial class CalendrFilterPopup : Mopups.Pages.PopupPage
         if (Lan == "ar")
         {
             this.FlowDirection = FlowDirection.RightToLeft;
+            FromPicker.FlowDirection = FlowDirection.RightToLeft;
+            ToPicker.FlowDirection = FlowDirection.RightToLeft;
         }
         else
         {
             this.FlowDirection = FlowDirection.LeftToRight;
+            FromPicker.FlowDirection = FlowDirection.LeftToRight;
+            ToPicker.FlowDirection = FlowDirection.LeftToRight;
         }
     }
 
