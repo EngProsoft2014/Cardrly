@@ -1,8 +1,7 @@
-﻿
-
+﻿using System.ComponentModel;
 namespace Cardrly.Models.Calendar
 {
-    public class CalendarGmailRequest
+    public class CalendarGmailRequest : INotifyPropertyChanged
     {
         public string? Summary { get; set; }
         public string? Location { get; set; }
@@ -10,7 +9,21 @@ namespace Cardrly.Models.Calendar
         public string? Attendees { get; set; }
         public DateTime Start { get; set; } = DateTime.UtcNow.AddDays(1);
         public DateTime End { get; set; } = DateTime.UtcNow.AddDays(1).AddHours(1);
-        public string? TimeZone { get; set; }
+        private string _TimeZone;
+        public string TimeZone
+        {
+            get => _TimeZone;
+            set
+            {
+                if (_TimeZone != value)
+                {
+                    _TimeZone = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TimeZone")); // reports this property
+                }
+            }
+        }
         public bool ConferenceData { get; set; }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 }
