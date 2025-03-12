@@ -9,6 +9,7 @@ using Cardrly.ViewModels.Leads;
 using Cardrly.ViewModels.Links;
 using Microsoft.Maui.Handlers;
 using Plugin.Maui.Audio;
+
 #if ANDROID
 using Cardrly.Platforms.Android;
 #elif IOS
@@ -136,6 +137,7 @@ namespace Cardrly
 #endif
             });
 
+            
 
             Microsoft.Maui.Handlers.EditorHandler.Mapper.AppendToMapping(nameof(EditorHandler), (handler, view) =>
             {

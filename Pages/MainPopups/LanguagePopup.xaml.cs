@@ -31,9 +31,10 @@ public partial class LanguagePopup : Mopups.Pages.PopupPage
         CultureInfo cal = new CultureInfo("ar");
         TranslateExtension.Instance.SetCulture(cal);
         Preferences.Default.Set("Lan", "ar");
+        SetUIMethod(cal);
         LoadSetting();
         await MopupService.Instance.PopAsync();
-        App.Current!.MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, Controls.StaticMember._audioManager), Rep, _service));
+        Reset();
     }
 
     //English
@@ -42,9 +43,10 @@ public partial class LanguagePopup : Mopups.Pages.PopupPage
         CultureInfo cal = new CultureInfo("en");
         TranslateExtension.Instance.SetCulture(cal);
         Preferences.Default.Set("Lan", "en");
+        SetUIMethod(cal);
         LoadSetting();
         await MopupService.Instance.PopAsync();
-        App.Current!.MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, Controls.StaticMember._audioManager), Rep, _service));
+        Reset();
     }
 
 
@@ -68,5 +70,21 @@ public partial class LanguagePopup : Mopups.Pages.PopupPage
 
             Task.Delay(1000);
         }
+    }
+
+    void Reset()
+    {
+        (Application.Current as App).MainPage.Dispatcher.Dispatch(() =>
+        {
+            App.Current!.MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, Controls.StaticMember._audioManager), Rep, _service));
+        });
+    }
+
+    public void SetUIMethod(CultureInfo culture)
+    {
+        Thread.CurrentThread.CurrentCulture = culture;
+        Thread.CurrentThread.CurrentUICulture = culture;
+        CultureInfo.DefaultThreadCurrentCulture = culture;
+        CultureInfo.DefaultThreadCurrentUICulture = culture;
     }
 }
