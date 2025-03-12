@@ -1,6 +1,7 @@
 using Cardrly.Models;
 using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
+using System.Globalization;
 
 namespace Cardrly.Pages.MainPopups;
 
@@ -19,6 +20,19 @@ public partial class UpdateVersionPopup : Mopups.Pages.PopupPage
         lblMsg.Text = LangValueToKeep == "ar" ? obj.DescriptionAr : obj.Description;
 
         btnStoreLink.Text = obj.Name + " | " + $"Version {obj.VersionNumber} ({obj.VersionBuild})";
+
+        string Lan = Preferences.Default.Get("Lan", "en");
+
+        if (Lan == "ar")
+        {
+            this.FlowDirection = FlowDirection.RightToLeft;
+            CultureInfo.CurrentCulture = new CultureInfo("ar");
+        }
+        else
+        {
+            this.FlowDirection = FlowDirection.LeftToRight;
+            CultureInfo.CurrentCulture = new CultureInfo("en");
+        }
     }
 
 

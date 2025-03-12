@@ -63,7 +63,7 @@ namespace Cardrly.ViewModels
             {
                 Request.Start = Request.Start + StartTime;
                 Request.End = Request.End + EndTime;
-                if (Request.Start > Request.End || Request.Start < DateTime.UtcNow)
+                if (DateTime.Compare(Request.End,Request.Start) < 0 || DateTime.Compare(Request.Start, DateTime.UtcNow) < 0)
                 {
                     var toast = Toast.Make($"{AppResources.msgErrorinstartandenddate}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();

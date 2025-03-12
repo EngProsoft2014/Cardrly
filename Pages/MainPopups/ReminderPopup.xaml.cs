@@ -3,6 +3,7 @@ using Cardrly.Models;
 using Cardrly.Resources.Lan;
 using Mopups.Services;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace Cardrly.Pages.MainPopups;
 
@@ -15,7 +16,20 @@ public partial class ReminderPopup : Mopups.Pages.PopupPage
 	{
 		InitializeComponent();
 		Init();
-	}
+
+        string Lan = Preferences.Default.Get("Lan", "en");
+
+        if (Lan == "ar")
+        {
+            this.FlowDirection = FlowDirection.RightToLeft;
+            CultureInfo.CurrentCulture = new CultureInfo("ar");
+        }
+        else
+        {
+            this.FlowDirection = FlowDirection.LeftToRight;
+            CultureInfo.CurrentCulture = new CultureInfo("en");
+        }
+    }
 
 
 	void Init()
