@@ -72,7 +72,7 @@
                         <VerticalStackLayout HorizontalOptions="FillAndExpand">
                             <Label Text="{x:Static res:AppResources.lblEmail}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                             <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Black" HeightRequest="40">
-                                <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                                <Entry Keyboard="Email" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                 Text="{Binding Request.Email}"></Entry>
                             </Border>
                             <VerticalStackLayout.Triggers>

@@ -242,11 +242,6 @@ namespace Cardrly.ViewModels
                             var toast = Toast.Make($"{AppResources.msgFREmail}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
                         }
-                        else if (string.IsNullOrEmpty(Request!.Password))
-                        {
-                            var toast = Toast.Make($"{AppResources.msgFRPassword}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                            await toast.Show();
-                        }
                         else
                         {
                             UserDialogs.Instance.ShowLoading();

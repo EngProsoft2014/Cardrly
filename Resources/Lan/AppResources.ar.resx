@@ -789,4 +789,7 @@
   <data name="msgDeleteComment" xml:space="preserve">
     <value>هل أنت متأكد أنك تريد حذف هذا التعليق؟</value>
   </data>
+  <data name="msgAll Fields is Required" xml:space="preserve">
+    <value>جميع الحقول مطلوبة</value>
+  </data>
 </root>

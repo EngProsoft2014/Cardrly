@@ -1177,6 +1177,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Fields is Required..
+        /// </summary>
+        internal static string msgAll_Fields_is_Required {
+            get {
+                return ResourceManager.GetString("msgAll Fields is Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred:.
         /// </summary>
         internal static string msgAnerroroccurred {

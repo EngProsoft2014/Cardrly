@@ -49,10 +49,18 @@ public partial class CalendrFilterPopup : Mopups.Pages.PopupPage
             var toast = Toast.Make($"{AppResources.msgDate_HomePage}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
         }
-        else
+        else 
         {
-            await MopupService.Instance.PopAsync();
-            FilterClose?.Invoke(FromPicker.Date.ToString("yyyy-MM-dd"), ToPicker.Date.ToString("yyyy-MM-dd"), (CalendarTypeItemModel)ProviderPicker.SelectedItem, (CardResponse)CalenderCardPicker.SelectedItem);
+            if (ProviderPicker.SelectedItem == null || CalenderCardPicker.SelectedItem == null)
+            {
+                var toast = Toast.Make($"{AppResources.msgAll_Fields_is_Required}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+            else
+            {
+                await MopupService.Instance.PopAsync();
+                FilterClose?.Invoke(FromPicker.Date.ToString("yyyy-MM-dd"), ToPicker.Date.ToString("yyyy-MM-dd"), (CalendarTypeItemModel)ProviderPicker.SelectedItem, (CardResponse)CalenderCardPicker.SelectedItem);
+            }
         }
         this.IsEnabled = true;
     }
