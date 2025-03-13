@@ -101,7 +101,7 @@
         #region LeadComment
         public static string LeadCommentGetAllApi = "Account/";
         public static string LeadCommentAddApi = "Account/";
-        public static string LeadCommentDeleteApi = "Account/{0}/Lead/{1}/LeadComment/{2}/Delete";
+        public static string LeadCommentDeleteApi = "Account/";
         #endregion
 
         #region LeadCategory 

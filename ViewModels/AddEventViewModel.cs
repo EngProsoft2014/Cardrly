@@ -137,6 +137,7 @@ namespace Cardrly.ViewModels
                     }
                 }
             }
+            IsEnable = true;
         }
         [RelayCommand]
         public async Task TimeZoneClick()

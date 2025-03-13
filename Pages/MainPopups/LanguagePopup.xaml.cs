@@ -86,5 +86,15 @@ public partial class LanguagePopup : Mopups.Pages.PopupPage
         Thread.CurrentThread.CurrentUICulture = culture;
         CultureInfo.DefaultThreadCurrentCulture = culture;
         CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+
+        Thread.CurrentThread.CurrentCulture = culture;
+        Thread.CurrentThread.CurrentUICulture = culture;
+        CultureInfo.DefaultThreadCurrentCulture = culture;
+        CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+        // Update UI FlowDirection (if applicable)
+        var isRtl = culture.TextInfo.IsRightToLeft;
+        Application.Current.MainPage.FlowDirection = isRtl ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
     }
 }

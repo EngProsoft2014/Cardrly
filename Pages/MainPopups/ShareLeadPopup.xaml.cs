@@ -80,7 +80,6 @@ public partial class ShareLeadPopup : Mopups.Pages.PopupPage
 
             UserDialogs.Instance.HideHud();
         }
-        
         this.IsEnabled = true;
     }
     #endregion

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Controls="clr-namespace:Cardrly.Controls"
              xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+             xmlns:vm="clr-namespace:Cardrly.ViewModels"
              x:Class="Cardrly.Pages.AllCommentPage"
              Title="AllCommentPage">
     
@@ -34,12 +35,22 @@
                 <DataTemplate>
                     <StackLayout>
                         <StackLayout Orientation="Horizontal">
-
                             <Label Text="{Binding CreatedDate}" FontSize="12" TextColor='Gray' FontAttributes="Italic" HorizontalOptions="EndAndExpand"></Label>
                         </StackLayout>
                         <Border StrokeShape="RoundRectangle 10,10,0,10" Padding="10" BackgroundColor="White" Stroke="Black">
                             <VerticalStackLayout Spacing="5">
-                                <Label Text="{Binding CardPersonName}" FontSize="13" TextColor='#FF7F3E' FontAttributes="Bold"></Label>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding CardPersonName}" FontSize="13" TextColor='#FF7F3E' FontAttributes="Bold"></Label>
+                                    <Image HorizontalOptions="EndAndExpand" Margin="5,0" IsVisible="{Binding ActiveDelete}">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="16"></FontImageSource>
+                                        </Image.Source>
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AllCommentViewModel}},Path=DeleteClickCommand}"
+                                                                  CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </StackLayout>
                                 <Label Text="{Binding Comment}" FontSize="12" TextColor='Gray'></Label>
                             </VerticalStackLayout>
                         </Border>

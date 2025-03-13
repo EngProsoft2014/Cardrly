@@ -1267,6 +1267,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this comment?.
+        /// </summary>
+        internal static string msgDeleteComment {
+            get {
+                return ResourceManager.GetString("msgDeleteComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Device.
         /// </summary>
         internal static string msgDeleteDevice {
@@ -1794,6 +1803,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgSuccessfullyUpdateLink {
             get {
                 return ResourceManager.GetString("msgSuccessfullyUpdateLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The comment has not been deleted..
+        /// </summary>
+        internal static string msgThe_comment_has_not_been_deleted {
+            get {
+                return ResourceManager.GetString("msgThe comment has not been deleted", resourceCulture);
             }
         }
         

@@ -3,7 +3,10 @@ using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models.Lead;
 using Cardrly.Models.LeadComment;
+using Cardrly.Resources.Lan;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
 using System.Collections.ObjectModel;
@@ -34,6 +37,36 @@ namespace Cardrly.ViewModels
         }
         #endregion
 
+        [RelayCommand]
+        async Task DeleteClick(LeadCommentResponse leadComment)
+        {
+            bool result = await App.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgDeleteComment}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
+            if (result)
+            {
+                IsEnable = false;
+                string UserToken = await _service.UserToken();
+                if (!string.IsNullOrEmpty(UserToken))
+                {
+                    UserDialogs.Instance.ShowLoading();
+                    string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                    string response = await Rep.PostEAsync($"{ApiConstants.LeadCommentDeleteApi}{AccId}/Lead/{leadComment.LeadId}/LeadComment/{leadComment.Id}/Delete", UserToken);
+                    UserDialogs.Instance.HideHud();
+                    if (response == "")
+                    {
+                        UserDialogs.Instance.ShowLoading();
+                        await GetComment();
+                        UserDialogs.Instance.HideHud();
+                    }
+                    else
+                    {
+                        var toast = Toast.Make($"{AppResources.msgThe_comment_has_not_been_deleted}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();
+                    }
+                }
+                IsEnable = true;
+            }
+        }
+
         #region Method
         async void Init()
         {
@@ -56,7 +89,6 @@ namespace Cardrly.ViewModels
                 UserDialogs.Instance.HideHud();
             }
             IsEnable = true;
-            
         } 
         #endregion
     }

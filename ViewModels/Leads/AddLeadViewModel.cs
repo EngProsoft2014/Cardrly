@@ -156,7 +156,6 @@ namespace Cardrly.ViewModels.Leads
                         await toast.Show();
                     }
                 }
-                
                 IsEnable = true;
             }
         }

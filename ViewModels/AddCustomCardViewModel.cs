@@ -325,7 +325,6 @@ namespace Cardrly.ViewModels
                     }
                 }
             }
-            
             IsEnable = true;
         }
 

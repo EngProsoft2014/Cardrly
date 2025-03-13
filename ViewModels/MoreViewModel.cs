@@ -38,7 +38,6 @@ namespace Cardrly.ViewModels
         }
         #endregion
 
-
         #region RelayCommand
 
         [RelayCommand]

@@ -783,4 +783,10 @@
   <data name="msgAttendance must be in email format" xml:space="preserve">
     <value>يجب أن يكون الحضور بصيغة البريد الإلكتروني.</value>
   </data>
+  <data name="msgThe comment has not been deleted" xml:space="preserve">
+    <value>لم يتم حذف التعليق.</value>
+  </data>
+  <data name="msgDeleteComment" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف هذا التعليق؟</value>
+  </data>
 </root>

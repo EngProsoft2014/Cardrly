@@ -104,9 +104,9 @@ namespace Cardrly.ViewModels
                     await toast.Show();
 
                 }
-                IsEnable = true;
+                
             }
-
+            IsEnable = true;
         }
         #endregion
     }
