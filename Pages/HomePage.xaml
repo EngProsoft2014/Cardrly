@@ -601,12 +601,12 @@
                                         </Grid>
                                     </ScrollView>
                                     <!--Expender-->
-                                    <Border BackgroundColor="#FF7F3E" Stroke="Transparent" Padding="3" VerticalOptions="End" HorizontalOptions="End" Margin="20">
+                                    <Border BackgroundColor="#FF7F3E" Stroke="Transparent" Padding="1" VerticalOptions="End" HorizontalOptions="End" Margin="20">
                                         <xct:Expander>
                                             <xct:Expander.Header>
-                                                <Image Margin="8">
+                                                <Image Margin="10">
                                                     <Image.Source>
-                                                        <FontImageSource FontFamily="FontIconSolid" Color="Black" Glyph="" Size="20"></FontImageSource>
+                                                        <FontImageSource FontFamily="FontIconSolid" Color="Black" Glyph="" Size="22"></FontImageSource>
                                                     </Image.Source>
                                                 </Image>
                                             </xct:Expander.Header>
@@ -614,7 +614,7 @@
                                                 <!--Filter-->
                                                 <Image >
                                                     <Image.Source>
-                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="20" Color="White"></FontImageSource>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="22" Color="White"></FontImageSource>
                                                     </Image.Source>
                                                     <Image.GestureRecognizers>
                                                         <TapGestureRecognizer Command="{Binding FilterClickCommand}"></TapGestureRecognizer>
@@ -623,7 +623,7 @@
                                                 <!--Add Event-->
                                                 <Image>
                                                     <Image.Source>
-                                                        <FontImageSource FontFamily="FontIconSolid" Color="White" Glyph="" Size="20"></FontImageSource>
+                                                        <FontImageSource FontFamily="FontIconSolid" Color="White" Glyph="" Size="22"></FontImageSource>
                                                     </Image.Source>
                                                     <Image.GestureRecognizers>
                                                         <TapGestureRecognizer Command="{Binding AddEventClickCommand}"></TapGestureRecognizer>
