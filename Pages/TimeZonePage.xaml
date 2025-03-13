@@ -26,7 +26,7 @@
                    HorizontalOptions="CenterAndExpand"></Label>
         </StackLayout>
         <!--SearchBar-->
-        <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" HeightRequest="40" Margin="0,15,0,0">
+        <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" HeightRequest="40" Margin="0,0,0,0">
             <SearchBar Placeholder="{x:Static res:AppResources.plcSearch}" TextColor="Black" FontSize="14" TextChanged="SearchBar_TextChanged" BackgroundColor="White"></SearchBar>
         </Border>
         <!--Data-->

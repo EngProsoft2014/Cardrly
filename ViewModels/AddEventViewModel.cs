@@ -141,7 +141,9 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         public async Task TimeZoneClick()
         {
+            IsEnable = false;
             await App.Current!.MainPage!.Navigation.PushAsync(new TimeZonePage(new TimeZoneViewModel()));
+            IsEnable = true;
         }
         #endregion
 

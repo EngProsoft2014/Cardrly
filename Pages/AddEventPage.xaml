@@ -4,6 +4,7 @@
              xmlns:Controls="clr-namespace:Cardrly.Controls"
              xmlns:res="clr-namespace:Cardrly.Resources.Lan"
              x:Class="Cardrly.Pages.AddEventPage"
+                        IsEnabled="{Binding IsEnable}"
              Title="AddEventPage">
 
     <StackLayout Margin="20">
@@ -47,7 +48,7 @@
                                 ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCalendarType}" SelectedIndexChanged="Picker_SelectedIndexChanged"></Picker>
                         </Grid>-->
 
-                        <Label Text="{Binding SelectedCalendarType.Name}" TextColor="Black" FontSize="14" Padding="10" VerticalTextAlignment="Center"></Label>
+                        <Label Text="{Binding SelectedCalendarType.Name}" TextColor="Black" FontSize="14" Padding="5" VerticalTextAlignment="Center"></Label>
                     </Border>
                 </VerticalStackLayout>
                 <!--Select Card-->
@@ -84,6 +85,9 @@
                                 <TapGestureRecognizer Command="{Binding TimeZoneClickCommand}"></TapGestureRecognizer>
                             </Entry.GestureRecognizers>
                         </Entry>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TimeZoneClickCommand}"></TapGestureRecognizer>
+                        </Border.GestureRecognizers>
                     </Border>
                 </VerticalStackLayout>
                 <!--Summary-->
