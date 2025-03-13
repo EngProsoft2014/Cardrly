@@ -98,7 +98,6 @@
                         <Entry Keyboard="Text" TextColor="Black" Margin="5,0" PlaceholderColor="#ababab" FontSize="14" FontAutoScalingEnabled="False" Placeholder="{x:Static res:AppResources.plcLocation}" Text="{Binding Request.Location}"></Entry>
                     </Border>
                 </VerticalStackLayout>
-
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20">
                     <!--Start Date-->
                     <StackLayout HorizontalOptions="FillAndExpand">
@@ -137,7 +136,8 @@
                 <VerticalStackLayout HorizontalOptions="FillAndExpand">
                     <Label Text="{x:Static res:AppResources.lblAttendees}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
                     <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
-                        <Entry Keyboard="Text" TextColor="Black" Margin="5,0" PlaceholderColor="#ababab" FontSize="14" FontAutoScalingEnabled="False" Placeholder="{x:Static res:AppResources.plcAttendees}" Text="{Binding Request.Attendees}"></Entry>
+                        <Entry TextColor="Black" Margin="5,0" PlaceholderColor="#ababab" FontSize="14" Keyboard="Email"
+                               FontAutoScalingEnabled="False" Placeholder="{x:Static res:AppResources.plcAttendees}" Text="{Binding Request.Attendees}"></Entry>
                     </Border>
                 </VerticalStackLayout>
                 <!--Description-->

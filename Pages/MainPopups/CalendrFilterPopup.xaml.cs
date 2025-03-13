@@ -43,6 +43,7 @@ public partial class CalendrFilterPopup : Mopups.Pages.PopupPage
 
     private async void Save_Clicked(object sender, EventArgs e)
     {
+        this.IsEnabled = false;
         if (FromPicker.Date > ToPicker.Date)
         {
             var toast = Toast.Make($"{AppResources.msgDate_HomePage}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
@@ -53,7 +54,7 @@ public partial class CalendrFilterPopup : Mopups.Pages.PopupPage
             await MopupService.Instance.PopAsync();
             FilterClose?.Invoke(FromPicker.Date.ToString("yyyy-MM-dd"), ToPicker.Date.ToString("yyyy-MM-dd"), (CalendarTypeItemModel)ProviderPicker.SelectedItem, (CardResponse)CalenderCardPicker.SelectedItem);
         }
-        
+        this.IsEnabled = true;
     }
 
     private void ProviderPicker_SelectedIndexChanged(object sender, EventArgs e)

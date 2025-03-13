@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Cardrly.ViewModels
@@ -61,11 +62,31 @@ namespace Cardrly.ViewModels
             IsEnable = false;
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                Request.Start = Request.Start + StartTime;
-                Request.End = Request.End + EndTime;
-                if (DateTime.Compare(Request.End,Request.Start) < 0 || DateTime.Compare(Request.Start, DateTime.UtcNow) < 0)
+                DateTime StartDate = Request.Start + StartTime;
+                DateTime EndDate = Request.End + EndTime;
+                string valid = "";
+                if (!string.IsNullOrEmpty(Request.Attendees))
                 {
-                    var toast = Toast.Make($"{AppResources.msgErrorinstartandenddate}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    valid = CheckStringType(Request.Attendees);
+                }
+                if (SelectedCalendarType.Value == 0)
+                {
+                    var toast = Toast.Make($"{AppResources.msgPlease_select_a_provider}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
+                else if (string.IsNullOrEmpty(SelectedCard.Id))
+                {
+                    var toast = Toast.Make($"{AppResources.msgPlease_select_a_Card}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
+                else if (DateTime.Compare(EndDate,StartDate) < 0)
+                {
+                    var toast = Toast.Make($"{AppResources.msgStart_date_must_be_before_end_date}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                } 
+                else if (DateTime.Compare(StartDate, DateTime.UtcNow) < 0)
+                {
+                    var toast = Toast.Make($"{AppResources.msgStart_date_must_be_after_today_s_date}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
                 else if (string.IsNullOrEmpty(Request.TimeZone))
@@ -83,6 +104,11 @@ namespace Cardrly.ViewModels
                     var toast = Toast.Make($"{AppResources.msgFRLocation}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
+                else if (!string.IsNullOrEmpty(Request.Attendees) && valid != "Email")
+                {
+                    var toast = Toast.Make($"{AppResources.msgAttendance_must_be_in_email_format}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
                 else if (string.IsNullOrEmpty(Request.Description))
                 {
                     var toast = Toast.Make($"{AppResources.msgFRDescription}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
@@ -92,6 +118,8 @@ namespace Cardrly.ViewModels
                 {
                     string UserToken = await _service.UserToken();
                     string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
+                    Request.Start = StartDate;
+                    Request.End = EndDate;
                     UserDialogs.Instance.ShowLoading();
                     string json = await Rep.PostStrAsync<CalendarGmailRequest>($"{ApiConstants.CalendarAddEventsApi}{accid}/Calendar/CalendarType/{SelectedCalendarType.Value}/AddEvents?CardId={SelectedCard.Id}", Request, UserToken);
                     UserDialogs.Instance.HideHud();
@@ -102,6 +130,8 @@ namespace Cardrly.ViewModels
                     }
                     else
                     {
+                        Request.Start = StartDate.Date;
+                        Request.End = EndDate.Date;
                         var toast = Toast.Make(json, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
                     }
@@ -152,7 +182,42 @@ namespace Cardrly.ViewModels
                     CardLst = json;
                 }
             }
-        } 
+        }
+
+        public string CheckStringType(string input)
+        {
+            // Email pattern
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+
+            // URL pattern
+            string urlPattern = @"^(http|https)://[^\s/$.?#].[^\s]*$";
+
+            // Phone number pattern (international format: +123456789 or local 123-456-7890)
+            string phonePattern = @"^(\+?\d{1,3})?[-.\s]?\(?\d{2,4}\)?[-.\s]?\d{3}[-.\s]?\d{3,4}$";
+            // Any string pattern
+            string pattern = @"^[\s\S]+$"; // Matches any plain text, including new lines
+
+            if (Regex.IsMatch(input, emailPattern))
+            {
+                return "Email";
+            }
+            else if (Regex.IsMatch(input, urlPattern))
+            {
+                return "URL";
+            }
+            else if (Regex.IsMatch(input, phonePattern))
+            {
+                return "Phone Number";
+            }
+            else if (Regex.IsMatch(input, pattern))
+            {
+                return "Text";
+            }
+            else
+            {
+                return "Unknown";
+            }
+        }
         #endregion
     }
 }

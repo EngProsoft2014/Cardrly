@@ -1186,6 +1186,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attendance must be in email format..
+        /// </summary>
+        internal static string msgAttendance_must_be_in_email_format {
+            get {
+                return ResourceManager.GetString("msgAttendance must be in email format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Audio file not saved. Please try again..
         /// </summary>
         internal static string msgAudiofilenotsavedPleasetryagain {
@@ -1609,6 +1618,24 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select a Card..
+        /// </summary>
+        internal static string msgPlease_select_a_Card {
+            get {
+                return ResourceManager.GetString("msgPlease select a Card", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a provider..
+        /// </summary>
+        internal static string msgPlease_select_a_provider {
+            get {
+                return ResourceManager.GetString("msgPlease select a provider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please Create a Card First..
         /// </summary>
         internal static string msgPleaseCreateCardFirst_ {
@@ -1668,6 +1695,24 @@ namespace Cardrly.Resources.Lan {
         internal static string msgSpeechrecognitionfailed {
             get {
                 return ResourceManager.GetString("msgSpeechrecognitionfailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start date must be after today&apos;s date..
+        /// </summary>
+        internal static string msgStart_date_must_be_after_today_s_date {
+            get {
+                return ResourceManager.GetString("msgStart date must be after today\'s date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start date must be before end date..
+        /// </summary>
+        internal static string msgStart_date_must_be_before_end_date {
+            get {
+                return ResourceManager.GetString("msgStart date must be before end date", resourceCulture);
             }
         }
         

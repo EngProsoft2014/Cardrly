@@ -768,4 +768,19 @@
   <data name="msgFRTimeZone" xml:space="preserve">
     <value>الحقل المطلوب: المنطقة الزمنية</value>
   </data>
+  <data name="msgStart date must be before end date" xml:space="preserve">
+    <value>يجب أن يكون تاريخ البدء قبل تاريخ الانتهاء.</value>
+  </data>
+  <data name="msgStart date must be after today's date" xml:space="preserve">
+    <value>يجب أن يكون تاريخ البدء بعد تاريخ اليوم.</value>
+  </data>
+  <data name="msgPlease select a provider" xml:space="preserve">
+    <value>الرجاء اختيار مزود الخدمة.</value>
+  </data>
+  <data name="msgPlease select a Card" xml:space="preserve">
+    <value>الرجاء اختيار البطاقة.</value>
+  </data>
+  <data name="msgAttendance must be in email format" xml:space="preserve">
+    <value>يجب أن يكون الحضور بصيغة البريد الإلكتروني.</value>
+  </data>
 </root>

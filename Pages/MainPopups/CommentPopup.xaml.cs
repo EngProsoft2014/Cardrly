@@ -44,6 +44,7 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
     #region Methods
     private async void Save_Clicked(object sender, EventArgs e)
     {
+        this.IsEnabled = false;
         try
         {
             if (string.IsNullOrEmpty(CommEntr.Text))
@@ -88,11 +89,19 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
             var toast = Toast.Make($"{ex.Message}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
         }
+        this.IsEnabled = true;
     }
 
     private async void Cancel_Clicked(object sender, EventArgs e)
     {
         await MopupService.Instance.PopAsync();
+    }
+
+    private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    {
+        this.IsEnabled = false;
+        await MopupService.Instance.PopAsync();
+        this.IsEnabled = true;
     }
     #endregion
 
