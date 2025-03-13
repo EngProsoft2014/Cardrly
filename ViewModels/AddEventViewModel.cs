@@ -50,7 +50,7 @@ namespace Cardrly.ViewModels
             Rep = GenericRep;
             _service = service;
             CalendarTypes = calTypes;
-            //SelectedCalendarType = calTypes[0];
+            SelectedCalendarType = calTypes[1];//Gmail
             Init();
         }
         #endregion

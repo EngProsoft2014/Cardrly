@@ -32,7 +32,7 @@
                     <Label Text="{x:Static res:AppResources.lblProvider}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
                     <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Black" 
                             HeightRequest="40" Grid.Column="0" VerticalOptions="EndAndExpand">
-                        <Grid Margin="5,0">
+                        <!--<Grid Margin="5,0">
                             <Label x:Name="PlaceholderProviderLabel"
                                    Text="{x:Static res:AppResources.plcProvider}"
                                    TextColor="#ababab"
@@ -45,7 +45,9 @@
 
                             <Picker x:Name="pickProvider" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemsSource="{Binding CalendarTypes}"
                                 ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCalendarType}" SelectedIndexChanged="Picker_SelectedIndexChanged"></Picker>
-                        </Grid>
+                        </Grid>-->
+
+                        <Label Text="{Binding SelectedCalendarType.Name}" TextColor="Black" FontSize="14" Padding="10" VerticalTextAlignment="Center"></Label>
                     </Border>
                 </VerticalStackLayout>
                 <!--Select Card-->
