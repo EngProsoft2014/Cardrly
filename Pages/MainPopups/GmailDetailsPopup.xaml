@@ -77,13 +77,12 @@
 
 
                     <Label Text="{x:Static res:AppResources.btnCancel}"
-               TextColor="#FF7F3E"
-               FontSize="14"
-               
-               HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center"
-               HorizontalOptions="CenterAndExpand"
-               Padding="10">
+                           TextColor="#FF7F3E"
+                           FontSize="14"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           HorizontalOptions="CenterAndExpand"
+                           Padding="10">
 
                     </Label>
                     <Border.GestureRecognizers>

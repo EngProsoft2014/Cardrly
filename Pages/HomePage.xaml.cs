@@ -151,7 +151,6 @@ public partial class HomePage : Controls.CustomControl
     {
         //if (isHandlingSelectionChange)
         //    return; // 🔹 Prevent re-entering the method when changing index manually
-
         //isHandlingSelectionChange = true; // 🔹 Start handling selection
 
         if (e.NewIndex == 0)
@@ -173,6 +172,7 @@ public partial class HomePage : Controls.CustomControl
         {
             if (homeViewModel.IsEnable == true)
             {
+                LeadSearc.Text = "";
                 LeadView.BindingContext = LeadViewModel = new LeadViewModel(Rep, _service, homeViewModel._audioManager);
             }
             else

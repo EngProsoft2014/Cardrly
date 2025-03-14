@@ -372,7 +372,7 @@
                             </StackLayout>
                             <!--SearchBar-->
                             <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" HeightRequest="40">
-                                <SearchBar Placeholder="{x:Static res:AppResources.plcSearch}" TextColor="Black" FontSize="14" TextChanged="SearchBar_Lead" BackgroundColor="White"></SearchBar>
+                                <SearchBar x:Name="LeadSearc" Placeholder="{x:Static res:AppResources.plcSearch}" TextColor="Black" FontSize="14" TextChanged="SearchBar_Lead" BackgroundColor="White"></SearchBar>
                             </Border>
                             <!--Data-->
                             <RefreshView x:Name="LeadRef" VerticalOptions="FillAndExpand" Refreshing="Lead_Refreshing">

@@ -85,8 +85,8 @@ namespace Cardrly.ViewModels
             LinkColor.FirstOrDefault()!.IsSelected = true;
             Request.LinkColor = LinkColor.FirstOrDefault()!.HexCode;
             // Select Initial Card Theme Colors
-            ThemColor.LastOrDefault()!.IsSelected = true;
-            Request.LinkColor = ThemColor.LastOrDefault()!.HexCode;
+            ThemColor.FirstOrDefault()!.IsSelected = true;
+            Request.LinkColor = ThemColor.FirstOrDefault()!.HexCode;
             //Add Defult Image
             Request.ImgProfileFile = ImageSource.FromFile("usericon.png");
             Request.ImgCoverFile = ImageSource.FromFile("defultcover.jpeg");
@@ -144,11 +144,41 @@ namespace Cardrly.ViewModels
                 new ColorModel { Name = "white", HexCode = "#FFFFFF" },
             };
             // Select Initial Link Colors
-            LinkColor.FirstOrDefault()!.IsSelected = true;
-            Request.LinkColor = LinkColor.FirstOrDefault()!.HexCode;
+            ColorModel cc = LinkColor.FirstOrDefault(a => a.HexCode == card.LinkColor);
+            if (cc != null)
+            {
+                LinkColor.FirstOrDefault(a => a.HexCode == card.LinkColor)!.IsSelected = true;
+                Request.LinkColor = LinkColor.FirstOrDefault(a => a.HexCode == card.LinkColor)!.HexCode;
+            }
+            else if(!string.IsNullOrEmpty(card.LinkColor))
+            {
+                LinkColor.Add(new ColorModel { HexCode = card.LinkColor , IsSelected = true});
+                Request.LinkColor = card.LinkColor;
+            }
+            else
+            {
+                LinkColor.FirstOrDefault()!.IsSelected = true;
+                Request.LinkColor = LinkColor.FirstOrDefault()!.HexCode;
+            }
+
             // Select Initial Card Theme Colors
-            ThemColor.LastOrDefault()!.IsSelected = true;
-            Request.LinkColor = ThemColor.LastOrDefault()!.HexCode;
+            cc = ThemColor.FirstOrDefault(a => a.HexCode == card.CardTheme);
+            if (cc != null)
+            {
+                ThemColor.FirstOrDefault(a => a.HexCode == card.CardTheme)!.IsSelected = true;
+                Request.LinkColor = ThemColor.FirstOrDefault(a => a.HexCode == card.CardTheme)!.HexCode;
+            }
+            else if (!string.IsNullOrEmpty(card.CardTheme))
+            {
+                ThemColor.Add(new ColorModel { HexCode = card.CardTheme, IsSelected = true });
+                Request.CardTheme = card.CardTheme;
+            }
+            else
+            {
+                ThemColor.FirstOrDefault()!.IsSelected = true;
+                Request.LinkColor = ThemColor.FirstOrDefault()!.HexCode;
+            }
+            
         }
         #endregion
 
