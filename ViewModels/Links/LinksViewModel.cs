@@ -127,7 +127,7 @@ namespace Cardrly.ViewModels.Links
             {
                 string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
                 UserDialogs.Instance.ShowLoading();
-                var json = await Rep.GetAsync<CardDetailsResponse>($"{ApiConstants.CardGetDetailsAllApi}{CardId}", UserToken);     
+                var json = await Rep.GetAsync<CardDetailsResponse>($"{ApiConstants.CardGetApi}{AccId}/Card/{CardId}", UserToken);     
                 if (json != null)
                 {
                     //foreach (CardLinkResponse cardLink in json.CardLinks)
