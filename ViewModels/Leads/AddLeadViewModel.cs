@@ -83,6 +83,7 @@ namespace Cardrly.ViewModels.Leads
             {
                 if (!string.IsNullOrEmpty(img))
                 {
+                    MopupService.Instance.PopAsync();
                     byte[] bytes = Convert.FromBase64String(img);
                     Request.ImgFile = bytes;
                     Request.ImagefileProfile = ImageSource.FromStream(() => new MemoryStream(bytes));

@@ -176,6 +176,7 @@ namespace Cardrly.ViewModels
             {
                 if (!string.IsNullOrEmpty(img))
                 {
+                    MopupService.Instance.PopAsync();
                     byte[] bytes = Convert.FromBase64String(img);
                     Request.ImgFileProfile = bytes;
                     Request.ImgProfileFile = ImageSource.FromStream(() => new MemoryStream(bytes));
@@ -208,6 +209,7 @@ namespace Cardrly.ViewModels
             {
                 if (!string.IsNullOrEmpty(img))
                 {
+                    MopupService.Instance.PopAsync();
                     byte[] bytes = Convert.FromBase64String(img);
                     Request.ImgFileCover = bytes;
                     Request.ImgCoverFile = ImageSource.FromStream(() => new MemoryStream(bytes));

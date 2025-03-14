@@ -40,6 +40,7 @@ namespace Cardrly
                 Rep = GenericRep;
                 _service = service;
                 Services = serviceProvider;
+                Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
                 StaticMember.notificationManager = notificationManagerService;
                 LoadSetting();
                 Controls.StaticMember._audioManager = audioManager;
@@ -63,8 +64,6 @@ namespace Cardrly
                 {
                     MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, audioManager), Rep, _service));
                 }
-
-                Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             }
             catch (Exception ex)
             {
