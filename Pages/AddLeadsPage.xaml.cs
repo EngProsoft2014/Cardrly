@@ -23,18 +23,20 @@ public partial class AddLeadsPage : Controls.CustomControl
         this.BindingContext = model;
         // Initialize audio manager
         _audioManager = audioManager;
-        _audioRecorder = audioManager.CreateRecorder();
+        //=======================================================================================================
+        //_audioRecorder = audioManager.CreateRecorder();
 
-        // Initialize Azure Text Analytics client
-        var endpoint = "https://fillformanalytics.cognitiveservices.azure.com/";//"YOUR_AZURE_TEXT_ANALYTICS_ENDPOINT";
-        var apiKey = "8AA6fsh0vZ8E7ZBnhcWOteVthW4ONocsNKruqwsCoUJNCsRDVLsrJQQJ99BAACYeBjFXJ3w3AAAaACOGLOTY";//"YOUR_AZURE_TEXT_ANALYTICS_KEY";
-        _textAnalyticsClient = new TextAnalyticsClient(new Uri(endpoint), new AzureKeyCredential(apiKey));
+        //// Initialize Azure Text Analytics client
+        //var endpoint = "https://fillformanalytics.cognitiveservices.azure.com/";//"YOUR_AZURE_TEXT_ANALYTICS_ENDPOINT";
+        //var apiKey = "8AA6fsh0vZ8E7ZBnhcWOteVthW4ONocsNKruqwsCoUJNCsRDVLsrJQQJ99BAACYeBjFXJ3w3AAAaACOGLOTY";//"YOUR_AZURE_TEXT_ANALYTICS_KEY";
+        //_textAnalyticsClient = new TextAnalyticsClient(new Uri(endpoint), new AzureKeyCredential(apiKey));
 
-        // Initialize Azure Speech Service client
-        var speechKey = "81f8gkSQe5THESeGnd1mArbfahQv9DNPbzmf6RjOJgdF7V6PZT1XJQQJ99ALACYeBjFXJ3w3AAAYACOGP22X"; //"YOUR_AZURE_SPEECH_KEY";
-        var speechRegion = "eastus"; //"YOUR_REGION"; // Example: "eastus"
-        var speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
-        _speechRecognizer = new SpeechRecognizer(speechConfig);
+        //// Initialize Azure Speech Service client
+        //var speechKey = "81f8gkSQe5THESeGnd1mArbfahQv9DNPbzmf6RjOJgdF7V6PZT1XJQQJ99ALACYeBjFXJ3w3AAAYACOGP22X"; //"YOUR_AZURE_SPEECH_KEY";
+        //var speechRegion = "eastus"; //"YOUR_REGION"; // Example: "eastus"
+        //var speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
+        //_speechRecognizer = new SpeechRecognizer(speechConfig);
+        //=======================================================================================================
     }
 
     private async void OnStartRecordingClicked(object sender, EventArgs e)

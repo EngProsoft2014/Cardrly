@@ -152,7 +152,7 @@
                     </Border>
                 </VerticalStackLayout>
                 <!--Save Button-->
-                <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnSave}" FontSize="16" FontAttributes="Bold" VerticalOptions="EndAndExpand"
+                <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnSave}" FontSize="16" FontAttributes="Bold" Margin="0,20,0,0" VerticalOptions="EndAndExpand"
                          BackgroundColor="#FF7F3E" TextColor="White" Command="{Binding SaveClickCommand}"
                          HorizontalOptions="FillAndExpand"></Button>
             </StackLayout>
