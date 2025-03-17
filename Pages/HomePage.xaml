@@ -289,7 +289,7 @@
                                                                                 <Image  Source="{Binding UrlImgProfileVM}" Aspect="Fill" HeightRequest="90"></Image>
                                                                             </Border>
                                                                             <!--Card Data-->
-                                                                            <VerticalStackLayout HorizontalOptions="CenterAndExpand" Margin="10,0,0,0" TranslationY="-35">
+                                                                            <VerticalStackLayout HorizontalOptions="CenterAndExpand" HeightRequest="40" Margin="10,0,0,0" TranslationY="-35">
                                                                                 <Label Text="{Binding CardName}" TextColor="Black" FontSize="14" FontAttributes="Bold"></Label>
                                                                                 <Label Text="{Binding JobTitle}" TextColor="Black" FontSize="12"></Label>
                                                                             </VerticalStackLayout>
