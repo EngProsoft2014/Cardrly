@@ -59,7 +59,7 @@ PositionOut="Center" />
 
                     <Label Text="{x:Static res:AppResources.btnCancel}"
             TextColor="#FF7F3E"
-            FontSize="14"
+            FontSize="16"
             
             HorizontalTextAlignment="Center"
             VerticalTextAlignment="Center"
