@@ -47,7 +47,7 @@ namespace Cardrly.Models.Calendar
             public List<AttendeeGmail> Attendees { get; set; }
 
             [JsonProperty("conferenceData")]
-            public ConferenceData ConferenceData { get; set; }
+            public ConferenceData ConferenceData { get; set; } = new ConferenceData();
 
             [JsonProperty("htmlLink")]
             public string HtmlLink { get; set; }
@@ -73,7 +73,7 @@ namespace Cardrly.Models.Calendar
         public class ConferenceData
         {
             [JsonProperty("entryPoints")]
-            public List<EntryPoint> EntryPoints { get; set; }
+            public List<EntryPoint> EntryPoints { get; set; } = new List<EntryPoint>();
         }
 
         public class EntryPoint

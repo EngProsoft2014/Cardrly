@@ -11,10 +11,14 @@ public partial class GmailDetailsPopup : Mopups.Pages.PopupPage
     public GmailDetailsPopup(CalendarEventGmail model)
 	{
 		InitializeComponent();
+        if (model.ConferenceData is null)
+        {
+            model.ConferenceData = new ConferenceData();
+            model.ConferenceData!.EntryPoints = new List<EntryPoint>();
+        }
         this.BindingContext = model;
         Model = model;
-
-
+        
         string Lan = Preferences.Default.Get("Lan", "en");
 
         if (Lan == "ar")

@@ -36,6 +36,11 @@
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="JoinNow_Tapped"></TapGestureRecognizer>
                                 </Label.GestureRecognizers>
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding ConferenceData.EntryPoints.Count}" Value="0">
+                                        <Setter Property="IsVisible" Value="False"></Setter>
+                                    </DataTrigger>
+                                </Label.Triggers>
                             </Label>
                         </HorizontalStackLayout>
                         <!--Time Zone-->
@@ -67,6 +72,12 @@
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
                         </StackLayout>
+                        <!--Description-->
+                        <HorizontalStackLayout Spacing="3">
+                            <Label Text="{x:Static res:AppResources.lblDescription}" FontSize="14" TextColor="Black"></Label>
+                            <Label Text=":" FontSize="14" TextColor="Black"></Label>
+                            <Label Text="{Binding Description}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                        </HorizontalStackLayout>
                     </StackLayout>
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="15"></RoundRectangle>
