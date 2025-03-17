@@ -68,8 +68,15 @@ public partial class NoInternetPage : Controls.CustomControl
     {
         UserDialogs.Instance.ShowLoading();
         //await App.Current.MainPage.Navigation.PushAsync(Name);
+        if (App.Current!.MainPage!.Navigation.NavigationStack.Count > 1)
+        {
+            await App.Current!.MainPage!.Navigation.PopAsync();
+        }
+        else
+        {
+            await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, StaticMember._audioManager), Rep, _service));
+        }
 
-        await App.Current!.MainPage!.Navigation.PopAsync();
         //App.Current.MainPage.Navigation.RemovePage(App.Current.MainPage.Navigation.NavigationStack[App.Current.MainPage.Navigation.NavigationStack.Count - 2]);
 
         UserDialogs.Instance.HideHud();

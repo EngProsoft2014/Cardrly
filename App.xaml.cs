@@ -50,20 +50,31 @@ namespace Cardrly
                 GlobalExceptionHandler.RegisterGlobalExceptionHandlers();
                 InitializeComponent();
                 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(ApiConstants.syncFusionLicence);
-                // Subscribe to security status changes
-                string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
-                string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
 
-                bool IsExpireDate = DateOnly.TryParseExact(Stringdate, "M/d/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly ExpireDate);
-                if (string.IsNullOrEmpty(AccountId) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow) || IsExpireDate == false)
+                if (Connectivity.NetworkAccess != NetworkAccess.Internet)
                 {
-                    Preferences.Default.Clear();
-                    MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
+                    // Connection to internet is Not available
+                    MainPage = new NavigationPage(new NoInternetPage(Rep, _service));
+                    return;
                 }
                 else
                 {
-                    MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, audioManager), Rep, _service));
+                    // Subscribe to security status changes
+                    string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                    string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
+
+                    bool IsExpireDate = DateOnly.TryParseExact(Stringdate, "M/d/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly ExpireDate);
+                    if (string.IsNullOrEmpty(AccountId) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow) || IsExpireDate == false)
+                    {
+                        Preferences.Default.Clear();
+                        MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, audioManager)));
+                    }
+                    else
+                    {
+                        MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, audioManager), Rep, _service));
+                    }
                 }
+
             }
             catch (Exception ex)
             {
@@ -104,41 +115,34 @@ namespace Cardrly
         protected async override void OnStart()
         {
             base.OnStart();
-            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
-            {
-                // Connection to internet is Not available
-                await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service));
-                return;
-            }
+            //if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            //{
+            //    // Connection to internet is Not available
+            //    await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service));
+            //    return;
+            //}
         }
 
         protected async override void OnResume()
         {
             base.OnResume();
-            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
-            {
-                // Connection to internet is Not available
-                await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service));
-                return;
-            }
-            else
-            {
-                string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
-                if (!string.IsNullOrEmpty(Stringdate))
-                {
-                    bool IsExpireDate = DateOnly.TryParseExact(Stringdate, "M/d/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly ExpireDate);
-                    if (string.IsNullOrEmpty(Stringdate) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow))
-                    {
-                        string LangValueToKeep = Preferences.Default.Get("Lan", "en");
-                        Preferences.Default.Clear();
-                        await BlobCache.LocalMachine.InvalidateAll();
-                        await BlobCache.LocalMachine.Vacuum();
 
-                        Preferences.Default.Set("Lan", LangValueToKeep);
-                        await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, StaticMember._audioManager)));
-                    }
+            string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
+            if (!string.IsNullOrEmpty(Stringdate))
+            {
+                bool IsExpireDate = DateOnly.TryParseExact(Stringdate, "M/d/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly ExpireDate);
+                if (string.IsNullOrEmpty(Stringdate) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow))
+                {
+                    string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+                    Preferences.Default.Clear();
+                    await BlobCache.LocalMachine.InvalidateAll();
+                    await BlobCache.LocalMachine.Vacuum();
+
+                    Preferences.Default.Set("Lan", LangValueToKeep);
+                    await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, StaticMember._audioManager)));
                 }
             }
+
         }
 
         protected async override void OnSleep()
