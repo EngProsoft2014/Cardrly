@@ -65,7 +65,7 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
             bool ans = await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgDeleteLead}", $"{AppResources.msgOk}", $"{AppResources.msgNo}");
             if (ans)
             {
-
+                await MopupService.Instance.PopAsync();
                 string UserToken = await _service.UserToken();
                 if (!string.IsNullOrEmpty(UserToken))
                 {
@@ -84,7 +84,7 @@ public partial class LeadOptionsPopup : Mopups.Pages.PopupPage
                         var toast = Toast.Make($"{AppResources.msgCan_tDeleteThisLeadNowTryagainLater}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
                     }
-                    await MopupService.Instance.PopAsync();
+                    
                 }
 
             }

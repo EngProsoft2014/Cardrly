@@ -148,7 +148,7 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
             bool ans = await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgWarning_qu}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
             if (ans)
             {
-                this.IsEnabled = false;
+                await MopupService.Instance.PopAsync();
                 string UserToken = await _service.UserToken();
                 if (!string.IsNullOrEmpty(UserToken))
                 {
@@ -160,9 +160,8 @@ public partial class CardOptionPopup : Mopups.Pages.PopupPage
                         MessagingCenter.Send(this, "DeleteCard", true);
                     }
                     UserDialogs.Instance.HideHud();
-                    await MopupService.Instance.PopAsync();
+                    
                 }
-                this.IsEnabled = true;
             }
         }
         else
