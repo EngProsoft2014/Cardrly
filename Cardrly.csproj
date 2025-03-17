@@ -168,6 +168,9 @@
 	  <Compile Update="Pages\AddLeadsPage.xaml.cs">
 	    <DependentUpon>AddLeadsPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Pages\FullScreenImage.xaml.cs">
+	    <DependentUpon>FullScreenImage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\MainPopups\UpdateVersionPopup.xaml.cs">
 	    <DependentUpon>UpdateVersionPopup.xaml</DependentUpon>
 	  </Compile>
@@ -235,6 +238,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\MainPopups\EditLinkPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\FullScreenImage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\MainPopups\GmailDetailsPopup.xaml">

@@ -39,6 +39,9 @@
                 <Grid HeightRequest="160">
                     <Border StrokeShape="RoundRectangle 15" HeightRequest="150" Stroke="#FF7F3E" HorizontalOptions="FillAndExpand" BackgroundColor="White">
                         <Image Source="{Binding Request.ImgCoverFile}" Aspect="AspectFill"></Image>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenFullScreenCoverPhotoCommand}" CommandParameter="{Binding Request.ImgCoverFile}"></TapGestureRecognizer>
+                        </Border.GestureRecognizers>
                     </Border>
                     <Image WidthRequest="25" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand">
                         <Image.Source>
@@ -54,6 +57,9 @@
                     <Border StrokeShape="RoundRectangle 50" HeightRequest="100" WidthRequest="100" HorizontalOptions="FillAndExpand" BackgroundColor="White"
                         StrokeThickness="1" TranslationY="-50" Stroke="#FF7F3E">
                         <Image Source="{Binding Request.ImgProfileFile}" Aspect="Fill"></Image>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenFullScreenProfilePhotoCommand}" CommandParameter="{Binding Request.ImgProfileFile}"></TapGestureRecognizer>
+                        </Border.GestureRecognizers>
                     </Border>
                     <Image WidthRequest="25" HorizontalOptions="EndAndExpand" Margin="0,0,0,10">
                         <Image.Source>

@@ -90,6 +90,28 @@ namespace Cardrly.ViewModels
                 await toast.Show();
             }
         }
+
+        [RelayCommand]
+        async Task OpenFullScreenProfilePhoto(string image)
+        {
+            IsEnable = false;
+            if(image != "https://api.cardrly.com/")
+            {
+                await App.Current!.MainPage!.Navigation.PushAsync(new FullScreenImage(image));
+            }
+            IsEnable = true;
+        }
+
+        [RelayCommand]
+        async Task OpenFullScreenCoverPhoto(string image)
+        {
+            IsEnable = false;
+            if (image != "https://api.cardrly.com/")
+            {
+                await App.Current!.MainPage!.Navigation.PushAsync(new FullScreenImage(image));
+            }
+            IsEnable = true;
+        }
         #endregion
 
         #region Methodes

@@ -3,6 +3,7 @@ using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Models.Lead;
 using Cardrly.Models.LeadCategory;
+using Cardrly.Pages;
 using Cardrly.Pages.MainPopups;
 using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
@@ -94,6 +95,15 @@ namespace Cardrly.ViewModels.Leads
             };
             await MopupService.Instance.PushAsync(page);
         }
+
+        [RelayCommand]
+        async Task OpenFullScreenProfilePhoto(ImageSource image)
+        {
+            IsEnable = false;
+            await App.Current!.MainPage!.Navigation.PushAsync(new FullScreenImage(image));
+            IsEnable = true;
+        }
+
 
         [RelayCommand]
         async Task SaveClick()

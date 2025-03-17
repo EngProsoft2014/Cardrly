@@ -259,85 +259,94 @@
                                 <!--Cards-->
                                 <RefreshView x:Name="RefView" Refreshing="Cards_Refreshing" Margin="0,30,0,0">
                                     <Grid x:Name="RootGrid">
-                                        <CollectionView ItemsSource="{Binding CardLst}" VerticalOptions="FillAndExpand" Margin="0,40,0,0" HorizontalOptions="FillAndExpand" ItemsUpdatingScrollMode="KeepItemsInView" ItemSizingStrategy="MeasureAllItems">
-                                            <CollectionView.ItemsLayout>
-                                                <LinearItemsLayout  Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"></LinearItemsLayout>
-                                            </CollectionView.ItemsLayout>
-                                            <CollectionView.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackLayout HorizontalOptions="FillAndExpand" WidthRequest="{Binding Source={x:Reference RootGrid}, Path=Width}" Padding="10,0,10,0">
-                                                        <!--Qr code Iamge-->
-                                                        <Border StrokeShape="RoundRectangle 20" WidthRequest="200" Padding="10">
-                                                            <VerticalStackLayout Spacing="5">
-                                                                <zxing:BarcodeGeneratorView
+                                        <ScrollView VerticalOptions="FillAndExpand">
+                                            <CollectionView ItemsSource="{Binding CardLst}" VerticalOptions="FillAndExpand" Margin="0,40,0,0" HorizontalOptions="FillAndExpand" ItemsUpdatingScrollMode="KeepItemsInView" ItemSizingStrategy="MeasureAllItems">
+                                                <CollectionView.ItemsLayout>
+                                                    <LinearItemsLayout  Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"></LinearItemsLayout>
+                                                </CollectionView.ItemsLayout>
+                                                <CollectionView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackLayout HorizontalOptions="FillAndExpand" WidthRequest="{Binding Source={x:Reference RootGrid}, Path=Width}" Padding="10,0,10,0">
+                                                            <!--Qr code Iamge-->
+                                                            <Border StrokeShape="RoundRectangle 20" WidthRequest="200" Padding="10">
+                                                                <VerticalStackLayout Spacing="5">
+                                                                    <zxing:BarcodeGeneratorView
                                                                   HeightRequest="150" BackgroundColor="Transparent" WidthRequest="150"
                                                                   ForegroundColor="Black" Value="{Binding CardUrlVM}" Format="QrCode"></zxing:BarcodeGeneratorView>
-                                                                <Label Text="{x:Static res:AppResources.lblSCS}" TextColor="Black" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
-                                                            </VerticalStackLayout>
-                                                        </Border>
-                                                        <!--Card Data-->
-                                                        <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="{Binding CardTheme}" Margin="0,30,0,0">
-                                                            <StackLayout Orientation="Horizontal" Spacing="15">
-                                                                <StackLayout HorizontalOptions="FillAndExpand" Padding="0">
-                                                                    <!--Cover Iamge-->
-                                                                    <Image Source="{Binding UrlImgCoverVM}" HeightRequest="100" HorizontalOptions="FillAndExpand" 
-                                                                       Aspect="AspectFill"></Image>
-                                                                    <Grid HorizontalOptions="FillAndExpand">
-                                                                        <VerticalStackLayout>
-                                                                            <!--Profile Iamge-->
-                                                                            <Border StrokeShape="RoundRectangle 50" WidthRequest="90" HorizontalOptions="CenterAndExpand" TranslationY="-45" HeightRequest="90">
-                                                                                <Image  Source="{Binding UrlImgProfileVM}" Aspect="Fill" HeightRequest="90"></Image>
-                                                                            </Border>
-                                                                            <!--Card Data-->
-                                                                            <VerticalStackLayout HorizontalOptions="CenterAndExpand" HeightRequest="40" Margin="10,0,0,0" TranslationY="-35">
-                                                                                <Label Text="{Binding CardName}" TextColor="Black" FontSize="14" FontAttributes="Bold"></Label>
-                                                                                <Label Text="{Binding JobTitle}" TextColor="Black" FontSize="12"></Label>
-                                                                            </VerticalStackLayout>
-                                                                            <!--Card Optiones-->
-                                                                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" 
+                                                                    <Label Text="{x:Static res:AppResources.lblSCS}" TextColor="Black" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                                </VerticalStackLayout>
+                                                            </Border>
+                                                            <!--Card Data-->
+                                                            <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="{Binding CardTheme}" Margin="0,30,0,0">
+                                                                <StackLayout Orientation="Horizontal" Spacing="15">
+                                                                    <StackLayout HorizontalOptions="FillAndExpand" Padding="0">
+                                                                        <!--Cover Iamge-->
+                                                                        <Image Source="{Binding UrlImgCoverVM}" HeightRequest="100" HorizontalOptions="FillAndExpand" 
+                                                                       Aspect="AspectFill">
+                                                                            <Image.GestureRecognizers>
+                                                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=OpenFullScreenCoverPhotoCommand}" CommandParameter="{Binding UrlImgCoverVM}"></TapGestureRecognizer>
+                                                                            </Image.GestureRecognizers>
+                                                                        </Image>
+                                                                        <Grid HorizontalOptions="FillAndExpand">
+                                                                            <VerticalStackLayout>
+                                                                                <!--Profile Iamge-->
+                                                                                <Border StrokeShape="RoundRectangle 50" WidthRequest="90" HorizontalOptions="CenterAndExpand" TranslationY="-45" HeightRequest="90">
+                                                                                    <Image Source="{Binding UrlImgProfileVM}" Aspect="Fill" HeightRequest="90"></Image>
+                                                                                    <Border.GestureRecognizers>
+                                                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=OpenFullScreenProfilePhotoCommand}" CommandParameter="{Binding UrlImgProfileVM}"></TapGestureRecognizer>
+                                                                                    </Border.GestureRecognizers>
+                                                                                </Border>
+                                                                                <!--Card Data-->
+                                                                                <VerticalStackLayout HorizontalOptions="CenterAndExpand" HeightRequest="40" Margin="10,0,0,0" TranslationY="-35">
+                                                                                    <Label Text="{Binding CardName}" TextColor="Black" FontSize="14" FontAttributes="Bold"></Label>
+                                                                                    <Label Text="{Binding JobTitle}" TextColor="Black" FontSize="12"></Label>
+                                                                                </VerticalStackLayout>
+                                                                                <!--Card Optiones-->
+                                                                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" 
                                                                                  Margin="25,0" TranslationY="-25">
-                                                                                <!--Edit Card-->
-                                                                                <Button Text="{x:Static res:AppResources.btnEdit}" HorizontalOptions="FillAndExpand" BackgroundColor="#FF7F3E" CornerRadius="14"
+                                                                                    <!--Edit Card-->
+                                                                                    <Button Text="{x:Static res:AppResources.btnEdit}" HorizontalOptions="FillAndExpand" BackgroundColor="#FF7F3E" CornerRadius="14"
                                                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=EditCardClickCommand}"
                                                                                     CommandParameter="{Binding .}" WidthRequest="80"></Button>
-                                                                                <!--PreView-->
-                                                                                <Button Text="{x:Static res:AppResources.btnPreview}" HorizontalOptions="FillAndExpand" BackgroundColor="#FF7F3E" CornerRadius="14"
+                                                                                    <!--PreView-->
+                                                                                    <Button Text="{x:Static res:AppResources.btnPreview}" HorizontalOptions="FillAndExpand" BackgroundColor="#FF7F3E" CornerRadius="14"
                                                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=CardPreViewClickCommand}"
                                                                                     CommandParameter="{Binding .}" WidthRequest="80"></Button>
-                                                                                <!--More Optiions-->
-                                                                                <Border StrokeShape="RoundRectangle 14" StrokeThickness="0" BackgroundColor="#FF7F3E" 
+                                                                                    <!--More Optiions-->
+                                                                                    <Border StrokeShape="RoundRectangle 14" StrokeThickness="0" BackgroundColor="#FF7F3E" 
                                                                                     HorizontalOptions="FillAndExpand" WidthRequest="80">
-                                                                                    <Image WidthRequest="25">
-                                                                                        <Image.Source>
-                                                                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="15"></FontImageSource>
-                                                                                        </Image.Source>
-                                                                                        <Image.GestureRecognizers>
-                                                                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=MoreOPtionsClickCommand}"
+                                                                                        <Image WidthRequest="25">
+                                                                                            <Image.Source>
+                                                                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="15"></FontImageSource>
+                                                                                            </Image.Source>
+                                                                                            <Image.GestureRecognizers>
+                                                                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=MoreOPtionsClickCommand}"
                                                                                                               CommandParameter="{Binding .}"></TapGestureRecognizer>
-                                                                                        </Image.GestureRecognizers>
-                                                                                    </Image>
+                                                                                            </Image.GestureRecognizers>
+                                                                                        </Image>
 
-                                                                                </Border>
-                                                                            </StackLayout>
-                                                                        </VerticalStackLayout>
-                                                                    </Grid>
+                                                                                    </Border>
+                                                                                </StackLayout>
+                                                                            </VerticalStackLayout>
+                                                                        </Grid>
+                                                                    </StackLayout>
                                                                 </StackLayout>
-                                                            </StackLayout>
-                                                            <Border.Shadow>
-                                                                <Shadow Offset="0,10" Brush="{OnPlatform Android=LightGray,iOS=LightGray}" Radius="10"></Shadow>
-                                                            </Border.Shadow>
-                                                        </Border>
-                                                    </StackLayout>
-                                                </DataTemplate>
-                                            </CollectionView.ItemTemplate>
-                                            <CollectionView.EmptyView>
-                                                <ContentView>
-                                                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                                                        <Label Text="{x:Static res:AppResources.plcNoAvailableCards}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
-                                                    </StackLayout>
-                                                </ContentView>
-                                            </CollectionView.EmptyView>
-                                        </CollectionView>
+                                                                <Border.Shadow>
+                                                                    <Shadow Offset="0,10" Brush="{OnPlatform Android=LightGray,iOS=LightGray}" Radius="10"></Shadow>
+                                                                </Border.Shadow>
+                                                            </Border>
+                                                        </StackLayout>
+                                                    </DataTemplate>
+                                                </CollectionView.ItemTemplate>
+                                                <CollectionView.EmptyView>
+                                                    <ContentView>
+                                                        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                                            <Label Text="{x:Static res:AppResources.plcNoAvailableCards}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                        </StackLayout>
+                                                    </ContentView>
+                                                </CollectionView.EmptyView>
+                                            </CollectionView>
+                                        </ScrollView>
                                     </Grid>
                                 </RefreshView>
                             </StackLayout>
@@ -347,7 +356,7 @@
                 <!--Leads-->
                 <tabView:SfTabItem>
                     <ContentView x:Name="LeadView" IsEnabled="{Binding IsEnable}" Margin="20">
-                        <StackLayout  Spacing="20">
+                        <StackLayout Spacing="20">
                             <!--Header-->
                             <StackLayout Orientation="Horizontal">
                                 <!--Leads Count-->
@@ -650,152 +659,154 @@
                     </tabView:SfTabItem.ImageSource>
                     <tabView:SfTabItem.Content>
                         <ContentView x:Name="MoreView" IsEnabled="{Binding IsEnable}" Margin="20">
-                            <StackLayout Spacing="20">
-                                <Label Text="{x:Static res:AppResources.hdrMore}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                            <ScrollView VerticalOptions="FillAndExpand">
+                                <StackLayout Spacing="20">
+                                    <Label Text="{x:Static res:AppResources.hdrMore}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                                        TextColor="Black"></Label>
-                                <!--Activate a Cardrly Device & My Devices-->
-                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
-                                    <VerticalStackLayout Spacing="15">
-                                        <!--Activate a Cardrly Device-->
-                                        <StackLayout Orientation="Horizontal">
-                                            <Label Text="{x:Static res:AppResources.lblACD}" FontAutoScalingEnabled="False" TextColor="Black"
+                                    <!--Activate a Cardrly Device & My Devices-->
+                                    <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
+                                        <VerticalStackLayout Spacing="15">
+                                            <!--Activate a Cardrly Device-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblACD}" FontAutoScalingEnabled="False" TextColor="Black"
                                                    FontSize="14" VerticalTextAlignment="Start"></Label>
-                                            <Image HorizontalOptions="EndAndExpand">
-                                                <Image.Source>
-                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
-                                                </Image.Source>
-                                                <Image.Triggers>
-                                                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
-                                                        <Setter Property="Rotation" Value="180"></Setter>
-                                                    </DataTrigger>
-                                                </Image.Triggers>
-                                            </Image>
-                                            <StackLayout.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding ActiveDeviceClickCommand}"></TapGestureRecognizer>
-                                            </StackLayout.GestureRecognizers>
-                                        </StackLayout>
-                                        <!--My Devices-->
-                                        <StackLayout Orientation="Horizontal">
-                                            <Label Text="{x:Static res:AppResources.lblMyDevices}" FontAutoScalingEnabled="False" TextColor="Black"
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding ActiveDeviceClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <!--My Devices-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblMyDevices}" FontAutoScalingEnabled="False" TextColor="Black"
                                                    FontSize="14" VerticalTextAlignment="Start"></Label>
-                                            <Image HorizontalOptions="EndAndExpand">
-                                                <Image.Source>
-                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
-                                                </Image.Source>
-                                                <Image.Triggers>
-                                                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
-                                                        <Setter Property="Rotation" Value="180"></Setter>
-                                                    </DataTrigger>
-                                                </Image.Triggers>
-                                            </Image>
-                                            <StackLayout.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding DeviceClickCommand}"></TapGestureRecognizer>
-                                            </StackLayout.GestureRecognizers>
-                                        </StackLayout>
-                                    </VerticalStackLayout>
-                                </Border>
-                                <!--Billing-->
-                                <Border StrokeShape="RoundRectangle 15" IsVisible="{Binding IsShowBullingInfo}" BackgroundColor="White" Padding="10">
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding DeviceClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                        </VerticalStackLayout>
+                                    </Border>
                                     <!--Billing-->
-                                    <VerticalStackLayout>
-                                        <StackLayout Orientation="Horizontal">
-                                            <Label Text="{x:Static res:AppResources.lblBillingInfo}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
-                                            <Image HorizontalOptions="EndAndExpand">
-                                                <Image.Source>
-                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
-                                                </Image.Source>
-                                                <Image.Triggers>
-                                                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
-                                                        <Setter Property="Rotation" Value="180"></Setter>
-                                                    </DataTrigger>
-                                                </Image.Triggers>
-                                            </Image>
-                                            <StackLayout.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding BillingClickCommand}"></TapGestureRecognizer>
-                                            </StackLayout.GestureRecognizers>
-                                        </StackLayout>
-                                    </VerticalStackLayout>
-                                </Border>
-                                <!--Help & Support & FAQ & Language-->
-                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
-                                    <VerticalStackLayout Spacing="15">
-                                        <!--Help & Support-->
-                                        <StackLayout Orientation="Horizontal" Spacing="7">
-                                            <Label Text="{x:Static res:AppResources.lblHelpSupport}" FontAutoScalingEnabled="False" TextColor="Black"
+                                    <Border StrokeShape="RoundRectangle 15" IsVisible="{Binding IsShowBullingInfo}" BackgroundColor="White" Padding="10">
+                                        <!--Billing-->
+                                        <VerticalStackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblBillingInfo}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding BillingClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                    <!--Help & Support & FAQ & Language-->
+                                    <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
+                                        <VerticalStackLayout Spacing="15">
+                                            <!--Help & Support-->
+                                            <StackLayout Orientation="Horizontal" Spacing="7">
+                                                <Label Text="{x:Static res:AppResources.lblHelpSupport}" FontAutoScalingEnabled="False" TextColor="Black"
                                                    FontSize="14" VerticalTextAlignment="Start"></Label>
-                                            <Image HorizontalOptions="EndAndExpand">
-                                                <Image.Source>
-                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
-                                                </Image.Source>
-                                                <Image.Triggers>
-                                                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
-                                                        <Setter Property="Rotation" Value="180"></Setter>
-                                                    </DataTrigger>
-                                                </Image.Triggers>
-                                            </Image>
-                                            <StackLayout.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding HelpClickCommand}"></TapGestureRecognizer>
-                                            </StackLayout.GestureRecognizers>
-                                        </StackLayout>
-                                        <!--FAQ-->
-                                        <StackLayout Orientation="Horizontal">
-                                            <Label Text="{x:Static res:AppResources.lblFAQ}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
-                                            <Image HorizontalOptions="EndAndExpand">
-                                                <Image.Source>
-                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
-                                                </Image.Source>
-                                                <Image.Triggers>
-                                                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
-                                                        <Setter Property="Rotation" Value="180"></Setter>
-                                                    </DataTrigger>
-                                                </Image.Triggers>
-                                            </Image>
-                                            <StackLayout.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding FAQClickCommand}"></TapGestureRecognizer>
-                                            </StackLayout.GestureRecognizers>
-                                        </StackLayout>
-                                        <!--Language-->
-                                        <StackLayout Orientation="Horizontal">
-                                            <Label Text="{x:Static res:AppResources.lblLanguage}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
-                                            <Image HorizontalOptions="EndAndExpand">
-                                                <Image.Source>
-                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
-                                                </Image.Source>
-                                                <Image.Triggers>
-                                                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
-                                                        <Setter Property="Rotation" Value="180"></Setter>
-                                                    </DataTrigger>
-                                                </Image.Triggers>
-                                            </Image>
-                                            <StackLayout.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding LanguageClickCommand}"></TapGestureRecognizer>
-                                            </StackLayout.GestureRecognizers>
-                                        </StackLayout>
-                                    </VerticalStackLayout>
-                                </Border>
-                                <!--logout-->
-                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding HelpClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <!--FAQ-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblFAQ}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding FAQClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <!--Language-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblLanguage}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding LanguageClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                        </VerticalStackLayout>
+                                    </Border>
                                     <!--logout-->
-                                    <VerticalStackLayout>
-                                        <StackLayout Orientation="Horizontal">
-                                            <Label Text="{x:Static res:AppResources.lblLogout}" FontAutoScalingEnabled="False" TextColor="Red" FontSize="14" VerticalTextAlignment="Start" FontAttributes="Bold"></Label>
-                                            <Image HorizontalOptions="EndAndExpand">
-                                                <Image.Source>
-                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Red" Size="20"></FontImageSource>
-                                                </Image.Source>
-                                                <Image.Triggers>
-                                                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
-                                                        <Setter Property="Rotation" Value="180"></Setter>
-                                                    </DataTrigger>
-                                                </Image.Triggers>
-                                            </Image>
-                                            <StackLayout.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding LogoutClickCommand}"></TapGestureRecognizer>
-                                            </StackLayout.GestureRecognizers>
-                                        </StackLayout>
-                                    </VerticalStackLayout>
-                                </Border>
-                            </StackLayout>
+                                    <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
+                                        <!--logout-->
+                                        <VerticalStackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblLogout}" FontAutoScalingEnabled="False" TextColor="Red" FontSize="14" VerticalTextAlignment="Start" FontAttributes="Bold"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Red" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding LogoutClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </StackLayout>
+                            </ScrollView>
                         </ContentView>
                     </tabView:SfTabItem.Content>
                 </tabView:SfTabItem>

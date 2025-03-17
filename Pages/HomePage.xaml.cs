@@ -171,9 +171,9 @@ public partial class HomePage : Controls.CustomControl
         else if (e.NewIndex == 2)
         {
             if (homeViewModel.IsEnable == true)
-            {
-                LeadSearc.Text = "";
+            {      
                 LeadView.BindingContext = LeadViewModel = new LeadViewModel(Rep, _service, homeViewModel._audioManager);
+                LeadSearc.Text = "";
             }
             else
             {

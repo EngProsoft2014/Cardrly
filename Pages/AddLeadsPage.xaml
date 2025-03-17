@@ -85,6 +85,9 @@
                 <Grid HeightRequest="100" WidthRequest="120">
                     <Border StrokeShape="RoundRectangle 50" HeightRequest="100" WidthRequest="100" HorizontalOptions="CenterAndExpand" Stroke="#FF7F3E">
                         <Image Source="{Binding Request.ImagefileProfile}" Aspect="Fill"></Image>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenFullScreenProfilePhotoCommand}" CommandParameter="{Binding Request.ImagefileProfile}"></TapGestureRecognizer>
+                        </Border.GestureRecognizers>
                     </Border>
                     <Image WidthRequest="25" VerticalOptions="StartAndExpand" HorizontalOptions="EndAndExpand" Margin="20,0,0,0">
                         <Image.Source>

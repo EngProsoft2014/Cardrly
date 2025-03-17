@@ -14,6 +14,8 @@ using Cardrly.Controls;
 using System.Collections.ObjectModel;
 using Cardrly.Models;
 using Cardrly.Resources.Lan;
+using Mopups.Pages;
+using Cardrly.Pages;
 
 namespace Cardrly.ViewModels
 {
@@ -150,9 +152,9 @@ namespace Cardrly.ViewModels
                 LinkColor.FirstOrDefault(a => a.HexCode == card.LinkColor)!.IsSelected = true;
                 Request.LinkColor = LinkColor.FirstOrDefault(a => a.HexCode == card.LinkColor)!.HexCode;
             }
-            else if(!string.IsNullOrEmpty(card.LinkColor))
+            else if (!string.IsNullOrEmpty(card.LinkColor))
             {
-                LinkColor.Add(new ColorModel { HexCode = card.LinkColor , IsSelected = true});
+                LinkColor.Add(new ColorModel { HexCode = card.LinkColor, IsSelected = true });
                 Request.LinkColor = card.LinkColor;
             }
             else
@@ -178,7 +180,7 @@ namespace Cardrly.ViewModels
                 ThemColor.FirstOrDefault()!.IsSelected = true;
                 Request.LinkColor = ThemColor.FirstOrDefault()!.HexCode;
             }
-            
+
         }
         #endregion
 
@@ -248,6 +250,22 @@ namespace Cardrly.ViewModels
                 }
             };
             await MopupService.Instance.PushAsync(page);
+        }
+
+        [RelayCommand]
+        async Task OpenFullScreenProfilePhoto(ImageSource image)
+        {
+            IsEnable = false;
+            await App.Current!.MainPage!.Navigation.PushAsync(new FullScreenImage(image));
+            IsEnable = true;
+        }
+
+        [RelayCommand]
+        async Task OpenFullScreenCoverPhoto(ImageSource image)
+        {
+            IsEnable = false;
+            await App.Current!.MainPage!.Navigation.PushAsync(new FullScreenImage(image));
+            IsEnable = true;
         }
 
         [RelayCommand]

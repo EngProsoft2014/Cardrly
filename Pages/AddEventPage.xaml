@@ -48,7 +48,7 @@
                                 ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCalendarType}" SelectedIndexChanged="Picker_SelectedIndexChanged"></Picker>
                         </Grid>-->
 
-                        <Label Text="{Binding SelectedCalendarType.Name}" TextColor="Black" FontSize="14" Padding="5" VerticalTextAlignment="Center"></Label>
+                        <Label Text="{Binding SelectedCalendarType.Name}" TextColor="Black" FontSize="14" Padding="10" VerticalTextAlignment="Center"></Label>
                     </Border>
                 </VerticalStackLayout>
                 <!--Select Card-->
