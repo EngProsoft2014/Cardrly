@@ -792,4 +792,7 @@
   <data name="msgAll Fields is Required" xml:space="preserve">
     <value>All Fields is Required.</value>
   </data>
+  <data name="lblDocuments" xml:space="preserve">
+    <value>Documents</value>
+  </data>
 </root>

@@ -601,6 +601,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Documents.
+        /// </summary>
+        internal static string lblDocuments {
+            get {
+                return ResourceManager.GetString("lblDocuments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Photo.
         /// </summary>
         internal static string lblEdit_Photo {

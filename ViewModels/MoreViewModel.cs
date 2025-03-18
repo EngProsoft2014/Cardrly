@@ -116,6 +116,20 @@ namespace Cardrly.ViewModels
             }
             
         }
+        [RelayCommand]
+        async Task DocumentsClick()
+        {
+            try
+            {
+                Uri uri = new Uri("https://cardrly.com/docs/");
+                await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+            }
+            catch (Exception ex)
+            {
+                var toast = Toast.Make($"{ex.Message}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+        }
         #endregion
     }
 }
