@@ -133,20 +133,20 @@ namespace Cardrly.ViewModels.Leads
                         Website = Request.Website,
                         LeadCategoryId = SelectedLeadCategory?.Value
                     };
-                    (LeadResponse, ErrorResult) json = (new LeadResponse(), new ErrorResult());
+                    (string, ErrorResult) json = ("a", new ErrorResult());
                     if (AddOrUpdate == 1)
                     {
                         UserDialogs.Instance.ShowLoading();
-                        json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadAddApi}{accid}/Lead", requestDto, UserToken);
+                        json = await Rep.PostTRAsync<LeadRequestDto, string>($"{ApiConstants.LeadAddApi}{accid}/Lead", requestDto, UserToken);
                         UserDialogs.Instance.HideHud();
                     }
                     else if (AddOrUpdate == 2)
                     {
                         UserDialogs.Instance.ShowLoading();
-                        json = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadUpdateApi}{accid}/Lead/{Response.Id}", requestDto, UserToken);
+                        json = await Rep.PostTRAsync<LeadRequestDto, string>($"{ApiConstants.LeadUpdateApi}{accid}/Lead/{Response.Id}", requestDto, UserToken);
                         UserDialogs.Instance.HideHud();
                     }
-                    if (json.Item1 != null)
+                    if (json.Item1 == null && json.Item2 == null)
                     {
                         if (AddOrUpdate == 1)
                         {
