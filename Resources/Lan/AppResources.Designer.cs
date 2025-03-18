@@ -601,11 +601,11 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Documents.
+        ///   Looks up a localized string similar to Documation.
         /// </summary>
-        internal static string lblDocuments {
+        internal static string lbldocumation {
             get {
-                return ResourceManager.GetString("lblDocuments", resourceCulture);
+                return ResourceManager.GetString("lbldocumation", resourceCulture);
             }
         }
         

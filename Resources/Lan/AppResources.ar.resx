@@ -792,7 +792,7 @@
   <data name="msgAll Fields is Required" xml:space="preserve">
     <value>جميع الحقول مطلوبة</value>
   </data>
-  <data name="lblDocuments" xml:space="preserve">
-    <value />
+  <data name="lbldocumation" xml:space="preserve">
+    <value>التوثيق</value>
   </data>
 </root>
