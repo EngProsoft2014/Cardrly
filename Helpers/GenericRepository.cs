@@ -7,6 +7,7 @@ using Polly;
 using Cardrly.Mode_s.ApplicationUser;
 using Cardrly.Helpers;
 using Plugin.Maui.Audio;
+using Org.Apache.Http.Protocol;
 
 
 
@@ -20,6 +21,7 @@ namespace Cardrly.Helpers
         Task<T> PostAsync<T>(string uri, T data, string authToken = "");
         Task<string> PostEAsync(string uri, string authToken = "");
         Task<(TR, ErrorResult?)> PostTRAsync<T, TR>(string uri, T data, string authToken = "");
+        Task<(string, ErrorResult?)> PostStrErrorAsync<T>(string uri, T data, string authToken = "");
         Task<string> PostStrAsync<T>(string uri, T data, string authToken = "");
         Task<string> PostDataAsync<T>(string uri, T data, string authToken = "");
         Task<string> PostMData<T>(string uri, T data, string authToken = "");
@@ -402,6 +404,65 @@ namespace Cardrly.Helpers
             }
         }
 
+        public async Task<(string, ErrorResult?)> PostStrErrorAsync<T>(string uri, T data, string authToken = "")
+        {
+
+            try
+            {
+                HttpClient httpClient = CreateHttpClient(Utility.ServerUrl + uri);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+
+                var cc = JsonConvert.SerializeObject(data);
+
+                var content = new StringContent(JsonConvert.SerializeObject(data));
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                string jsonResult = string.Empty;
+
+                var responseMessage = await Policy
+                    .Handle<WebException>(ex =>
+                    {
+                        Debug.WriteLine($"{ex.GetType().Name + " : " + ex.Message}");
+                        return true;
+                    })
+                    .WaitAndRetryAsync
+                    (
+                        5,
+                        retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
+                    )
+                    .ExecuteAsync(async () => await httpClient.PostAsync(Utility.ServerUrl + uri, content, CancellationToken.None));
+
+                jsonResult = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return (jsonResult, null);
+                }
+                else
+                {
+                    if (responseMessage.StatusCode == HttpStatusCode.Forbidden)
+                    {
+                        await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
+                        return default;
+                    }
+
+                    if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
+                        return default;
+                    }
+
+                    var json = JsonConvert.DeserializeObject<ErrorResult>(jsonResult);
+                    return (null, json);
+                }
+            }
+            catch (Exception e)
+            {
+                await Controls.StaticMember.ClearAllData(this);
+                return (null, null);
+            }
+        }
+        
+
         public async Task<string> PostStrAsync<T>(string uri, T data, string authToken = "")
         {
             try
@@ -456,7 +517,6 @@ namespace Cardrly.Helpers
                 }
 
                 return "Error";
-
             }
             catch (Exception e)
             {
@@ -464,6 +524,7 @@ namespace Cardrly.Helpers
                 return "";
             }
         }
+
 
         public async Task<string> PostDataAsync<T>(string uri, T data, string authToken = "")
         {

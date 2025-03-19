@@ -13,6 +13,7 @@ using Controls.UserDialogs.Maui;
 using Mopups.Services;
 using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 
 namespace Cardrly.ViewModels.Leads
 {
@@ -67,7 +68,7 @@ namespace Cardrly.ViewModels.Leads
             AddAttachmentsPopup page;
             if (Request!.ImgFile != null)
             {
-                page = new AddAttachmentsPopup(false,Request.ImgFile);
+                page = new AddAttachmentsPopup(false, Request.ImgFile);
             }
             else if (!string.IsNullOrEmpty(Response!.UrlImgProfileVM) & Response.UrlImgProfileVM != "usericon.png")
             {
@@ -108,9 +109,20 @@ namespace Cardrly.ViewModels.Leads
         [RelayCommand]
         async Task SaveClick()
         {
+            string valid = "";
+            if (!string.IsNullOrEmpty(Request.Email))
+            {
+                valid = CheckStringType(Request.Email);
+            }
+
             if (string.IsNullOrEmpty(Request!.FullName))
             {
                 var toast = Toast.Make($"{AppResources.msgFRFullName}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+            else if (!string.IsNullOrEmpty(Request.Email) && valid != "Email")
+            {
+                var toast = Toast.Make($"{AppResources.msgCheck_your_email_and_reEnter_it_correctly}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
             }
             else
@@ -118,7 +130,7 @@ namespace Cardrly.ViewModels.Leads
                 IsEnable = false;
                 if (Connectivity.NetworkAccess == NetworkAccess.Internet)
                 {
-                    
+
                     string UserToken = await _service.UserToken();
                     string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
                     LeadRequestDto requestDto = new LeadRequestDto
@@ -134,38 +146,42 @@ namespace Cardrly.ViewModels.Leads
                         LeadCategoryId = SelectedLeadCategory?.Value
                     };
                     (string, ErrorResult) json = ("a", new ErrorResult());
-                    if (AddOrUpdate == 1)
+                    if (AddOrUpdate == 1)//Add
                     {
                         UserDialogs.Instance.ShowLoading();
                         json = await Rep.PostTRAsync<LeadRequestDto, string>($"{ApiConstants.LeadAddApi}{accid}/Lead", requestDto, UserToken);
                         UserDialogs.Instance.HideHud();
-                    }
-                    else if (AddOrUpdate == 2)
-                    {
-                        UserDialogs.Instance.ShowLoading();
-                        json = await Rep.PostTRAsync<LeadRequestDto, string>($"{ApiConstants.LeadUpdateApi}{accid}/Lead/{Response.Id}", requestDto, UserToken);
-                        UserDialogs.Instance.HideHud();
-                    }
-                    if (json.Item1 == null && json.Item2 == null)
-                    {
-                        if (AddOrUpdate == 1)
+                        if (json.Item1 == null && json.Item2 == null)
                         {
                             var toast = Toast.Make($"{AppResources.msgSuccessfullyAddLead}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
+                            MessagingCenter.Send(this, "CreateLead", true);
+                            await App.Current!.MainPage!.Navigation.PopAsync();
                         }
-                        else if (AddOrUpdate == 2)
+                        else if (json.Item2 != null)
+                        {
+                            var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            await toast.Show();
+                        }
+                    }
+                    else if (AddOrUpdate == 2)//Update
+                    {
+                        UserDialogs.Instance.ShowLoading();
+                        var json2 = await Rep.PostTRAsync<LeadRequestDto, LeadResponse>($"{ApiConstants.LeadUpdateApi}{accid}/Lead/{Response.Id}", requestDto, UserToken);
+                        UserDialogs.Instance.HideHud();
+                        if (json.Item1 != null)
                         {
                             var toast = Toast.Make($"{AppResources.msgSuccessfullyUpdateLead}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
+                            MessagingCenter.Send(this, "CreateLead", true);
                         }
-                        MessagingCenter.Send(this, "CreateLead", true);
-                        await App.Current!.MainPage!.Navigation.PopAsync();
+                        else if (json.Item2 != null)
+                        {
+                            var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            await toast.Show();
+                        }
                     }
-                    else if (json.Item2 != null)
-                    {
-                        var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
-                    }
+
                 }
                 IsEnable = true;
             }
@@ -190,9 +206,9 @@ namespace Cardrly.ViewModels.Leads
                     await MopupService.Instance.PopAsync();
 
                     ScanCard.ImgFile = Convert.FromBase64String(img);
-                    
+
                     await UploadScanCard();
-                    
+
                 }
             };
             await MopupService.Instance.PushAsync(page);
@@ -234,11 +250,11 @@ namespace Cardrly.ViewModels.Leads
 
         async Task UploadScanCard()
         {
-            
+
             IsEnable = false;
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                
+
                 string UserToken = await _service.UserToken();
                 string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
                 UserDialogs.Instance.ShowLoading();
@@ -256,14 +272,14 @@ namespace Cardrly.ViewModels.Leads
                     await toast.Show();
                 }
             }
-            
+
             IsEnable = true;
-            
+
         }
 
         async Task GetAllCategories()
         {
-            
+
             IsEnable = false;
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
@@ -278,7 +294,21 @@ namespace Cardrly.ViewModels.Leads
                 }
             }
             IsEnable = true;
-            
+        }
+
+        public string CheckStringType(string input)
+        {
+            // Email pattern
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+
+            if (Regex.IsMatch(input, emailPattern))
+            {
+                return "Email";
+            }
+            else
+            {
+                return "Unknown";
+            }
         }
         #endregion
     }

@@ -795,4 +795,10 @@
   <data name="lblDocumentation" xml:space="preserve">
     <value>Documentation</value>
   </data>
+  <data name="msgSuccessfullyAddEvent" xml:space="preserve">
+    <value>Successfully Add Event</value>
+  </data>
+  <data name="msgCheck_your_email_and_reEnter_it_correctly" xml:space="preserve">
+    <value>Check your email and re-enter it correctly.</value>
+  </data>
 </root>

@@ -603,8 +603,7 @@ namespace Cardrly.Resources.Lan {
         /// <summary>
         ///   Looks up a localized string similar to Documentation.
         /// </summary>
-        internal static string lblDocumentation
-        {
+        internal static string lblDocumentation {
             get {
                 return ResourceManager.GetString("lblDocumentation", resourceCulture);
             }
@@ -1241,6 +1240,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check your email and re-enter it correctly..
+        /// </summary>
+        internal static string msgCheck_your_email_and_reEnter_it_correctly {
+            get {
+                return ResourceManager.GetString("msgCheck_your_email_and_reEnter_it_correctly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact saved.
         /// </summary>
         internal static string msgContactSaved {
@@ -1759,6 +1767,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgSuccessfullyAddComment {
             get {
                 return ResourceManager.GetString("msgSuccessfullyAddComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully Add Event.
+        /// </summary>
+        internal static string msgSuccessfullyAddEvent {
+            get {
+                return ResourceManager.GetString("msgSuccessfullyAddEvent", resourceCulture);
             }
         }
         

@@ -84,7 +84,7 @@ namespace Cardrly.ViewModels
                     var toast = Toast.Make($"{AppResources.msgStart_date_must_be_before_end_date}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 } 
-                else if (DateTime.Compare(StartDate, DateTime.UtcNow) < 0)
+                else if (DateTime.Compare(StartDate, DateTime.UtcNow) <= 0)
                 {
                     var toast = Toast.Make($"{AppResources.msgStart_date_must_be_after_today_s_date}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
@@ -121,10 +121,13 @@ namespace Cardrly.ViewModels
                     Request.Start = StartDate;
                     Request.End = EndDate;
                     UserDialogs.Instance.ShowLoading();
-                    string json = await Rep.PostStrAsync<CalendarGmailRequest>($"{ApiConstants.CalendarAddEventsApi}{accid}/Calendar/CalendarType/{SelectedCalendarType.Value}/AddEvents?CardId={SelectedCard.Id}", Request, UserToken);
+                    var json = await Rep.PostStrErrorAsync<CalendarGmailRequest>($"{ApiConstants.CalendarAddEventsApi}{accid}/Calendar/CalendarType/{SelectedCalendarType.Value}/AddEvents?CardId={SelectedCard.Id}", Request, UserToken);
                     UserDialogs.Instance.HideHud();
-                    if (json == "")
+
+                    if (json.Item1 != null && json.Item1 == "")
                     {
+                        var toast = Toast.Make($"{AppResources.msgSuccessfullyAddEvent}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();
                         MessagingCenter.Send(this, "AddEvent", SelectedCard);
                         await App.Current!.MainPage!.Navigation.PopAsync();
                     }
@@ -132,7 +135,7 @@ namespace Cardrly.ViewModels
                     {
                         Request.Start = StartDate.Date;
                         Request.End = EndDate.Date;
-                        var toast = Toast.Make(json, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value.ToString()!.Replace("[", "").Replace("]", "").Replace("\"", "")}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
                     }
                 }
