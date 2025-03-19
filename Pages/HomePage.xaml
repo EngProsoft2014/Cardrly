@@ -764,7 +764,7 @@
                                             </StackLayout>
                                             <!--Documents-->
                                             <StackLayout Orientation="Horizontal">
-                                                <Label Text="{x:Static res:AppResources.lbldocumation}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Label Text="{x:Static res:AppResources.lblDocumentation}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
                                                 <Image HorizontalOptions="EndAndExpand">
                                                     <Image.Source>
                                                         <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>

@@ -601,7 +601,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Documation.
+        ///   Looks up a localized string similar to Documentation.
         /// </summary>
         internal static string lbldocumation {
             get {
