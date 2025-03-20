@@ -16,7 +16,7 @@ namespace Cardrly.Mode_s.CardLink
         public string AccountLinkTitle { get; set; } = default!;
         public int CardLinkType { get; set; } = default!;
         public string? AccountLinkUrlImgName { get; set; } = default!;
-        public string? AccountLinkUrlImgNameVM { get { return Utility.ServerUrl + AccountLinkUrlImgName; } }
+        public string? AccountLinkUrlImgNameVM { get { return Utility.ServerUrl + AccountLinkUrlImgName; } set { } }
         private string? _ValueOf;
         public string ValueOf
         {

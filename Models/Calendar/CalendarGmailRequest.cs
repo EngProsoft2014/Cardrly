@@ -7,8 +7,8 @@ namespace Cardrly.Models.Calendar
         public string? Location { get; set; }
         public string? Description { get; set; }
         public string? Attendees { get; set; }
-        public DateTime Start { get; set; } = DateTime.UtcNow;
-        public DateTime End { get; set; } = DateTime.UtcNow;
+        public DateTime Start { get; set; } = DateTime.UtcNow.Date;
+        public DateTime End { get; set; } = DateTime.UtcNow.Date;
         private string _TimeZone;
         public string TimeZone
         {
