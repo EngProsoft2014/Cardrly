@@ -1,4 +1,4 @@
-using Cardrly.Constants;
+﻿using Cardrly.Constants;
 using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Resources.Lan;
@@ -47,6 +47,20 @@ public partial class GmailDetailsPopup : Mopups.Pages.PopupPage
         }
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        FontImageSource fontImageSource = new FontImageSource
+        {
+            Glyph = "", // Unicode for FontAwesome trash icon
+            FontFamily = "FontIcon",
+            Size = 20,
+            Color = Colors.Red
+        };
+
+        imgDelete.Source = fontImageSource;
+    }
+
     private async void TapGestureRecognizer_Cancel(object sender, EventArgs e)
     {
         await MopupService.Instance.PopAsync();
@@ -69,10 +83,11 @@ public partial class GmailDetailsPopup : Mopups.Pages.PopupPage
     //Delete Event
     public async void Delete_Tapped(object sender, TappedEventArgs e)
     {
+        this.IsEnabled = false;
+
         bool result = await App.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgDeleteEvent}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
         if (result)
         {
-            this.IsEnabled = false;
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
             {
@@ -91,8 +106,8 @@ public partial class GmailDetailsPopup : Mopups.Pages.PopupPage
                     await toast.Show();
                 }
             }
-            this.IsEnabled = true;
-
         }
+
+        this.IsEnabled = true;
     }
 }
