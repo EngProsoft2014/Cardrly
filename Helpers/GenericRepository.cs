@@ -7,7 +7,6 @@ using Polly;
 using Cardrly.Mode_s.ApplicationUser;
 using Cardrly.Helpers;
 using Plugin.Maui.Audio;
-using Org.Apache.Http.Protocol;
 
 
 
