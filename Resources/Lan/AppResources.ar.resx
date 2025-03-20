@@ -768,11 +768,11 @@
   <data name="msgFRTimeZone" xml:space="preserve">
     <value>الحقل المطلوب: المنطقة الزمنية</value>
   </data>
-  <data name="msgStart date must be before end date" xml:space="preserve">
+  <data name="msgStart_date_must_be_before_end_date" xml:space="preserve">
     <value>يجب أن يكون تاريخ البدء قبل تاريخ الانتهاء.</value>
   </data>
-  <data name="msgStart date must be after today's date" xml:space="preserve">
-    <value>يجب أن يكون تاريخ البدء بعد تاريخ اليوم.</value>
+  <data name="msgStart_date_must_be_from_todays_date" xml:space="preserve">
+    <value>يجب أن يكون تاريخ البدء إبتداءا  من تاريخ اليوم.</value>
   </data>
   <data name="msgPlease select a provider" xml:space="preserve">
     <value>الرجاء اختيار مزود الخدمة.</value>
@@ -806,5 +806,8 @@
   </data>
   <data name="msgTheEventHasNotBeenDeleted" xml:space="preserve">
     <value>لم يتم حذف الحدث</value>
+  </data>
+  <data name="msgStart_time_must_be_before_end_time" xml:space="preserve">
+    <value>يجب أن يكون وقت البدء قبل وقت الانتهاء</value>
   </data>
 </root>
