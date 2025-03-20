@@ -66,7 +66,7 @@ public partial class GmailDetailsPopup : Mopups.Pages.PopupPage
         }
     }
 
-
+    //Delete Event
     public async void Delete_Tapped(object sender, TappedEventArgs e)
     {
         bool result = await App.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgDeleteEvent}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
@@ -93,11 +93,6 @@ public partial class GmailDetailsPopup : Mopups.Pages.PopupPage
             }
             this.IsEnabled = true;
 
-        }
-        else
-        {
-            var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-            await toast.Show();
         }
     }
 }
