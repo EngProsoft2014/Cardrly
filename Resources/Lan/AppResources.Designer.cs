@@ -1321,6 +1321,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this event?.
+        /// </summary>
+        internal static string msgDeleteEvent {
+            get {
+                return ResourceManager.GetString("msgDeleteEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure to delete This Lead?.
         /// </summary>
         internal static string msgDeleteLead {
@@ -1857,6 +1866,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgTheDeviceHasNotBeenDeleted_ {
             get {
                 return ResourceManager.GetString("msgTheDeviceHasNotBeenDeleted.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Event Has Not Been Deleted..
+        /// </summary>
+        internal static string msgTheEventHasNotBeenDeleted {
+            get {
+                return ResourceManager.GetString("msgTheEventHasNotBeenDeleted", resourceCulture);
             }
         }
         

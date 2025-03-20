@@ -801,4 +801,10 @@
   <data name="msgCheck_your_email_and_reEnter_it_correctly" xml:space="preserve">
     <value>Check your email and re-enter it correctly.</value>
   </data>
+  <data name="msgDeleteEvent" xml:space="preserve">
+    <value>Are you sure you want to delete this event?</value>
+  </data>
+  <data name="msgTheEventHasNotBeenDeleted" xml:space="preserve">
+    <value>The Event Has Not Been Deleted.</value>
+  </data>
 </root>

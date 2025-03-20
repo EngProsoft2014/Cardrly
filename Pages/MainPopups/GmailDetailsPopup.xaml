@@ -21,6 +21,14 @@
             <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
                 <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
                     <StackLayout BackgroundColor="#FFFFFF" Spacing="3" Margin="20,10">
+                        <Image HorizontalOptions="EndAndExpand">
+                            <Image.Source>
+                                <FontImageSource Glyph="" FontFamily="FontIcon" Size="20" Color="Red"></FontImageSource>
+                            </Image.Source>
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Delete_Tapped"></TapGestureRecognizer>
+                            </Image.GestureRecognizers>
+                        </Image>
                         <!--Event Name-->
                         <HorizontalStackLayout Spacing="3">
                             <Label Text="{x:Static res:AppResources.lblEvent_Name}" FontSize="14" TextColor="Black"></Label>

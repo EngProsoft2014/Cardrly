@@ -124,6 +124,7 @@
         #region Calender
         public static string CalnderGetByApi = "Account/";
         public static string CalendarAddEventsApi = "Account/";
+        public static string CalendarDeleteEventsApi = "Account/";
         #endregion
 
         #region Permission

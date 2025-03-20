@@ -84,7 +84,7 @@ namespace Cardrly.ViewModels
                 }
                 else if (item is CalendarEventGmail)
                 {
-                    await MopupService.Instance.PushAsync(new GmailDetailsPopup((CalendarEventGmail)item));
+                    await MopupService.Instance.PushAsync(new GmailDetailsPopup((CalendarEventGmail)item,SelectedCard.Id,Rep,_service));
                 }
                 else if (item is CalendarOutlookEvent)
                 {
@@ -145,6 +145,13 @@ namespace Cardrly.ViewModels
                 {
                     SelectedCard = message;
                     await GetGmailData();
+                }
+            });
+            MessagingCenter.Subscribe<GmailDetailsPopup, bool>(this, "DeleteEvent", async (sender, message) =>
+            {
+                if (message)
+                {
+                    await GetData();
                 }
             });
         }
