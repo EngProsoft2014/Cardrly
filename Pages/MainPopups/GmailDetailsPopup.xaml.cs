@@ -83,11 +83,10 @@ public partial class GmailDetailsPopup : Mopups.Pages.PopupPage
     //Delete Event
     public async void Delete_Tapped(object sender, TappedEventArgs e)
     {
-        this.IsEnabled = false;
-
-        bool result = await App.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgDeleteEvent}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
+        bool result = await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgDeleteEvent}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
         if (result)
         {
+            await MopupService.Instance.PopAsync();
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
             {
@@ -96,8 +95,7 @@ public partial class GmailDetailsPopup : Mopups.Pages.PopupPage
                 string response = await Rep.PostEAsync($"{ApiConstants.CalendarDeleteEventsApi}{AccId}/Calendar/CalendarType/1/DeleteEvent/{Model.Id}?CardId={CardId}", UserToken);
                 UserDialogs.Instance.HideHud();
                 if (response == "")
-                {
-                    await MopupService.Instance.PopAsync();
+                {                   
                     MessagingCenter.Send(this, "DeleteEvent", true);
                 }
                 else
@@ -107,7 +105,5 @@ public partial class GmailDetailsPopup : Mopups.Pages.PopupPage
                 }
             }
         }
-
-        this.IsEnabled = true;
     }
 }
