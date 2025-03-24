@@ -64,6 +64,7 @@ namespace Cardrly.ViewModels
             {
                 DateTime StartDate = Request.Start + StartTime;
                 DateTime EndDate = Request.End + EndTime;
+
                 string valid = "";
                 if (!string.IsNullOrEmpty(Request.Attendees))
                 {
@@ -79,14 +80,19 @@ namespace Cardrly.ViewModels
                     var toast = Toast.Make($"{AppResources.msgPlease_select_a_Card}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
-                else if (DateTime.Compare(EndDate,StartDate) < 0)
+                else if (DateTime.Compare(Request.End, Request.Start) < 0)
                 {
                     var toast = Toast.Make($"{AppResources.msgStart_date_must_be_before_end_date}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
-                } 
-                else if (DateTime.Compare(StartDate, DateTime.UtcNow) <= 0)
+                }
+                else if (DateTime.Compare(Request.Start, DateTime.UtcNow.Date) < 0)
                 {
-                    var toast = Toast.Make($"{AppResources.msgStart_date_must_be_after_today_s_date}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    var toast = Toast.Make($"{AppResources.msgStart_date_must_be_from_todays_date}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
+                else if ((DateTime.Compare(Request.End, Request.Start) == 0) && (StartTime > EndTime))
+                {
+                    var toast = Toast.Make($"{AppResources.msgStart_time_must_be_before_end_time}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
                 else if (string.IsNullOrEmpty(Request.TimeZone))

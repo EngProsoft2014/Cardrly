@@ -52,7 +52,8 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
     public EditLinkPopup(int isUpdate, AccountLinkResponse res,string cardId, IGenericRepository GenericRep, Services.Data.ServicesService service)
     {
         InitializeComponent();
-        CardLink.AccountLinkUrlImgName = res.UrlImgName;
+        //CardLink.AccountLinkUrlImgNameVM = res.UrlImgName;
+        imgIcon.Source = res.UrlImgName;
         CardLink.AccountLinkTitle = res.Title;
         this.BindingContext = CardLink;
         Rep = GenericRep;

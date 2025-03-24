@@ -1,4 +1,4 @@
-using Cardrly.Constants;
+﻿using Cardrly.Constants;
 using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Resources.Lan;
@@ -47,6 +47,20 @@ public partial class GmailDetailsPopup : Mopups.Pages.PopupPage
         }
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        FontImageSource fontImageSource = new FontImageSource
+        {
+            Glyph = "", // Unicode for FontAwesome trash icon
+            FontFamily = "FontIcon",
+            Size = 20,
+            Color = Colors.Red
+        };
+
+        imgDelete.Source = fontImageSource;
+    }
+
     private async void TapGestureRecognizer_Cancel(object sender, EventArgs e)
     {
         await MopupService.Instance.PopAsync();
@@ -66,13 +80,13 @@ public partial class GmailDetailsPopup : Mopups.Pages.PopupPage
         }
     }
 
-
+    //Delete Event
     public async void Delete_Tapped(object sender, TappedEventArgs e)
     {
-        bool result = await App.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgDeleteEvent}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
+        bool result = await DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgDeleteEvent}", $"{AppResources.msgYes}", $"{AppResources.msgNo}");
         if (result)
         {
-            this.IsEnabled = false;
+            await MopupService.Instance.PopAsync();
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
             {
@@ -81,8 +95,7 @@ public partial class GmailDetailsPopup : Mopups.Pages.PopupPage
                 string response = await Rep.PostEAsync($"{ApiConstants.CalendarDeleteEventsApi}{AccId}/Calendar/CalendarType/1/DeleteEvent/{Model.Id}?CardId={CardId}", UserToken);
                 UserDialogs.Instance.HideHud();
                 if (response == "")
-                {
-                    await MopupService.Instance.PopAsync();
+                {                   
                     MessagingCenter.Send(this, "DeleteEvent", true);
                 }
                 else
@@ -91,13 +104,6 @@ public partial class GmailDetailsPopup : Mopups.Pages.PopupPage
                     await toast.Show();
                 }
             }
-            this.IsEnabled = true;
-
-        }
-        else
-        {
-            var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-            await toast.Show();
         }
     }
 }

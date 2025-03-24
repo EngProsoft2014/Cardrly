@@ -23,7 +23,7 @@
                 <StackLayout  BackgroundColor="#FFFFFF" Spacing="3" Padding="10">
                     <!--Profile Image-->
                     <Border StrokeShape="RoundRectangle 20" HeightRequest="60" WidthRequest="60" StrokeThickness="0" HorizontalOptions="CenterAndExpand">
-                        <Image Source="{Binding AccountLinkUrlImgNameVM}" Aspect="AspectFill"></Image>
+                        <Image x:Name="imgIcon" Source="{Binding AccountLinkUrlImgNameVM}" Aspect="AspectFill"></Image>
                     </Border>
                     <Label Text="{Binding AccountLinkTitle}"
                            TextColor="Black"
