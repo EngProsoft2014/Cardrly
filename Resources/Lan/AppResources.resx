@@ -768,11 +768,11 @@
   <data name="msgFRTimeZone" xml:space="preserve">
     <value>Field Required : Time Zone</value>
   </data>
-  <data name="msgStart date must be before end date" xml:space="preserve">
+  <data name="msgStart_date_must_be_before_end_date" xml:space="preserve">
     <value>Start date must be before end date.</value>
   </data>
-  <data name="msgStart date must be after today's date" xml:space="preserve">
-    <value>Start date must be after today's date.</value>
+  <data name="msgStart_date_must_be_from_todays_date" xml:space="preserve">
+    <value>The start date must be from today's date.</value>
   </data>
   <data name="msgPlease select a provider" xml:space="preserve">
     <value>Please select a provider.</value>
@@ -807,6 +807,7 @@
   <data name="msgTheEventHasNotBeenDeleted" xml:space="preserve">
     <value>The Event Has Not Been Deleted.</value>
   </data>
+<<<<<<< HEAD
   <data name="lblShowing" xml:space="preserve">
     <value>Showing</value>
   </data>
@@ -818,5 +819,9 @@
   </data>
   <data name="lblLeadCaptureMode" xml:space="preserve">
     <value>Lead Capture Mode</value>
+=======
+  <data name="msgStart_time_must_be_before_end_time" xml:space="preserve">
+    <value>Start time must be before end time.</value>
+>>>>>>> 603fe6a69e4293ebd09630afb16e2e33e2bf2619
   </data>
 </root>

@@ -1780,20 +1780,29 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start date must be after today&apos;s date..
-        /// </summary>
-        internal static string msgStart_date_must_be_after_today_s_date {
-            get {
-                return ResourceManager.GetString("msgStart date must be after today\'s date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Start date must be before end date..
         /// </summary>
         internal static string msgStart_date_must_be_before_end_date {
             get {
-                return ResourceManager.GetString("msgStart date must be before end date", resourceCulture);
+                return ResourceManager.GetString("msgStart_date_must_be_before_end_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The start date must be from today&apos;s date..
+        /// </summary>
+        internal static string msgStart_date_must_be_from_todays_date {
+            get {
+                return ResourceManager.GetString("msgStart_date_must_be_from_todays_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start time must be before end time..
+        /// </summary>
+        internal static string msgStart_time_must_be_before_end_time {
+            get {
+                return ResourceManager.GetString("msgStart_time_must_be_before_end_time", resourceCulture);
             }
         }
         
