@@ -291,6 +291,9 @@
 	  <None Update="Pages\DevicesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </None>
+	  <None Update="Pages\MainPopups\LeadFilterPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">

@@ -1,6 +1,7 @@
 using Cardrly.Enums;
 using Cardrly.Models.Lead;
 using Mopups.Services;
+using System.Globalization;
 
 namespace Cardrly.Pages.MainPopups;
 
@@ -17,7 +18,21 @@ public partial class LeadFilterPopup : Mopups.Pages.PopupPage
 		InitializeComponent();
         this.BindingContext = this;
         Init();
-	}
+
+        // Flow Direction 
+        string Lan = Preferences.Default.Get("Lan", "en");
+
+        if (Lan == "ar")
+        {
+            this.FlowDirection = FlowDirection.RightToLeft;
+            CultureInfo.CurrentCulture = new CultureInfo("ar");
+        }
+        else
+        {
+            this.FlowDirection = FlowDirection.LeftToRight;
+            CultureInfo.CurrentCulture = new CultureInfo("en");
+        }
+    }
 
     private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
     {
