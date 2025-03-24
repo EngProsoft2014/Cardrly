@@ -807,4 +807,16 @@
   <data name="msgTheEventHasNotBeenDeleted" xml:space="preserve">
     <value>The Event Has Not Been Deleted.</value>
   </data>
+  <data name="lblShowing" xml:space="preserve">
+    <value>Showing</value>
+  </data>
+  <data name="lblSortby" xml:space="preserve">
+    <value>Sort by</value>
+  </data>
+  <data name="lblAlphabetSorting" xml:space="preserve">
+    <value>Alphabet Sorting</value>
+  </data>
+  <data name="lblLeadCaptureMode" xml:space="preserve">
+    <value>Lead Capture Mode</value>
+  </data>
 </root>

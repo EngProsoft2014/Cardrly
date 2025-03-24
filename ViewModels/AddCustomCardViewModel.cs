@@ -106,6 +106,7 @@ namespace Cardrly.ViewModels
             Request.PersonName = card.PersonName;
             Request.LinkColor = card.LinkColor;
             Request.PersonNikeName = card.PersonNikeName;
+            Request.IsAddLeadFromProfileCard = card.IsAddLeadFromProfileCard;
             if (card.UrlImgProfileVM! == Utility.ServerUrl)
             {
                 Request.ImgProfileFile = ImageSource.FromFile("usericon.png");
@@ -312,7 +313,8 @@ namespace Cardrly.ViewModels
                                 location = Request.location,
                                 PersonNikeName = Request.PersonNikeName,
                                 Email = Request.Email,
-                                Password = Request.Password
+                                Password = Request.Password,
+                                IsAddLeadFromProfileCard = Request.IsAddLeadFromProfileCard
                             };
                             var json = await Rep.PostStrAsync<CardRequestDto>($"{ApiConstants.CardUpdateApi}{accid}/Card", requestDto, UserToken);
                             UserDialogs.Instance.HideHud();
@@ -351,6 +353,7 @@ namespace Cardrly.ViewModels
                             LinkColor = Request.LinkColor,
                             location = Request.location,
                             PersonNikeName = Request.PersonNikeName,
+                            IsAddLeadFromProfileCard = Request.IsAddLeadFromProfileCard,
                         };
                         var json = await Rep.PostTRAsync<CardRequestDto, CardResponse>($"{ApiConstants.CardUpdateApi}{accid}/Card/{Card.Id}", requestDto, UserToken);
                         UserDialogs.Instance.HideHud();

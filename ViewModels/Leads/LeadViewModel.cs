@@ -11,7 +11,6 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
-using Microsoft.Maui.Devices;
 using Mopups.Services;
 using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
@@ -131,6 +130,29 @@ namespace Cardrly.ViewModels.Leads
             {
                 await GetAllLeads();
             }
+        }
+
+        [RelayCommand]
+        public async Task FilterClick()
+        {
+            if (StaticMember.CheckPermission(ApiConstants.GetLeads))
+            {
+                var page = new LeadFilterPopup();
+                page.FilterClose += async (filter) =>
+                {
+                    await MopupService.Instance.PopAsync();
+                    FilterRequest = filter;
+                    Leads = new ObservableCollection<LeadResponse>();
+                    await GetAllLeads();
+                };
+                await MopupService.Instance.PushAsync(page);
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+
         }
         #endregion
 

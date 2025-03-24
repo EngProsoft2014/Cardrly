@@ -198,6 +198,11 @@ Text="{Binding Request.Password}"></Entry>
                 Text="{Binding Request.Bio}" HorizontalOptions="FillAndExpand"></Entry>
                             </Border>
                         </VerticalStackLayout>
+                        <HorizontalStackLayout Spacing="0">
+                            <CheckBox IsChecked="{Binding Request.IsAddLeadFromProfileCard}" Color="#FF7F3E" VerticalOptions="CenterAndExpand"></CheckBox>
+                            <Label Text="{x:Static res:AppResources.lblLeadCaptureMode}" TextColor="Black" FontSize="13" VerticalOptions="CenterAndExpand"
+                                   FontAttributes="Bold"></Label>
+                        </HorizontalStackLayout>
                     </VerticalStackLayout>
                 </Border>
                 <!--Save Button  & Edit Links-->

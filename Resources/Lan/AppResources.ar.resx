@@ -807,4 +807,16 @@
   <data name="msgTheEventHasNotBeenDeleted" xml:space="preserve">
     <value>لم يتم حذف الحدث</value>
   </data>
+  <data name="lblShowing" xml:space="preserve">
+    <value>عرض</value>
+  </data>
+  <data name="lblSortby" xml:space="preserve">
+    <value>فرز حسب</value>
+  </data>
+  <data name="lblAlphabetSorting" xml:space="preserve">
+    <value>فرز الأبجدية</value>
+  </data>
+  <data name="lblLeadCaptureMode" xml:space="preserve">
+    <value>وضع التقاط العملاء المحتملين</value>
+  </data>
 </root>

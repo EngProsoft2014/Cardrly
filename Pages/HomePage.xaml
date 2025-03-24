@@ -354,7 +354,7 @@
                 <!--Leads-->
                 <tabView:SfTabItem>
                     <ContentView x:Name="LeadView" IsEnabled="{Binding IsEnable}" Margin="20">
-                        <StackLayout Spacing="20">
+                        <StackLayout Spacing="20" VerticalOptions="FillAndExpand">
                             <!--Header-->
                             <StackLayout Orientation="Horizontal">
                                 <!--Leads Count-->
@@ -367,35 +367,28 @@
                                 <!--Titel-->
                                 <Label Text="{x:Static res:AppResources.hdrLeads}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                                    TextColor="Black"></Label>
-                                <!--Add Lead Button-->
-                                <Image>
-                                    <Image.Source>
-                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E" Size="25"></FontImageSource>
-                                    </Image.Source>
-                                    <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding AddLeadClickCommand}"></TapGestureRecognizer>
-                                    </Image.GestureRecognizers>
-                                </Image>
                             </StackLayout>
                             <!--SearchBar-->
-                            <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" HeightRequest="40">
+                            <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" HeightRequest="40" HorizontalOptions="FillAndExpand">
                                 <SearchBar x:Name="LeadSearc" Placeholder="{x:Static res:AppResources.plcSearch}" TextColor="Black" FontSize="14" TextChanged="SearchBar_Lead" BackgroundColor="White"></SearchBar>
                             </Border>
-                            <!--Data-->
-                            <RefreshView x:Name="LeadRef" VerticalOptions="FillAndExpand" Refreshing="Lead_Refreshing">
-                                <!--Leads-->
-                                <CollectionView x:Name="LeadColc" ItemsSource="{Binding Leads}" VerticalOptions="FillAndExpand" RemainingItemsThreshold="1" RemainingItemsThresholdReachedCommand="{Binding GetLoadMoreCommand}">
-                                    <CollectionView.ItemsLayout>
-                                        <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
-                                    </CollectionView.ItemsLayout>
-                                    <CollectionView.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border StrokeShape="RoundRectangle 20" Padding="10" BackgroundColor="White">
-                                                <StackLayout Orientation="Horizontal" Spacing="10" >
-                                                    <!--Image Profile-->
-                                                    <Border StrokeShape="RoundRectangle 50" HeightRequest="60" WidthRequest="60">
-                                                        <Image Source="{Binding UrlImgProfileVM}" Aspect="AspectFill">
-                                                            <!--<Image.Triggers>
+
+                            <Grid VerticalOptions="FillAndExpand">
+                                <!--Data-->
+                                <RefreshView x:Name="LeadRef" VerticalOptions="FillAndExpand" Refreshing="Lead_Refreshing">
+                                    <!--Leads-->
+                                    <CollectionView x:Name="LeadColc" ItemsSource="{Binding Leads}" VerticalOptions="FillAndExpand" RemainingItemsThreshold="1" RemainingItemsThresholdReachedCommand="{Binding GetLoadMoreCommand}">
+                                        <CollectionView.ItemsLayout>
+                                            <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border StrokeShape="RoundRectangle 20" Padding="10" BackgroundColor="White">
+                                                    <StackLayout Orientation="Horizontal" Spacing="10" >
+                                                        <!--Image Profile-->
+                                                        <Border StrokeShape="RoundRectangle 50" HeightRequest="60" WidthRequest="60">
+                                                            <Image Source="{Binding UrlImgProfileVM}" Aspect="AspectFill">
+                                                                <!--<Image.Triggers>
                                                                 <DataTrigger TargetType="Image" Binding="{Binding UrlImgProfileVM}" Value="https://api.cardrly.com/">
                                                                     <Setter Property="Source">
                                                                         <Setter.Value>
@@ -406,50 +399,90 @@
                                                                     <Setter Property="Margin" Value="15"></Setter>
                                                                 </DataTrigger>
                                                             </Image.Triggers>-->
-                                                        </Image>
-                                                    </Border>
-                                                    <!--Name & Company-->
-                                                    <VerticalStackLayout Margin="0,7,0,0" HorizontalOptions="FillAndExpand" Spacing="2">
-                                                        <Label Text="{Binding FullName}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
-                                                        <Label Text="{Binding CreatedDate ,StringFormat='{}{0:MM/dd/yyy}'}" FontSize="12" TextColor="Gray" FontAttributes="Italic" Margin="0,0,0,0"></Label>
-                                                        <Label Text="{Binding Company}" FontSize="12" TextColor="Gray" FontAttributes="Bold"></Label>
-                                                    </VerticalStackLayout>
-                                                    <HorizontalStackLayout Margin="0,7,0,0" Spacing="7" >
-                                                        <!--Active Click-->
-                                                        <CheckBox Color="#FF7F3E" IsChecked="{Binding Active}">
-                                                            <CheckBox.GestureRecognizers>
-                                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type Lvm:LeadViewModel}},Path=ActiveClickCommand}"
+                                                            </Image>
+                                                        </Border>
+                                                        <!--Name & Company-->
+                                                        <VerticalStackLayout Margin="0,7,0,0" HorizontalOptions="FillAndExpand" Spacing="2">
+                                                            <Label Text="{Binding FullName}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                            <Label Text="{Binding CreatedDate ,StringFormat='{}{0:MM/dd/yyy}'}" FontSize="12" TextColor="Gray" FontAttributes="Italic" Margin="0,0,0,0"></Label>
+                                                            <Label Text="{Binding Company}" FontSize="12" TextColor="Gray" FontAttributes="Bold"></Label>
+                                                        </VerticalStackLayout>
+                                                        <HorizontalStackLayout Margin="0,7,0,0" Spacing="7" >
+                                                            <!--Active Click-->
+                                                            <CheckBox Color="#FF7F3E" IsChecked="{Binding Active}">
+                                                                <CheckBox.GestureRecognizers>
+                                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type Lvm:LeadViewModel}},Path=ActiveClickCommand}"
                                                                                   CommandParameter="{Binding .}"></TapGestureRecognizer>
-                                                            </CheckBox.GestureRecognizers>
-                                                        </CheckBox>
-                                                        <!--More Optiions-->
-                                                        <Image>
-                                                            <Image.Source>
-                                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
-                                                            </Image.Source>
-                                                            <Image.GestureRecognizers>
-                                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type Lvm:LeadViewModel}},Path=MoreOptionClickCommand}"
+                                                                </CheckBox.GestureRecognizers>
+                                                            </CheckBox>
+                                                            <!--More Optiions-->
+                                                            <Image>
+                                                                <Image.Source>
+                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                                                                </Image.Source>
+                                                                <Image.GestureRecognizers>
+                                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type Lvm:LeadViewModel}},Path=MoreOptionClickCommand}"
                                                                                       CommandParameter="{Binding .}"></TapGestureRecognizer>
-                                                            </Image.GestureRecognizers>
-                                                        </Image>
-                                                    </HorizontalStackLayout>
-                                                </StackLayout>
-                                                <Border.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type Lvm:LeadViewModel}},Path=SelectClickCommand}"
+                                                                </Image.GestureRecognizers>
+                                                            </Image>
+                                                        </HorizontalStackLayout>
+                                                    </StackLayout>
+                                                    <Border.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type Lvm:LeadViewModel}},Path=SelectClickCommand}"
                                                                       CommandParameter="{Binding .}"></TapGestureRecognizer>
-                                                </Border.GestureRecognizers>
-                                            </Border>
-                                        </DataTemplate>
-                                    </CollectionView.ItemTemplate>
-                                    <CollectionView.EmptyView>
-                                        <ContentView>
-                                            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                                                <Label Text="{x:Static res:AppResources.plcNoAvailableLaeds}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
-                                            </StackLayout>
-                                        </ContentView>
-                                    </CollectionView.EmptyView>
-                                </CollectionView>
-                            </RefreshView>
+                                                    </Border.GestureRecognizers>
+                                                </Border>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                        <CollectionView.EmptyView>
+                                            <ContentView>
+                                                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                                    <Label Text="{x:Static res:AppResources.plcNoAvailableLaeds}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                </StackLayout>
+                                            </ContentView>
+                                        </CollectionView.EmptyView>
+                                    </CollectionView>
+                                </RefreshView>
+                                <!--Expender-->
+                                <Border BackgroundColor="#FF7F3E" Stroke="Transparent" Padding="1" VerticalOptions="End"
+                                        HorizontalOptions="End" Margin="20">
+                                    <xct:Expander>
+                                        <xct:Expander.Header>
+                                            <Image Margin="10">
+                                                <Image.Source>
+                                                    <FontImageSource FontFamily="FontIconSolid" Color="Black" Glyph="" Size="22"></FontImageSource>
+                                                </Image.Source>
+                                            </Image>
+                                        </xct:Expander.Header>
+                                        <StackLayout Spacing="30" Margin="0,8">
+                                            <!--Filter-->
+                                            <Image >
+                                                <Image.Source>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="22" Color="White"></FontImageSource>
+                                                </Image.Source>
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding FilterClickCommand}"></TapGestureRecognizer>
+                                                </Image.GestureRecognizers>
+                                            </Image>
+                                            <!--Add Lead Button-->
+                                            <Image>
+                                                <Image.Source>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="22"></FontImageSource>
+                                                </Image.Source>
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding AddLeadClickCommand}"></TapGestureRecognizer>
+                                                </Image.GestureRecognizers>
+                                            </Image>
+                                        </StackLayout>
+                                    </xct:Expander>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="{OnPlatform Android=100, iOS=23}"></RoundRectangle>
+                                    </Border.StrokeShape>
+                                    <Border.Shadow>
+                                        <Shadow Offset="1,2" Brush="{OnPlatform Android=Gray, iOS=LightGray}" Radius="5" Opacity="1"></Shadow>
+                                    </Border.Shadow>
+                                </Border>
+                            </Grid>
                         </StackLayout>
                     </ContentView>
                     <tabView:SfTabItem.ImageSource>

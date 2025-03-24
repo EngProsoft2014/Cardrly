@@ -6,6 +6,7 @@ namespace Cardrly.Mode_s.Card
     public class CardRequest : INotifyPropertyChanged
     {
         public string CardName { get; set; } = default!;
+        public bool? IsAddLeadFromProfileCard { get; set; } = false;
         public string? Cardlayout { get; set; } = "_mobilecard"!;
         public byte[]? ImgFileProfile { get; set; }
         [JsonIgnore]

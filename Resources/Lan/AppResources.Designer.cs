@@ -385,6 +385,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alphabet Sorting.
+        /// </summary>
+        internal static string lblAlphabetSorting {
+            get {
+                return ResourceManager.GetString("lblAlphabetSorting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Amount.
         /// </summary>
         internal static string lblAmount {
@@ -772,6 +781,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lead Capture Mode.
+        /// </summary>
+        internal static string lblLeadCaptureMode {
+            get {
+                return ResourceManager.GetString("lblLeadCaptureMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lead Category.
         /// </summary>
         internal static string lblLeadCategory {
@@ -1033,11 +1051,29 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Showing.
+        /// </summary>
+        internal static string lblShowing {
+            get {
+                return ResourceManager.GetString("lblShowing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Social Media.
         /// </summary>
         internal static string lblSocial_Media {
             get {
                 return ResourceManager.GetString("lblSocial Media", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sort by.
+        /// </summary>
+        internal static string lblSortby {
+            get {
+                return ResourceManager.GetString("lblSortby", resourceCulture);
             }
         }
         
