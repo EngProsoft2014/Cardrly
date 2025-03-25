@@ -61,8 +61,8 @@
                                 </Border>
                             </VerticalStackLayout>
                         </StackLayout>
-                        <!--Save Button-->
-                        <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnSave}" FontSize="16" FontAttributes="Bold"
+                        <!--Sort Button-->
+                        <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnSort}" FontSize="16" FontAttributes="Bold"
                              BackgroundColor="#FF7F3E" TextColor="White" HorizontalOptions="FillAndExpand" Margin="0,10,0,0" Clicked="Button_Clicked"></Button>
                     </VerticalStackLayout>
 

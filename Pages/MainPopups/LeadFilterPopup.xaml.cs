@@ -46,19 +46,20 @@ public partial class LeadFilterPopup : Mopups.Pages.PopupPage
         // Add To ShowingLst 
         ShowingLst.Add(25);
         ShowingLst.Add(50);
-        ShowingLst.Add(75);
         ShowingLst.Add(100);
-        ShowingLst.Add(150);
+        ShowingLst.Add(200);
+        ShowingLst.Add(500);
+        ShowingLst.Add(1000);
         // Add To AlphabetSortingLst 
         AlphabetSortingLst.Add("A-Z");
         AlphabetSortingLst.Add("Z-A");
         // Add To SortByLst
         SortByLst = new List<EnumSearchLead>
         {
-            EnumSearchLead.Date,
-            EnumSearchLead.Name,
-            EnumSearchLead.Category,
-            EnumSearchLead.Company
+             EnumSearchLead.Name,
+             EnumSearchLead.Date,          
+             EnumSearchLead.Category,
+             EnumSearchLead.Company
         };
 
         //binding pickers 

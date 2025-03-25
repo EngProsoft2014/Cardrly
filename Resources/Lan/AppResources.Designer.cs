@@ -133,6 +133,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sort.
+        /// </summary>
+        internal static string btnSort {
+            get {
+                return ResourceManager.GetString("btnSort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Upcoming.
         /// </summary>
         internal static string btnUpcoming {
