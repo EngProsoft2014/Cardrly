@@ -141,6 +141,7 @@ namespace Cardrly.ViewModels.Leads
                 page.FilterClose += async (filter) =>
                 {
                     await MopupService.Instance.PopAsync();
+                    IsHasNext = false;
                     FilterRequest = filter;
                     Leads = new ObservableCollection<LeadResponse>();
                     await GetAllLeads();
