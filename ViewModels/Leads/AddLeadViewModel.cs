@@ -279,8 +279,6 @@ namespace Cardrly.ViewModels.Leads
 
         async Task GetAllCategories()
         {
-
-            IsEnable = false;
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
             {
@@ -293,7 +291,6 @@ namespace Cardrly.ViewModels.Leads
                     ListCategories = json;
                 }
             }
-            IsEnable = true;
         }
 
         public string CheckStringType(string input)
