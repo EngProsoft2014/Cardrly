@@ -137,7 +137,7 @@ namespace Cardrly.ViewModels.Leads
         {
             if (StaticMember.CheckPermission(ApiConstants.GetLeads))
             {
-                var page = new LeadFilterPopup();
+                var page = new LeadFilterPopup(FilterRequest);
                 page.FilterClose += async (filter) =>
                 {
                     await MopupService.Instance.PopAsync();
@@ -183,7 +183,8 @@ namespace Cardrly.ViewModels.Leads
 
                 if (true)
                 {
-                    FilterRequest = new LeadFilterRequest();
+                    FilterRequest.PageNumber = 1;
+                    FilterRequest.SearchLead = "";
                     await SearchLeads();
                 }
             });
@@ -263,7 +264,6 @@ namespace Cardrly.ViewModels.Leads
         }
         async Task GetAccountCard()
         {
-            IsEnable = false;
             string UserToken = await _service.UserToken();
             if (!string.IsNullOrEmpty(UserToken))
             {
@@ -277,7 +277,6 @@ namespace Cardrly.ViewModels.Leads
                     MyCardDetails = json;
                 }
             }
-            IsEnable = true;
         }
         #endregion
     }

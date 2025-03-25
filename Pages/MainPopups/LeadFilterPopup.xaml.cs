@@ -13,11 +13,11 @@ public partial class LeadFilterPopup : Mopups.Pages.PopupPage
     public List<string> AlphabetSortingLst = new List<string>();
     public delegate void FilterDelegte(LeadFilterRequest filterRequest);
     public event FilterDelegte FilterClose;
-    public LeadFilterPopup()
+    public LeadFilterPopup(LeadFilterRequest model)
 	{
 		InitializeComponent();
         this.BindingContext = this;
-        Init();
+        Init(model);
 
         // Flow Direction 
         string Lan = Preferences.Default.Get("Lan", "en");
@@ -41,7 +41,7 @@ public partial class LeadFilterPopup : Mopups.Pages.PopupPage
         this.IsEnabled = true;
     }
 
-    void Init()
+    void Init(LeadFilterRequest model)
     {
         // Add To ShowingLst 
         ShowingLst.Add(25);
@@ -66,9 +66,9 @@ public partial class LeadFilterPopup : Mopups.Pages.PopupPage
         AlphabetSortingPicker.ItemsSource = AlphabetSortingLst;
         SortbyPicker.ItemsSource = SortByLst;
         //Defult Selection
-        ShowingPicker.SelectedItem = ShowingLst[0];
-        AlphabetSortingPicker.SelectedItem = AlphabetSortingLst[0];
-        SortbyPicker.SelectedItem = SortByLst[0];
+        ShowingPicker.SelectedItem = ShowingLst.FirstOrDefault(a =>a == model.Pagesize);
+        AlphabetSortingPicker.SelectedItem = AlphabetSortingLst.FirstOrDefault(a => a == model.sortbydir);
+        SortbyPicker.SelectedItem = SortByLst.FirstOrDefault(a=>(int)a == model.sortby);
     }
 
     private void Button_Clicked(object sender, EventArgs e)
