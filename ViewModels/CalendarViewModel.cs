@@ -54,7 +54,10 @@ namespace Cardrly.ViewModels
         {
             Rep = GenericRep;
             _service = service;
-            Init();
+            if (StaticMember.CheckPermission(ApiConstants.GetCalendar))
+            {
+                Init();
+            }
         }
         #endregion
 
@@ -123,7 +126,15 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         public async Task AddEventClick()
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new AddEventPage(new AddEventViewModel(Rep,_service,CalendarTypes)));
+            if (StaticMember.CheckPermission(ApiConstants.GetCalendar))
+            {
+                await App.Current!.MainPage!.Navigation.PushAsync(new AddEventPage(new AddEventViewModel(Rep, _service, CalendarTypes)));
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
         }
         #endregion
 
