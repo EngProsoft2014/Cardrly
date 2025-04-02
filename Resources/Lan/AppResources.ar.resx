@@ -825,4 +825,7 @@
   <data name="btnSort" xml:space="preserve">
     <value>ترتيب</value>
   </data>
+  <data name="hdrAccountInfo" xml:space="preserve">
+    <value>بيانات الحساب</value>
+  </data>
 </root>

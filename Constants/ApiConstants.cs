@@ -152,6 +152,7 @@
         public const string AddLeads = "Leads:Add";
         public const string UpdateLeads = "Leads:Update";
         public const string DeleteLeads = "Leads:Delete";
+        public const string ScanCardLeads = "Leads:ScanCard";
 
         // == Users == 
         public const string GetUsers = "Users:Get";

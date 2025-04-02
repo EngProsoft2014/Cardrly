@@ -60,6 +60,11 @@ namespace Cardrly.ViewModels
         }
 
         [RelayCommand]
+        async Task AccountInfoClick()
+        {
+            await App.Current!.MainPage!.Navigation.PushAsync(new AccountInfoPage(new AccountInfoViewModel(Rep, _service)));
+        }
+        [RelayCommand]
         async Task ActiveDeviceClick()
         {
             await App.Current!.MainPage!.Navigation.PushAsync(new ActiveDevicePage(new ActiveDeviceViewModel(Rep, _service)));

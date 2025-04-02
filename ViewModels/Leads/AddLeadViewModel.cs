@@ -190,28 +190,36 @@ namespace Cardrly.ViewModels.Leads
         [RelayCommand]
         async Task ScanClick()
         {
-            AddAttachmentsPopup page;
-            if (ScanCard!.ImgFile != null)
+            if (StaticMember.CheckPermission(ApiConstants.ScanCardLeads))
             {
-                page = new AddAttachmentsPopup(true, Request.ImgFile);
+                AddAttachmentsPopup page;
+                if (ScanCard!.ImgFile != null)
+                {
+                    page = new AddAttachmentsPopup(true, Request.ImgFile);
+                }
+                else
+                {
+                    page = new AddAttachmentsPopup(true);
+                }
+                page.ImageClose += async (img, imgPath) =>
+                {
+                    if (!string.IsNullOrEmpty(img))
+                    {
+                        await MopupService.Instance.PopAsync();
+
+                        ScanCard.ImgFile = Convert.FromBase64String(img);
+
+                        await UploadScanCard();
+
+                    }
+                };
+                await MopupService.Instance.PushAsync(page);
             }
             else
             {
-                page = new AddAttachmentsPopup(true);
+                var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
             }
-            page.ImageClose += async (img, imgPath) =>
-            {
-                if (!string.IsNullOrEmpty(img))
-                {
-                    await MopupService.Instance.PopAsync();
-
-                    ScanCard.ImgFile = Convert.FromBase64String(img);
-
-                    await UploadScanCard();
-
-                }
-            };
-            await MopupService.Instance.PushAsync(page);
         }
         #endregion
 

@@ -825,4 +825,7 @@
   <data name="btnSort" xml:space="preserve">
     <value>Sort</value>
   </data>
+  <data name="hdrAccountInfo" xml:space="preserve">
+    <value>Account Info</value>
+  </data>
 </root>

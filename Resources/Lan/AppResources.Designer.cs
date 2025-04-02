@@ -151,6 +151,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account Info.
+        /// </summary>
+        internal static string hdrAccountInfo {
+            get {
+                return ResourceManager.GetString("hdrAccountInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Card.
         /// </summary>
         internal static string hdrAddCard {
@@ -2086,7 +2095,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Available Laeds.
+        ///   Looks up a localized string similar to No Available Leads.
         /// </summary>
         internal static string plcNoAvailableLaeds {
             get {
