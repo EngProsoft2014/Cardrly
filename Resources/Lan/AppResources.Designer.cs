@@ -781,7 +781,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Job title.
+        ///   Looks up a localized string similar to Job Title.
         /// </summary>
         internal static string lblJobtitle {
             get {
