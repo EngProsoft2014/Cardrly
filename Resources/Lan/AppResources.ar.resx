@@ -828,4 +828,10 @@
   <data name="hdrAccountInfo" xml:space="preserve">
     <value>بيانات الحساب</value>
   </data>
+  <data name="lblRank" xml:space="preserve">
+    <value>رتبة</value>
+  </data>
+  <data name="lblCompanyName" xml:space="preserve">
+    <value>اسم الشركة</value>
+  </data>
 </root>

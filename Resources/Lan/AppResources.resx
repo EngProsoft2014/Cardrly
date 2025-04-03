@@ -828,4 +828,10 @@
   <data name="hdrAccountInfo" xml:space="preserve">
     <value>Account Info</value>
   </data>
+  <data name="lblRank" xml:space="preserve">
+    <value>Rank</value>
+  </data>
+  <data name="lblCompanyName" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
 </root>

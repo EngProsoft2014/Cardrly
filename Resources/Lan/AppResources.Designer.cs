@@ -574,6 +574,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Company Name.
+        /// </summary>
+        internal static string lblCompanyName {
+            get {
+                return ResourceManager.GetString("lblCompanyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Conference.
         /// </summary>
         internal static string lblConference {
@@ -975,6 +984,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblProvider {
             get {
                 return ResourceManager.GetString("lblProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rank.
+        /// </summary>
+        internal static string lblRank {
+            get {
+                return ResourceManager.GetString("lblRank", resourceCulture);
             }
         }
         

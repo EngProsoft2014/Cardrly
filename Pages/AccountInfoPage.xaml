@@ -7,7 +7,7 @@
                         IsEnabled="{Binding IsEnable}"
                         Title="AccountInfoPage">
 
-    <StackLayout VerticalOptions="FillAndExpand" Margin="20">
+    <StackLayout VerticalOptions="FillAndExpand" Margin="20" Spacing="10">
         <!--Header-->
         <StackLayout Orientation="Horizontal">
             <Image>
@@ -26,8 +26,45 @@
             <Label Text="{x:Static res:AppResources.hdrAccountInfo}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="18" FontAttributes="Bold"
            HorizontalOptions="CenterAndExpand"></Label>
         </StackLayout>
-        
-        
-        
+        <!--Profile Image-->
+        <Border StrokeShape="RoundRectangle 50" HeightRequest="100" WidthRequest="100" HorizontalOptions="CenterAndExpand" Stroke="#FF7F3E"
+                Margin="0,20,0,0">
+            <Image Source="{Binding AccountData.CompanyUrlLogo}" Aspect="Fill"></Image>
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding OpenFullScreenProfilePhotoCommand}" CommandParameter="{Binding Request.ImagefileProfile}"></TapGestureRecognizer>
+            </Border.GestureRecognizers>
+        </Border>
+        <!--Name-->
+        <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="2">
+            <Label Text="{x:Static res:AppResources.plcUserName}" TextColor="Gray" FontSize="13"></Label>
+            <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                <Entry Keyboard="Email" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                       Text="{Binding AccountData.UserName}" IsReadOnly="True"></Entry>
+            </Border>
+        </VerticalStackLayout>
+        <!--Email-->
+        <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="2">
+            <Label Text="{x:Static res:AppResources.lblEmail}" TextColor="Gray" FontSize="13"></Label>
+            <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                <Entry Keyboard="Email" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                   Text="{Binding AccountData.Email}" IsReadOnly="True"></Entry>
+            </Border>
+        </VerticalStackLayout>
+        <!--Rank-->
+        <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="2">
+            <Label Text="{x:Static res:AppResources.lblRank}" TextColor="Gray" FontSize="13"></Label>
+            <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                <Entry Keyboard="Email" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                       Text="{Binding AccountData.UserPermision}" IsReadOnly="True"></Entry>
+            </Border>
+        </VerticalStackLayout>
+        <!--Company Name-->
+        <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="2">
+            <Label Text="{x:Static res:AppResources.lblCompanyName}" TextColor="Gray" FontSize="13"></Label>
+            <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                <Entry Keyboard="Email" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+               Text="{Binding AccountData.CompanyName}" IsReadOnly="True"></Entry>
+            </Border>
+        </VerticalStackLayout>
     </StackLayout>
 </Controls:CustomControl>
