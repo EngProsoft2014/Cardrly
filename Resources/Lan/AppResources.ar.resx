@@ -330,7 +330,7 @@
   <data name="lblIs ShareToUsers" xml:space="preserve">
     <value>هل المشاركة للمستخدمين</value>
   </data>
-  <data name="lblJob title" xml:space="preserve">
+  <data name="lblJobtitle" xml:space="preserve">
     <value>مسمى وظيفي</value>
   </data>
   <data name="lblJoinnow" xml:space="preserve">
@@ -827,9 +827,6 @@
   </data>
   <data name="hdrAccountInfo" xml:space="preserve">
     <value>بيانات الحساب</value>
-  </data>
-  <data name="lblRank" xml:space="preserve">
-    <value>رتبة</value>
   </data>
   <data name="lblCompanyName" xml:space="preserve">
     <value>اسم الشركة</value>

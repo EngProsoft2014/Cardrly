@@ -28,41 +28,41 @@
         </StackLayout>
         <!--Profile Image-->
         <Border StrokeShape="RoundRectangle 50" HeightRequest="100" WidthRequest="100" HorizontalOptions="CenterAndExpand" Stroke="#FF7F3E"
-                Margin="0,20,0,0">
-            <Image Source="{Binding AccountData.CompanyUrlLogo}" Aspect="Fill"></Image>
+                Margin="0,20,0,20">
+            <Image Source="{Binding AccountData.CompanyUrlLogo}" Aspect="AspectFill"></Image>
             <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding OpenFullScreenProfilePhotoCommand}" CommandParameter="{Binding Request.ImagefileProfile}"></TapGestureRecognizer>
+                <TapGestureRecognizer Command="{Binding OpenFullScreenProfilePhotoCommand}" CommandParameter="{Binding AccountData.CompanyUrlLogo}"></TapGestureRecognizer>
             </Border.GestureRecognizers>
         </Border>
         <!--Name-->
         <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="2">
-            <Label Text="{x:Static res:AppResources.plcUserName}" TextColor="Gray" FontSize="13"></Label>
+            <Label Text="{x:Static res:AppResources.plcUserName}" TextColor="#333" FontSize="13"></Label>
             <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                <Entry Keyboard="Email" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                <Entry Keyboard="Email" TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False"
                        Text="{Binding AccountData.UserName}" IsReadOnly="True"></Entry>
             </Border>
         </VerticalStackLayout>
         <!--Email-->
         <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="2">
-            <Label Text="{x:Static res:AppResources.lblEmail}" TextColor="Gray" FontSize="13"></Label>
+            <Label Text="{x:Static res:AppResources.lblEmail}" TextColor="#333" FontSize="13"></Label>
             <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                <Entry Keyboard="Email" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                <Entry Keyboard="Email" TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False"
                    Text="{Binding AccountData.Email}" IsReadOnly="True"></Entry>
             </Border>
         </VerticalStackLayout>
-        <!--Rank-->
+        <!--Job Title-->
         <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="2">
-            <Label Text="{x:Static res:AppResources.lblRank}" TextColor="Gray" FontSize="13"></Label>
+            <Label Text="{x:Static res:AppResources.lblJobtitle}" TextColor="#333" FontSize="13"></Label>
             <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                <Entry Keyboard="Email" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                <Entry Keyboard="Email" TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False"
                        Text="{Binding AccountData.UserPermision}" IsReadOnly="True"></Entry>
             </Border>
         </VerticalStackLayout>
         <!--Company Name-->
         <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="2">
-            <Label Text="{x:Static res:AppResources.lblCompanyName}" TextColor="Gray" FontSize="13"></Label>
+            <Label Text="{x:Static res:AppResources.lblCompanyName}" TextColor="#333" FontSize="13"></Label>
             <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
-                <Entry Keyboard="Email" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                <Entry Keyboard="Email" TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False"
                Text="{Binding AccountData.CompanyName}" IsReadOnly="True"></Entry>
             </Border>
         </VerticalStackLayout>

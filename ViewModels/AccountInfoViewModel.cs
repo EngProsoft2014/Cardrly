@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using System.Threading.Tasks;
-using static Android.Graphics.ColorSpace;
+
 
 namespace Cardrly.ViewModels
 {
@@ -33,7 +33,7 @@ namespace Cardrly.ViewModels
 
         #region RelayCommand
         [RelayCommand]
-        async Task OpenFullScreenProfilePhoto(ImageSource image)
+        async Task OpenFullScreenProfilePhoto(string image)
         {
             IsEnable = false;
             await App.Current!.MainPage!.Navigation.PushAsync(new FullScreenImage(image));

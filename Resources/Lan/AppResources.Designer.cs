@@ -783,9 +783,9 @@ namespace Cardrly.Resources.Lan {
         /// <summary>
         ///   Looks up a localized string similar to Job title.
         /// </summary>
-        internal static string lblJob_title {
+        internal static string lblJobtitle {
             get {
-                return ResourceManager.GetString("lblJob title", resourceCulture);
+                return ResourceManager.GetString("lblJobtitle", resourceCulture);
             }
         }
         
@@ -984,15 +984,6 @@ namespace Cardrly.Resources.Lan {
         internal static string lblProvider {
             get {
                 return ResourceManager.GetString("lblProvider", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rank.
-        /// </summary>
-        internal static string lblRank {
-            get {
-                return ResourceManager.GetString("lblRank", resourceCulture);
             }
         }
         

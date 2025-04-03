@@ -134,7 +134,7 @@ Text="{Binding Request.Password}"></Entry>
                         </VerticalStackLayout>
                         <!--Job Title-->
                         <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                            <Label Text="{x:Static res:AppResources.lblJob_title}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                            <Label Text="{x:Static res:AppResources.lblJobtitle}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
                             <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
                                 <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                 Text="{Binding Request.JobTitle}"></Entry>
