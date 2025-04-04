@@ -31,7 +31,8 @@
                 Margin="0,20,0,20">
             <Image Source="{Binding AccountData.CompanyUrlLogo}" Aspect="AspectFill"></Image>
             <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding OpenFullScreenProfilePhotoCommand}" CommandParameter="{Binding AccountData.CompanyUrlLogo}"></TapGestureRecognizer>
+                <TapGestureRecognizer Command="{Binding OpenFullScreenProfilePhotoCommand}"
+                                      CommandParameter="{Binding AccountData.CompanyUrlLogo}"></TapGestureRecognizer>
             </Border.GestureRecognizers>
         </Border>
         <!--Name-->

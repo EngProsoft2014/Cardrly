@@ -58,7 +58,7 @@ namespace Cardrly.ViewModels
                 if (json != null)
                 {
                     json.UserName = json.UserName.Contains("@") ? json.UserName.Split('@')[0]! : json.UserName!;
-                    json.CompanyUrlLogo = string.IsNullOrEmpty(json.CompanyUrlLogo) ? "" : Utility.ServerUrl + json.CompanyUrlLogo;
+                    json.CompanyUrlLogo = string.IsNullOrEmpty(json.CompanyUrlLogo) ? "usericon.png" : Utility.ServerUrl + json.CompanyUrlLogo;
                     AccountData = json;
                 }
             }
