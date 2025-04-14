@@ -65,6 +65,11 @@ namespace Cardrly.ViewModels
             await App.Current!.MainPage!.Navigation.PushAsync(new AccountInfoPage(new AccountInfoViewModel(Rep, _service)));
         }
         [RelayCommand]
+        async Task ChangePasswordClick()
+        {
+            await App.Current!.MainPage!.Navigation.PushAsync(new ChangePasswordPage(new ChangePasswordViewModel(Rep,_service)));
+        }
+        [RelayCommand]
         async Task ActiveDeviceClick()
         {
             await App.Current!.MainPage!.Navigation.PushAsync(new ActiveDevicePage(new ActiveDeviceViewModel(Rep, _service)));

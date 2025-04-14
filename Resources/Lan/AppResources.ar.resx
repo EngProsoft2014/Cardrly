@@ -831,4 +831,37 @@
   <data name="lblCompanyName" xml:space="preserve">
     <value>اسم الشركة</value>
   </data>
+  <data name="lblChangePassword" xml:space="preserve">
+    <value>تغيير كلمة المرور</value>
+  </data>
+  <data name="lblCurrentPassword" xml:space="preserve">
+    <value>كلمة المرور الحالية</value>
+  </data>
+  <data name="lblNewPassword" xml:space="preserve">
+    <value>كلمة المرور الجديدة</value>
+  </data>
+  <data name="lblConfirmNewPassword" xml:space="preserve">
+    <value>تأكيد كلمة المرور الجديدة</value>
+  </data>
+  <data name="RFCurrentPassword" xml:space="preserve">
+    <value>الحقل المطلوب: كلمة المرور الحالية</value>
+  </data>
+  <data name="FRNewPassword" xml:space="preserve">
+    <value>الحقل المطلوب: كلمة مرور جديدة</value>
+  </data>
+  <data name="FRConfirmNewPassword" xml:space="preserve">
+    <value>الحقل المطلوب: تأكيد كلمة المرور الجديدة</value>
+  </data>
+  <data name="msgNew Password Doesn't Match Confirm New Password" xml:space="preserve">
+    <value>كلمة المرور الجديدة لا تتطابق مع تأكيد كلمة المرور</value>
+  </data>
+  <data name="lblForgotPassword" xml:space="preserve">
+    <value>هل نسيت كلمة السر ؟</value>
+  </data>
+  <data name="enter_vaild_Email" xml:space="preserve">
+    <value>يرجى إدخال بريد إلكترونى صحيح</value>
+  </data>
+  <data name="lblUserLinkEngagements" xml:space="preserve">
+    <value>تفاعلات رابط المستخدم</value>
+  </data>
 </root>

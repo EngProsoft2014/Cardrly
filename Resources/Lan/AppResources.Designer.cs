@@ -151,6 +151,33 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter vaild E-mail.
+        /// </summary>
+        internal static string enter_vaild_Email {
+            get {
+                return ResourceManager.GetString("enter_vaild_Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Required : Confirm New Password.
+        /// </summary>
+        internal static string FRConfirmNewPassword {
+            get {
+                return ResourceManager.GetString("FRConfirmNewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Required : New Password.
+        /// </summary>
+        internal static string FRNewPassword {
+            get {
+                return ResourceManager.GetString("FRNewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account Info.
         /// </summary>
         internal static string hdrAccountInfo {
@@ -538,6 +565,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Password.
+        /// </summary>
+        internal static string lblChangePassword {
+            get {
+                return ResourceManager.GetString("lblChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose the Device you are activating.
         /// </summary>
         internal static string lblChoosetheDeviceyouareactivating {
@@ -592,11 +628,29 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm New Password.
+        /// </summary>
+        internal static string lblConfirmNewPassword {
+            get {
+                return ResourceManager.GetString("lblConfirmNewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact.
         /// </summary>
         internal static string lblContact {
             get {
                 return ResourceManager.GetString("lblContact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Password.
+        /// </summary>
+        internal static string lblCurrentPassword {
+            get {
+                return ResourceManager.GetString("lblCurrentPassword", resourceCulture);
             }
         }
         
@@ -714,6 +768,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblFAQ {
             get {
                 return ResourceManager.GetString("lblFAQ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forgot Password ?.
+        /// </summary>
+        internal static string lblForgotPassword {
+            get {
+                return ResourceManager.GetString("lblForgotPassword", resourceCulture);
             }
         }
         
@@ -912,6 +975,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblName {
             get {
                 return ResourceManager.GetString("lblName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Password.
+        /// </summary>
+        internal static string lblNewPassword {
+            get {
+                return ResourceManager.GetString("lblNewPassword", resourceCulture);
             }
         }
         
@@ -1209,6 +1281,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblUpdatenow {
             get {
                 return ResourceManager.GetString("lblUpdatenow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Link Engagements.
+        /// </summary>
+        internal static string lblUserLinkEngagements {
+            get {
+                return ResourceManager.GetString("lblUserLinkEngagements", resourceCulture);
             }
         }
         
@@ -1659,6 +1740,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgMicrophoneaccessisrequiredtorecordaudio_ {
             get {
                 return ResourceManager.GetString("msgMicrophoneaccessisrequiredtorecordaudio.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Password Doesn&apos;t Match with Confirm Password.
+        /// </summary>
+        internal static string msgNew_Password_Doesn_t_Match_Confirm_New_Password {
+            get {
+                return ResourceManager.GetString("msgNew Password Doesn\'t Match Confirm New Password", resourceCulture);
             }
         }
         
@@ -2190,6 +2280,15 @@ namespace Cardrly.Resources.Lan {
         internal static string Retry {
             get {
                 return ResourceManager.GetString("Retry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field Required : Current Password.
+        /// </summary>
+        internal static string RFCurrentPassword {
+            get {
+                return ResourceManager.GetString("RFCurrentPassword", resourceCulture);
             }
         }
         

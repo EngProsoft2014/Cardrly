@@ -831,4 +831,37 @@
   <data name="lblCompanyName" xml:space="preserve">
     <value>Company Name</value>
   </data>
+  <data name="lblChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="lblCurrentPassword" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
+  <data name="lblNewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="lblConfirmNewPassword" xml:space="preserve">
+    <value>Confirm New Password</value>
+  </data>
+  <data name="RFCurrentPassword" xml:space="preserve">
+    <value>Field Required : Current Password</value>
+  </data>
+  <data name="FRNewPassword" xml:space="preserve">
+    <value>Field Required : New Password</value>
+  </data>
+  <data name="FRConfirmNewPassword" xml:space="preserve">
+    <value>Field Required : Confirm New Password</value>
+  </data>
+  <data name="msgNew Password Doesn't Match Confirm New Password" xml:space="preserve">
+    <value>New Password Doesn't Match with Confirm Password</value>
+  </data>
+  <data name="lblForgotPassword" xml:space="preserve">
+    <value>Forgot Password ?</value>
+  </data>
+  <data name="enter_vaild_Email" xml:space="preserve">
+    <value>Please enter vaild E-mail</value>
+  </data>
+  <data name="lblUserLinkEngagements" xml:space="preserve">
+    <value>User Link Engagements</value>
+  </data>
 </root>

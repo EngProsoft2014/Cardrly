@@ -157,6 +157,11 @@ namespace Cardrly.ViewModels
             }
             IsEnable = true;
         }
+        [RelayCommand]
+        async Task ForgotPasswordClick()
+        {
+            await App.Current!.MainPage!.Navigation.PushAsync(new ResetPasswordPage(new ResetPasswordViewModel(Rep,_service)));
+        }
 
         public async Task SetData(ApplicationUserResponse userResponse)
         {
