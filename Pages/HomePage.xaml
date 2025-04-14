@@ -228,6 +228,7 @@
                                                 </ContentView>
                                             </tabView:SfTabItem.Content>
                                         </tabView:SfTabItem>
+                                        <!--Tab 2-->
                                         <tabView:SfTabItem>
                                             <tabView:SfTabItem.ImageSource>
                                                 <FontImageSource Glyph="" Color="Gray" FontFamily="FontIconSolid" Size="20"></FontImageSource>
