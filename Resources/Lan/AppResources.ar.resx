@@ -873,4 +873,10 @@
   <data name="btnConfirm" xml:space="preserve">
     <value>تأكيد</value>
   </data>
+  <data name="lblCharts" xml:space="preserve">
+    <value>مؤشرات</value>
+  </data>
+  <data name="lblReports" xml:space="preserve">
+    <value>التقارير</value>
+  </data>
 </root>

@@ -88,10 +88,7 @@
                                                     VerticalOptions="FillAndExpand" FlowDirection="LeftToRight" Margin="0,0,0,0">
                                     <tabView:SfTabView.Items>
                                         <!--Tab 1-->
-                                        <tabView:SfTabItem BackgroundColor="Transparent" Header="Charts" FontSize="16" FontAttributes="Bold">
-                                            <!--<tabView:SfTabItem.ImageSource>
-                                                <FontImageSource Glyph="" Color="Gray" FontFamily="FontIconSolid" Size="20"></FontImageSource>
-                                            </tabView:SfTabItem.ImageSource>-->
+                                        <tabView:SfTabItem BackgroundColor="Transparent" Header="{x:Static res:AppResources.lblCharts}" FontSize="16" FontAttributes="Bold">
                                             <tabView:SfTabItem.Content>
                                                 <ContentView VerticalOptions="FillAndExpand" Margin="20,0,20,0">
                                                     <StackLayout Margin="0,5,0,0">
@@ -232,10 +229,7 @@
                                             </tabView:SfTabItem.Content>
                                         </tabView:SfTabItem>
                                         <!--Tab 2-->
-                                        <tabView:SfTabItem BackgroundColor="Transparent" Header="Reports" FontSize="16" FontAttributes="Bold">
-                                            <!--<tabView:SfTabItem.ImageSource>
-                                                <FontImageSource Glyph="" Color="Gray" FontFamily="FontIconSolid" Size="20"></FontImageSource>
-                                            </tabView:SfTabItem.ImageSource>-->
+                                        <tabView:SfTabItem BackgroundColor="Transparent" Header="{x:Static res:AppResources.lblReports}" FontSize="16" FontAttributes="Bold">
                                             <tabView:SfTabItem.Content>
                                                 <ContentView Margin="20,0,20,0" >
                                                     <StackLayout>

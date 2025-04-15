@@ -873,4 +873,10 @@
   <data name="btnConfirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
+  <data name="lblCharts" xml:space="preserve">
+    <value>Charts</value>
+  </data>
+  <data name="lblReports" xml:space="preserve">
+    <value>Reports</value>
+  </data>
 </root>

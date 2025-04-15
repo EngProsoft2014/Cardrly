@@ -1,12 +1,15 @@
-﻿using Azure.Core;
+﻿using Akavache;
 using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Models;
+using Cardrly.Pages;
 using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
+using System.Reactive.Linq;
 
 namespace Cardrly.ViewModels
 {
@@ -65,7 +68,15 @@ namespace Cardrly.ViewModels
                     UserDialogs.Instance.HideHud();
                     if (Postjson.Item2 == null)
                     {
-                        await App.Current!.MainPage!.Navigation.PopAsync();
+                        await StaticMember.DeleteUserSession(Rep, _service);
+
+                        string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+                        Preferences.Default.Clear();
+                        await BlobCache.LocalMachine.InvalidateAll();
+                        await BlobCache.LocalMachine.Vacuum();
+
+                        Preferences.Default.Set("Lan", LangValueToKeep);
+                        await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, StaticMember._audioManager)));
                     }
                     else
                     {

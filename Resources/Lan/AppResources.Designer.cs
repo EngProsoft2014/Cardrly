@@ -592,6 +592,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Charts.
+        /// </summary>
+        internal static string lblCharts {
+            get {
+                return ResourceManager.GetString("lblCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose the Device you are activating.
         /// </summary>
         internal static string lblChoosetheDeviceyouareactivating {
@@ -1083,6 +1092,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblReminder {
             get {
                 return ResourceManager.GetString("lblReminder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reports.
+        /// </summary>
+        internal static string lblReports {
+            get {
+                return ResourceManager.GetString("lblReports", resourceCulture);
             }
         }
         
