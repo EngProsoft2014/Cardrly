@@ -864,4 +864,7 @@
   <data name="lblUserLinkEngagements" xml:space="preserve">
     <value>User Link Engagements</value>
   </data>
+  <data name="lblResetPassword" xml:space="preserve">
+    <value>Reset Password</value>
+  </data>
 </root>

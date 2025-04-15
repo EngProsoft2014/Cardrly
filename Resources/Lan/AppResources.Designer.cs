@@ -1069,6 +1069,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset Password.
+        /// </summary>
+        internal static string lblResetPassword {
+            get {
+                return ResourceManager.GetString("lblResetPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save Contacts.
         /// </summary>
         internal static string lblSaveContacts {

@@ -864,4 +864,7 @@
   <data name="lblUserLinkEngagements" xml:space="preserve">
     <value>تفاعلات رابط المستخدم</value>
   </data>
+  <data name="lblResetPassword" xml:space="preserve">
+    <value>إعادة تعيين كلمة المرور</value>
+  </data>
 </root>
