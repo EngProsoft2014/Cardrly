@@ -15,7 +15,7 @@
              IsEnabled="{Binding IsEnable}">
 
     <StackLayout>
-        <tabView:SfTabView x:Name="tabHome" IndicatorPlacement="Top" TabBarPlacement="Bottom" IndicatorBackground="#FF7F3E" FlowDirection="LeftToRight"
+        <tabView:SfTabView x:Name="tabHome" IndicatorPlacement="Bottom" TabBarPlacement="Bottom" IndicatorBackground="#FF7F3E" FlowDirection="LeftToRight"
                            VerticalOptions="FillAndExpand" Margin="0,0,0,10" ContentTransitionDuration="300" SelectionChanged="SfTabView_SelectionChanged">
             <tabView:SfTabView.Items>
                 <!--Home-->
@@ -24,10 +24,10 @@
                         <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
                     </tabView:SfTabItem.ImageSource>
                     <tabView:SfTabItem.Content>
-                        <ContentView x:Name="HomeView" IsEnabled="{Binding IsEnable}" HorizontalOptions="FillAndExpand" Margin="20,20,20,0">
+                        <ContentView x:Name="HomeView" IsEnabled="{Binding IsEnable}" HorizontalOptions="FillAndExpand">
                             <StackLayout Spacing="10">
                                 <!--Header-->
-                                <StackLayout Orientation="Horizontal">
+                                <StackLayout Orientation="Horizontal" Margin="20,20,20,0">
                                     <Label Text="{x:Static res:AppResources.hdrHome}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
                                        TextColor="Black"></Label>
                                     <Image x:Name="LoadIcon">
@@ -48,55 +48,58 @@
                                         </Image.GestureRecognizers>
                                     </Image>
                                 </StackLayout>
-                                <tabView:SfTabView  IndicatorPlacement="Top" TabBarPlacement="Top" IndicatorBackground="#FF7F3E" 
-                                                    VerticalOptions="FillAndExpand" FlowDirection="LeftToRight">
+
+                                <!--Data Menu-->
+                                <StackLayout Orientation="Horizontal" Spacing="10" Margin="20,0,20,0" HorizontalOptions="FillAndExpand">
+                                    <!--From-->
+                                    <VerticalStackLayout Spacing="5">
+                                        <Label Text="{x:Static res:AppResources.lblFrom}" TextColor="Gray" FontSize="13"></Label>
+                                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
+                                            <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
+                                    Date="{Binding FromDate}" DateSelected="DatePicker_Home"></DatePicker>
+                                        </Border>
+
+                                    </VerticalStackLayout>
+                                    <!--To-->
+                                    <VerticalStackLayout Spacing="5">
+                                        <Label Text="{x:Static res:AppResources.lblTo}" TextColor="Gray" FontSize="13"></Label>
+                                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
+                                            <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
+                                Date="{Binding ToDate}" DateSelected="DatePicker_Home"></DatePicker>
+                                        </Border>
+                                    </VerticalStackLayout>
+                                    <!--Select Card-->
+                                    <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
+                                        <Label Text="{x:Static res:AppResources.lblCard}" TextColor="Gray" FontSize="13"></Label>
+                                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
+                                            <Picker x:Name="CardPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding CardName}"
+                                ItemsSource="{Binding CardLst}" SelectedIndexChanged="CardPicker_Home">
+                                                <Picker.Triggers>
+                                                    <DataTrigger TargetType="Picker" Binding="{Binding IsFoundCards}" Value="true">
+                                                        <Setter Property="SelectedItem" Value='{Binding SelectedCard}'></Setter>
+                                                    </DataTrigger>
+                                                </Picker.Triggers>
+                                            </Picker>
+                                        </Border>
+                                    </VerticalStackLayout>
+                                </StackLayout>
+
+                                <tabView:SfTabView  IndicatorPlacement="Fill" TabBarPlacement="Bottom" IndicatorBackground="#fae6dc" TabBarHeight="40"
+                                                    VerticalOptions="FillAndExpand" FlowDirection="LeftToRight" Margin="0,0,0,0">
                                     <tabView:SfTabView.Items>
                                         <!--Tab 1-->
-                                        <tabView:SfTabItem>
-                                            <tabView:SfTabItem.ImageSource>
+                                        <tabView:SfTabItem BackgroundColor="Transparent" Header="Charts" FontSize="16" FontAttributes="Bold">
+                                            <!--<tabView:SfTabItem.ImageSource>
                                                 <FontImageSource Glyph="" Color="Gray" FontFamily="FontIconSolid" Size="20"></FontImageSource>
-                                            </tabView:SfTabItem.ImageSource>
+                                            </tabView:SfTabItem.ImageSource>-->
                                             <tabView:SfTabItem.Content>
-                                                <ContentView VerticalOptions="FillAndExpand">
-                                                    <StackLayout>
+                                                <ContentView VerticalOptions="FillAndExpand" Margin="20,0,20,0">
+                                                    <StackLayout Margin="0,5,0,0">
                                                         <!--Data-->
                                                         <RefreshView x:Name="HomeRef" VerticalOptions="FillAndExpand" Refreshing="HomeRef_Refreshing">
                                                             <ScrollView VerticalOptions="FillAndExpand">
                                                                 <StackLayout Spacing="20">
-                                                                    <!--Data Menu-->
-                                                                    <StackLayout Orientation="Horizontal" Spacing="10"  HorizontalOptions="FillAndExpand">
-                                                                        <!--From-->
-                                                                        <VerticalStackLayout Spacing="5">
-                                                                            <Label Text="{x:Static res:AppResources.lblFrom}" TextColor="Gray" FontSize="13"></Label>
-                                                                            <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
-                                                                                <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
-                                    Date="{Binding FromDate}" DateSelected="DatePicker_Home"></DatePicker>
-                                                                            </Border>
 
-                                                                        </VerticalStackLayout>
-                                                                        <!--To-->
-                                                                        <VerticalStackLayout Spacing="5">
-                                                                            <Label Text="{x:Static res:AppResources.lblTo}" TextColor="Gray" FontSize="13"></Label>
-                                                                            <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
-                                                                                <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
-                                Date="{Binding ToDate}" DateSelected="DatePicker_Home"></DatePicker>
-                                                                            </Border>
-                                                                        </VerticalStackLayout>
-                                                                        <!--Select Card-->
-                                                                        <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
-                                                                            <Label Text="{x:Static res:AppResources.lblCard}" TextColor="Gray" FontSize="13"></Label>
-                                                                            <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
-                                                                                <Picker x:Name="CardPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding CardName}"
-                                ItemsSource="{Binding CardLst}" SelectedIndexChanged="CardPicker_Home">
-                                                                                    <Picker.Triggers>
-                                                                                        <DataTrigger TargetType="Picker" Binding="{Binding IsFoundCards}" Value="true">
-                                                                                            <Setter Property="SelectedItem" Value='{Binding SelectedCard}'></Setter>
-                                                                                        </DataTrigger>
-                                                                                    </Picker.Triggers>
-                                                                                </Picker>
-                                                                            </Border>
-                                                                        </VerticalStackLayout>
-                                                                    </StackLayout>
                                                                     <!--progressBars-->
                                                                     <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
                                                                         <VerticalStackLayout Spacing="20">
@@ -229,16 +232,16 @@
                                             </tabView:SfTabItem.Content>
                                         </tabView:SfTabItem>
                                         <!--Tab 2-->
-                                        <tabView:SfTabItem>
-                                            <tabView:SfTabItem.ImageSource>
+                                        <tabView:SfTabItem BackgroundColor="Transparent" Header="Reports" FontSize="16" FontAttributes="Bold">
+                                            <!--<tabView:SfTabItem.ImageSource>
                                                 <FontImageSource Glyph="" Color="Gray" FontFamily="FontIconSolid" Size="20"></FontImageSource>
-                                            </tabView:SfTabItem.ImageSource>
+                                            </tabView:SfTabItem.ImageSource>-->
                                             <tabView:SfTabItem.Content>
-                                                <ContentView>
+                                                <ContentView Margin="20,0,20,0" >
                                                     <StackLayout>
                                                         <RefreshView VerticalOptions="FillAndExpand" Refreshing="HomeRef_Refreshing">
                                                             <ScrollView VerticalOptions="FillAndExpand">
-                                                                <StackLayout Spacing="15" Margin="0,10,0,0">
+                                                                <StackLayout Spacing="15" Margin="0,5,0,0">
                                                                     <!--DoughnutSeries-->
                                                                     <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
                                                                         <chart:SfCircularChart>
