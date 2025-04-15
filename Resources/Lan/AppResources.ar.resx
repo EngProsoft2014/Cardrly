@@ -867,4 +867,10 @@
   <data name="lblResetPassword" xml:space="preserve">
     <value>إعادة تعيين كلمة المرور</value>
   </data>
+  <data name="btnSend" xml:space="preserve">
+    <value>إرسال</value>
+  </data>
+  <data name="btnConfirm" xml:space="preserve">
+    <value>تأكيد</value>
+  </data>
 </root>

@@ -79,6 +79,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        internal static string btnConfirm {
+            get {
+                return ResourceManager.GetString("btnConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string btnEdit {
@@ -133,6 +142,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send.
+        /// </summary>
+        internal static string btnSend {
+            get {
+                return ResourceManager.GetString("btnSend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sort.
         /// </summary>
         internal static string btnSort {
@@ -160,7 +178,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : Confirm New Password.
+        ///   Looks up a localized string similar to Required Field : Confirm New Password.
         /// </summary>
         internal static string FRConfirmNewPassword {
             get {
@@ -169,7 +187,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : New Password.
+        ///   Looks up a localized string similar to Required Field : New Password.
         /// </summary>
         internal static string FRNewPassword {
             get {
@@ -1582,7 +1600,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : Card Name.
+        ///   Looks up a localized string similar to Required Field : Card Name.
         /// </summary>
         internal static string msgFRCardName {
             get {
@@ -1591,7 +1609,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : Comment.
+        ///   Looks up a localized string similar to Required Field : Comment.
         /// </summary>
         internal static string msgFRComment {
             get {
@@ -1600,7 +1618,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : Description.
+        ///   Looks up a localized string similar to Required Field : Description.
         /// </summary>
         internal static string msgFRDescription {
             get {
@@ -1609,7 +1627,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : Email.
+        ///   Looks up a localized string similar to Required Field : Email.
         /// </summary>
         internal static string msgFREmail {
             get {
@@ -1618,7 +1636,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : Full Name.
+        ///   Looks up a localized string similar to Required Field : Full Name.
         /// </summary>
         internal static string msgFRFullName {
             get {
@@ -1627,7 +1645,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : Link.
+        ///   Looks up a localized string similar to Required Field : Link.
         /// </summary>
         internal static string msgFRLink {
             get {
@@ -1636,7 +1654,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : Location.
+        ///   Looks up a localized string similar to Required Field : Location.
         /// </summary>
         internal static string msgFRLocation {
             get {
@@ -1654,7 +1672,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : Password.
+        ///   Looks up a localized string similar to Required Field : Password.
         /// </summary>
         internal static string msgFRPassword {
             get {
@@ -1663,7 +1681,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : Summary.
+        ///   Looks up a localized string similar to Required Field : Summary.
         /// </summary>
         internal static string msgFRSummary {
             get {
@@ -1672,7 +1690,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : Time Zone.
+        ///   Looks up a localized string similar to Required Field : Time Zone.
         /// </summary>
         internal static string msgFRTimeZone {
             get {
@@ -1681,7 +1699,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : User Name.
+        ///   Looks up a localized string similar to Required Field : User Name.
         /// </summary>
         internal static string msgFRUserName {
             get {
@@ -1690,7 +1708,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : Value.
+        ///   Looks up a localized string similar to Required Field : Value.
         /// </summary>
         internal static string msgFRValue {
             get {
@@ -2293,7 +2311,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Required : Current Password.
+        ///   Looks up a localized string similar to Required Field : Current Password.
         /// </summary>
         internal static string RFCurrentPassword {
             get {

@@ -44,7 +44,7 @@
                         </Image>
                     </Grid>
                 </Border>
-                <Label Text="{x:Static res:AppResources.lblForgotPassword}" TextColor="Black" FontSize="14" VerticalOptions="CenterAndExpand"
+                <Label Text="{x:Static res:AppResources.lblForgotPassword}" TextColor="#327cdb" FontSize="14" VerticalOptions="CenterAndExpand"
                        FontAttributes="Bold">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ForgotPasswordClickCommand}"></TapGestureRecognizer>

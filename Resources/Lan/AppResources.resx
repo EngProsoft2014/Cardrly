@@ -541,40 +541,40 @@
     <value>Failed To Change Status.</value>
   </data>
   <data name="msgFRCardName" xml:space="preserve">
-    <value>Field Required : Card Name</value>
+    <value>Required Field : Card Name</value>
   </data>
   <data name="msgFRComment" xml:space="preserve">
-    <value>Field Required : Comment</value>
+    <value>Required Field : Comment</value>
   </data>
   <data name="msgFRDescription" xml:space="preserve">
-    <value>Field Required : Description</value>
+    <value>Required Field : Description</value>
   </data>
   <data name="msgFREmail" xml:space="preserve">
-    <value>Field Required : Email</value>
+    <value>Required Field : Email</value>
   </data>
   <data name="msgFRFullName" xml:space="preserve">
-    <value>Field Required : Full Name</value>
+    <value>Required Field : Full Name</value>
   </data>
   <data name="msgFRLink" xml:space="preserve">
-    <value>Field Required : Link</value>
+    <value>Required Field : Link</value>
   </data>
   <data name="msgFRLocation" xml:space="preserve">
-    <value>Field Required : Location</value>
+    <value>Required Field : Location</value>
   </data>
   <data name="msgFromDateShouldbeStartFromNow" xml:space="preserve">
     <value>"From" Date Should be Start From Now</value>
   </data>
   <data name="msgFRPassword" xml:space="preserve">
-    <value>Field Required : Password</value>
+    <value>Required Field : Password</value>
   </data>
   <data name="msgFRSummary" xml:space="preserve">
-    <value>Field Required : Summary</value>
+    <value>Required Field : Summary</value>
   </data>
   <data name="msgFRUserName" xml:space="preserve">
-    <value>Field Required : User Name</value>
+    <value>Required Field : User Name</value>
   </data>
   <data name="msgFRValue" xml:space="preserve">
-    <value>Field Required : Value</value>
+    <value>Required Field : Value</value>
   </data>
   <data name="msgLeadDeletedSuccessfully" xml:space="preserve">
     <value>Lead Deleted Successfully</value>
@@ -766,7 +766,7 @@
     <value>Select a card</value>
   </data>
   <data name="msgFRTimeZone" xml:space="preserve">
-    <value>Field Required : Time Zone</value>
+    <value>Required Field : Time Zone</value>
   </data>
   <data name="msgStart_date_must_be_before_end_date" xml:space="preserve">
     <value>Start date must be before end date.</value>
@@ -844,13 +844,13 @@
     <value>Confirm New Password</value>
   </data>
   <data name="RFCurrentPassword" xml:space="preserve">
-    <value>Field Required : Current Password</value>
+    <value>Required Field : Current Password</value>
   </data>
   <data name="FRNewPassword" xml:space="preserve">
-    <value>Field Required : New Password</value>
+    <value>Required Field : New Password</value>
   </data>
   <data name="FRConfirmNewPassword" xml:space="preserve">
-    <value>Field Required : Confirm New Password</value>
+    <value>Required Field : Confirm New Password</value>
   </data>
   <data name="msgNew Password Doesn't Match Confirm New Password" xml:space="preserve">
     <value>New Password Doesn't Match with Confirm Password</value>
@@ -866,5 +866,11 @@
   </data>
   <data name="lblResetPassword" xml:space="preserve">
     <value>Reset Password</value>
+  </data>
+  <data name="btnSend" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="btnConfirm" xml:space="preserve">
+    <value>Confirm</value>
   </data>
 </root>

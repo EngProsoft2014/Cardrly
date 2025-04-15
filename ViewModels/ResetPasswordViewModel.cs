@@ -39,7 +39,7 @@ namespace Cardrly.ViewModels
         #region RelayCommand
 
         [RelayCommand]
-        async Task OnApply()
+        async Task SendEmail()
         {
             IsEnable = false;
 
