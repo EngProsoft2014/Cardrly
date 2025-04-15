@@ -873,10 +873,10 @@
   <data name="btnConfirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
-  <data name="lblCharts" xml:space="preserve">
-    <value>Charts</value>
+  <data name="lblDeviceSystem" xml:space="preserve">
+    <value>Devices System</value>
   </data>
-  <data name="lblReports" xml:space="preserve">
-    <value>Reports</value>
+  <data name="lblUserEngagements" xml:space="preserve">
+    <value>User Engagements</value>
   </data>
 </root>

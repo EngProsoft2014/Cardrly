@@ -873,10 +873,10 @@
   <data name="btnConfirm" xml:space="preserve">
     <value>تأكيد</value>
   </data>
-  <data name="lblCharts" xml:space="preserve">
-    <value>مؤشرات</value>
+  <data name="lblDeviceSystem" xml:space="preserve">
+    <value>نظام الأجهزة</value>
   </data>
-  <data name="lblReports" xml:space="preserve">
-    <value>التقارير</value>
+  <data name="lblUserEngagements" xml:space="preserve">
+    <value>تفاعلات المستخدم</value>
   </data>
 </root>

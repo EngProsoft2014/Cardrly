@@ -592,15 +592,6 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Charts.
-        /// </summary>
-        internal static string lblCharts {
-            get {
-                return ResourceManager.GetString("lblCharts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Choose the Device you are activating.
         /// </summary>
         internal static string lblChoosetheDeviceyouareactivating {
@@ -714,6 +705,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblDescription {
             get {
                 return ResourceManager.GetString("lblDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Devices System.
+        /// </summary>
+        internal static string lblDeviceSystem {
+            get {
+                return ResourceManager.GetString("lblDeviceSystem", resourceCulture);
             }
         }
         
@@ -1096,15 +1096,6 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reports.
-        /// </summary>
-        internal static string lblReports {
-            get {
-                return ResourceManager.GetString("lblReports", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Reset Password.
         /// </summary>
         internal static string lblResetPassword {
@@ -1326,6 +1317,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblUpdatenow {
             get {
                 return ResourceManager.GetString("lblUpdatenow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Engagements.
+        /// </summary>
+        internal static string lblUserEngagements {
+            get {
+                return ResourceManager.GetString("lblUserEngagements", resourceCulture);
             }
         }
         

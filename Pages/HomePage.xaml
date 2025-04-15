@@ -84,227 +84,216 @@
                                     </VerticalStackLayout>
                                 </StackLayout>
 
-                                <tabView:SfTabView  IndicatorPlacement="Fill" TabBarPlacement="Bottom" IndicatorBackground="#fae6dc" TabBarHeight="40"
-                                                    VerticalOptions="FillAndExpand" FlowDirection="LeftToRight" Margin="0,0,0,0">
-                                    <tabView:SfTabView.Items>
-                                        <!--Tab 1-->
-                                        <tabView:SfTabItem BackgroundColor="Transparent" Header="{x:Static res:AppResources.lblCharts}" FontSize="16" FontAttributes="Bold">
-                                            <tabView:SfTabItem.Content>
-                                                <ContentView VerticalOptions="FillAndExpand" Margin="20,0,20,0">
-                                                    <StackLayout Margin="0,5,0,0">
-                                                        <!--Data-->
-                                                        <RefreshView x:Name="HomeRef" VerticalOptions="FillAndExpand" Refreshing="HomeRef_Refreshing">
-                                                            <ScrollView VerticalOptions="FillAndExpand">
-                                                                <StackLayout Spacing="20">
+                                <!--Data-->
+                                <RefreshView x:Name="HomeRef" VerticalOptions="FillAndExpand" Refreshing="HomeRef_Refreshing">
+                                    <ScrollView VerticalOptions="FillAndExpand">
+                                        <StackLayout Spacing="20">
 
-                                                                    <!--progressBars-->
-                                                                    <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
-                                                                        <VerticalStackLayout Spacing="20">
-                                                                            <!--progressBar For Card-->
-                                                                            <VerticalStackLayout Spacing="10">
-                                                                                <StackLayout Orientation="Horizontal" Spacing="3">
-                                                                                    <Label Text="{x:Static res:AppResources.lblCard}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                                                    <Label Text="{Binding AccResponse.CurrentCountCards}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
-                                                                                    <Label Text="{x:Static res:AppResources.lblFrom}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                                                    <Label Text="{Binding AccResponse.CountCards}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                                                </StackLayout>
-                                                                                <progressBar:SfLinearProgressBar Progress="{Binding AccResponse.CardProgress}" AnimationEasing="{x:Static Easing.SpringOut}"
-                                             SecondaryAnimationDuration="100"/>
-                                                                            </VerticalStackLayout>
-                                                                            <!--progressBar For users-->
-                                                                            <VerticalStackLayout Spacing="10">
-                                                                                <StackLayout Orientation="Horizontal" Spacing="3">
-                                                                                    <Label Text="{x:Static res:AppResources.lblUsers}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                                                    <Label Text="{Binding AccResponse.CurrentCountUsers}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
-                                                                                    <Label Text="{x:Static res:AppResources.lblFrom}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                                                    <Label Text="{Binding AccResponse.CountUsers}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                                                </StackLayout>
-                                                                                <progressBar:SfLinearProgressBar Progress="{Binding AccResponse.UsersProgress}" AnimationEasing="{x:Static Easing.SpringOut}"
-                                             SecondaryAnimationDuration="100"/>
-                                                                            </VerticalStackLayout>
-                                                                            <!--progressBar for Expire-->
-                                                                            <VerticalStackLayout Spacing="10" >
-                                                                                <StackLayout Orientation="Horizontal" Spacing="3">
-                                                                                    <Label Text="{x:Static res:AppResources.lblExpire}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                                                    <Label Text="{Binding AccResponse.RemmingDays}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
-                                                                                    <Label Text="{x:Static res:AppResources.lblFrom}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                                                    <Label Text="{Binding AccResponse.DayOperationAcc}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
-                                                                                </StackLayout>
+                                            <!--progressBars-->
+                                            <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White" Margin="20,0,20,0">
+                                                <VerticalStackLayout Spacing="20">
+                                                    <!--progressBar For Card-->
+                                                    <VerticalStackLayout Spacing="10">
+                                                        <StackLayout Orientation="Horizontal" Spacing="3">
+                                                            <Label Text="{x:Static res:AppResources.lblCard}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                            <Label Text="{Binding AccResponse.CurrentCountCards}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
+                                                            <Label Text="{x:Static res:AppResources.lblFrom}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                            <Label Text="{Binding AccResponse.CountCards}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                        </StackLayout>
+                                                        <progressBar:SfLinearProgressBar Progress="{Binding AccResponse.CardProgress}" AnimationEasing="{x:Static Easing.SpringOut}" SecondaryAnimationDuration="100"/>
+                                                    </VerticalStackLayout>
+                                                    <!--progressBar For users-->
+                                                    <VerticalStackLayout Spacing="10">
+                                                        <StackLayout Orientation="Horizontal" Spacing="3">
+                                                            <Label Text="{x:Static res:AppResources.lblUsers}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                            <Label Text="{Binding AccResponse.CurrentCountUsers}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
+                                                            <Label Text="{x:Static res:AppResources.lblFrom}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                            <Label Text="{Binding AccResponse.CountUsers}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                        </StackLayout>
+                                                        <progressBar:SfLinearProgressBar Progress="{Binding AccResponse.UsersProgress}" AnimationEasing="{x:Static Easing.SpringOut}" SecondaryAnimationDuration="100"/>
+                                                    </VerticalStackLayout>
+                                                    <!--progressBar for Expire-->
+                                                    <VerticalStackLayout Spacing="10" >
+                                                        <StackLayout Orientation="Horizontal" Spacing="3">
+                                                            <Label Text="{x:Static res:AppResources.lblExpire}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                            <Label Text="{Binding AccResponse.RemmingDays}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
+                                                            <Label Text="{x:Static res:AppResources.lblFrom}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                            <Label Text="{Binding AccResponse.DayOperationAcc}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                        </StackLayout>
 
-                                                                                <progressBar:SfLinearProgressBar  Progress="{Binding AccResponse.ExpireProgress}" AnimationEasing="{x:Static Easing.SpringOut}"
-                                             SecondaryAnimationDuration="100"/>
-                                                                            </VerticalStackLayout>
-                                                                        </VerticalStackLayout>
-                                                                    </Border>
-                                                                    <!--Statistics Data-->
-                                                                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20">
-                                                                        <!--Leads Register-->
-                                                                        <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
-                                                                            <StackLayout Orientation="Horizontal">
-                                                                                <!--Image-->
-                                                                                <Image Aspect="AspectFill" Margin="0,0,5,0">
-                                                                                    <Image.Source>
-                                                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
-                                                                                    </Image.Source>
-                                                                                </Image>
-                                                                                <!--Titel-->
-                                                                                <Label Text="{x:Static res:AppResources.lblLeadsRegistered}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                                                <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                                                <Label Text="{Binding BoardResponse.CountLeads}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
-                                                                            </StackLayout>
-                                                                        </Border>
-                                                                        <!--Card Views-->
-                                                                        <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
-                                                                            <StackLayout Orientation="Horizontal">
-                                                                                <!--Image-->
-                                                                                <Image Aspect="AspectFill" Margin="0,0,5,0">
-                                                                                    <Image.Source>
-                                                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
-                                                                                    </Image.Source>
-                                                                                </Image>
-                                                                                <!--Titel-->
-                                                                                <Label Text="{x:Static res:AppResources.lblCardViews}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                                                <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                                                <Label Text="{Binding BoardResponse.CountViewCard}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
-                                                                            </StackLayout>
+                                                        <progressBar:SfLinearProgressBar  Progress="{Binding AccResponse.ExpireProgress}" AnimationEasing="{x:Static Easing.SpringOut}" SecondaryAnimationDuration="100"/>
+                                                    </VerticalStackLayout>
+                                                </VerticalStackLayout>
+                                            </Border>
+                                            <!--Statistics Data-->
+                                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" Margin="20,0,20,0">
+                                                <!--Leads Register-->
+                                                <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
+                                                    <StackLayout Orientation="Horizontal">
+                                                        <!--Image-->
+                                                        <Image Aspect="AspectFill" Margin="0,0,5,0">
+                                                            <Image.Source>
+                                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
+                                                            </Image.Source>
+                                                        </Image>
+                                                        <!--Titel-->
+                                                        <Label Text="{x:Static res:AppResources.lblLeadsRegistered}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                        <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                        <Label Text="{Binding BoardResponse.CountLeads}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                                    </StackLayout>
+                                                </Border>
+                                                <!--Card Views-->
+                                                <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
+                                                    <StackLayout Orientation="Horizontal">
+                                                        <!--Image-->
+                                                        <Image Aspect="AspectFill" Margin="0,0,5,0">
+                                                            <Image.Source>
+                                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
+                                                            </Image.Source>
+                                                        </Image>
+                                                        <!--Titel-->
+                                                        <Label Text="{x:Static res:AppResources.lblCardViews}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                        <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                        <Label Text="{Binding BoardResponse.CountViewCard}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                                    </StackLayout>
+                                                </Border>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" Margin="20,0,20,0">
+                                                <!--Link Taps-->
+                                                <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
+                                                    <StackLayout Orientation="Horizontal">
+                                                        <!--Image-->
+                                                        <Image Aspect="AspectFill" Margin="0,0,5,0">
+                                                            <Image.Source>
+                                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
+                                                            </Image.Source>
+                                                        </Image>
+                                                        <!--Titel-->
+                                                        <Label Text="{x:Static res:AppResources.lblLinkClicks}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                        <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                        <Label Text="{Binding BoardResponse.CountLinkTap}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                                    </StackLayout>
+                                                </Border>
+                                                <!--Save Contacts-->
+                                                <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
+                                                    <StackLayout Orientation="Horizontal">
+                                                        <!--Image-->
+                                                        <Image Aspect="AspectFill" Margin="0,0,5,0">
+                                                            <Image.Source>
+                                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
+                                                            </Image.Source>
+                                                        </Image>
+                                                        <!--Titel-->
+                                                        <Label Text="{x:Static res:AppResources.lblSaveContacts}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                        <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                        <Label Text="{Binding BoardResponse.CountDownloadContacts}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                                    </StackLayout>
+                                                </Border>
+                                            </StackLayout>
+                                            <!--Total Clicks Chart-->
+                                            <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White" Margin="20,0,20,0">
+                                                <chart:SfCartesianChart HeightRequest="250">
+                                                    <chart:SfCartesianChart.XAxes>
+                                                        <chart:CategoryAxis>
+
+                                                        </chart:CategoryAxis>
+                                                    </chart:SfCartesianChart.XAxes>
+                                                    <chart:SfCartesianChart.YAxes>
+                                                        <chart:NumericalAxis>
+
+                                                        </chart:NumericalAxis>
+                                                    </chart:SfCartesianChart.YAxes>
+                                                    <chart:SfCartesianChart.Title>
+                                                        <Label Text="{x:Static res:AppResources.lblTotalClicks}" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                    </chart:SfCartesianChart.Title>
+                                                    <chart:FastLineSeries ItemsSource="{Binding BoardResponse.clickCardSummaries}" EnableTooltip="True" EnableAnimation="True" XBindingPath="DateClick" YBindingPath="CountClickCard"/>
+                                                </chart:SfCartesianChart>
+                                            </Border>
+
+                                            <tabView:SfTabView  IndicatorPlacement="Fill" TabBarPlacement="Top" IndicatorBackground="#fae6dc" TabBarHeight="40" VerticalOptions="FillAndExpand" FlowDirection="LeftToRight" Margin="0,0,0,0">
+                                                <tabView:SfTabView.Items>
+                                                    <!--Tab 1-->
+                                                    <tabView:SfTabItem BackgroundColor="Transparent" Header="{x:Static res:AppResources.lblDeviceSystem}" FontSize="16" FontAttributes="Bold">
+                                                        <tabView:SfTabItem.Content>
+                                                            <ContentView VerticalOptions="FillAndExpand" Margin="20,10,20,0">
+                                                                <ScrollView VerticalOptions="FillAndExpand">
+                                                                    <StackLayout Spacing="15" Margin="0,5,0,0">
+
+                                                                        <!--DoughnutSeries-->
+                                                                        <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
+                                                                            <chart:SfCircularChart>
+                                                                                <chart:DoughnutSeries ItemsSource="{Binding BoardResponse.clickCardLinkSummariesOS}" XBindingPath="name" YBindingPath="value"  ExplodeOnTouch="True" EnableAnimation="True" EnableTooltip="True"/>
+                                                                                <chart:SfCircularChart.Legend>
+                                                                                    <chart:ChartLegend >
+                                                                                        <chart:ChartLegend.LabelStyle>
+                                                                                            <chart:ChartLegendLabelStyle TextColor="Black" Margin="5" FontSize="14" FontAttributes="Bold"  FontFamily="PlaywriteAR-Regular"/>
+                                                                                        </chart:ChartLegend.LabelStyle>
+                                                                                    </chart:ChartLegend>
+                                                                                </chart:SfCircularChart.Legend>
+                                                                                <chart:SfCircularChart.Title>
+                                                                                    <Label Text="{x:Static res:AppResources.lblTCDS}" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                                                </chart:SfCircularChart.Title>
+                                                                            </chart:SfCircularChart>
                                                                         </Border>
                                                                     </StackLayout>
-                                                                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20">
-                                                                        <!--Link Taps-->
-                                                                        <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
-                                                                            <StackLayout Orientation="Horizontal">
-                                                                                <!--Image-->
-                                                                                <Image Aspect="AspectFill" Margin="0,0,5,0">
-                                                                                    <Image.Source>
-                                                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
-                                                                                    </Image.Source>
-                                                                                </Image>
-                                                                                <!--Titel-->
-                                                                                <Label Text="{x:Static res:AppResources.lblLinkClicks}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                                                <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                                                <Label Text="{Binding BoardResponse.CountLinkTap}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
-                                                                            </StackLayout>
-                                                                        </Border>
-                                                                        <!--Save Contacts-->
-                                                                        <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
-                                                                            <StackLayout Orientation="Horizontal">
-                                                                                <!--Image-->
-                                                                                <Image Aspect="AspectFill" Margin="0,0,5,0">
-                                                                                    <Image.Source>
-                                                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
-                                                                                    </Image.Source>
-                                                                                </Image>
-                                                                                <!--Titel-->
-                                                                                <Label Text="{x:Static res:AppResources.lblSaveContacts}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                                                <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                                                <Label Text="{Binding BoardResponse.CountDownloadContacts}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
-                                                                            </StackLayout>
-                                                                        </Border>
-                                                                    </StackLayout>
-                                                                    <!--Total Clicks Chart-->
-                                                                    <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
-                                                                        <chart:SfCartesianChart HeightRequest="250">
-                                                                            <chart:SfCartesianChart.XAxes>
-                                                                                <chart:CategoryAxis>
+                                                                </ScrollView>
+                                                            </ContentView>
+                                                        </tabView:SfTabItem.Content>
+                                                    </tabView:SfTabItem>
+                                                    <!--Tab 2-->
+                                                    <tabView:SfTabItem BackgroundColor="Transparent" Header="{x:Static res:AppResources.lblUserEngagements}" FontSize="16" FontAttributes="Bold">
+                                                        <tabView:SfTabItem.Content>
+                                                            <ContentView Margin="20,10,20,0">
+                                                                <StackLayout>
+                                                                    <ScrollView VerticalOptions="FillAndExpand">
+                                                                        <StackLayout Spacing="15" Margin="0,5,0,0">
 
-                                                                                </chart:CategoryAxis>
-                                                                            </chart:SfCartesianChart.XAxes>
-                                                                            <chart:SfCartesianChart.YAxes>
-                                                                                <chart:NumericalAxis>
+                                                                            <!--User Link Engagements-->
+                                                                            <!--Table Headers-->
+                                                                            <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White" VerticalOptions="FillAndExpand" Margin="0,0,0,20"  HorizontalOptions="FillAndExpand">
+                                                                                <StackLayout Spacing="15" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                                                                    <Label Text="{x:Static res:AppResources.lblUserLinkEngagements}" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                                                    <Grid ColumnDefinitions="*,*,*,0.5,*" HorizontalOptions="FillAndExpand">
+                                                                                        <Label Text="Image" Grid.Column="0" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black"></Label>
+                                                                                        <Label Text="Link" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" Grid.Column="1" TextColor="Black"></Label>
+                                                                                        <!--<Label Text="User" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"  Grid.Column="2" TextColor="Black"></Label>-->
+                                                                                        <Label Text="Card Name" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" Grid.Column="2" Grid.ColumnSpan="2" TextColor="Black"></Label>
+                                                                                        <Label Text="Taps" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" Grid.Column="4" TextColor="Black"></Label>
 
-                                                                                </chart:NumericalAxis>
-                                                                            </chart:SfCartesianChart.YAxes>
-                                                                            <chart:SfCartesianChart.Title>
-                                                                                <Label Text="{x:Static res:AppResources.lblTotalClicks}" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
-                                                                            </chart:SfCartesianChart.Title>
-                                                                            <chart:FastLineSeries ItemsSource="{Binding BoardResponse.clickCardSummaries}" EnableTooltip="True" EnableAnimation="True" XBindingPath="DateClick" 
-                                  YBindingPath="CountClickCard"/>
-                                                                        </chart:SfCartesianChart>
-                                                                    </Border>
+                                                                                    </Grid>
+                                                                                    <BoxView Background="Gray" HeightRequest="1"></BoxView>
+                                                                                    <CollectionView ItemsSource="{Binding BoardResponse.clickCardLinkSummaries}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                                                                        <CollectionView.ItemsLayout>
+                                                                                            <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
+                                                                                        </CollectionView.ItemsLayout>
+                                                                                        <CollectionView.ItemTemplate>
+                                                                                            <DataTemplate>
+                                                                                                <Grid ColumnDefinitions="*,*,*,0.5,*" HorizontalOptions="FillAndExpand">
+                                                                                                    <Image Source="{Binding ImgCardLinkVM}" WidthRequest="30"></Image>
+                                                                                                    <Label Text="{Binding LinkName}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="FillAndExpand" Grid.Column="1" TextColor="Black" VerticalOptions="CenterAndExpand"></Label>
+                                                                                                    <!--<Label Text="{Binding PoplUser}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="FillAndExpand" Grid.Column="2" TextColor="Black" VerticalOptions="CenterAndExpand"></Label>-->
+                                                                                                    <Label Text="{Binding CardName}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="EndAndExpand" Grid.Column="2" Grid.ColumnSpan="2" TextColor="Black" VerticalOptions="CenterAndExpand"></Label>
+                                                                                                    <Label Text="{Binding CountClickCardLink}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" Grid.Column="4" TextColor="Black" VerticalOptions="CenterAndExpand"></Label>
+                                                                                                </Grid>
+                                                                                            </DataTemplate>
+                                                                                        </CollectionView.ItemTemplate>
+                                                                                    </CollectionView>
+                                                                                </StackLayout>
+                                                                            </Border>
+                                                                        </StackLayout>
+                                                                    </ScrollView>
                                                                 </StackLayout>
-                                                            </ScrollView>
-                                                        </RefreshView>
-                                                    </StackLayout>
-                                                </ContentView>
-                                            </tabView:SfTabItem.Content>
-                                        </tabView:SfTabItem>
-                                        <!--Tab 2-->
-                                        <tabView:SfTabItem BackgroundColor="Transparent" Header="{x:Static res:AppResources.lblReports}" FontSize="16" FontAttributes="Bold">
-                                            <tabView:SfTabItem.Content>
-                                                <ContentView Margin="20,0,20,0" >
-                                                    <StackLayout>
-                                                        <RefreshView VerticalOptions="FillAndExpand" Refreshing="HomeRef_Refreshing">
-                                                            <ScrollView VerticalOptions="FillAndExpand">
-                                                                <StackLayout Spacing="15" Margin="0,5,0,0">
-                                                                    <!--DoughnutSeries-->
-                                                                    <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
-                                                                        <chart:SfCircularChart>
-                                                                            <chart:DoughnutSeries ItemsSource="{Binding BoardResponse.clickCardLinkSummariesOS}" XBindingPath="name" YBindingPath="value" 
-                                                                                                  ExplodeOnTouch="True" EnableAnimation="True" EnableTooltip="True"/>
-                                                                            <chart:SfCircularChart.Legend>
-                                                                                <chart:ChartLegend >
-                                                                                    <chart:ChartLegend.LabelStyle>
-                                                                                        <chart:ChartLegendLabelStyle TextColor="Black" Margin="5" FontSize="14" FontAttributes="Bold" 
-                                                                                                                     FontFamily="PlaywriteAR-Regular"/>
-                                                                                    </chart:ChartLegend.LabelStyle>
-                                                                                </chart:ChartLegend>
-                                                                            </chart:SfCircularChart.Legend>
-                                                                            <chart:SfCircularChart.Title>
-                                                                                <Label Text="{x:Static res:AppResources.lblTCDS}" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
-                                                                            </chart:SfCircularChart.Title>
-                                                                        </chart:SfCircularChart>
-                                                                    </Border>
-                                                                    <!--User Link Engagements-->
-                                                                    <!--Table Headers-->
-                                                                    <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White" VerticalOptions="FillAndExpand"
-                                                                            Margin="0,0,0,20"  HorizontalOptions="FillAndExpand">
-                                                                        <StackLayout Spacing="15" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                                                                                <Label Text="{x:Static res:AppResources.lblUserLinkEngagements}" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
-                                                                                <Grid ColumnDefinitions="*,*,*,*,0.5*" HorizontalOptions="FillAndExpand">
-                                                                                    <Label Text="Image" Grid.Column="0" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
-                                                                               TextColor="Black"></Label>
-                                                                                    <Label Text="Link" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
-                                                                               Grid.Column="1" TextColor="Black"></Label>
-                                                                                    <Label Text="User" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
-                                                                               Grid.Column="2" TextColor="Black"></Label>
-                                                                                    <Label Text="Card Name" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
-                                                                               Grid.Column="3" TextColor="Black"></Label>
-                                                                                    <Label Text="Taps" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
-                                                                               Grid.Column="4" TextColor="Black"></Label>
+                                                            </ContentView>
+                                                        </tabView:SfTabItem.Content>
+                                                    </tabView:SfTabItem>
+                                                </tabView:SfTabView.Items>
+                                            </tabView:SfTabView>
 
-                                                                                </Grid>
-                                                                                <BoxView Background="Gray" HeightRequest="1"></BoxView>
-                                                                                <CollectionView ItemsSource="{Binding BoardResponse.clickCardLinkSummaries}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                                                                                    <CollectionView.ItemsLayout>
-                                                                                        <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
-                                                                                    </CollectionView.ItemsLayout>
-                                                                                    <CollectionView.ItemTemplate>
-                                                                                        <DataTemplate>
-                                                                                            <Grid ColumnDefinitions="*,*,*,*,0.5*" HorizontalOptions="FillAndExpand">
-                                                                                                <Image Source="{Binding ImgCardLinkVM}" WidthRequest="30"></Image>
-                                                                                                <Label Text="{Binding LinkName}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="FillAndExpand"
-                                                                                                   Grid.Column="1" TextColor="Black" VerticalOptions="CenterAndExpand"></Label>
-                                                                                                <Label Text="{Binding PoplUser}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="FillAndExpand"
-                                                                                           Grid.Column="2" TextColor="Black" VerticalOptions="CenterAndExpand"></Label>
-                                                                                                <Label Text="{Binding CardName}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="EndAndExpand"
-                                                                                           Grid.Column="3" TextColor="Black" VerticalOptions="CenterAndExpand"></Label>
-                                                                                                <Label Text="{Binding CountClickCardLink}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
-                                                                                           Grid.Column="4" TextColor="Black" VerticalOptions="CenterAndExpand"></Label>
-                                                                                            </Grid>
-                                                                                        </DataTemplate>
-                                                                                    </CollectionView.ItemTemplate>
-                                                                                </CollectionView>
-                                                                            </StackLayout>
-                                                                    </Border>
-                                                                </StackLayout>
-                                                            </ScrollView>
-                                                        </RefreshView>
-                                                    </StackLayout>
-                                                </ContentView>
-                                            </tabView:SfTabItem.Content>
-                                        </tabView:SfTabItem>
-                                    </tabView:SfTabView.Items>
-                                </tabView:SfTabView>
+                                        </StackLayout>
+
+                                    </ScrollView>
+                                </RefreshView>
+
                             </StackLayout>
                         </ContentView>
                     </tabView:SfTabItem.Content>
