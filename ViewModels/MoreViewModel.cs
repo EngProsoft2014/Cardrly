@@ -140,6 +140,20 @@ namespace Cardrly.ViewModels
                 await toast.Show();
             }
         }
+        [RelayCommand]
+        async Task ShopClick()
+        {
+            try
+            {
+                Uri uri = new Uri("https://cardrly.com/shop/");
+                await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+            }
+            catch (Exception ex)
+            {
+                var toast = Toast.Make($"{ex.Message}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+        }
         #endregion
     }
 }

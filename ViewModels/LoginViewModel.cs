@@ -180,6 +180,21 @@ namespace Cardrly.ViewModels
 
             Preferences.Default.Set(ApiConstants.GuidKey, Controls.StaticMember.GuidKeyFromToken(userResponse?.Token));
         }
+
+        [RelayCommand]
+        async Task SignUpClick()
+        {
+            try
+            {
+                Uri uri = new Uri("https://cardrly.com/pricing/");
+                await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+            }
+            catch (Exception ex)
+            {
+                var toast = Toast.Make($"{ex.Message}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
+        }
         #endregion
     }
 }

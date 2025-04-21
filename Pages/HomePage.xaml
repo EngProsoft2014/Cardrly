@@ -839,7 +839,7 @@
                                             </StackLayout>
                                         </VerticalStackLayout>
                                     </Border>
-                                    <!--Help & Support & FAQ & Language-->
+                                    <!--Help & Support & FAQ & Documents & Shop & Language-->
                                     <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
                                         <VerticalStackLayout Spacing="15">
                                             <!--Help & Support-->
@@ -892,6 +892,23 @@
                                                 </Image>
                                                 <StackLayout.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding DocumentsClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <!--Shop-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblShop}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding ShopClickCommand}"></TapGestureRecognizer>
                                                 </StackLayout.GestureRecognizers>
                                             </StackLayout>
                                             <!--Language-->

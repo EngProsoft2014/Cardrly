@@ -169,6 +169,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t have an account ? .
+        /// </summary>
+        internal static string Don_t_have_an_account {
+            get {
+                return ResourceManager.GetString("Don\'t have an account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter vaild E-mail.
         /// </summary>
         internal static string enter_vaild_Email {
@@ -1177,6 +1186,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shop.
+        /// </summary>
+        internal static string lblShop {
+            get {
+                return ResourceManager.GetString("lblShop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Comments.
         /// </summary>
         internal static string lblShowComments {
@@ -1191,6 +1209,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblShowing {
             get {
                 return ResourceManager.GetString("lblShowing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SignUp Now.
+        /// </summary>
+        internal static string lblSignUp_Now {
+            get {
+                return ResourceManager.GetString("lblSignUp Now", resourceCulture);
             }
         }
         

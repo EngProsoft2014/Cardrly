@@ -879,4 +879,16 @@
   <data name="lblUserEngagements" xml:space="preserve">
     <value>تفاعلات المستخدم</value>
   </data>
+  <data name="ليس لديك حساب؟" xml:space="preserve">
+    <value>ليس لديك حساب ؟</value>
+  </data>
+  <data name="lblShop" xml:space="preserve">
+    <value>تسوق</value>
+  </data>
+  <data name="Don't have an account" xml:space="preserve">
+    <value>ليس لديك حساب؟</value>
+  </data>
+  <data name="lblSignUp Now" xml:space="preserve">
+    <value>سجل الآن</value>
+  </data>
 </root>
