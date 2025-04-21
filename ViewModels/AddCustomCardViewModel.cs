@@ -16,6 +16,7 @@ using Cardrly.Models;
 using Cardrly.Resources.Lan;
 using Mopups.Pages;
 using Cardrly.Pages;
+using System.Text.RegularExpressions;
 
 namespace Cardrly.ViewModels
 {
@@ -183,6 +184,41 @@ namespace Cardrly.ViewModels
             }
 
         }
+
+        public string CheckStringType(string input)
+        {
+            // Email pattern
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+
+            // URL pattern
+            string urlPattern = @"^(http|https)://[^\s/$.?#].[^\s]*$";
+
+            // Phone number pattern (international format: +123456789 or local 123-456-7890)
+            string phonePattern = @"^(\+?\d{1,3})?[-.\s]?\(?\d{2,4}\)?[-.\s]?\d{3}[-.\s]?\d{3,4}$";
+            // Any string pattern
+            string pattern = @"^[\s\S]+$"; // Matches any plain text, including new lines
+
+            if (Regex.IsMatch(input, emailPattern))
+            {
+                return "Email";
+            }
+            else if (Regex.IsMatch(input, urlPattern))
+            {
+                return "URL";
+            }
+            else if (Regex.IsMatch(input, phonePattern))
+            {
+                return "Phone Number";
+            }
+            else if (Regex.IsMatch(input, pattern))
+            {
+                return "Text";
+            }
+            else
+            {
+                return "Unknown";
+            }
+        }
         #endregion
 
         #region RelayCommand
@@ -276,12 +312,21 @@ namespace Cardrly.ViewModels
             IsEnable = false;
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-
                 string UserToken = await _service.UserToken();
                 string accid = Preferences.Default.Get(ApiConstants.AccountId, "");
                 if (string.IsNullOrEmpty(Request!.CardName))
                 {
                     var toast = Toast.Make($"{AppResources.msgFRCardName}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
+                else if (string.IsNullOrEmpty(Request.Email))
+                {
+                    var toast = Toast.Make($"{AppResources.msgFREmail}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
+                else if (CheckStringType(Request.Email!) != "Email")
+                {
+                    var toast = Toast.Make($"{AppResources.msgCheck_your_email_and_reEnter_it_correctly}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
                 }
                 else
