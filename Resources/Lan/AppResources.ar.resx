@@ -879,9 +879,6 @@
   <data name="lblUserEngagements" xml:space="preserve">
     <value>تفاعلات المستخدم</value>
   </data>
-  <data name="ليس لديك حساب؟" xml:space="preserve">
-    <value>ليس لديك حساب ؟</value>
-  </data>
   <data name="lblShop" xml:space="preserve">
     <value>تسوق</value>
   </data>
@@ -890,5 +887,11 @@
   </data>
   <data name="lblSignUp Now" xml:space="preserve">
     <value>سجل الآن</value>
+  </data>
+  <data name="ليس لديك حساب؟" xml:space="preserve">
+    <value>ليس لديك حساب ؟</value>
+  </data>
+  <data name="msgSuccess" xml:space="preserve">
+    <value>نجاح</value>
   </data>
 </root>

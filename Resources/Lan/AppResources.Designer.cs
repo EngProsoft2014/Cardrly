@@ -1465,7 +1465,7 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contact saved.
+        ///   Looks up a localized string similar to Successfully Contact saved.
         /// </summary>
         internal static string msgContactSaved {
             get {
@@ -1992,6 +1992,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgStart_time_must_be_before_end_time {
             get {
                 return ResourceManager.GetString("msgStart_time_must_be_before_end_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        internal static string msgSuccess {
+            get {
+                return ResourceManager.GetString("msgSuccess", resourceCulture);
             }
         }
         

@@ -67,7 +67,7 @@ namespace Cardrly
                     throw new Exception(error.LocalizedDescription);
                 }
 
-                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgContactSaved}", $"{AppResources.msgOk}");
+                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgSuccess}", $"{AppResources.msgContactSaved}", $"{AppResources.msgOk}");
             }
             catch (Exception ex)
             {
