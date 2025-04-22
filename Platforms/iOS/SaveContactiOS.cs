@@ -3,6 +3,7 @@ using Cardrly.Resources.Lan;
 using Cardrly.Services;
 using Contacts;
 using Foundation;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,62 +17,66 @@ namespace Cardrly
     {
         public async Task SaveContactMethod(LeadResponse contact)
         {
-            try
+            if(!string.IsNullOrEmpty(contact.FullName) && !string.IsNullOrEmpty(contact.Phone))
             {
-                var newContact = new CNMutableContact
+                try
                 {
-                    GivenName = contact.FullName,
-                    JobTitle = contact.JobTitle,
-                    OrganizationName = contact.Website,
-                    PostalAddresses = new CNLabeledValue<CNPostalAddress>[]
+                    var newContact = new CNMutableContact
                     {
+                        GivenName = contact.FullName, //(Required)
+                        JobTitle = contact.JobTitle ?? string.Empty,
+                        OrganizationName = contact.Website ?? string.Empty,
+                        PostalAddresses = new CNLabeledValue<CNPostalAddress>[]
+                        {
                         new CNLabeledValue<CNPostalAddress>(CNLabelKey.Home, new CNMutablePostalAddress()
                         {
                             City = contact.Address ?? string.Empty
                         })
-                    },
-                    UrlAddresses = new CNLabeledValue<NSString>[]
-                    {
-                        new CNLabeledValue<NSString>(CNLabelKey.Home, new NSString(contact.Website))
-                    },
-                    PhoneticOrganizationName = contact.Company,
-                };
+                        },
+                        UrlAddresses = new CNLabeledValue<NSString>[]
+                        {
+                        new CNLabeledValue<NSString>(CNLabelKey.Home, new NSString(contact.Website ?? string.Empty))
+                        },
+                        PhoneticOrganizationName = contact.Company ?? string.Empty,
+                    };
 
-                // Add phone number
-                if (!string.IsNullOrWhiteSpace(contact.Phone))
-                {
+                    // Add phone number (Required)
                     newContact.PhoneNumbers = new[]
                     {
-                        new CNLabeledValue<CNPhoneNumber>(CNLabelKey.Home, new CNPhoneNumber(contact.Phone))
+                        new CNLabeledValue<CNPhoneNumber>(CNLabelKey.Home, new CNPhoneNumber(contact.Phone!))
                     };
-                }
 
-                // Add email
-                if (!string.IsNullOrWhiteSpace(contact.Email))
-                {
-                    newContact.EmailAddresses = new[]
+                    // Add email
+                    if (!string.IsNullOrWhiteSpace(contact.Email))
                     {
+                        newContact.EmailAddresses = new[]
+                        {
                         new CNLabeledValue<NSString>(CNLabelKey.Home, new NSString(contact.Email))
                     };
+                    }
+
+                    var store = new CNContactStore();
+                    var saveRequest = new CNSaveRequest();
+                    saveRequest.AddContact(newContact, store.DefaultContainerIdentifier);
+
+                    NSError error = null;
+                    await Task.Run(() => store.ExecuteSaveRequest(saveRequest, out error));
+
+                    if (error != null)
+                    {
+                        throw new Exception(error.LocalizedDescription);
+                    }
+
+                    await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgSuccess}", $"{AppResources.msgContactSaved}", $"{AppResources.msgOk}");
                 }
-
-                var store = new CNContactStore();
-                var saveRequest = new CNSaveRequest();
-                saveRequest.AddContact(newContact, store.DefaultContainerIdentifier);
-
-                NSError error = null;
-                await Task.Run(() => store.ExecuteSaveRequest(saveRequest, out error));
-
-                if (error != null)
+                catch (Exception ex)
                 {
-                    throw new Exception(error.LocalizedDescription);
+                    await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgcontactwasnotsaved}", $"{AppResources.msgOk}");
                 }
-
-                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgSuccess}", $"{AppResources.msgContactSaved}", $"{AppResources.msgOk}");
             }
-            catch (Exception ex)
+            else
             {
-                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgcontactwasnotsaved}", $"{AppResources.msgOk}");
+                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgFullname_and_phone_numbe_fields_required}", $"{AppResources.msgOk}");
             }
         }
     }

@@ -17,24 +17,31 @@ namespace Cardrly
 
         public async Task SaveContactMethod(LeadResponse contact)
         {
-            try
+            if (!string.IsNullOrEmpty(contact.FullName) && !string.IsNullOrEmpty(contact.Phone))
             {
-                var intent = new Intent(Intent.ActionInsert);
-                intent.SetType(ContactsContract.Contacts.ContentType);
+                try
+                {
+                    var intent = new Intent(Intent.ActionInsert);
+                    intent.SetType(ContactsContract.Contacts.ContentType);
 
-                intent.PutExtra(ContactsContract.Intents.Insert.Name, contact.FullName);
-                intent.PutExtra(ContactsContract.Intents.Insert.JobTitle, contact.JobTitle);
-                intent.PutExtra(ContactsContract.Intents.Insert.Phone, contact.Phone);
-                intent.PutExtra(ContactsContract.Intents.Insert.Email, contact.Email);
-                intent.PutExtra(ContactsContract.Intents.Insert.Postal, contact.Address);
-                intent.PutExtra(ContactsContract.Intents.Insert.Company, contact.Company);
+                    intent.PutExtra(ContactsContract.Intents.Insert.Name, contact.FullName);//(Required)
+                    intent.PutExtra(ContactsContract.Intents.Insert.JobTitle, contact.JobTitle ?? string.Empty);
+                    intent.PutExtra(ContactsContract.Intents.Insert.Phone, contact.Phone);//(Required)
+                    intent.PutExtra(ContactsContract.Intents.Insert.Email, contact.Email ?? string.Empty);
+                    intent.PutExtra(ContactsContract.Intents.Insert.Postal, contact.Address ?? string.Empty);
+                    intent.PutExtra(ContactsContract.Intents.Insert.Company, contact.Company ?? string.Empty);
 
-                intent.SetFlags(ActivityFlags.NewTask);
-                MauiApp.Platform.CurrentActivity.StartActivity(intent);
+                    intent.SetFlags(ActivityFlags.NewTask);
+                    MauiApp.Platform.CurrentActivity.StartActivity(intent);
+                }
+                catch (Exception ex)
+                {
+                    await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgcontactwasnotsaved}", $"{AppResources.msgOk}");
+                }
             }
-            catch (Exception ex)
+            else
             {
-                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgcontactwasnotsaved}", $"{AppResources.msgOk}");
+                await Application.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgFullname_and_phone_numbe_fields_required}", $"{AppResources.msgOk}");
             }
         }
 

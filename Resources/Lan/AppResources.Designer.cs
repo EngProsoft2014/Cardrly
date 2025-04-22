@@ -1762,6 +1762,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fullname and phone number fields are required..
+        /// </summary>
+        internal static string msgFullname_and_phone_numbe_fields_required {
+            get {
+                return ResourceManager.GetString("msgFullname_and_phone_numbe_fields_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lead Deleted Successfully.
         /// </summary>
         internal static string msgLeadDeletedSuccessfully {
