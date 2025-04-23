@@ -13,16 +13,19 @@ namespace Cardrly.ViewModels.Links
 {
     public partial class AddLinkViewModel : BaseViewModel
     {
+        #region Prop
         [ObservableProperty]
         ObservableCollection<LinksGroup> accountLinks = new ObservableCollection<LinksGroup>();
-        string CardId;
+        string CardId; 
+        #endregion
+
         #region Service
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
         #endregion
 
         #region Cons
-        public AddLinkViewModel(string cardId,IGenericRepository GenericRep, Services.Data.ServicesService service)
+        public AddLinkViewModel(string cardId, IGenericRepository GenericRep, Services.Data.ServicesService service)
         {
             _service = service;
             Rep = GenericRep;
@@ -31,12 +34,14 @@ namespace Cardrly.ViewModels.Links
         }
         #endregion
 
+        #region RelayCommand
         [RelayCommand]
         async Task SelectClick(AccountLinkResponse res)
         {
-            var page = new EditLinkPopup(1,res,CardId,Rep,_service);
+            var page = new EditLinkPopup(1, res, CardId, Rep, _service);
             await MopupService.Instance.PushAsync(page);
-        }
+        } 
+        #endregion
 
         #region Methodes
         public async void Init()
@@ -57,13 +62,10 @@ namespace Cardrly.ViewModels.Links
                 UserDialogs.Instance.HideHud();
                 if (json != null)
                 {
-                    foreach (AccountLinkResponse res in json)
-                    {
-                        res.UrlImgName = Utility.ServerUrl + res.UrlImgName;
-                    }
-                        AccountLinks.Add(new LinksGroup($"{AppResources.lblContact}", json.Where(a => a.TypeLink == Enums.EnumTypeLink.Contact).ToList()));
-                        AccountLinks.Add(new LinksGroup($"{AppResources.lblSocial_Media}", json.Where(a => a.TypeLink == Enums.EnumTypeLink.SocialMedia).ToList()));
-                        AccountLinks.Add(new LinksGroup($"{AppResources.lblBusiness}", json.Where(a => a.TypeLink == Enums.EnumTypeLink.Business).ToList()));    
+
+                    AccountLinks.Add(new LinksGroup($"{AppResources.lblContact}", json.Where(a => a.TypeLink == Enums.EnumTypeLink.Contact).ToList()));
+                    AccountLinks.Add(new LinksGroup($"{AppResources.lblSocial_Media}", json.Where(a => a.TypeLink == Enums.EnumTypeLink.SocialMedia).ToList()));
+                    AccountLinks.Add(new LinksGroup($"{AppResources.lblBusiness}", json.Where(a => a.TypeLink == Enums.EnumTypeLink.Business).ToList()));
                 }
             }
             IsEnable = true;

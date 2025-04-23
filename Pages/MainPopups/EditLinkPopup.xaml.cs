@@ -53,7 +53,7 @@ public partial class EditLinkPopup : Mopups.Pages.PopupPage
     {
         InitializeComponent();
         //CardLink.AccountLinkUrlImgNameVM = res.UrlImgName;
-        imgIcon.Source = res.UrlImgName;
+        imgIcon.Source = res.UrlImgNameVM;
         CardLink.AccountLinkTitle = res.Title;
         this.BindingContext = CardLink;
         Rep = GenericRep;

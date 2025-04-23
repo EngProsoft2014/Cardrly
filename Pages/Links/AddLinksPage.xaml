@@ -35,7 +35,7 @@
                     <Border StrokeShape="RoundRectangle 10" Padding="10" BackgroundColor="White">
                         <StackLayout Orientation="Horizontal" Spacing="10">
                             <!--Image-->
-                            <Image Source="{Binding UrlImgName}"
+                            <Image Source="{Binding UrlImgNameVM}"
                                    Aspect="AspectFill" WidthRequest="40" HeightRequest="40"></Image>
                             <!--Titel-->
                             <Label Text="{Binding Title}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>

@@ -41,10 +41,7 @@ namespace Cardrly.ViewModels
         {
             if (StaticMember.CheckPermission(ApiConstants.AddCards))
             {
-                var vm = new AddCustomCardViewModel(Rep, _service);
-                var page = new AddCustomCardPage(vm);
-                page.BindingContext = vm;
-                await App.Current!.MainPage!.Navigation.PushAsync(page);
+                await App.Current!.MainPage!.Navigation.PushAsync(new AddCustomCardPage(new AddCustomCardViewModel(Rep, _service)));
             }
             else
             {
@@ -79,10 +76,7 @@ namespace Cardrly.ViewModels
         {
             if (StaticMember.CheckPermission(ApiConstants.UpdateCards))
             {
-                var vm = new AddCustomCardViewModel(card, Rep, _service);
-                var page = new AddCustomCardPage(vm);
-                page.BindingContext = vm;
-                await App.Current!.MainPage!.Navigation.PushAsync(page);
+                await App.Current!.MainPage!.Navigation.PushAsync(new AddCustomCardPage(new AddCustomCardViewModel(card, Rep, _service)));
             }
             else
             {

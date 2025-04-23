@@ -8,7 +8,7 @@ public partial class AddCustomCardPage : Controls.CustomControl
 	public AddCustomCardPage(AddCustomCardViewModel model)
 	{
 		InitializeComponent();
-		Model = model;
+        this.BindingContext = Model = model;
 	}
 
     private void LinkColor_PickedColorChanged(object sender, Maui.ColorPicker.PickedColorChangedEventArgs e)

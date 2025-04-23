@@ -44,8 +44,7 @@ namespace Cardrly.ViewModels.Links
         [RelayCommand]
         async Task SelectLinkClick(CardLinkResponse cardLink)
         {
-            var page = new EditLinkPopup(cardLink,Rep,_service);
-            await MopupService.Instance.PushAsync(page);
+            await MopupService.Instance.PushAsync(new EditLinkPopup(cardLink, Rep, _service));
         }
         [RelayCommand]
         public async Task ActiveClick(CardLinkResponse res)
@@ -98,10 +97,7 @@ namespace Cardrly.ViewModels.Links
         [RelayCommand]
         async Task AddLink()
         {
-            var vm = new AddLinkViewModel(CardDetails.Id,Rep,_service);
-            var page = new AddLinksPage();
-            page.BindingContext = vm;
-            await App.Current!.MainPage!.Navigation.PushAsync(page);
+            await App.Current!.MainPage!.Navigation.PushAsync(new AddLinksPage(new AddLinkViewModel(CardDetails.Id, Rep, _service)));
         }
         #endregion
 
@@ -130,10 +126,6 @@ namespace Cardrly.ViewModels.Links
                 var json = await Rep.GetAsync<CardDetailsResponse>($"{ApiConstants.CardGetApi}{AccId}/Card/{CardId}", UserToken);     
                 if (json != null)
                 {
-                    //foreach (CardLinkResponse cardLink in json.CardLinks)
-                    //{
-                    //    cardLink.AccountLinkUrlImgName = Utility.ServerUrl + cardLink.AccountLinkUrlImgName;
-                    //}
                     CardDetails = json;
                     CardOrder = new List<CardLinkResponse>(json.CardLinks);
                 }

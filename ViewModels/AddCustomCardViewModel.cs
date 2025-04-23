@@ -318,17 +318,7 @@ namespace Cardrly.ViewModels
                 {
                     var toast = Toast.Make($"{AppResources.msgFRCardName}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
-                }
-                else if (string.IsNullOrEmpty(Request.Email))
-                {
-                    var toast = Toast.Make($"{AppResources.msgFREmail}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                    await toast.Show();
-                }
-                else if (CheckStringType(Request.Email!) != "Email")
-                {
-                    var toast = Toast.Make($"{AppResources.msgCheck_your_email_and_reEnter_it_correctly}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                    await toast.Show();
-                }
+                }            
                 else
                 {
                     if (AddOrUpdate == 1)
@@ -336,6 +326,11 @@ namespace Cardrly.ViewModels
                         if (string.IsNullOrEmpty(Request!.Email))
                         {
                             var toast = Toast.Make($"{AppResources.msgFREmail}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                            await toast.Show();
+                        }
+                        else if (CheckStringType(Request.Email!) != "Email")
+                        {
+                            var toast = Toast.Make($"{AppResources.msgCheck_your_email_and_reEnter_it_correctly}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
                         }
                         else

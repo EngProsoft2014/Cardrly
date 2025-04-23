@@ -37,6 +37,7 @@ namespace Cardrly.ViewModels
         }
         #endregion
 
+        #region RelayCommand
         [RelayCommand]
         async Task DeleteClick(LeadCommentResponse leadComment)
         {
@@ -65,7 +66,8 @@ namespace Cardrly.ViewModels
                 }
                 IsEnable = true;
             }
-        }
+        } 
+        #endregion
 
         #region Method
         async void Init()

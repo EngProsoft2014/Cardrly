@@ -15,10 +15,12 @@ namespace Cardrly.ViewModels
 {
     public partial class ChangePasswordViewModel : BaseViewModel
     {
+        #region Prop
         [ObservableProperty]
         ChangePasswordModel model = new ChangePasswordModel();
         [ObservableProperty]
-        string confirmPassword = "";
+        string confirmPassword = ""; 
+        #endregion
 
         #region Service
         readonly IGenericRepository Rep;
@@ -33,7 +35,7 @@ namespace Cardrly.ViewModels
         }
         #endregion
 
-
+        #region RelayCommand
         [RelayCommand]
         async Task SaveClick()
         {
@@ -85,6 +87,7 @@ namespace Cardrly.ViewModels
                     }
                 }
             }
-        }
+        } 
+        #endregion
     }
 }
