@@ -241,11 +241,11 @@ namespace Cardrly.ViewModels
             {
                 page = new AddAttachmentsPopup();
             }
-            page.ImageClose += (img, imgPath) =>
+            page.ImageClose += async (img, imgPath) =>
             {
                 if (!string.IsNullOrEmpty(img))
                 {
-                    MopupService.Instance.PopAsync();
+                    await MopupService.Instance.PopAsync();
                     byte[] bytes = Convert.FromBase64String(img);
                     Request.ImgFileProfile = bytes;
                     Request.ImgProfileFile = ImageSource.FromStream(() => new MemoryStream(bytes));
@@ -274,11 +274,11 @@ namespace Cardrly.ViewModels
             {
                 page = new AddAttachmentsPopup();
             }
-            page.ImageClose += (img, imgPath) =>
-            {
+            page.ImageClose += async (img, imgPath) =>
+            {              
                 if (!string.IsNullOrEmpty(img))
                 {
-                    MopupService.Instance.PopAsync();
+                    await MopupService.Instance.PopAsync();
                     byte[] bytes = Convert.FromBase64String(img);
                     Request.ImgFileCover = bytes;
                     Request.ImgCoverFile = ImageSource.FromStream(() => new MemoryStream(bytes));
