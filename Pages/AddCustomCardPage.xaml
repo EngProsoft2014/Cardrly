@@ -34,7 +34,7 @@
         </StackLayout>
         <!--Data-->
         <ScrollView VerticalOptions="FillAndExpand">
-            <StackLayout Margin="0,30,0,0">
+            <StackLayout Margin="0,20,0,0">
                 <!--Cover Image-->
                 <Grid HeightRequest="160">
                     <Border StrokeShape="RoundRectangle 15" HeightRequest="150" Stroke="#FF7F3E" HorizontalOptions="FillAndExpand" BackgroundColor="White">

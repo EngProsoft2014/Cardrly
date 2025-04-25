@@ -8,7 +8,7 @@
              Title="LoginPage"
              IsEnabled="{Binding IsEnable}">
     <ScrollView VerticalOptions="FillAndExpand">
-        <StackLayout Margin="20" Spacing="40">
+        <StackLayout Margin="20" Spacing="20">
             <skia:SKLottieView RepeatCount="-1"
                                RepeatMode="Reverse"
                                Source="nfc.json"
