@@ -17,6 +17,7 @@ using Cardrly.Resources.Lan;
 using Mopups.Pages;
 using Cardrly.Pages;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace Cardrly.ViewModels
 {
@@ -35,6 +36,10 @@ namespace Cardrly.ViewModels
         public int isCoverImageAdded = 1;
         [ObservableProperty]
         CardResponse card = new CardResponse();
+        [ObservableProperty]
+        public ObservableCollection<CardLayoutModel> cardLayouts = new ObservableCollection<CardLayoutModel>();
+        [ObservableProperty]
+        public CardLayoutModel selectedLayout = new CardLayoutModel();
         [ObservableProperty]
         int addOrUpdate = 0; // 1 - Add & 2 - update 
         #endregion
@@ -147,6 +152,26 @@ namespace Cardrly.ViewModels
                 new ColorModel { Name = "Navy", HexCode = "#0D47A1" },
                 new ColorModel { Name = "white", HexCode = "#FFFFFF" },
             };
+
+            //Add Layouts To List
+            CardLayouts = new ObservableCollection<CardLayoutModel>()
+            {
+                new CardLayoutModel{ Name = "Center Layout" , Value = "_mobilecard"},
+                new CardLayoutModel{ Name = "Left Layout" , Value = "_LeftAlignedCard"},
+                new CardLayoutModel{ Name = "Portrait  Layout" , Value = "_PortraitCard"},
+            };
+
+            // Select Initial Card Layout
+            CardLayoutModel layoutModel = CardLayouts.FirstOrDefault(a => a.Value == card.Cardlayout);
+            if (layoutModel == null)
+            {
+                SelectedLayout = CardLayouts.FirstOrDefault()!;
+            }
+            else
+            {
+                SelectedLayout = layoutModel;
+            }
+
             // Select Initial Link Colors
             ColorModel cc = LinkColor.FirstOrDefault(a => a.HexCode == card.LinkColor);
             if (cc != null)
@@ -184,7 +209,6 @@ namespace Cardrly.ViewModels
             }
 
         }
-
         public string CheckStringType(string input)
         {
             // Email pattern
@@ -380,7 +404,7 @@ namespace Cardrly.ViewModels
                         CardRequestDto requestDto = new CardRequestDto()
                         {
                             PersonName = Request.PersonName,
-                            Cardlayout = Request.Cardlayout,
+                            Cardlayout = SelectedLayout.Value,
                             CardName = Request.CardName,
                             Bio = Request.Bio,
                             CardTheme = Request.CardTheme,

@@ -894,4 +894,7 @@
   <data name="msgFullname_and_phone_numbe_fields_required" xml:space="preserve">
     <value>Fullname and phone number fields are required.</value>
   </data>
+  <data name="lblCardLayout" xml:space="preserve">
+    <value>Card Layout</value>
+  </data>
 </root>

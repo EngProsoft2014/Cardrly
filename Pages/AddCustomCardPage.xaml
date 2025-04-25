@@ -87,19 +87,6 @@
                                 </DataTrigger>
                             </VerticalStackLayout.Triggers>
                         </VerticalStackLayout>
-                        <!--Password--><!--
-                        <VerticalStackLayout HorizontalOptions="FillAndExpand">
-                            <Label Text="{x:Static res:AppResources.plcPassword}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
-                            <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Black" HeightRequest="40">
-                                <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
-Text="{Binding Request.Password}"></Entry>
-                            </Border>
-                            <VerticalStackLayout.Triggers>
-                                <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding AddOrUpdate}" Value="2">
-                                    <Setter Property="IsVisible" Value="False"></Setter>
-                                </DataTrigger>
-                            </VerticalStackLayout.Triggers>
-                        </VerticalStackLayout>-->
                         <!--Card Name-->
                         <VerticalStackLayout HorizontalOptions="FillAndExpand" Margin="0,0,0,0" >
                             <Label Text="{x:Static res:AppResources.lblCardName}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
@@ -107,6 +94,19 @@ Text="{Binding Request.Password}"></Entry>
                                 <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
                     Text="{Binding Request.CardName}" ></Entry>
                             </Border>
+                        </VerticalStackLayout>
+                        <!--Card Layout-->
+                        <VerticalStackLayout HorizontalOptions="FillAndExpand" Margin="0,0,0,0" >
+                            <Label Text="{x:Static res:AppResources.lblCardLayout}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                            <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                                <Picker ItemsSource="{Binding CardLayouts}" ItemDisplayBinding="{Binding Name}" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                                        SelectedItem="{Binding SelectedLayout}" ></Picker>
+                            </Border>
+                            <VerticalStackLayout.Triggers>
+                                <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding AddOrUpdate}" Value="1">
+                                    <Setter Property="IsVisible" Value="False"></Setter>
+                                </DataTrigger>
+                            </VerticalStackLayout.Triggers>
                         </VerticalStackLayout>
                         <!--location-->
                         <VerticalStackLayout HorizontalOptions="FillAndExpand">

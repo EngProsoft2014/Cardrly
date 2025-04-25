@@ -556,6 +556,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Card Layout.
+        /// </summary>
+        internal static string lblCardLayout {
+            get {
+                return ResourceManager.GetString("lblCardLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Card Link Type.
         /// </summary>
         internal static string lblCardLinkType {

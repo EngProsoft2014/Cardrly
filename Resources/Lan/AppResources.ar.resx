@@ -891,10 +891,13 @@
   <data name="msgSuccess" xml:space="preserve">
     <value>نجاح</value>
   </data>
+  <data name="msgFullname_and_phone_numbe_fields_required" xml:space="preserve">
+    <value>ادخال حقول الاسم والتليفون اجباريا</value>
+  </data>
   <data name="ليس لديك حساب؟" xml:space="preserve">
     <value>ليس لديك حساب ؟</value>
   </data>
-  <data name="msgFullname_and_phone_numbe_fields_required" xml:space="preserve">
-    <value>ادخال حقول الاسم والتليفون اجباريا</value>
+  <data name="lblCardLayout" xml:space="preserve">
+    <value>تصميم البطاقة</value>
   </data>
 </root>
