@@ -195,7 +195,7 @@ namespace Cardrly.ViewModels
             if (cc != null)
             {
                 ThemColor.FirstOrDefault(a => a.HexCode == card.CardTheme)!.IsSelected = true;
-                Request.LinkColor = ThemColor.FirstOrDefault(a => a.HexCode == card.CardTheme)!.HexCode;
+                Request.CardTheme = ThemColor.FirstOrDefault(a => a.HexCode == card.CardTheme)!.HexCode;
             }
             else if (!string.IsNullOrEmpty(card.CardTheme))
             {
