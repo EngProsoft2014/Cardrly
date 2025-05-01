@@ -331,9 +331,11 @@ public partial class ActiveDevicePage : Controls.CustomControl
         if (StaticMember.CheckPermission(ApiConstants.AddDevices))
         {
             var Item = e.Parameter as DevicesTypeModel;
+
+            deviceType = Item!.DeviceNumber;
+
             if (Item!.DeviceName == "QR")
-            {
-                deviceType = Item.DeviceNumber;
+            {      
                 await App.Current!.MainPage!.Navigation.PushAsync(new ScanQrPage());
 
                 MessagingCenter.Subscribe<ScanQrPage, string>(this, "QRCodeValue", async (sender, message) =>
@@ -363,6 +365,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
                 page.DeviceClose += async (Uri) =>
                 {
                     SetupUri = Uri;
+
 #if ANDROID
                 var toast = Toast.Make($"Near the stand now.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
@@ -374,7 +377,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
             else
             {
                 SetupUri = Model.DetailsResponse.CardUrlVM!;
-                deviceType = Item.DeviceNumber;
+
 #if ANDROID
                 var toast = Toast.Make($"Near the Device now.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
