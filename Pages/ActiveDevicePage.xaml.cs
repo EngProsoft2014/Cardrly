@@ -335,9 +335,7 @@ public partial class ActiveDevicePage : Controls.CustomControl
             deviceType = Item!.DeviceNumber;
 
             if (Item!.DeviceName == "QR")
-            {      
-                await App.Current!.MainPage!.Navigation.PushAsync(new ScanQrPage());
-
+            {                   
                 MessagingCenter.Subscribe<ScanQrPage, string>(this, "QRCodeValue", async (sender, message) =>
                 {
 
@@ -358,6 +356,8 @@ public partial class ActiveDevicePage : Controls.CustomControl
                         }
                     }
                 });
+
+                await App.Current!.MainPage!.Navigation.PushAsync(new ScanQrPage());
             }
             else if (Item!.DeviceName == "Stand" || Item!.DeviceName == "CustomNFC")
             {
