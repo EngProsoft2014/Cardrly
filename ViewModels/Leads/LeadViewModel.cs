@@ -33,6 +33,8 @@ namespace Cardrly.ViewModels.Leads
         public readonly IAudioManager _audioManager;
 
         public bool IsHasNext { get; set; }
+
+        int OldPageNumber = 0; // As inactive changed check last page number
         #endregion
 
         #region Service
@@ -87,7 +89,10 @@ namespace Cardrly.ViewModels.Leads
                     string ressponse = await Rep.PostEAsync($"{ApiConstants.LeadToggleApi}{AccId}/Lead/{lead.Id}/ToggleActive", UserToken);
                     if (ressponse == "")
                     {
-                        FilterRequest = new LeadFilterRequest();
+                        //FilterRequest = new LeadFilterRequest();
+                        OldPageNumber = FilterRequest.PageNumber!.Value - 1;
+                        FilterRequest.PageNumber = 1;
+                        FilterRequest.Pagesize = OldPageNumber != 0 ? 25 * OldPageNumber : 25;
                         await SearchLeads();
                     }
                     else
@@ -252,8 +257,12 @@ namespace Cardrly.ViewModels.Leads
                         LeadsInPage = new ObservableCollection<LeadResponse>(PagingResponse?.pagingLst.DataModel!);
 
                         Leads = new ObservableCollection<LeadResponse>(LeadsInPage.ToList());
-
-                        FilterRequest.PageNumber += 1;
+ 
+                        if(OldPageNumber != 0)
+                        {
+                            FilterRequest.PageNumber = OldPageNumber + 1;
+                            FilterRequest.Pagesize = 25;
+                        }
                     }
                 }
             }
