@@ -340,6 +340,24 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Card View Distribution by Country.
+        /// </summary>
+        internal static string lbl_CardView_Distribution_by_Country {
+            get {
+                return ResourceManager.GetString("lbl_CardView_Distribution_by_Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link Clicks by Country.
+        /// </summary>
+        internal static string lbl_Link_Clicks_by_Country {
+            get {
+                return ResourceManager.GetString("lbl_Link_Clicks_by_Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 1 day.
         /// </summary>
         internal static string lbl1day {
@@ -592,6 +610,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Card View.
+        /// </summary>
+        internal static string lblCardView {
+            get {
+                return ResourceManager.GetString("lblCardView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Card Views.
         /// </summary>
         internal static string lblCardViews {
@@ -727,6 +754,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Devices.
+        /// </summary>
+        internal static string lblDevices {
+            get {
+                return ResourceManager.GetString("lblDevices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Devices System.
         /// </summary>
         internal static string lblDeviceSystem {
@@ -777,6 +813,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblEndTime {
             get {
                 return ResourceManager.GetString("lblEndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Engagements.
+        /// </summary>
+        internal static string lblEngagements {
+            get {
+                return ResourceManager.GetString("lblEngagements", resourceCulture);
             }
         }
         

@@ -114,6 +114,14 @@
                                    Text="{Binding Request.Email}"></Entry>
                     </Border>
                 </VerticalStackLayout>
+                <!--Job Title-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
+                    <Label Text="{x:Static res:AppResources.lblJobtitle}" TextColor="Gray" FontSize="13"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                        <Entry Keyboard="Email" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                                   Text="{Binding Request.JobTitle}"></Entry>
+                    </Border>
+                </VerticalStackLayout>
                 <!--Address-->
                 <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="5">
                     <Label Text="{x:Static res:AppResources.lblAddress}" TextColor="Gray" FontSize="13"></Label>

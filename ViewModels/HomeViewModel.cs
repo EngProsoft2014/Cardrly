@@ -121,6 +121,14 @@ namespace Cardrly.ViewModels
                         {
                             json.clickCardLinkSummariesOS.Add(new ClickCardSummaryOSResponse { name = "Empty", value = 1 });
                         }
+                        if (json.clickCardSummariesCountry.Count == 0)
+                        {
+                            json.clickCardSummariesCountry.Add(new ClickCardSummaryCountryResponse { name = "Empty", value = 1 });
+                        }
+                        if (json.clickCardLinkSummariesCountry.Count == 0)
+                        {
+                            json.clickCardLinkSummariesCountry.Add(new ClickCardLinkSummaryCountryResponse { name = "Empty", value = 1 });
+                        }
                         BoardResponse = json;
                     }
                 }

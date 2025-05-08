@@ -15,6 +15,7 @@ namespace Cardrly.Models.Home
         public List<ClickCardSummaryResponse> clickCardSummaries { get; set; } = [];
         public List<ClickCardLinkSummaryResponse> clickCardLinkSummaries { get; set; } = [];
         public List<ClickCardSummaryOSResponse> clickCardLinkSummariesOS { get; set; } = [];
-
+        public List<ClickCardSummaryCountryResponse> clickCardSummariesCountry { get; set; } = [];
+        public List<ClickCardLinkSummaryCountryResponse> clickCardLinkSummariesCountry { get; set; } = [];
     }
 }

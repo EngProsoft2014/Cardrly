@@ -137,6 +137,7 @@ namespace Cardrly.ViewModels.Leads
                     {
                         FullName = Request!.FullName,
                         Phone = Request.Phone,
+                        JobTitle = Request.JobTitle,
                         Address = Request.Address,
                         Company = Request.Company,
                         Extension = Request.Extension,
@@ -235,6 +236,7 @@ namespace Cardrly.ViewModels.Leads
             Request.Address = lead.Address;
             Request.Company = lead.Company;
             Request.Email = lead.Email;
+            Request.JobTitle = lead.JobTitle;
             Request.FullName = lead.FullName;
             Request.Phone = lead.Phone;
             if (ListCategories.Count > 0 && !string.IsNullOrEmpty(lead.LeadCategoryId))

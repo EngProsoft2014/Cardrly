@@ -897,4 +897,19 @@
   <data name="lblCardLayout" xml:space="preserve">
     <value>Card Layout</value>
   </data>
+  <data name="lblCardView" xml:space="preserve">
+    <value>Card View</value>
+  </data>
+  <data name="lbl_CardView_Distribution_by_Country" xml:space="preserve">
+    <value>Card View Distribution by Country</value>
+  </data>
+  <data name="lbl_Link_Clicks_by_Country" xml:space="preserve">
+    <value>Link Clicks by Country</value>
+  </data>
+  <data name="lblDevices" xml:space="preserve">
+    <value>Devices</value>
+  </data>
+  <data name="lblEngagements" xml:space="preserve">
+    <value>Engagements</value>
+  </data>
 </root>
