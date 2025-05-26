@@ -380,9 +380,9 @@ namespace Cardrly.ViewModels
                                 Password = Request.Password,
                                 IsAddLeadFromProfileCard = Request.IsAddLeadFromProfileCard
                             };
-                            var json = await Rep.PostStrAsync<CardRequestDto>($"{ApiConstants.CardUpdateApi}{accid}/Card", requestDto, UserToken);
+                            var json = await Rep.PostStrErrorAsync<CardRequestDto>($"{ApiConstants.CardUpdateApi}{accid}/Card", requestDto, UserToken);
                             UserDialogs.Instance.HideHud();
-                            if (json != null || json != "Forbidden" || json != "Unauthorized" || json != "Internal Server Error" || json != "Error")
+                            if (json.Item1 != null)
                             {
                                 var toast = Toast.Make($"{AppResources.msgSuccessfullyAddCard}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                                 await toast.Show();
@@ -390,9 +390,9 @@ namespace Cardrly.ViewModels
                                 await App.Current!.MainPage!.Navigation.PopAsync();
 
                             }
-                            else
+                            else if (json.Item2 != null)
                             {
-                                var toast = Toast.Make($"{json}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                                var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                                 await toast.Show();
                             }
                         }
