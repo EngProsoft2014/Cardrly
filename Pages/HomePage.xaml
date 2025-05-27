@@ -121,71 +121,86 @@
                                                     </VerticalStackLayout>
                                                 </VerticalStackLayout>
                                             </Border>
+                                            
+                                            
                                             <!--Statistics Data-->
                                             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" Margin="20,0,20,0">
                                                 <!--Leads Register-->
                                                 <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
-                                                    <StackLayout Orientation="Horizontal">
-                                                        <!--Image-->
-                                                        <Image Aspect="AspectFill" Margin="0,0,5,0">
-                                                            <Image.Source>
-                                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
-                                                            </Image.Source>
-                                                        </Image>
-                                                        <!--Titel-->
-                                                        <Label Text="{x:Static res:AppResources.lblLeadsRegistered}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                        <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                        <Label Text="{Binding BoardResponse.CountLeads}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
-                                                    </StackLayout>
+                                                    <ScrollView Orientation="Horizontal">
+                                                        <StackLayout Orientation="Horizontal" ToolTipProperties.Text="{Binding BoardResponse.CountLeads}">
+                                                            <!--Image-->
+                                                            <Image Aspect="AspectFill" Margin="0,0,5,0">
+                                                                <Image.Source>
+                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
+                                                                </Image.Source>
+                                                            </Image>
+                                                            <!--Titel-->
+                                                            <Label Text="{x:Static res:AppResources.lblLeadsRegistered}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text="{Binding BoardResponse.CountLeads}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                                        </StackLayout>
+                                                    </ScrollView>
                                                 </Border>
                                                 <!--Card Views-->
                                                 <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
-                                                    <StackLayout Orientation="Horizontal">
-                                                        <!--Image-->
-                                                        <Image Aspect="AspectFill" Margin="0,0,5,0">
-                                                            <Image.Source>
-                                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
-                                                            </Image.Source>
-                                                        </Image>
-                                                        <!--Titel-->
-                                                        <Label Text="{x:Static res:AppResources.lblCardViews}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                        <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                        <Label Text="{Binding BoardResponse.CountViewCard}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
-                                                    </StackLayout>
+                                                    <ScrollView Orientation="Horizontal">
+                                                        <StackLayout Orientation="Horizontal" ToolTipProperties.Text="{Binding BoardResponse.CountViewCard}">
+                                                            <!--Image-->
+                                                            <Image Aspect="AspectFill" Margin="0,0,5,0">
+                                                                <Image.Source>
+                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
+                                                                </Image.Source>
+                                                            </Image>
+                                                            <!--Titel-->
+                                                            <Label Text="{x:Static res:AppResources.lblCardViews}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text="{Binding BoardResponse.CountViewCard}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                                        </StackLayout>
+                                                    </ScrollView>
                                                 </Border>
                                             </StackLayout>
+                                            
+                                            
                                             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" Margin="20,0,20,0">
                                                 <!--Link Taps-->
                                                 <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
-                                                    <StackLayout Orientation="Horizontal">
-                                                        <!--Image-->
-                                                        <Image Aspect="AspectFill" Margin="0,0,5,0">
-                                                            <Image.Source>
-                                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
-                                                            </Image.Source>
-                                                        </Image>
-                                                        <!--Titel-->
-                                                        <Label Text="{x:Static res:AppResources.lblLinkClicks}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                        <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                        <Label Text="{Binding BoardResponse.CountLinkTap}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
-                                                    </StackLayout>
+                                                    <ScrollView Orientation="Horizontal">
+                                                        <StackLayout Orientation="Horizontal" ToolTipProperties.Text="{Binding BoardResponse.CountLinkTap}">
+                                                            <!--Image-->
+                                                            <Image Aspect="AspectFill" Margin="0,0,5,0">
+                                                                <Image.Source>
+                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
+                                                                </Image.Source>
+                                                            </Image>
+                                                            <!--Titel-->
+                                                            <Label Text="{x:Static res:AppResources.lblLinkClicks}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text="{Binding BoardResponse.CountLinkTap}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                                        </StackLayout>
+                                                    </ScrollView>
                                                 </Border>
                                                 <!--Save Contacts-->
                                                 <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
-                                                    <StackLayout Orientation="Horizontal">
-                                                        <!--Image-->
-                                                        <Image Aspect="AspectFill" Margin="0,0,5,0">
-                                                            <Image.Source>
-                                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
-                                                            </Image.Source>
-                                                        </Image>
-                                                        <!--Titel-->
-                                                        <Label Text="{x:Static res:AppResources.lblSaveContacts}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                        <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
-                                                        <Label Text="{Binding BoardResponse.CountDownloadContacts}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
-                                                    </StackLayout>
+                                                    <ScrollView Orientation="Horizontal">
+                                                        <StackLayout Orientation="Horizontal" ToolTipProperties.Text="{Binding BoardResponse.CountDownloadContacts}">
+                                                            <!--Image-->
+                                                            <Image Aspect="AspectFill" Margin="0,0,5,0">
+                                                                <Image.Source>
+                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
+                                                                </Image.Source>
+                                                            </Image>
+                                                            <!--Titel-->
+                                                            <Label Text="{x:Static res:AppResources.lblSaveContacts}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text="{Binding BoardResponse.CountDownloadContacts}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                                        </StackLayout>
+                                                    </ScrollView>
                                                 </Border>
                                             </StackLayout>
+                                            
+                                            
+                                            
                                             <!--Total Clicks Chart-->
                                             <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White" Margin="20,0,20,0">
                                                 <chart:SfCartesianChart HeightRequest="250">
