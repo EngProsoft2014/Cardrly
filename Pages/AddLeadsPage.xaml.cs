@@ -11,7 +11,6 @@ namespace Cardrly.Pages;
 
 public partial class AddLeadsPage : Controls.CustomControl
 {
-    //Test
     AddLeadViewModel Model;
     readonly IAudioRecorder _audioRecorder;
     readonly TextAnalyticsClient _textAnalyticsClient;
