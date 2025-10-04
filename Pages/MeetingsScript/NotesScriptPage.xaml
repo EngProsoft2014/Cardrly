@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                         xmlns:Controls="clr-namespace:Cardrly.Controls"
+                         xmlns:vm="clr-namespace:Cardrly.ViewModels"
+                         xmlns:local="clr-namespace:Cardrly"
+                         xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+                         x:Class="Cardrly.Pages.MeetingsScript.NotesScriptPage"
+                         BackgroundColor="White"
+                         Title="NotesScriptPage">
+    
+    <Controls:CustomControl.Resources>
+        <ResourceDictionary>
+            <local:BoolToGlyphConverter x:Key="BoolToGlyphConverter" />
+        </ResourceDictionary>
+        <local:BoolToGlyphConverter x:Key="BoolToMicPauseConverter"
+                                      RecordGlyph="&#xf130;"
+                                      PauseGlyph="&#xf04c;">
+        </local:BoolToGlyphConverter>
+    </Controls:CustomControl.Resources>
+
+    <StackLayout VerticalOptions="FillAndExpand">
+
+        <!--Header-->
+        <StackLayout Orientation="Horizontal" Margin="20">
+            <Image VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="{x:Static res:AppResources.lblMeetings}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
+            </Label>
+
+        </StackLayout>
+
+        <StackLayout VerticalOptions="FillAndExpand">
+            <CollectionView ItemsSource="{Binding LstMeetingModel}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem 
+                                               IconImageSource="delete.png"
+                                               BackgroundColor="#F6F5F2"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotesScriptViewModel}}, Path=DeleteMeetingCommand}" CommandParameter="{Binding}"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <Frame Padding="10,10,15,5" CornerRadius="10" BackgroundColor="White" Margin="10">
+                                <StackLayout VerticalOptions="Center" Spacing="10">
+                                    <StackLayout Orientation="Horizontal" HeightRequest="35" Spacing="20">
+                                        <!-- Note icon -->
+                                        <Border StrokeShape="RoundRectangle 5" BackgroundColor="White" Padding="6">
+
+                                            <Image WidthRequest="22" HeightRequest="22">
+                                                <Image.Source>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#333" Size="20"/>
+                                                </Image.Source>
+                                            </Image>
+                                        </Border>
+
+                                        <StackLayout Orientation="Horizontal" Spacing="10">
+                                            <!-- Duration -->
+                                            <Label Text="{Binding title}" HorizontalOptions="StartAndExpand" FontSize="13" FontAttributes="Bold" TextColor="#333" VerticalOptions="Center" />
+
+                                            <!-- Time -->
+                                            <Label Text="{Binding CreatedDate}" HorizontalOptions="EndAndExpand" FontSize="12" TextColor="Gray" VerticalOptions="Center" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                </StackLayout>
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotesScriptViewModel}}, Path=GoToMeetingDetailsCommand}" CommandParameter="{Binding}"></TapGestureRecognizer>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <ContentView>
+                        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                            <Label Text="{x:Static res:AppResources.plcNoAvailableMeetings}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                        </StackLayout>
+                    </ContentView>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </StackLayout>
+
+        <StackLayout VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
+            <Button Text="Create New Meeting" 
+                    Margin="0,0,0,30" 
+                    FontAttributes="Bold" 
+                    FontSize="14" 
+                    TextColor="White" 
+                    BackgroundColor="#f26d29" 
+                    HorizontalOptions="CenterAndExpand" 
+                    VerticalOptions="Center"
+                    Command="{Binding CreateNewMeetingCommand}"></Button>
+        </StackLayout>
+
+
+    </StackLayout>
+
+</Controls:CustomControl>

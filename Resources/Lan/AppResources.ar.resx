@@ -1,0 +1,1050 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="btnActivateanotherDevice" xml:space="preserve">
+    <value>تفعيل جهاز آخر</value>
+  </data>
+  <data name="btnCancel" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="btnEdit" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="btnEditLinks" xml:space="preserve">
+    <value>تعديل الروابط</value>
+  </data>
+  <data name="btnLogin" xml:space="preserve">
+    <value>تسجيل الدخول</value>
+  </data>
+  <data name="btnPassed" xml:space="preserve">
+    <value>ماضي</value>
+  </data>
+  <data name="btnPreview" xml:space="preserve">
+    <value>معاينة</value>
+  </data>
+  <data name="btnSave" xml:space="preserve">
+    <value>حفظ</value>
+  </data>
+  <data name="btnUpcoming" xml:space="preserve">
+    <value>القادمة</value>
+  </data>
+  <data name="hdrAddCard" xml:space="preserve">
+    <value>إضافة بطاقة</value>
+  </data>
+  <data name="hdrCalendar" xml:space="preserve">
+    <value>تقويم</value>
+  </data>
+  <data name="hdrCards" xml:space="preserve">
+    <value>بطاقات</value>
+  </data>
+  <data name="hdrComments" xml:space="preserve">
+    <value>التعليقات</value>
+  </data>
+  <data name="hdrCreateLead" xml:space="preserve">
+    <value>إنشاء عميل</value>
+  </data>
+  <data name="hdrEditCard" xml:space="preserve">
+    <value>تعديل البطاقة</value>
+  </data>
+  <data name="hdrEditLead" xml:space="preserve">
+    <value>تعديل العميل</value>
+  </data>
+  <data name="hdrHome" xml:space="preserve">
+    <value>الرئيسية</value>
+  </data>
+  <data name="hdrLeads" xml:space="preserve">
+    <value>العملاء</value>
+  </data>
+  <data name="hdrLinkCategory" xml:space="preserve">
+    <value>فئة الرابط</value>
+  </data>
+  <data name="hdrMore" xml:space="preserve">
+    <value>المزيد</value>
+  </data>
+  <data name="hdrMyLinks" xml:space="preserve">
+    <value>الروابط الخاصة بي</value>
+  </data>
+  <data name="hdrSelectLanguage" xml:space="preserve">
+    <value>اختر اللغة</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>بيانات</value>
+  </data>
+  <data name="lblEndTime" xml:space="preserve">
+    <value>وقت النهاية</value>
+  </data>
+  <data name="lbl1day" xml:space="preserve">
+    <value>يوم 1</value>
+  </data>
+  <data name="lbl1hour" xml:space="preserve">
+    <value>ساعة 1</value>
+  </data>
+  <data name="lbl1month" xml:space="preserve">
+    <value>1 شهر</value>
+  </data>
+  <data name="lbl1week" xml:space="preserve">
+    <value>اسبوع 1</value>
+  </data>
+  <data name="lbl3days" xml:space="preserve">
+    <value>3 أيام</value>
+  </data>
+  <data name="lblAccessDenied" xml:space="preserve">
+    <value>تم الرفض</value>
+  </data>
+  <data name="lblACD" xml:space="preserve">
+    <value>تفعيل جهاز كارديلي</value>
+  </data>
+  <data name="lblAction" xml:space="preserve">
+    <value>الإجراء</value>
+  </data>
+  <data name="lblActivateat" xml:space="preserve">
+    <value>تفعيل في</value>
+  </data>
+  <data name="lblAdd/Remove" xml:space="preserve">
+    <value>إضافة/إزالة</value>
+  </data>
+  <data name="lblAddComment" xml:space="preserve">
+    <value>أضف تعليق</value>
+  </data>
+  <data name="lblAddress" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
+  <data name="lblAmount" xml:space="preserve">
+    <value>المبلغ</value>
+  </data>
+  <data name="lblAnotherUpgrade" xml:space="preserve">
+    <value>ترقية أخرى لك! 🚀</value>
+  </data>
+  <data name="lblBilling" xml:space="preserve">
+    <value>الفواتير</value>
+  </data>
+  <data name="lblBillingActivity" xml:space="preserve">
+    <value>نشاط الفوترة</value>
+  </data>
+  <data name="lblBillingInfo" xml:space="preserve">
+    <value>معلومات الفواتير</value>
+  </data>
+  <data name="lblBio" xml:space="preserve">
+    <value>السيرة الذاتية</value>
+  </data>
+  <data name="lblBusiness" xml:space="preserve">
+    <value>الأعمال</value>
+  </data>
+  <data name="lblCall" xml:space="preserve">
+    <value>اتصل</value>
+  </data>
+  <data name="lblCard" xml:space="preserve">
+    <value>بطاقة</value>
+  </data>
+  <data name="lblCardLinkType" xml:space="preserve">
+    <value>نوع رابط البطاقة</value>
+  </data>
+  <data name="lblCardName" xml:space="preserve">
+    <value>اسم البطاقة</value>
+  </data>
+  <data name="lblCardtheme" xml:space="preserve">
+    <value>مظهر البطاقة</value>
+  </data>
+  <data name="lblCardViews" xml:space="preserve">
+    <value>مشاهدات البطاقه</value>
+  </data>
+  <data name="lblChoosetheDeviceyouareactivating" xml:space="preserve">
+    <value>اختر الجهاز الذي تريد تنشيطه</value>
+  </data>
+  <data name="lblComment" xml:space="preserve">
+    <value>التعليق</value>
+  </data>
+  <data name="lblCompany" xml:space="preserve">
+    <value>الشركة</value>
+  </data>
+  <data name="lblContact" xml:space="preserve">
+    <value>الاتصال</value>
+  </data>
+  <data name="lblDate" xml:space="preserve">
+    <value>التاريخ</value>
+  </data>
+  <data name="lblDeleteCard" xml:space="preserve">
+    <value>حذف البطاقة</value>
+  </data>
+  <data name="lblDeleteLead" xml:space="preserve">
+    <value>حذف العميل</value>
+  </data>
+  <data name="lblEdit Photo" xml:space="preserve">
+    <value>تعديل الصورة</value>
+  </data>
+  <data name="lblEmail" xml:space="preserve">
+    <value>البريد الإلكتروني</value>
+  </data>
+  <data name="lblEndDate" xml:space="preserve">
+    <value>تاريخ النهاية</value>
+  </data>
+  <data name="lblEventName" xml:space="preserve">
+    <value>اسم الحدث</value>
+  </data>
+  <data name="lblEventType" xml:space="preserve">
+    <value>نوع الحدث</value>
+  </data>
+  <data name="lblExpire" xml:space="preserve">
+    <value>صلاحيتها</value>
+  </data>
+  <data name="lblFAQ" xml:space="preserve">
+    <value>التعليمات</value>
+  </data>
+  <data name="lblFrom" xml:space="preserve">
+    <value>من</value>
+  </data>
+  <data name="lblFullName" xml:space="preserve">
+    <value>الاسم الكامل</value>
+  </data>
+  <data name="lblGuestsNumber" xml:space="preserve">
+    <value>عدد الضيوف</value>
+  </data>
+  <data name="lblHelpSupport" xml:space="preserve">
+    <value>المساعدة والدعم</value>
+  </data>
+  <data name="lblIfyouupdatedlasttime" xml:space="preserve">
+    <value>إذا قمت بالتحديث في المرة السابقة، فهذا رائع، هذا الإصدار أفضل!</value>
+  </data>
+  <data name="lblInvite" xml:space="preserve">
+    <value>دعوة إلى كاردرلى</value>
+  </data>
+  <data name="lblIs ShareToUsers" xml:space="preserve">
+    <value>هل المشاركة للمستخدمين</value>
+  </data>
+  <data name="lblJobtitle" xml:space="preserve">
+    <value>المسمى الوظيفي</value>
+  </data>
+  <data name="lblJoinnow" xml:space="preserve">
+    <value>انضم الان</value>
+  </data>
+  <data name="lblLanguage" xml:space="preserve">
+    <value>اللغة</value>
+  </data>
+  <data name="lblLeadCategory" xml:space="preserve">
+    <value>فئة العميل</value>
+  </data>
+  <data name="lblLeadCount" xml:space="preserve">
+    <value>عدد العملاء</value>
+  </data>
+  <data name="lblLeadsRegistered" xml:space="preserve">
+    <value>العملاء المسجلون</value>
+  </data>
+  <data name="lblLet us know if you'd like any tweaks" xml:space="preserve">
+    <value>أخبرنا إذا كنت ترغب في أي تعديلات! 😊</value>
+  </data>
+  <data name="lblLink" xml:space="preserve">
+    <value>الرابط</value>
+  </data>
+  <data name="lblLinkClicks" xml:space="preserve">
+    <value>نقرات الرابط</value>
+  </data>
+  <data name="lblLinkColor" xml:space="preserve">
+    <value>لون الرابط</value>
+  </data>
+  <data name="lblLocation" xml:space="preserve">
+    <value>الموقع</value>
+  </data>
+  <data name="lblLogout" xml:space="preserve">
+    <value>تسجيل الخروج</value>
+  </data>
+  <data name="lblMyDevices" xml:space="preserve">
+    <value>أجهزتي</value>
+  </data>
+  <data name="lblName" xml:space="preserve">
+    <value>الاسم</value>
+  </data>
+  <data name="lblNow" xml:space="preserve">
+    <value>الآن</value>
+  </data>
+  <data name="lblOn" xml:space="preserve">
+    <value>داخل</value>
+  </data>
+  <data name="lblOR" xml:space="preserve">
+    <value>أو</value>
+  </data>
+  <data name="lblPersonName" xml:space="preserve">
+    <value>اسم الشخص</value>
+  </data>
+  <data name="lblPersonnickname" xml:space="preserve">
+    <value>لقب الشخص</value>
+  </data>
+  <data name="lblPhone Number" xml:space="preserve">
+    <value>رقم الهاتف</value>
+  </data>
+  <data name="lblPickPhoto" xml:space="preserve">
+    <value>إختر الصورة</value>
+  </data>
+  <data name="lblReminder" xml:space="preserve">
+    <value>تذكير</value>
+  </data>
+  <data name="lblSaveContacts" xml:space="preserve">
+    <value>حفظ جهات الاتصال</value>
+  </data>
+  <data name="lblSavetoContact" xml:space="preserve">
+    <value>حفظ في جهة الاتصال</value>
+  </data>
+  <data name="lblScanCard" xml:space="preserve">
+    <value>مسح البطاقة</value>
+  </data>
+  <data name="lblSCS" xml:space="preserve">
+    <value>مسح البطاقة للمشاركة</value>
+  </data>
+  <data name="lblShareCardLink" xml:space="preserve">
+    <value>مشاركة رابط البطاقة</value>
+  </data>
+  <data name="lblShareLead" xml:space="preserve">
+    <value>مشاركة العميل</value>
+  </data>
+  <data name="lblShareOfflineCard" xml:space="preserve">
+    <value>مشاركة البطاقة دون اتصال بالإنترنت</value>
+  </data>
+  <data name="lblShareVCard" xml:space="preserve">
+    <value>مشاركة بطاقة VCard</value>
+  </data>
+  <data name="lblShowComments" xml:space="preserve">
+    <value>إظهار التعليقات</value>
+  </data>
+  <data name="lblSocial Media" xml:space="preserve">
+    <value>وسائل التواصل الاجتماعي</value>
+  </data>
+  <data name="lblStarRecording" xml:space="preserve">
+    <value>بدء التسجيل</value>
+  </data>
+  <data name="lblStartDate" xml:space="preserve">
+    <value>تاريخ البداية</value>
+  </data>
+  <data name="lblStartTime" xml:space="preserve">
+    <value>وقت البداية</value>
+  </data>
+  <data name="lblSubscriptions" xml:space="preserve">
+    <value>الاشتراكات</value>
+  </data>
+  <data name="lblSummary" xml:space="preserve">
+    <value>موجز</value>
+  </data>
+  <data name="lblTakePhoto" xml:space="preserve">
+    <value>التقط الصورة</value>
+  </data>
+  <data name="lblTCDS" xml:space="preserve">
+    <value>العدد الإجمالي حسب نظام الجهاز</value>
+  </data>
+  <data name="lblThismakesitclear" xml:space="preserve">
+    <value>يوضح هذا أن هذا تحديث ثانٍ مع الحفاظ على طابعه الجذاب.</value>
+  </data>
+  <data name="lblTimeZone" xml:space="preserve">
+    <value>المنطقة الزمنية</value>
+  </data>
+  <data name="lblTo" xml:space="preserve">
+    <value>الى</value>
+  </data>
+  <data name="lblTotalClicks" xml:space="preserve">
+    <value>إجمالي النقرات</value>
+  </data>
+  <data name="lblUpdatenow" xml:space="preserve">
+    <value>قم بالتحديث الآن للحصول على تجربة أكثر سلاسة وتحسينات جديدة ومثيرة في المستقبل! 🔥✨</value>
+  </data>
+  <data name="lblUsers" xml:space="preserve">
+    <value>المستخدمون</value>
+  </data>
+  <data name="lblValue" xml:space="preserve">
+    <value>القيمة</value>
+  </data>
+  <data name="lblWebSite" xml:space="preserve">
+    <value>موقع إلكتروني</value>
+  </data>
+  <data name="msgAccountHasExpired" xml:space="preserve">
+    <value>انتهت صلاحية الحساب</value>
+  </data>
+  <data name="msgAnerroroccurred" xml:space="preserve">
+    <value>حدث خطأ:</value>
+  </data>
+  <data name="msgAudiofilenotsavedPleasetryagain" xml:space="preserve">
+    <value>لم يتم حفظ الملف الصوتي. يرجى المحاولة مرة أخرى.</value>
+  </data>
+  <data name="msgCameranotsupported" xml:space="preserve">
+    <value>الكاميرا غير مدعومة</value>
+  </data>
+  <data name="msgCan'tDeleteThisLeadNowTryagainLater" xml:space="preserve">
+    <value>لا يمكن حذف هذا العميل الآن. حاول مرة أخرى لاحقًا.</value>
+  </data>
+  <data name="msgContactSaved" xml:space="preserve">
+    <value>تم حفظ جهة الاتصال</value>
+  </data>
+  <data name="msgContactsavedat" xml:space="preserve">
+    <value>تم حفظ جهة الاتصال في:</value>
+  </data>
+  <data name="msgcontactwasnotsaved" xml:space="preserve">
+    <value>لم يتم حفظ جهة الاتصال لأن البيانات غير كاملة.</value>
+  </data>
+  <data name="msgCreateCardtoActivethedevice" xml:space="preserve">
+    <value>إنشاء بطاقة لتنشيط الجهاز</value>
+  </data>
+  <data name="msgDate_HomePage" xml:space="preserve">
+    <value>يجب أن يكون تاريخ "إلى" أكبر من تاريخ "من"</value>
+  </data>
+  <data name="msgDeleteDevice" xml:space="preserve">
+    <value>حذف الجهاز</value>
+  </data>
+  <data name="msgDeleteDevice_qu" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف هذا الجهاز؟</value>
+  </data>
+  <data name="msgDeleteLead" xml:space="preserve">
+    <value>هل أنت متأكد من حذف هذا العميل؟</value>
+  </data>
+  <data name="msgDeveloperOptionOn" xml:space="preserve">
+    <value>تم تمكين خيارات المطور. يرجى تعطيلها لمواصلة استخدام هذا التطبيق.</value>
+  </data>
+  <data name="msgDeviceAddedSuccessfully" xml:space="preserve">
+    <value>تمت إضافة الجهاز بنجاح.</value>
+  </data>
+  <data name="msgDevicejailbroken" xml:space="preserve">
+    <value>جهازك مخترق. لأسباب أمنية، لا يمكن تشغيل هذا التطبيق على الأجهزة المخترقة.</value>
+  </data>
+  <data name="msgDeviceRooted" xml:space="preserve">
+    <value>تم عمل روت لجهازك. ولأسباب أمنية، لا يمكن تشغيل هذا التطبيق على الأجهزة التي تم عمل روت لها.</value>
+  </data>
+  <data name="msgDontGetAccount" xml:space="preserve">
+    <value>لا توجد بيانات لهذا الحساب</value>
+  </data>
+  <data name="msgDoYouWantToLogout" xml:space="preserve">
+    <value>هل تريد تسجيل الخروج ؟</value>
+  </data>
+  <data name="msgEndRecording" xml:space="preserve">
+    <value>إنهاء التسجيل</value>
+  </data>
+  <data name="msgErrorduringspeechrecognition" xml:space="preserve">
+    <value>خطأ أثناء التعرف على الكلام:</value>
+  </data>
+  <data name="msgErrorinstartandenddate" xml:space="preserve">
+    <value>خطأ في تاريخ البداية والنهاية</value>
+  </data>
+  <data name="msgFailedToChangeStatus" xml:space="preserve">
+    <value>فشل في تغيير الحالة.</value>
+  </data>
+  <data name="msgFRCardName" xml:space="preserve">
+    <value>الحقل المطلوب : اسم البطاقة</value>
+  </data>
+  <data name="msgFRComment" xml:space="preserve">
+    <value>الحقل المطلوب : التعليق</value>
+  </data>
+  <data name="msgFRDescription" xml:space="preserve">
+    <value>الحقل المطلوب : الوصف</value>
+  </data>
+  <data name="msgFREmail" xml:space="preserve">
+    <value>الحقل المطلوب : البريد الإلكتروني</value>
+  </data>
+  <data name="msgFRFullName" xml:space="preserve">
+    <value>الحقل المطلوب : الاسم الكامل</value>
+  </data>
+  <data name="msgFRLink" xml:space="preserve">
+    <value>الحقل المطلوب : الرابط</value>
+  </data>
+  <data name="msgFRLocation" xml:space="preserve">
+    <value>الحقل المطلوب : الموقع</value>
+  </data>
+  <data name="msgFromDateShouldbeStartFromNow" xml:space="preserve">
+    <value>يجب أن يبدأ تاريخ "من" من الآن</value>
+  </data>
+  <data name="msgFRPassword" xml:space="preserve">
+    <value>الحقل المطلوب : كلمة المرور</value>
+  </data>
+  <data name="msgFRSummary" xml:space="preserve">
+    <value>الحقل المطلوب : الملخص</value>
+  </data>
+  <data name="msgFRUserName" xml:space="preserve">
+    <value>الحقل المطلوب : اسم المستخدم</value>
+  </data>
+  <data name="msgFRValue" xml:space="preserve">
+    <value>الحقل المطلوب : القيمة</value>
+  </data>
+  <data name="msgLeadDeletedSuccessfully" xml:space="preserve">
+    <value>تم حذف العميل بنجاح</value>
+  </data>
+  <data name="msgLeadEmail" xml:space="preserve">
+    <value>هذا العميل ليس لديه بريد إلكتروني.</value>
+  </data>
+  <data name="msgLeadPhone" xml:space="preserve">
+    <value>هذا العميل ليس لديه رقم هاتف.</value>
+  </data>
+  <data name="msgLoadingImage" xml:space="preserve">
+    <value>تحميل الصورة</value>
+  </data>
+  <data name="MsgloggedOut" xml:space="preserve">
+    <value>لقد تم تسجيل خروجك. (تم تغيير أذونات الحساب)</value>
+  </data>
+  <data name="msgMicrophoneaccessisrequiredtorecordaudio" xml:space="preserve">
+    <value>يجب الوصول إلى الميكروفون لتسجيل الصوت.</value>
+  </data>
+  <data name="msgNo" xml:space="preserve">
+    <value>لا</value>
+  </data>
+  <data name="msgNoActivatedDevices" xml:space="preserve">
+    <value>لا يوجد أجهزة مفعلة</value>
+  </data>
+  <data name="msgNoavailableusers" xml:space="preserve">
+    <value>لا يوجد مستخدمين متاحين</value>
+  </data>
+  <data name="msgNoComment here" xml:space="preserve">
+    <value>لا يوجد تعليقات هنا</value>
+  </data>
+  <data name="msgNoIDfoundintheQr" xml:space="preserve">
+    <value>لم يتم العثور على معرف في Qr.</value>
+  </data>
+  <data name="msgOk" xml:space="preserve">
+    <value>نعم</value>
+  </data>
+  <data name="msgPermissionToDoAction" xml:space="preserve">
+    <value>ليس لديك الإذن للقيام بهذا الإجراء.</value>
+  </data>
+  <data name="msgPleaseCreateCardFirst." xml:space="preserve">
+    <value>يرجى إنشاء بطاقة أولاً.</value>
+  </data>
+  <data name="msgPleaseSelectImageFirst" xml:space="preserve">
+    <value>الرجاء اختيار الصورة أولا</value>
+  </data>
+  <data name="msgRecordingstarted" xml:space="preserve">
+    <value>بدأ التسجيل...</value>
+  </data>
+  <data name="msgServicedown" xml:space="preserve">
+    <value>الخدمة متوقفة حاليًا. يرجى المحاولة مرة أخرى لاحقًا.</value>
+  </data>
+  <data name="msgServicenotfound" xml:space="preserve">
+    <value>لم يتم العثور على الخدمة!</value>
+  </data>
+  <data name="msgSpeechnotrecognizedPleasetryagain" xml:space="preserve">
+    <value>لم يتم التعرف على الكلام. يرجى المحاولة مرة أخرى.</value>
+  </data>
+  <data name="msgSpeechrecognitionfailed" xml:space="preserve">
+    <value>فشل التعرف على الكلام:</value>
+  </data>
+  <data name="msgSuccessfullyAddCard" xml:space="preserve">
+    <value>تمت إضافة البطاقة بنجاح.</value>
+  </data>
+  <data name="msgSuccessfullyAddComment" xml:space="preserve">
+    <value>تمت إضافة التعليق بنجاح.</value>
+  </data>
+  <data name="msgSuccessfullyAddLead" xml:space="preserve">
+    <value>تمت إضافة العميل بنجاح.</value>
+  </data>
+  <data name="msgSuccessfullyAddLink" xml:space="preserve">
+    <value>تمت إضافة الرابط بنجاح.</value>
+  </data>
+  <data name="msgSuccessfullyReordered" xml:space="preserve">
+    <value>تمت إعادة الترتيب بنجاح.</value>
+  </data>
+  <data name="msgSuccessfullyScanCard" xml:space="preserve">
+    <value>تم مسح البطاقة بنجاح.</value>
+  </data>
+  <data name="msgSuccessfullyUpdateCard" xml:space="preserve">
+    <value>تم تحديث البطاقة بنجاح.</value>
+  </data>
+  <data name="msgSuccessfullyUpdateLead" xml:space="preserve">
+    <value>تم تحديث العميل بنجاح.</value>
+  </data>
+  <data name="msgSuccessfullyUpdateLink" xml:space="preserve">
+    <value>تم تحديث الرابط بنجاح.</value>
+  </data>
+  <data name="msgTheDeviceHasNotBeenDeleted." xml:space="preserve">
+    <value>لم يتم حذف الجهاز.</value>
+  </data>
+  <data name="msgThevaluenotmatchCardLinkType" xml:space="preserve">
+    <value>القيمة لا تتطابق مع نوع رابط البطاقة.</value>
+  </data>
+  <data name="msgThevaluenotmatchlinkformat" xml:space="preserve">
+    <value>القيمة لا تتطابق مع تنسيق الرابط.</value>
+  </data>
+  <data name="msgTODateShouldbelessThanTodayDate" xml:space="preserve">
+    <value>يجب أن يكون تاريخ "إلى" أقل من تاريخ اليوم</value>
+  </data>
+  <data name="msgUnexpected" xml:space="preserve">
+    <value>حدث خطأ غير متوقع. يرجى إعادة تشغيل التطبيق أو الاتصال بالدعم.</value>
+  </data>
+  <data name="msgWarning" xml:space="preserve">
+    <value>تحذير</value>
+  </data>
+  <data name="msgWarning_qu" xml:space="preserve">
+    <value>هل أنت متأكد من حذف هذه البطاقة؟</value>
+  </data>
+  <data name="msgYes" xml:space="preserve">
+    <value>نعم</value>
+  </data>
+  <data name="mshPermissionToViewData" xml:space="preserve">
+    <value>ليس لديك الصلاحية لعرض هذه البيانات.</value>
+  </data>
+  <data name="No_Internet_connection" xml:space="preserve">
+    <value>لا يوجد اتصال بالإنترنت</value>
+  </data>
+  <data name="PasswordInvalid" xml:space="preserve">
+    <value>كلمة المرور غير صحيحة</value>
+  </data>
+  <data name="PlcNoAvailableAppointments" xml:space="preserve">
+    <value>لا توجد مواعيد متاحة</value>
+  </data>
+  <data name="plcNoAvailableCards" xml:space="preserve">
+    <value>لا توجد بطاقات متاحة</value>
+  </data>
+  <data name="PlcNoAvailableEvents" xml:space="preserve">
+    <value>لا توجد أحداث متاحة</value>
+  </data>
+  <data name="plcNoAvailableLaeds" xml:space="preserve">
+    <value>لا توجد قوائم متاحة</value>
+  </data>
+  <data name="plcNoAvailableLinks" xml:space="preserve">
+    <value>لا توجد روابط متاحة</value>
+  </data>
+  <data name="plcPassword" xml:space="preserve">
+    <value>كلمة المرور</value>
+  </data>
+  <data name="plcSearch" xml:space="preserve">
+    <value>بحث</value>
+  </data>
+  <data name="plcUserName" xml:space="preserve">
+    <value>اسم المستخدم</value>
+  </data>
+  <data name="RenewalAmount" xml:space="preserve">
+    <value>مبلغ التجديد</value>
+  </data>
+  <data name="Retry" xml:space="preserve">
+    <value>إعادة المحاولة</value>
+  </data>
+  <data name="Your_Token_expired_Please_Enter_Your_Password" xml:space="preserve">
+    <value>انتهت صلاحية الرمز الخاص بك، يرجى إدخال كلمة المرور الخاصة بك</value>
+  </data>
+  <data name="lblAttendees" xml:space="preserve">
+    <value>الحضور</value>
+  </data>
+  <data name="lblDescription" xml:space="preserve">
+    <value>الوصف</value>
+  </data>
+  <data name="lblConference" xml:space="preserve">
+    <value>مؤتمر</value>
+  </data>
+  <data name="lblAddEvent" xml:space="preserve">
+    <value>إضافة حدث</value>
+  </data>
+  <data name="lblProvider" xml:space="preserve">
+    <value>مقدم الخدمة</value>
+  </data>
+  <data name="plcTimeZone" xml:space="preserve">
+    <value>حدد المنطقة الزمنية</value>
+  </data>
+  <data name="plcSummary" xml:space="preserve">
+    <value>حدد ملخصًا</value>
+  </data>
+  <data name="plcLocation" xml:space="preserve">
+    <value>حدد موقعا</value>
+  </data>
+  <data name="plcAttendees" xml:space="preserve">
+    <value>حدد الحضور</value>
+  </data>
+  <data name="plcDescription" xml:space="preserve">
+    <value>حدد الوصف</value>
+  </data>
+  <data name="plcProvider" xml:space="preserve">
+    <value>اختر مزود الخدمة</value>
+  </data>
+  <data name="plcCard" xml:space="preserve">
+    <value>اختر بطاقة</value>
+  </data>
+  <data name="msgFRTimeZone" xml:space="preserve">
+    <value>الحقل المطلوب: المنطقة الزمنية</value>
+  </data>
+  <data name="msgStart_date_must_be_before_end_date" xml:space="preserve">
+    <value>يجب أن يكون تاريخ البدء قبل تاريخ الانتهاء.</value>
+  </data>
+  <data name="msgStart_date_must_be_from_todays_date" xml:space="preserve">
+    <value>يجب أن يكون تاريخ البدء إبتداءا  من تاريخ اليوم.</value>
+  </data>
+  <data name="msgPlease select a provider" xml:space="preserve">
+    <value>الرجاء اختيار مزود الخدمة.</value>
+  </data>
+  <data name="msgPlease select a Card" xml:space="preserve">
+    <value>الرجاء اختيار البطاقة.</value>
+  </data>
+  <data name="msgAttendance must be in email format" xml:space="preserve">
+    <value>يجب أن يكون الحضور بصيغة البريد الإلكتروني.</value>
+  </data>
+  <data name="msgThe comment has not been deleted" xml:space="preserve">
+    <value>لم يتم حذف التعليق.</value>
+  </data>
+  <data name="msgDeleteComment" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف هذا التعليق؟</value>
+  </data>
+  <data name="msgAll Fields is Required" xml:space="preserve">
+    <value>جميع الحقول مطلوبة</value>
+  </data>
+  <data name="lblDocumentation" xml:space="preserve">
+    <value>التوثيق</value>
+  </data>
+  <data name="msgSuccessfullyAddEvent" xml:space="preserve">
+    <value>تمت إضافة الحدث بنجاح.</value>
+  </data>
+  <data name="msgCheck_your_email_and_reEnter_it_correctly" xml:space="preserve">
+    <value>تأكد البريد الإلكتروني واعادة ادخاله بطريقة صحيحة.</value>
+  </data>
+  <data name="msgDeleteEvent" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف هذا الحدث؟</value>
+  </data>
+  <data name="msgTheEventHasNotBeenDeleted" xml:space="preserve">
+    <value>لم يتم حذف الحدث</value>
+  </data>
+  <data name="lblShowing" xml:space="preserve">
+    <value>عرض</value>
+  </data>
+  <data name="lblSortby" xml:space="preserve">
+    <value>فرز حسب</value>
+  </data>
+  <data name="lblAlphabetSorting" xml:space="preserve">
+    <value>فرز الأبجدية</value>
+  </data>
+  <data name="lblLeadCaptureMode" xml:space="preserve">
+    <value>وضع التقاط العملاء المحتملين</value>
+  </data>
+  <data name="msgStart_time_must_be_before_end_time" xml:space="preserve">
+    <value>يجب أن يكون وقت البدء قبل وقت الانتهاء</value>
+  </data>
+  <data name="btnSort" xml:space="preserve">
+    <value>ترتيب</value>
+  </data>
+  <data name="hdrAccountInfo" xml:space="preserve">
+    <value>بيانات الحساب</value>
+  </data>
+  <data name="lblCompanyName" xml:space="preserve">
+    <value>اسم الشركة</value>
+  </data>
+  <data name="lblChangePassword" xml:space="preserve">
+    <value>تغيير كلمة المرور</value>
+  </data>
+  <data name="lblCurrentPassword" xml:space="preserve">
+    <value>كلمة المرور الحالية</value>
+  </data>
+  <data name="lblNewPassword" xml:space="preserve">
+    <value>كلمة المرور الجديدة</value>
+  </data>
+  <data name="lblConfirmNewPassword" xml:space="preserve">
+    <value>تأكيد كلمة المرور الجديدة</value>
+  </data>
+  <data name="RFCurrentPassword" xml:space="preserve">
+    <value>الحقل المطلوب: كلمة المرور الحالية</value>
+  </data>
+  <data name="FRNewPassword" xml:space="preserve">
+    <value>الحقل المطلوب: كلمة مرور جديدة</value>
+  </data>
+  <data name="FRConfirmNewPassword" xml:space="preserve">
+    <value>الحقل المطلوب: تأكيد كلمة المرور الجديدة</value>
+  </data>
+  <data name="msgNew Password Doesn't Match Confirm New Password" xml:space="preserve">
+    <value>كلمة المرور الجديدة لا تتطابق مع تأكيد كلمة المرور</value>
+  </data>
+  <data name="lblForgotPassword" xml:space="preserve">
+    <value>هل نسيت كلمة السر ؟</value>
+  </data>
+  <data name="enter_vaild_Email" xml:space="preserve">
+    <value>يرجى إدخال بريد إلكترونى صحيح</value>
+  </data>
+  <data name="lblUserLinkEngagements" xml:space="preserve">
+    <value>تفاعلات رابط المستخدم</value>
+  </data>
+  <data name="lblResetPassword" xml:space="preserve">
+    <value>إعادة تعيين كلمة المرور</value>
+  </data>
+  <data name="btnSend" xml:space="preserve">
+    <value>إرسال</value>
+  </data>
+  <data name="btnConfirm" xml:space="preserve">
+    <value>تأكيد</value>
+  </data>
+  <data name="lblDeviceSystem" xml:space="preserve">
+    <value>نظام الأجهزة</value>
+  </data>
+  <data name="lblUserEngagements" xml:space="preserve">
+    <value>تفاعلات المستخدم</value>
+  </data>
+  <data name="lblShop" xml:space="preserve">
+    <value>تسوق</value>
+  </data>
+  <data name="Don't have an account" xml:space="preserve">
+    <value>ليس لديك حساب؟</value>
+  </data>
+  <data name="lblSignUp Now" xml:space="preserve">
+    <value>سجل الآن</value>
+  </data>
+  <data name="msgSuccess" xml:space="preserve">
+    <value>نجاح</value>
+  </data>
+  <data name="msgFullname_and_phone_numbe_fields_required" xml:space="preserve">
+    <value>ادخال حقول الاسم والتليفون اجباريا</value>
+  </data>
+  <data name="lblCardLayout" xml:space="preserve">
+    <value>تصميم البطاقة</value>
+  </data>
+  <data name="lblCardView" xml:space="preserve">
+    <value>رؤية البطاقة</value>
+  </data>
+  <data name="lbl_CardView_Distribution_by_Country" xml:space="preserve">
+    <value>توزيع عرض البطاقة حسب البلد</value>
+  </data>
+  <data name="lbl_Link_Clicks_by_Country" xml:space="preserve">
+    <value>نقرات الرابط حسب البلد</value>
+  </data>
+  <data name="lblDevices" xml:space="preserve">
+    <value>الأجهزة</value>
+  </data>
+  <data name="lblEngagements" xml:space="preserve">
+    <value>المشاركات</value>
+  </data>
+  <data name="msgError" xml:space="preserve">
+    <value>خطأ</value>
+  </data>
+  <data name="msgInvalidQRcode" xml:space="preserve">
+    <value>رمز الاستجابة السريعة غير صالح</value>
+  </data>
+  <data name="btnManualQRCode" xml:space="preserve">
+    <value>رمز الاستجابة السريعة اليدوي</value>
+  </data>
+  <data name="plcNoAvailableMeetings" xml:space="preserve">
+    <value>لا توجد مقابلات متاحة</value>
+  </data>
+  <data name="lblCreatedBy" xml:space="preserve">
+    <value>إنشاء حسب</value>
+  </data>
+  <data name="lblDateFrom" xml:space="preserve">
+    <value>التاريخ من </value>
+  </data>
+  <data name="lblDateTo" xml:space="preserve">
+    <value>التاريخ الى</value>
+  </data>
+  <data name="lblMeetingsScript" xml:space="preserve">
+    <value>نص الاجتماعات</value>
+  </data>
+  <data name="lblMeetings" xml:space="preserve">
+    <value>الاجتماعات</value>
+  </data>
+  <data name="lblMeetingDetails" xml:space="preserve">
+    <value>معلومات الاجتماع</value>
+  </data>
+  <data name="btnGetScript" xml:space="preserve">
+    <value>الحصول على نص</value>
+  </data>
+  <data name="msgEnterTitleofMeeting" xml:space="preserve">
+    <value>أدخل عنوان الاجتماع !!</value>
+  </data>
+  <data name="msgSuccessfullyforaddmeeting" xml:space="preserve">
+    <value>تمت إضافة الاجتماع بنجاح</value>
+  </data>
+  <data name="msgEntermeetingnameisvalid" xml:space="preserve">
+    <value>أدخل اسم الاجتماع الصحيح ويجب أن يكون أكبر من 3 أحرف</value>
+  </data>
+  <data name="msgDeleteMeeting" xml:space="preserve">
+    <value>حذف الاجتماع</value>
+  </data>
+  <data name="msgAreyousuredeletemeeting" xml:space="preserve">
+    <value>هل أنت متأكد من حذف الاجتماع؟</value>
+  </data>
+  <data name="msgTheMeetinghasnotbeendeleted" xml:space="preserve">
+    <value>لم يتم حذف الاجتماع</value>
+  </data>
+  <data name="msgCouldnotstartrecording" xml:space="preserve">
+    <value>تعذر بدء التسجيل:</value>
+  </data>
+  <data name="msgCouldnotstoprecording" xml:space="preserve">
+    <value>لم نتمكن من إيقاف التسجيل:</value>
+  </data>
+  <data name="msgSuccessfullyforaddRecord" xml:space="preserve">
+    <value>تمت إضافة التسجيل بنجاح</value>
+  </data>
+  <data name="msgDeleteRecord" xml:space="preserve">
+    <value>حذف التسجيل</value>
+  </data>
+  <data name="msgAreyousuredeleterecord" xml:space="preserve">
+    <value>هل أنت متأكد من حذف السجل؟</value>
+  </data>
+  <data name="msgTheRecordhasnotbeendeleted" xml:space="preserve">
+    <value>لم يتم حذف السجل</value>
+  </data>
+  <data name="msgSuccessfullyforcreatemeetingscript" xml:space="preserve">
+    <value>تم إنشاء نص الاجتماع بنجاح</value>
+  </data>
+  <data name="msgRequiredminimumselectonerecord" xml:space="preserve">
+    <value>الحد الأدنى المطلوب حدد تسجيل واحد !!</value>
+  </data>
+  <data name="lblClearCardData" xml:space="preserve">
+    <value>مسح بيانات البطاقة</value>
+  </data>
+  <data name="lblNote" xml:space="preserve">
+    <value>مذكرة</value>
+  </data>
+  <data name="lblScript" xml:space="preserve">
+    <value>النص</value>
+  </data>
+  <data name="lblTimeSheet" xml:space="preserve">
+    <value>حضور و انصراف</value>
+  </data>
+  <data name="msgNoavailableData" xml:space="preserve">
+    <value>لا توجد بيانات متاحة</value>
+  </data>
+  <data name="btnCheckIn" xml:space="preserve">
+    <value>سجل فى</value>
+  </data>
+  <data name="btnCheckout" xml:space="preserve">
+    <value>خروج فى</value>
+  </data>
+  <data name="lblIn" xml:space="preserve">
+    <value>فى</value>
+  </data>
+  <data name="lblOut" xml:space="preserve">
+    <value>خارج</value>
+  </data>
+  <data name="lblToday" xml:space="preserve">
+    <value>اليوم</value>
+  </data>
+  <data name="msgSuccessfullyCheckInTime" xml:space="preserve">
+    <value>تم تسجيل الوصول بنجاح في الوقت المحدد.</value>
+  </data>
+  <data name="msgPleaseChooseTimeAfterCheckInTime" xml:space="preserve">
+    <value>الرجاء اختيار الوقت بعد وقت تسجيل الوصول.</value>
+  </data>
+  <data name="msgFailedCheckInTime" xml:space="preserve">
+    <value>فشل وقت تسجيل الوصول.</value>
+  </data>
+  <data name="msgSuccessfullyCheckOutTime" xml:space="preserve">
+    <value>تم تسجيل الخروج بنجاح.</value>
+  </data>
+  <data name="lblTracking" xml:space="preserve">
+    <value>التتبع</value>
+  </data>
+  <data name="lblEmployeesWorking" xml:space="preserve">
+    <value>الموظفين العاملين</value>
+  </data>
+  <data name="lblSearch" xml:space="preserve">
+    <value>بحث</value>
+  </data>
+  <data name="msgNoavailablelocationcoordinates" xml:space="preserve">
+    <value>لا توجد إحداثيات موقع متاحة.</value>
+  </data>
+  <data name="msgvCardtoolongforastandardQRcode" xml:space="preserve">
+    <value>بطاقة الكارت طويلة جدًا بالنسبة لرمز الاستجابة السريعة القياسي بسبب عدد الروابط.</value>
+  </data>
+  <data name="lblFilterByCard" xml:space="preserve">
+    <value>تصفية حسب البطاقة</value>
+  </data>
+  <data name="lblComments" xml:space="preserve">
+    <value>تعليقات</value>
+  </data>
+</root>

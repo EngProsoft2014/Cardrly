@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Controls="clr-namespace:Cardrly.Controls"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+             x:Class="Cardrly.Pages.AddEventPage"
+                        IsEnabled="{Binding IsEnable}"
+             Title="AddEventPage">
+
+    <StackLayout Margin="20">
+        <!--Header-->
+        <StackLayout Orientation="Horizontal">
+            <Image>
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="{x:Static res:AppResources.lblAddEvent}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="18" FontAttributes="Bold"
+                   HorizontalOptions="CenterAndExpand"></Label>
+        </StackLayout>
+        <ScrollView VerticalOptions="FillAndExpand">
+            <StackLayout VerticalOptions="FillAndExpand" Spacing="0">
+                <!--Provider-->
+                <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
+                    <Label Text="{x:Static res:AppResources.lblProvider}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Black" 
+                            HeightRequest="40" Grid.Column="0" VerticalOptions="EndAndExpand">
+                        <!--<Grid Margin="5,0">
+                            <Label x:Name="PlaceholderProviderLabel"
+                                   Text="{x:Static res:AppResources.plcProvider}"
+                                   TextColor="#ababab"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Start"
+                                   IsVisible="True"
+                                   Padding="5"
+                                   BackgroundColor="Transparent"
+                                   InputTransparent="True"/>
+
+                            <Picker x:Name="pickProvider" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemsSource="{Binding CalendarTypes}"
+                                ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCalendarType}" SelectedIndexChanged="Picker_SelectedIndexChanged"></Picker>
+                        </Grid>-->
+
+                        <Label Text="{Binding SelectedCalendarType.Name}" TextColor="Black" FontSize="14" Padding="10" VerticalTextAlignment="Center"></Label>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Select Card-->
+                <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
+                    <Label Text="{x:Static res:AppResources.lblCard}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Black" HeightRequest="40">
+                        <Grid Margin="5,0">
+                            <Label x:Name="PlaceholderCardLabel"
+                                    Text="{x:Static res:AppResources.plcCard}"
+                                    TextColor="#ababab"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="Start"
+                                    IsVisible="True"    
+                                   Padding="5"
+                                    BackgroundColor="Transparent"
+                                    InputTransparent="True"/>
+
+                            <Picker x:Name="pickCard" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding CardName}" ItemsSource="{Binding CardLst}" SelectedIndexChanged="picCard_SelectedIndexChanged">
+                                <Picker.Triggers>
+                                    <DataTrigger TargetType="Picker" Binding="{Binding IsFoundCards}" Value="true">
+                                        <Setter Property="SelectedItem" Value='{Binding SelectedCard}'></Setter>
+                                    </DataTrigger>
+                                </Picker.Triggers>
+                            </Picker>
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Time Zone-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                    <Label Text="{x:Static res:AppResources.lblTimeZone}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" Margin="5,0" PlaceholderColor="#ababab" FontSize="14" Placeholder="{x:Static res:AppResources.plcTimeZone}" FontAutoScalingEnabled="False" Text="{Binding Request.TimeZone}" IsReadOnly="True">
+                            <Entry.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TimeZoneClickCommand}"></TapGestureRecognizer>
+                            </Entry.GestureRecognizers>
+                        </Entry>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TimeZoneClickCommand}"></TapGestureRecognizer>
+                        </Border.GestureRecognizers>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Summary-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                    <Label Text="{x:Static res:AppResources.lblSummary}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" Margin="5,0" PlaceholderColor="#ababab" FontSize="14" FontAutoScalingEnabled="False" Placeholder="{x:Static res:AppResources.plcSummary}" Text="{Binding Request.Summary}"></Entry>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Location-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                    <Label Text="{x:Static res:AppResources.lblLocation}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                        <Entry Keyboard="Text" TextColor="Black" Margin="5,0" PlaceholderColor="#ababab" FontSize="14" FontAutoScalingEnabled="False" Placeholder="{x:Static res:AppResources.plcLocation}" Text="{Binding Request.Location}"></Entry>
+                    </Border>
+                </VerticalStackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20">
+                    <!--Start Date-->
+                    <StackLayout HorizontalOptions="FillAndExpand">
+                        <Label Text="{x:Static res:AppResources.lblStartDate}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
+                        <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                            <DatePicker x:Name="StartDatePicker" TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False" Date="{Binding Request.Start}"></DatePicker>
+                        </Border>
+                    </StackLayout>
+                    <!--Start Time-->
+                    <StackLayout HorizontalOptions="FillAndExpand">
+                        <Label Text="{x:Static res:AppResources.lblStartTime}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
+                        <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                            <TimePicker x:Name="StartTimePicker" TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False" Time="{Binding StartTime}"></TimePicker>
+                        </Border>
+                    </StackLayout>
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20">
+                    <!--End Date-->
+                    <StackLayout HorizontalOptions="FillAndExpand">
+                        <Label Text="{x:Static res:AppResources.lblEndDate}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
+                        <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                            <DatePicker x:Name="EndDatePicker" TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False" Date="{Binding Request.End}"></DatePicker>
+                        </Border>
+                    </StackLayout>
+                    <!--End Time-->
+                    <StackLayout HorizontalOptions="FillAndExpand">
+                        <Label Text="{x:Static res:AppResources.lblEndTime}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
+                        <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                            <TimePicker x:Name="EndTimePicker" TextColor="Black" FontSize="14" Margin="5,0" FontAutoScalingEnabled="False" Time="{Binding EndTime}"></TimePicker>
+                        </Border>
+                    </StackLayout>
+                </StackLayout>
+               
+                <!--Attendees-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                    <Label Text="{x:Static res:AppResources.lblAttendees}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                        <Entry TextColor="Black" Margin="5,0" PlaceholderColor="#ababab" FontSize="14" Keyboard="Email"
+                               FontAutoScalingEnabled="False" Placeholder="{x:Static res:AppResources.plcAttendees}" Text="{Binding Request.Attendees}"></Entry>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Description-->
+                <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                    <Label Text="{x:Static res:AppResources.lblDescription}" TextColor="#333" FontSize="13" Margin="0,15,0,5"></Label>
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="120">
+                        <Editor Keyboard="Text" TextColor="Black" Margin="5,0" PlaceholderColor="#ababab" FontSize="14" FontAutoScalingEnabled="False" Placeholder="{x:Static res:AppResources.plcDescription}" Text="{Binding Request.Description}"></Editor>
+                    </Border>
+                </VerticalStackLayout>
+                <!--Conference-->
+                <HorizontalStackLayout VerticalOptions="End" Spacing="10">
+                    <CheckBox Color="#FF7F3E" IsChecked="{Binding Request.ConferenceData}"/>
+                    <Label Text="{x:Static res:AppResources.lblConference}" TextColor="Black" FontSize="14" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <!--Save Button-->
+                <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnSave}" FontSize="16" FontAttributes="Bold" Margin="0,20,0,20"
+                         BackgroundColor="#FF7F3E" TextColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand"
+                         Command="{Binding SaveClickCommand}" CommandParameter="{Binding Request}"></Button>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+
+</Controls:CustomControl>

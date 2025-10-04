@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:Controls="clr-namespace:Cardrly.Controls"
+                        x:Class="Cardrly.Pages.MeetingsScript.WebViewMeetingAudioPage"
+                        Title="WebViewMeetingAudioPage" 
+                        BackgroundColor="#1c1b1b">
+
+    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+
+        <!-- WebView takes full space -->
+        <WebView 
+        x:Name="audioWebView"
+        VerticalOptions="FillAndExpand"
+        HorizontalOptions="FillAndExpand" />
+
+        <!-- Back Button overlaid on top -->
+        <Image Margin="20,60,20,20"
+           HorizontalOptions="Start"
+           VerticalOptions="Start"
+           ZIndex="1">
+            <Image.Source>
+                <FontImageSource Glyph=""
+                             FontFamily="FontIconSolid"
+                             Color="White"
+                             Size="25"/>
+            </Image.Source>
+            <Image.Triggers>
+                <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                    <Setter Property="Rotation" Value="180"/>
+                </DataTrigger>
+            </Image.Triggers>
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1"/>
+            </Image.GestureRecognizers>
+        </Image>
+
+    </Grid>
+</Controls:CustomControl>

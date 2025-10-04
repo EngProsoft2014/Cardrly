@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Cardrly.Pages.MainPopups.CheckoutPopup"
+                  xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+                  xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+                  xmlns:vm="clr-namespace:Cardrly.ViewModels"
+                  BackgroundColor="#80000000"
+                  IsEnabled="{Binding IsEnable}">
+
+
+    <Grid Padding="0" Margin="40,200,40,150">
+        <Border TranslationY="0" HeightRequest="220" VerticalOptions="CenterAndExpand" BackgroundColor="White">
+            <StackLayout Padding="20,20,20,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <Label Text="Time Picker:" FontSize="14" TextColor="#333" FontAttributes="Bold" HorizontalOptions="Start" VerticalTextAlignment="Center"></Label>
+
+                <Border BackgroundColor="White" Padding="0" Margin="0,20,0,0" HorizontalOptions="FillAndExpand">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" HeightRequest="45">
+                        <Border BackgroundColor="#f5b493" HorizontalOptions="End">
+                            <Image HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="15,10,15,10">
+                                <Image.Source>
+                                    <FontImageSource FontFamily="FontIconSolid" Color="White" Glyph="" Size="18"></FontImageSource>
+                                </Image.Source>
+                            </Image>
+
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="0,30,0,0"></RoundRectangle>
+                            </Border.StrokeShape>
+                        </Border>
+
+                        <TimePicker x:Name="timeCheckOut" HorizontalOptions="FillAndExpand" Margin="15,3,5,3" FontSize="14"></TimePicker>
+
+                        <Border BackgroundColor="#f5b493" HorizontalOptions="End">
+                            <Image HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="15,10,15,10">
+                                <Image.Source>
+                                    <FontImageSource FontFamily="FontIconSolid" Color="White" Glyph="" Size="18"></FontImageSource>
+                                </Image.Source>
+                            </Image>
+
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="0,0,30,0"></RoundRectangle>
+                            </Border.StrokeShape>
+                        </Border>
+                    </StackLayout>
+
+                    <Border.Shadow>
+                        <Shadow Brush="{OnPlatform Android=Gray, iOS=Gray}" Radius="{OnPlatform Android=15,iOS=15}"></Shadow>
+                    </Border.Shadow>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="25" Stroke="LightGray" StrokeThickness="1"></RoundRectangle>
+                    </Border.StrokeShape>
+                </Border>
+
+                <StackLayout Orientation="Horizontal" Spacing="20" VerticalOptions="EndAndExpand" Padding="20,0,20,20" HorizontalOptions="CenterAndExpand">
+                    <Button x:Name="btnCheck"
+                                FontSize="12"
+                                FontAttributes="Bold"
+                                TextTransform="None"
+                                TextColor="White"
+                                CornerRadius="20"
+                                BackgroundColor="#f26d29"
+                        Clicked="Button_Clicked_1"></Button>
+                    <Button Text="Close" 
+                                FontSize="12" 
+                                TextColor="#f26d29"
+                                BorderColor="#f26d29"
+                                TextTransform="None"
+                                CornerRadius="20"
+                                BorderWidth="1" 
+                                BackgroundColor="White"
+                        Clicked="Button_Clicked"></Button>
+                </StackLayout>
+            </StackLayout>
+
+
+            <Border.Shadow>
+                <Shadow Brush="{OnPlatform Android=Gray, iOS=Gray}" Radius="{OnPlatform Android=15,iOS=15}"></Shadow>
+            </Border.Shadow>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10" Stroke="LightGray" StrokeThickness="1"></RoundRectangle>
+            </Border.StrokeShape>
+        </Border>
+
+    </Grid>
+</mopups:PopupPage>

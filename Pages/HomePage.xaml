@@ -1,0 +1,1168 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+             xmlns:Controls="clr-namespace:Cardrly.Controls"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
+             xmlns:progressBar="clr-namespace:Syncfusion.Maui.ProgressBar;assembly=Syncfusion.Maui.ProgressBar"
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             xmlns:vm="clr-namespace:Cardrly.ViewModels"
+             xmlns:Lvm="clr-namespace:Cardrly.ViewModels.Leads"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+             xmlns:xct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Cardrly.Pages.HomePage"
+             Title="HomePage"
+             IsEnabled="{Binding IsEnable}">
+
+    <StackLayout>
+        <tabView:SfTabView x:Name="tabHome" IndicatorPlacement="Bottom" TabBarPlacement="Bottom" IndicatorBackground="#FF7F3E" FlowDirection="LeftToRight"
+                           VerticalOptions="FillAndExpand" Margin="0,0,0,10" ContentTransitionDuration="300" SelectionChanged="SfTabView_SelectionChanged">
+            <tabView:SfTabView.Items>
+                <!--Home-->
+                <tabView:SfTabItem>
+                    <tabView:SfTabItem.ImageSource>
+                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
+                    </tabView:SfTabItem.ImageSource>
+                    <tabView:SfTabItem.Content>
+                        <ContentView x:Name="HomeView" IsEnabled="{Binding IsEnable}" HorizontalOptions="FillAndExpand">
+                            <StackLayout Spacing="10">
+                                <!--Header-->
+                                <StackLayout Orientation="Horizontal" Margin="20,20,20,0">
+                                    <Label Text="{x:Static res:AppResources.hdrHome}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black"></Label>
+                                    <Image x:Name="LoadIcon">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="22" Color="#5ac465"></FontImageSource>
+                                        </Image.Source>
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image" Binding="{Binding IsCheckOrGo}" Value="2">
+                                                <Setter Property="Source">
+                                                    <Setter.Value>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconBrand" Size="32" Color="#FF7F3E"></FontImageSource>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding GetClickCommand}"></TapGestureRecognizer>
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </StackLayout>
+
+                                <!--Data Menu-->
+                                <StackLayout Orientation="Horizontal" Spacing="10" Margin="20,0,20,0" HorizontalOptions="FillAndExpand">
+                                    <!--From-->
+                                    <VerticalStackLayout Spacing="5">
+                                        <Label Text="{x:Static res:AppResources.lblFrom}" TextColor="Gray" FontSize="13"></Label>
+                                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
+                                            <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" Date="{Binding FromDate}" DateSelected="DatePicker_Home"></DatePicker>
+                                        </Border>
+
+                                    </VerticalStackLayout>
+                                    <!--To-->
+                                    <VerticalStackLayout Spacing="5">
+                                        <Label Text="{x:Static res:AppResources.lblTo}" TextColor="Gray" FontSize="13"></Label>
+                                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
+                                            <DatePicker TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" Date="{Binding ToDate}" DateSelected="DatePicker_Home"></DatePicker>
+                                        </Border>
+                                    </VerticalStackLayout>
+                                    <!--Select Card-->
+                                    <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
+                                        <Label Text="{x:Static res:AppResources.lblCard}" TextColor="Gray" FontSize="13"></Label>
+                                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
+                                            <Picker x:Name="CardPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding CardName}" ItemsSource="{Binding CardLst}" SelectedIndexChanged="CardPicker_Home">
+                                                <Picker.Triggers>
+                                                    <DataTrigger TargetType="Picker" Binding="{Binding IsFoundCards}" Value="true">
+                                                        <Setter Property="SelectedItem" Value='{Binding SelectedCard}'></Setter>
+                                                    </DataTrigger>
+                                                </Picker.Triggers>
+                                            </Picker>
+                                        </Border>
+                                    </VerticalStackLayout>
+                                </StackLayout>
+
+                                <!--Data-->
+                                <RefreshView x:Name="HomeRef" VerticalOptions="FillAndExpand" Refreshing="HomeRef_Refreshing">
+                                    <ScrollView VerticalOptions="FillAndExpand">
+                                        <StackLayout Spacing="20">
+
+                                            <!--progressBars-->
+                                            <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White" Margin="20,0,20,0">
+                                                <VerticalStackLayout Spacing="20">
+                                                    <!--progressBar For Card-->
+                                                    <VerticalStackLayout Spacing="10">
+                                                        <StackLayout Orientation="Horizontal" Spacing="3">
+                                                            <Label Text="{x:Static res:AppResources.lblCard}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                            <Label Text="{Binding AccResponse.CurrentCountCards}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
+                                                            <Label Text="{x:Static res:AppResources.lblFrom}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                            <Label Text="{Binding AccResponse.CountCards}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                        </StackLayout>
+                                                        <progressBar:SfLinearProgressBar Progress="{Binding AccResponse.CardProgress}" AnimationEasing="{x:Static Easing.SpringOut}" SecondaryAnimationDuration="100"/>
+                                                    </VerticalStackLayout>
+                                                    <!--progressBar For users-->
+                                                    <VerticalStackLayout Spacing="10">
+                                                        <StackLayout Orientation="Horizontal" Spacing="3">
+                                                            <Label Text="{x:Static res:AppResources.lblUsers}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                            <Label Text="{Binding AccResponse.CurrentCountUsers}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
+                                                            <Label Text="{x:Static res:AppResources.lblFrom}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                            <Label Text="{Binding AccResponse.CountUsers}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                        </StackLayout>
+                                                        <progressBar:SfLinearProgressBar Progress="{Binding AccResponse.UsersProgress}" AnimationEasing="{x:Static Easing.SpringOut}" SecondaryAnimationDuration="100"/>
+                                                    </VerticalStackLayout>
+                                                    <!--progressBar for Expire-->
+                                                    <VerticalStackLayout Spacing="10" >
+                                                        <StackLayout Orientation="Horizontal" Spacing="3">
+                                                            <Label Text="{x:Static res:AppResources.lblExpire}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                            <Label Text="{Binding AccResponse.RemmingDays}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray" HorizontalOptions="EndAndExpand"></Label>
+                                                            <Label Text="{x:Static res:AppResources.lblFrom}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                            <Label Text="{Binding AccResponse.DayOperationAcc}" FontAutoScalingEnabled="False" FontSize="13" TextColor="Gray"></Label>
+                                                        </StackLayout>
+
+                                                        <progressBar:SfLinearProgressBar  Progress="{Binding AccResponse.ExpireProgress}" AnimationEasing="{x:Static Easing.SpringOut}" SecondaryAnimationDuration="100"/>
+                                                    </VerticalStackLayout>
+                                                </VerticalStackLayout>
+                                            </Border>
+                                            
+                                            
+                                            <!--Statistics Data-->
+                                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" Margin="20,0,20,0">
+                                                <!--Leads Register-->
+                                                <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
+                                                    <ScrollView Orientation="Horizontal">
+                                                        <StackLayout Orientation="Horizontal" ToolTipProperties.Text="{Binding BoardResponse.CountLeads}">
+                                                            <!--Image-->
+                                                            <Image Aspect="AspectFill" Margin="0,0,5,0">
+                                                                <Image.Source>
+                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
+                                                                </Image.Source>
+                                                            </Image>
+                                                            <!--Titel-->
+                                                            <Label Text="{x:Static res:AppResources.lblLeadsRegistered}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text="{Binding BoardResponse.CountLeads}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                                        </StackLayout>
+                                                    </ScrollView>
+                                                </Border>
+                                                <!--Card Views-->
+                                                <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
+                                                    <ScrollView Orientation="Horizontal">
+                                                        <StackLayout Orientation="Horizontal" ToolTipProperties.Text="{Binding BoardResponse.CountViewCard}">
+                                                            <!--Image-->
+                                                            <Image Aspect="AspectFill" Margin="0,0,5,0">
+                                                                <Image.Source>
+                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
+                                                                </Image.Source>
+                                                            </Image>
+                                                            <!--Titel-->
+                                                            <Label Text="{x:Static res:AppResources.lblCardViews}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text="{Binding BoardResponse.CountViewCard}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                                        </StackLayout>
+                                                    </ScrollView>
+                                                </Border>
+                                            </StackLayout>
+                                            
+                                            
+                                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" Margin="20,0,20,0">
+                                                <!--Link Taps-->
+                                                <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
+                                                    <ScrollView Orientation="Horizontal">
+                                                        <StackLayout Orientation="Horizontal" ToolTipProperties.Text="{Binding BoardResponse.CountLinkTap}">
+                                                            <!--Image-->
+                                                            <Image Aspect="AspectFill" Margin="0,0,5,0">
+                                                                <Image.Source>
+                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
+                                                                </Image.Source>
+                                                            </Image>
+                                                            <!--Titel-->
+                                                            <Label Text="{x:Static res:AppResources.lblLinkClicks}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text="{Binding BoardResponse.CountLinkTap}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                                        </StackLayout>
+                                                    </ScrollView>
+                                                </Border>
+                                                <!--Save Contacts-->
+                                                <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
+                                                    <ScrollView Orientation="Horizontal">
+                                                        <StackLayout Orientation="Horizontal" ToolTipProperties.Text="{Binding BoardResponse.CountDownloadContacts}">
+                                                            <!--Image-->
+                                                            <Image Aspect="AspectFill" Margin="0,0,5,0">
+                                                                <Image.Source>
+                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
+                                                                </Image.Source>
+                                                            </Image>
+                                                            <!--Titel-->
+                                                            <Label Text="{x:Static res:AppResources.lblSaveContacts}" TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text=" : " TextColor="Black" FontSize="14" VerticalTextAlignment="Center"></Label>
+                                                            <Label Text="{Binding BoardResponse.CountDownloadContacts}" TextColor="Black" FontSize="14" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                                        </StackLayout>
+                                                    </ScrollView>
+                                                </Border>
+                                            </StackLayout>
+                                            
+                                            
+                                            
+                                            <!--Total Clicks Chart-->
+                                            <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White" Margin="20,0,20,0">
+                                                <chart:SfCartesianChart HeightRequest="250">
+                                                    <chart:SfCartesianChart.XAxes>
+                                                        <chart:CategoryAxis>
+
+                                                        </chart:CategoryAxis>
+                                                    </chart:SfCartesianChart.XAxes>
+                                                    <chart:SfCartesianChart.YAxes>
+                                                        <chart:NumericalAxis>
+
+                                                        </chart:NumericalAxis>
+                                                    </chart:SfCartesianChart.YAxes>
+                                                    <chart:SfCartesianChart.Title>
+                                                        <Label Text="{x:Static res:AppResources.lblTotalClicks}" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                    </chart:SfCartesianChart.Title>
+                                                    <chart:FastLineSeries ItemsSource="{Binding BoardResponse.clickCardSummaries}" EnableTooltip="True" EnableAnimation="True" XBindingPath="DateClick" YBindingPath="CountClickCard"/>
+                                                </chart:SfCartesianChart>
+                                            </Border>
+
+                                            <!--First Tab-->
+                                            <tabView:SfTabView  IndicatorPlacement="Fill" TabBarPlacement="Top" IndicatorBackground="#fae6dc" TabBarHeight="50" VerticalOptions="FillAndExpand" FlowDirection="LeftToRight" Margin="0,0,0,0">
+                                                <tabView:SfTabView.Items>
+                                                    <!--Tab 1-->
+                                                    <tabView:SfTabItem BackgroundColor="Transparent" Header="{x:Static res:AppResources.lblDevices}" FontSize="14" FontAttributes="Bold">
+                                                        <tabView:SfTabItem.Content>
+                                                            <ContentView VerticalOptions="FillAndExpand" Margin="20,10,20,0">
+                                                                <ScrollView VerticalOptions="FillAndExpand">
+                                                                    <StackLayout Spacing="15" Margin="0,5,0,0">
+
+                                                                        <!--DoughnutSeries-->
+                                                                        <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
+                                                                            <chart:SfCircularChart>
+                                                                                <chart:DoughnutSeries ItemsSource="{Binding BoardResponse.clickCardLinkSummariesOS}" XBindingPath="name" YBindingPath="value"  ExplodeOnTouch="True" EnableAnimation="True" EnableTooltip="True"/>
+                                                                                <chart:SfCircularChart.Legend>
+                                                                                    <chart:ChartLegend >
+                                                                                        <chart:ChartLegend.LabelStyle>
+                                                                                            <chart:ChartLegendLabelStyle TextColor="Black" Margin="5" FontSize="14" FontAttributes="Bold"  FontFamily="PlaywriteAR-Regular"/>
+                                                                                        </chart:ChartLegend.LabelStyle>
+                                                                                    </chart:ChartLegend>
+                                                                                </chart:SfCircularChart.Legend>
+                                                                                <chart:SfCircularChart.Title>
+                                                                                    <Label Text="{x:Static res:AppResources.lblTCDS}" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                                                </chart:SfCircularChart.Title>
+                                                                            </chart:SfCircularChart>
+                                                                        </Border>
+                                                                    </StackLayout>
+                                                                </ScrollView>
+                                                            </ContentView>
+                                                        </tabView:SfTabItem.Content>
+                                                    </tabView:SfTabItem>
+                                                    <!--Tab 2-->
+                                                    <tabView:SfTabItem BackgroundColor="Transparent" Header="{x:Static res:AppResources.lblEngagements}" FontSize="14" FontAttributes="Bold">
+                                                        <tabView:SfTabItem.Content>
+                                                            <ContentView Margin="20,10,20,0">
+                                                                <StackLayout>
+                                                                    <ScrollView VerticalOptions="FillAndExpand">
+                                                                        <StackLayout Spacing="15" Margin="0,5,0,0">
+
+                                                                            <!--User Link Engagements-->
+                                                                            <!--Table Headers-->
+                                                                            <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White" VerticalOptions="FillAndExpand" Margin="0,0,0,20"  HorizontalOptions="FillAndExpand">
+                                                                                <StackLayout Spacing="15" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                                                                    <Label Text="{x:Static res:AppResources.lblUserLinkEngagements}" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                                                    <Grid ColumnDefinitions="*,*,*,0.5,*" HorizontalOptions="FillAndExpand">
+                                                                                        <Label Text="Image" Grid.Column="0" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black"></Label>
+                                                                                        <Label Text="Link" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" Grid.Column="1" TextColor="Black"></Label>
+                                                                                        <!--<Label Text="User" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"  Grid.Column="2" TextColor="Black"></Label>-->
+                                                                                        <Label Text="Card Name" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" Grid.Column="2" Grid.ColumnSpan="2" TextColor="Black"></Label>
+                                                                                        <Label Text="Taps" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" Grid.Column="4" TextColor="Black"></Label>
+
+                                                                                    </Grid>
+                                                                                    <BoxView Background="Gray" HeightRequest="1"></BoxView>
+                                                                                    <CollectionView ItemsSource="{Binding BoardResponse.clickCardLinkSummaries}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                                                                        <CollectionView.ItemsLayout>
+                                                                                            <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
+                                                                                        </CollectionView.ItemsLayout>
+                                                                                        <CollectionView.ItemTemplate>
+                                                                                            <DataTemplate>
+                                                                                                <Grid ColumnDefinitions="*,*,*,0.5,*" HorizontalOptions="FillAndExpand">
+                                                                                                    <Image Source="{Binding ImgCardLinkVM}" WidthRequest="30"></Image>
+                                                                                                    <Label Text="{Binding LinkName}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="FillAndExpand" Grid.Column="1" TextColor="Black" VerticalOptions="CenterAndExpand"></Label>
+                                                                                                    <!--<Label Text="{Binding PoplUser}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="FillAndExpand" Grid.Column="2" TextColor="Black" VerticalOptions="CenterAndExpand"></Label>-->
+                                                                                                    <Label Text="{Binding CardName}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="EndAndExpand" Grid.Column="2" Grid.ColumnSpan="2" TextColor="Black" VerticalOptions="CenterAndExpand"></Label>
+                                                                                                    <Label Text="{Binding CountClickCardLink}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" Grid.Column="4" TextColor="Black" VerticalOptions="CenterAndExpand"></Label>
+                                                                                                </Grid>
+                                                                                            </DataTemplate>
+                                                                                        </CollectionView.ItemTemplate>
+                                                                                    </CollectionView>
+                                                                                </StackLayout>
+                                                                            </Border>
+                                                                        </StackLayout>
+                                                                    </ScrollView>
+                                                                </StackLayout>
+                                                            </ContentView>
+                                                        </tabView:SfTabItem.Content>
+                                                    </tabView:SfTabItem>
+
+
+                                                    <!--Tab 3-->
+                                                    <tabView:SfTabItem BackgroundColor="Transparent" Header="{x:Static res:AppResources.lblCardView}" FontSize="14" FontAttributes="Bold">
+                                                        <tabView:SfTabItem.Content>
+                                                            <ContentView VerticalOptions="FillAndExpand" Margin="20,10,20,0">
+                                                                <ScrollView VerticalOptions="FillAndExpand">
+                                                                    <StackLayout Spacing="15" Margin="0,5,0,0">
+
+                                                                        <!--DoughnutSeries-->
+                                                                        <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
+                                                                            <chart:SfCircularChart>
+                                                                                <chart:DoughnutSeries ItemsSource="{Binding BoardResponse.clickCardSummariesCountry}" XBindingPath="name" YBindingPath="value"  ExplodeOnTouch="True" EnableAnimation="True" EnableTooltip="True"/>
+                                                                                <chart:SfCircularChart.Legend>
+                                                                                    <chart:ChartLegend >
+                                                                                        <chart:ChartLegend.LabelStyle>
+                                                                                            <chart:ChartLegendLabelStyle TextColor="Black" Margin="5" FontSize="14" FontAttributes="Bold"  FontFamily="PlaywriteAR-Regular"/>
+                                                                                        </chart:ChartLegend.LabelStyle>
+                                                                                    </chart:ChartLegend>
+                                                                                </chart:SfCircularChart.Legend>
+                                                                                <chart:SfCircularChart.Title>
+                                                                                    <Label Text="{x:Static res:AppResources.lbl_CardView_Distribution_by_Country}" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                                                </chart:SfCircularChart.Title>
+                                                                            </chart:SfCircularChart>
+                                                                        </Border>
+                                                                    </StackLayout>
+                                                                </ScrollView>
+                                                            </ContentView>
+                                                        </tabView:SfTabItem.Content>
+                                                    </tabView:SfTabItem>
+                                                    <!--Tab 4-->
+                                                    <tabView:SfTabItem BackgroundColor="Transparent" Header="{x:Static res:AppResources.lblLinkClicks}" FontSize="14" FontAttributes="Bold">
+                                                        <tabView:SfTabItem.Content>
+                                                            <ContentView VerticalOptions="FillAndExpand" Margin="20,10,20,0">
+                                                                <ScrollView VerticalOptions="FillAndExpand">
+                                                                    <StackLayout Spacing="15" Margin="0,5,0,0">
+
+                                                                        <!--DoughnutSeries-->
+                                                                        <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
+                                                                            <chart:SfCircularChart>
+                                                                                <chart:DoughnutSeries ItemsSource="{Binding BoardResponse.clickCardLinkSummariesCountry}" XBindingPath="name" YBindingPath="value"  ExplodeOnTouch="True" EnableAnimation="True" EnableTooltip="True"/>
+                                                                                <chart:SfCircularChart.Legend>
+                                                                                    <chart:ChartLegend >
+                                                                                        <chart:ChartLegend.LabelStyle>
+                                                                                            <chart:ChartLegendLabelStyle TextColor="Black" Margin="5" FontSize="14" FontAttributes="Bold"  FontFamily="PlaywriteAR-Regular"/>
+                                                                                        </chart:ChartLegend.LabelStyle>
+                                                                                    </chart:ChartLegend>
+                                                                                </chart:SfCircularChart.Legend>
+                                                                                <chart:SfCircularChart.Title>
+                                                                                    <Label Text="{x:Static res:AppResources.lbl_Link_Clicks_by_Country}" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                                                </chart:SfCircularChart.Title>
+                                                                            </chart:SfCircularChart>
+                                                                        </Border>
+                                                                    </StackLayout>
+                                                                </ScrollView>
+                                                            </ContentView>
+                                                        </tabView:SfTabItem.Content>
+                                                    </tabView:SfTabItem>
+                                                </tabView:SfTabView.Items>
+                                            </tabView:SfTabView>
+
+                                            <!--Second Tab--><!--
+                                            <tabView:SfTabView  IndicatorPlacement="Fill" TabBarPlacement="Top" IndicatorBackground="#fae6dc" TabBarHeight="40" VerticalOptions="FillAndExpand" FlowDirection="LeftToRight" Margin="0,0,0,0">
+                                                <tabView:SfTabView.Items>
+                                                    --><!--Tab 1--><!--
+                                                    <tabView:SfTabItem BackgroundColor="Transparent" Header="{x:Static res:AppResources.lblCardView}" FontSize="16" FontAttributes="Bold">
+                                                        <tabView:SfTabItem.Content>
+                                                            <ContentView VerticalOptions="FillAndExpand" Margin="20,10,20,0">
+                                                                <ScrollView VerticalOptions="FillAndExpand">
+                                                                    <StackLayout Spacing="15" Margin="0,5,0,0">
+
+                                                                        --><!--DoughnutSeries--><!--
+                                                                        <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
+                                                                            <chart:SfCircularChart>
+                                                                                <chart:DoughnutSeries ItemsSource="{Binding BoardResponse.clickCardSummariesCountry}" XBindingPath="name" YBindingPath="value"  ExplodeOnTouch="True" EnableAnimation="True" EnableTooltip="True"/>
+                                                                                <chart:SfCircularChart.Legend>
+                                                                                    <chart:ChartLegend >
+                                                                                        <chart:ChartLegend.LabelStyle>
+                                                                                            <chart:ChartLegendLabelStyle TextColor="Black" Margin="5" FontSize="14" FontAttributes="Bold"  FontFamily="PlaywriteAR-Regular"/>
+                                                                                        </chart:ChartLegend.LabelStyle>
+                                                                                    </chart:ChartLegend>
+                                                                                </chart:SfCircularChart.Legend>
+                                                                                <chart:SfCircularChart.Title>
+                                                                                    <Label Text="{x:Static res:AppResources.lbl_CardView_Distribution_by_Country}" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                                                </chart:SfCircularChart.Title>
+                                                                            </chart:SfCircularChart>
+                                                                        </Border>
+                                                                    </StackLayout>
+                                                                </ScrollView>
+                                                            </ContentView>
+                                                        </tabView:SfTabItem.Content>
+                                                    </tabView:SfTabItem>
+                                                    --><!--Tab 2--><!--
+                                                    <tabView:SfTabItem BackgroundColor="Transparent" Header="{x:Static res:AppResources.lblLinkClicks}" FontSize="16" FontAttributes="Bold">
+                                                        <tabView:SfTabItem.Content>
+                                                            <ContentView VerticalOptions="FillAndExpand" Margin="20,10,20,0">
+                                                                <ScrollView VerticalOptions="FillAndExpand">
+                                                                    <StackLayout Spacing="15" Margin="0,5,0,0">
+
+                                                                        --><!--DoughnutSeries--><!--
+                                                                        <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
+                                                                            <chart:SfCircularChart>
+                                                                                <chart:DoughnutSeries ItemsSource="{Binding BoardResponse.clickCardLinkSummariesCountry}" XBindingPath="name" YBindingPath="value"  ExplodeOnTouch="True" EnableAnimation="True" EnableTooltip="True"/>
+                                                                                <chart:SfCircularChart.Legend>
+                                                                                    <chart:ChartLegend >
+                                                                                        <chart:ChartLegend.LabelStyle>
+                                                                                            <chart:ChartLegendLabelStyle TextColor="Black" Margin="5" FontSize="14" FontAttributes="Bold"  FontFamily="PlaywriteAR-Regular"/>
+                                                                                        </chart:ChartLegend.LabelStyle>
+                                                                                    </chart:ChartLegend>
+                                                                                </chart:SfCircularChart.Legend>
+                                                                                <chart:SfCircularChart.Title>
+                                                                                    <Label Text="{x:Static res:AppResources.lbl_Link_Clicks_by_Country}" FontSize="14" TextColor="Black" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                                                </chart:SfCircularChart.Title>
+                                                                            </chart:SfCircularChart>
+                                                                        </Border>
+                                                                    </StackLayout>
+                                                                </ScrollView>
+                                                            </ContentView>
+                                                        </tabView:SfTabItem.Content>
+                                                    </tabView:SfTabItem>
+                                                </tabView:SfTabView.Items>
+                                            </tabView:SfTabView>-->
+
+                                        </StackLayout>
+
+                                    </ScrollView>
+                                </RefreshView>
+
+                            </StackLayout>
+                        </ContentView>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+                <!--Cards-->
+                <tabView:SfTabItem>
+                    <tabView:SfTabItem.ImageSource>
+                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
+                    </tabView:SfTabItem.ImageSource>
+                    <tabView:SfTabItem.Content>
+
+                        <ContentView x:Name="CardsView" IsEnabled="{Binding IsEnable}" Margin="20">
+                            <StackLayout>
+                                <!--Header-->
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{x:Static res:AppResources.hdrCards}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" TextColor="Black"></Label>
+                                    <Image>
+                                        <Image.Source>
+                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E" Size="25"></FontImageSource>
+                                        </Image.Source>
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding AddCardClickCommand}"></TapGestureRecognizer>
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </StackLayout>
+                                <!--Cards-->
+                                <RefreshView x:Name="RefView" Refreshing="Cards_Refreshing" Margin="0,30,0,0">
+                                    <ScrollView>
+                                        <Grid x:Name="RootGrid">
+                                            <CollectionView ItemsSource="{Binding CardLst}" VerticalOptions="FillAndExpand" Margin="0,40,0,0" HorizontalOptions="FillAndExpand" ItemsUpdatingScrollMode="KeepItemsInView" ItemSizingStrategy="MeasureAllItems">
+                                                <CollectionView.ItemsLayout>
+                                                    <LinearItemsLayout  Orientation="Horizontal" SnapPointsAlignment="Center" SnapPointsType="MandatorySingle"></LinearItemsLayout>
+                                                </CollectionView.ItemsLayout>
+                                                <CollectionView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackLayout HorizontalOptions="FillAndExpand" WidthRequest="{Binding Source={x:Reference RootGrid}, Path=Width}" Padding="10,0,10,0">
+                                                            <!--Qr code Iamge-->
+                                                            <Border StrokeShape="RoundRectangle 20" WidthRequest="200" Padding="10">
+                                                                <VerticalStackLayout Spacing="5">
+                                                                    <zxing:BarcodeGeneratorView
+                                                                          HeightRequest="150" BackgroundColor="Transparent" WidthRequest="150"
+                                                                          ForegroundColor="Black" Value="{Binding CardUrlVM}" Format="QrCode"></zxing:BarcodeGeneratorView>
+                                                                    <Label Text="{x:Static res:AppResources.lblSCS}" TextColor="Black" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                                </VerticalStackLayout>
+                                                            </Border>
+                                                            <!--Card Data-->
+                                                            <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="{Binding CardTheme}" Margin="0,30,0,0">
+                                                                <StackLayout Orientation="Horizontal" Spacing="15">
+                                                                    <StackLayout HorizontalOptions="FillAndExpand" Padding="0">
+                                                                        <!--Cover Iamge-->
+                                                                        <Image Source="{Binding UrlImgCoverVM}" HeightRequest="100" HorizontalOptions="FillAndExpand" Aspect="AspectFill">
+                                                                            <Image.GestureRecognizers>
+                                                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=OpenFullScreenCoverPhotoCommand}" CommandParameter="{Binding UrlImgCoverVM}"></TapGestureRecognizer>
+                                                                            </Image.GestureRecognizers>
+                                                                        </Image>
+                                                                        <Grid HorizontalOptions="FillAndExpand">
+                                                                            <VerticalStackLayout>
+                                                                                <!--Profile Iamge-->
+                                                                                <Border StrokeShape="RoundRectangle 50" WidthRequest="90" HorizontalOptions="CenterAndExpand" TranslationY="-45" HeightRequest="90">
+                                                                                    <Image Source="{Binding UrlImgProfileVM}" Aspect="Fill" HeightRequest="90"></Image>
+                                                                                    <Border.GestureRecognizers>
+                                                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=OpenFullScreenProfilePhotoCommand}" CommandParameter="{Binding UrlImgProfileVM}"></TapGestureRecognizer>
+                                                                                    </Border.GestureRecognizers>
+                                                                                </Border>
+                                                                                <!--Card Data-->
+                                                                                <VerticalStackLayout HorizontalOptions="CenterAndExpand" HeightRequest="40" Margin="10,0,0,0" TranslationY="-35">
+                                                                                    <Label Text="{Binding CardName}" TextColor="Black" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                                                                    <Label Text="{Binding JobTitle}" TextColor="Black" FontSize="12" HorizontalTextAlignment="Center"></Label>
+                                                                                </VerticalStackLayout>
+                                                                                <!--Card Optiones-->
+                                                                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" Margin="25,0" TranslationY="-25">
+                                                                                    <!--Edit Card-->
+                                                                                    <Button Text="{x:Static res:AppResources.btnEdit}" HorizontalOptions="FillAndExpand" BackgroundColor="#FF7F3E" CornerRadius="14"
+                                                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=EditCardClickCommand}"
+                                                                                            CommandParameter="{Binding .}" WidthRequest="80"></Button>
+                                                                                    <!--PreView-->
+                                                                                    <Button Text="{x:Static res:AppResources.btnPreview}" HorizontalOptions="FillAndExpand" BackgroundColor="#FF7F3E" CornerRadius="14"
+                                                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=CardPreViewClickCommand}"
+                                                                                            CommandParameter="{Binding .}" WidthRequest="80"></Button>
+                                                                                    <!--More Optiions-->
+                                                                                    <Border StrokeShape="RoundRectangle 14" StrokeThickness="0" BackgroundColor="#FF7F3E" HorizontalOptions="FillAndExpand" WidthRequest="80">
+                                                                                        <Image WidthRequest="25">
+                                                                                            <Image.Source>
+                                                                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="15"></FontImageSource>
+                                                                                            </Image.Source>
+                                                                                            <Image.GestureRecognizers>
+                                                                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CardsViewModel}},Path=MoreOPtionsClickCommand}" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                                                                            </Image.GestureRecognizers>
+                                                                                        </Image>
+
+                                                                                    </Border>
+                                                                                </StackLayout>
+                                                                            </VerticalStackLayout>
+                                                                        </Grid>
+                                                                    </StackLayout>
+                                                                </StackLayout>
+                                                                <Border.Shadow>
+                                                                    <Shadow Offset="0,10" Brush="{OnPlatform Android=LightGray,iOS=LightGray}" Radius="10"></Shadow>
+                                                                </Border.Shadow>
+                                                            </Border>
+                                                        </StackLayout>
+                                                    </DataTemplate>
+                                                </CollectionView.ItemTemplate>
+                                                <CollectionView.EmptyView>
+                                                    <ContentView>
+                                                        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                                            <Label Text="{x:Static res:AppResources.plcNoAvailableCards}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                        </StackLayout>
+                                                    </ContentView>
+                                                </CollectionView.EmptyView>
+                                            </CollectionView>
+                                        </Grid>
+                                    </ScrollView>
+                                </RefreshView>
+
+                            </StackLayout>
+
+                        </ContentView>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+                <!--Leads-->
+                <tabView:SfTabItem>
+                    <ContentView x:Name="LeadView" IsEnabled="{Binding IsEnable}" Margin="20">
+                        <StackLayout Spacing="20" VerticalOptions="FillAndExpand">
+                            <!--Header-->
+                            <StackLayout Orientation="Horizontal">
+                                <!--Leads Count-->
+                                <HorizontalStackLayout Spacing="3">
+                                    <Label Text="{x:Static res:AppResources.lblLeadCount}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" TextColor="#FF7F3E"></Label>
+                                    <Label Text=":" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" TextColor="#FF7F3E"></Label>
+                                    <Label Text="{Binding Leads.Count}" FontAutoScalingEnabled="False" FontSize="14" FontAttributes="Bold" TextColor="#FF7F3E"></Label>
+                                </HorizontalStackLayout>
+
+                                <!--Titel-->
+                                <Label Text="{x:Static res:AppResources.hdrLeads}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                                   TextColor="Black"></Label>
+
+                                <!--Add Lead Button-->
+                                <Image>
+                                    <Image.Source>
+                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E" Size="20"></FontImageSource>
+                                    </Image.Source>
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding AddLeadClickCommand}"></TapGestureRecognizer>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" Spacing="20">
+                                <!--Filter-->
+                                <Image >
+                                    <Image.Source>
+                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="22" Color="#333"></FontImageSource>
+                                    </Image.Source>
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding FilterClickCommand}"></TapGestureRecognizer>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                                <!--SearchBar-->
+                                <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" HeightRequest="40" HorizontalOptions="FillAndExpand">
+                                    <SearchBar x:Name="LeadSearc" Placeholder="{x:Static res:AppResources.plcSearch}" TextColor="Black" FontSize="14" TextChanged="SearchBar_Lead" BackgroundColor="White"></SearchBar>
+                                </Border>
+                            </StackLayout>
+
+                            <Grid VerticalOptions="FillAndExpand">
+                                <!--Data-->
+                                <RefreshView x:Name="LeadRef" VerticalOptions="FillAndExpand" Refreshing="Lead_Refreshing">
+                                    <!--Leads-->
+                                    <CollectionView x:Name="LeadColc" ItemsSource="{Binding Leads}" VerticalOptions="FillAndExpand" RemainingItemsThreshold="1" RemainingItemsThresholdReachedCommand="{Binding GetLoadMoreCommand}">
+                                        <CollectionView.ItemsLayout>
+                                            <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border StrokeShape="RoundRectangle 20" Padding="10" BackgroundColor="White">
+                                                    <StackLayout Orientation="Horizontal" Spacing="10" >
+                                                        <!--Image Profile-->
+                                                        <Border StrokeShape="RoundRectangle 50" HeightRequest="60" WidthRequest="60">
+                                                            <Image Source="{Binding UrlImgProfileVM}" Aspect="AspectFill">
+                                                                <!--<Image.Triggers>
+                                                                <DataTrigger TargetType="Image" Binding="{Binding UrlImgProfileVM}" Value="https://api.cardrly.com/">
+                                                                    <Setter Property="Source">
+                                                                        <Setter.Value>
+                                                                            <FontImageSource Glyph="" FontFamily="FontIcon" Size="25" Color="Black"></FontImageSource>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                    <Setter Property="Aspect" Value="AspectFit"></Setter>
+                                                                    <Setter Property="Margin" Value="15"></Setter>
+                                                                </DataTrigger>
+                                                            </Image.Triggers>-->
+                                                            </Image>
+                                                        </Border>
+                                                        <!--Name & Company-->
+                                                        <VerticalStackLayout Margin="0,0,0,0" HorizontalOptions="FillAndExpand" Spacing="2" VerticalOptions="Center">
+                                                            <Label Text="{Binding FullName}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                            <Label Text="{Binding CreatedDate ,StringFormat='{}{0:MM/dd/yyy}'}" FontSize="12" TextColor="Gray" FontAttributes="Italic" Margin="0,0,0,0"></Label>
+                                                            <Label Text="{Binding Company}" FontSize="12" TextColor="Gray" FontAttributes="Bold"></Label>
+                                                        </VerticalStackLayout>
+                                                        <VerticalStackLayout Margin="0,0,0,0">
+                                                            <Label Text="{Binding CardName}" HorizontalTextAlignment="Center" FontSize="12" TextColor="Gray" FontAttributes="Bold"></Label>
+
+                                                            <HorizontalStackLayout Spacing="5">
+                                                                <!--Active Click-->
+                                                                <CheckBox Color="#FF7F3E" IsChecked="{Binding Active}">
+                                                                    <CheckBox.GestureRecognizers>
+                                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type Lvm:LeadViewModel}},Path=ActiveClickCommand}"
+                                                                                              CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                                                    </CheckBox.GestureRecognizers>
+                                                                </CheckBox>
+                                                                <!--More Optiions-->
+                                                                <Image>
+                                                                    <Image.Source>
+                                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                                                                    </Image.Source>
+                                                                    <Image.GestureRecognizers>
+                                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type Lvm:LeadViewModel}},Path=MoreOptionClickCommand}"
+                                                                                              CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                                                    </Image.GestureRecognizers>
+                                                                </Image>
+                                                            </HorizontalStackLayout>
+
+                                                            <HorizontalStackLayout HorizontalOptions="Center" Spacing="3">
+                                                                <Label Text="{Binding LeadCommentCount}" HorizontalTextAlignment="Center" FontSize="11" TextColor="Gray" FontAttributes="Bold"></Label>
+                                                                <Label Text="{x:Static res:AppResources.lblComments}" HorizontalTextAlignment="Center" FontSize="11" TextColor="Gray" FontAttributes="Bold"></Label>
+                                                            </HorizontalStackLayout>
+                                                            
+
+                                                        </VerticalStackLayout>
+                                                        
+                                                    </StackLayout>
+                                                    <Border.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type Lvm:LeadViewModel}},Path=SelectClickCommand}"
+                                                                      CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                                    </Border.GestureRecognizers>
+                                                </Border>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                        <CollectionView.EmptyView>
+                                            <ContentView>
+                                                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                                    <Label Text="{x:Static res:AppResources.plcNoAvailableLaeds}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                </StackLayout>
+                                            </ContentView>
+                                        </CollectionView.EmptyView>
+                                    </CollectionView>
+                                </RefreshView>
+                            </Grid>
+                        </StackLayout>
+                    </ContentView>
+                    <tabView:SfTabItem.ImageSource>
+                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
+                    </tabView:SfTabItem.ImageSource>
+                </tabView:SfTabItem>
+                <!--Calendar-->
+                <tabView:SfTabItem>
+                    <tabView:SfTabItem.ImageSource>
+                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
+                    </tabView:SfTabItem.ImageSource>
+                    <tabView:SfTabItem.Content>
+                        <ContentView x:Name="CalendarView" IsEnabled="{Binding IsEnable}" Margin="20">
+                            <StackLayout Spacing="20">
+                                <!--Header-->
+                                <Label Text="{x:Static res:AppResources.hdrCalendar}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                                           TextColor="Black"></Label>
+                                <!--Data Menu-->
+                                <Grid VerticalOptions="FillAndExpand">
+                                    <ScrollView VerticalOptions="FillAndExpand">
+                                        <Grid VerticalOptions="FillAndExpand">
+                                            <CollectionView x:Name="CalenderCollcView" VerticalOptions="FillAndExpand" IsVisible="{Binding IsShowCollection}">
+                                                <CollectionView.ItemsLayout>
+                                                    <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
+                                                </CollectionView.ItemsLayout>
+                                                <CollectionView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <!--Data View-->
+                                                        <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Stroke="Black">
+                                                            <StackLayout>
+                                                                <!--Meeting Data-->
+                                                                <HorizontalStackLayout BackgroundColor="Black" Padding="10" Spacing="3">
+                                                                    <Label Text="{Binding start_time,StringFormat='{0:dddd}'}" FontSize="12" TextColor="White">
+                                                                        <Label.Triggers>
+                                                                            <!--For OutLook Date-->
+                                                                            <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="2">
+                                                                                <Setter Property="Text" Value="{Binding Start.DateTime,StringFormat='{0:dddd}'}"></Setter>
+                                                                            </DataTrigger>
+                                                                            <!--For Gmail Date-->
+                                                                            <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="1">
+                                                                                <Setter Property="Text" Value="{Binding Start.DateTime,StringFormat='{0:dddd}'}"></Setter>
+                                                                            </DataTrigger>
+                                                                        </Label.Triggers>
+                                                                    </Label>
+                                                                    <Label Text="," FontSize="12" TextColor="White"></Label>
+                                                                    <Label Text="{Binding start_time,StringFormat='{0:yyyy-MM-dd}'}" FontSize="12" TextColor="White">
+                                                                        <Label.Triggers>
+                                                                            <!--For OutLook Date-->
+                                                                            <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="2">
+                                                                                <Setter Property="Text" Value="{Binding Start.DateTime,StringFormat='{0:yyyy-MM-dd}'}"></Setter>
+                                                                            </DataTrigger>
+                                                                            <!--For Gmail Date-->
+                                                                            <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="1">
+                                                                                <Setter Property="Text" Value="{Binding Start.DateTime,StringFormat='{0:yyyy-MM-dd}'}"></Setter>
+                                                                            </DataTrigger>
+                                                                        </Label.Triggers>
+                                                                    </Label>
+                                                                </HorizontalStackLayout>
+                                                                <!--Meeting Date-->
+                                                                <StackLayout Orientation="Horizontal" Padding="10" Spacing="3">
+                                                                    <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
+                                                                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                                                            <Label Text="{Binding start_time,StringFormat='{0:hh:mm tt}'}" FontSize="12" TextColor="Black" FontAttributes="Bold">
+                                                                                <Label.Triggers>
+                                                                                    <!--For OutLook Date-->
+                                                                                    <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="2">
+                                                                                        <Setter Property="Text" Value="{Binding Start.DateTime,StringFormat='{0:hh:mm tt}'}"></Setter>
+                                                                                    </DataTrigger>
+                                                                                    <!--For Gmail Date-->
+                                                                                    <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="1">
+                                                                                        <Setter Property="Text" Value="{Binding Start.DateTime,StringFormat='{0:hh:mm tt}'}"></Setter>
+                                                                                    </DataTrigger>
+                                                                                </Label.Triggers>
+                                                                            </Label>
+                                                                            <Label Text="-" FontSize="12" TextColor="Black" FontAttributes="Bold"></Label>
+                                                                            <Label Text="{Binding end_time,StringFormat='{0:hh:mm tt}'}" FontSize="12" TextColor="Black" FontAttributes="Bold">
+                                                                                <Label.Triggers>
+                                                                                    <!--For OutLook Date-->
+                                                                                    <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="2">
+                                                                                        <Setter Property="Text" Value="{Binding End.DateTime,StringFormat='{0:hh:mm tt}'}"></Setter>
+                                                                                    </DataTrigger>
+                                                                                    <!--For Gmail Date-->
+                                                                                    <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="1">
+                                                                                        <Setter Property="Text" Value="{Binding End.DateTime,StringFormat='{0:hh:mm tt}'}"></Setter>
+                                                                                    </DataTrigger>
+                                                                                </Label.Triggers>
+                                                                            </Label>
+                                                                            <Label Text="{Binding Invitees[0].Name}" FontSize="12" TextColor="Black" FontAttributes="Bold" MaxLines="1" HorizontalOptions="EndAndExpand">
+                                                                                <Label.Triggers>
+                                                                                    <!--For OutLook Date-->
+                                                                                    <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="2">
+                                                                                        <Setter Property="Text" Value="{Binding Attendees[0].EmailAddress.Name}"></Setter>
+                                                                                    </DataTrigger>
+                                                                                    <!--For Gmail Date-->
+                                                                                    <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="1">
+                                                                                        <Setter Property="Text" Value="{Binding Attendees[0].Email}"></Setter>
+                                                                                    </DataTrigger>
+                                                                                </Label.Triggers>
+                                                                            </Label>
+                                                                        </StackLayout>
+                                                                        <HorizontalStackLayout Spacing="3">
+                                                                            <Label Text="{x:Static res:AppResources.lblEventType}" FontSize="12" TextColor="Black"></Label>
+                                                                            <Label Text=":" FontSize="12" TextColor="Black"></Label>
+                                                                            <Label Text="{Binding EventType}" FontSize="12" TextColor="Black" FontAttributes="Bold">
+                                                                                <Label.Triggers>
+                                                                                    <!--For OutLook Date-->
+                                                                                    <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="2">
+                                                                                        <Setter Property="Text" Value="{Binding Subject}"></Setter>
+                                                                                    </DataTrigger>
+                                                                                    <!--For Gmail Date-->
+                                                                                    <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=SelectedProvider.Value}" Value="1">
+                                                                                        <Setter Property="Text" Value="{Binding Summary}"></Setter>
+                                                                                    </DataTrigger>
+                                                                                </Label.Triggers>
+                                                                            </Label>
+                                                                        </HorizontalStackLayout>
+                                                                    </VerticalStackLayout>
+                                                                </StackLayout>
+                                                            </StackLayout>
+                                                            <Border.GestureRecognizers>
+                                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CalendarViewModel}},Path=CalendlyItemClickCommand}"
+                                                                                  CommandParameter="{Binding}"></TapGestureRecognizer>
+                                                            </Border.GestureRecognizers>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </CollectionView.ItemTemplate>
+                                                <!--<CollectionView.EmptyView>
+                                                <ContentView>
+                                                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                                        <Label Text="{x:Static res:AppResources.PlcNoAvailableEvents}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                    </StackLayout>
+                                                </ContentView>
+                                            </CollectionView.EmptyView>-->
+                                                <CollectionView.Triggers>
+                                                    <DataTrigger TargetType="CollectionView" Binding="{Binding SelectedProvider.Value}" Value="3">
+                                                        <Setter Property="ItemsSource" Value="{Binding CalendlyResponses}"></Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="CollectionView" Binding="{Binding SelectedProvider.Value}" Value="2">
+                                                        <Setter Property="ItemsSource" Value="{Binding CalendarOutlookEvents}"></Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="CollectionView" Binding="{Binding SelectedProvider.Value}" Value="1">
+                                                        <Setter Property="ItemsSource" Value="{Binding CalendarEventGmails}"></Setter>
+                                                    </DataTrigger>
+                                                </CollectionView.Triggers>
+                                            </CollectionView>
+
+                                            <StackLayout x:Name="stkNoData" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="False">
+                                                <Label Text="{x:Static res:AppResources.PlcNoAvailableAppointments}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                                                <StackLayout.Triggers>
+                                                    <DataTrigger TargetType="StackLayout" Binding="{Binding IsShowCollection}" Value="False">
+                                                        <Setter Property="IsVisible" Value="True"></Setter>
+                                                    </DataTrigger>
+                                                </StackLayout.Triggers>
+                                            </StackLayout>
+
+                                        </Grid>
+                                    </ScrollView>
+                                    <!--Expender-->
+                                    <Border BackgroundColor="#FF7F3E" Stroke="Transparent" Padding="1" VerticalOptions="End" HorizontalOptions="End" Margin="20">
+                                        <xct:Expander>
+                                            <xct:Expander.Header>
+                                                <Image Margin="10">
+                                                    <Image.Source>
+                                                        <FontImageSource FontFamily="FontIconSolid" Color="Black" Glyph="" Size="22"></FontImageSource>
+                                                    </Image.Source>
+                                                </Image>
+                                            </xct:Expander.Header>
+                                            <StackLayout Spacing="30" Margin="0,8">
+                                                <!--Filter-->
+                                                <Image >
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="22" Color="White"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding FilterClickCommand}"></TapGestureRecognizer>
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                                <!--Add Event-->
+                                                <Image>
+                                                    <Image.Source>
+                                                        <FontImageSource FontFamily="FontIconSolid" Color="White" Glyph="" Size="22"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding AddEventClickCommand}"></TapGestureRecognizer>
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </StackLayout>
+                                        </xct:Expander>
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="{OnPlatform Android=100, iOS=23}"></RoundRectangle>
+                                        </Border.StrokeShape>
+                                        <Border.Shadow>
+                                            <Shadow Offset="1,2" Brush="{OnPlatform Android=Gray, iOS=LightGray}" Radius="5" Opacity="1"></Shadow>
+                                        </Border.Shadow>
+                                    </Border>
+                                </Grid>
+                            </StackLayout>
+                        </ContentView>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+                <!--More-->
+                <tabView:SfTabItem>
+                    <tabView:SfTabItem.ImageSource>
+                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray"></FontImageSource>
+                    </tabView:SfTabItem.ImageSource>
+                    <tabView:SfTabItem.Content>
+                        <ContentView x:Name="MoreView" IsEnabled="{Binding IsEnable}" Margin="20">
+                            <ScrollView VerticalOptions="FillAndExpand">
+                                <StackLayout Spacing="20">
+                                    <Label Text="{x:Static res:AppResources.hdrMore}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                                       TextColor="Black"></Label>
+                                    <!--Account & Change Password & Activate a Cardrly Device & My Devices-->
+                                    <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
+                                        <VerticalStackLayout Spacing="15">
+                                            <!--Account Info-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.hdrAccountInfo}" FontAutoScalingEnabled="False" TextColor="Black"
+                                                   FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding AccountInfoClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <!--Change Password-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblChangePassword}" FontAutoScalingEnabled="False" TextColor="Black"
+                                                       FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding ChangePasswordClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            
+                                            
+                                            <!--Time Sheet--><!--
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblTimeSheet}" FontAutoScalingEnabled="False" TextColor="Black"
+                                                       FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding TimeSheetClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            --><!--Tracking--><!--
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblTracking}" FontAutoScalingEnabled="False" TextColor="Black"
+                                                       FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding TrackingClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>-->
+                                            
+                                            
+                                            <!--Activate a Cardrly Device-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblACD}" FontAutoScalingEnabled="False" TextColor="Black"
+                                                   FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding ActiveDeviceClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <!--My Devices-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblMyDevices}" FontAutoScalingEnabled="False" TextColor="Black"
+                                                   FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding DeviceClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            
+                                            
+                                            <!--Meetings Script--><!--
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblMeetingsScript}" FontAutoScalingEnabled="False" TextColor="Black"
+                                                       FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding MeetingsScriptClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>-->
+                                            
+                                            
+                                        </VerticalStackLayout>
+                                    </Border>
+                                    <!--Billing-->
+                                    <Border StrokeShape="RoundRectangle 15" IsVisible="{Binding IsShowBullingInfo}" BackgroundColor="White" Padding="10">
+                                        <!--Billing-->
+                                        <VerticalStackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblBillingInfo}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding BillingClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                    <!--Help & Support & FAQ & Documents & Shop & Language-->
+                                    <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
+                                        <VerticalStackLayout Spacing="15">
+                                            <!--Help & Support-->
+                                            <StackLayout Orientation="Horizontal" Spacing="7">
+                                                <Label Text="{x:Static res:AppResources.lblHelpSupport}" FontAutoScalingEnabled="False" TextColor="Black"
+                                                   FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding HelpClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <!--FAQ-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblFAQ}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding FAQClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <!--Documents-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblDocumentation}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding DocumentsClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <!--Shop-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblShop}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding ShopClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <!--Language-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblLanguage}" FontAutoScalingEnabled="False" TextColor="Black" FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding LanguageClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                    <!--logout-->
+                                    <Border StrokeShape="RoundRectangle 15" BackgroundColor="White" Padding="10">
+                                        <!--logout-->
+                                        <VerticalStackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblLogout}" FontAutoScalingEnabled="False" TextColor="Red" FontSize="14" VerticalTextAlignment="Start" FontAttributes="Bold"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Red" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding LogoutClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </StackLayout>
+                            </ScrollView>
+                        </ContentView>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+            </tabView:SfTabView.Items>
+        </tabView:SfTabView>
+    </StackLayout>
+</Controls:CustomControl>

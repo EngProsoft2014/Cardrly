@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Controls="clr-namespace:Cardrly.Controls"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+             x:Class="Cardrly.Pages.BillingPage"
+             Title="BillingPage">
+    <StackLayout Margin="20">
+        <!--Header-->
+        <StackLayout Orientation="Horizontal">
+            <Image VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="{x:Static res:AppResources.lblBilling}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                   TextColor="Black" VerticalOptions="CenterAndExpand" >
+            </Label>
+        </StackLayout>
+        <!--Subscriptions-->
+        <Label Text="{x:Static res:AppResources.lblSubscriptions}" TextColor="Black" FontSize="16" FontAttributes="Bold" VerticalTextAlignment="Center"
+               Margin="0,20,0,10"></Label>
+        <CollectionView ItemsSource="{Binding PaymentDetailsModels.Products}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White"
+                            Margin="{OnPlatform Android='0,0,0,15',iOS='0,5,0,0'}">
+                        <StackLayout Spacing="5">
+                            <Label Text="{Binding Name}" TextColor="Black" FontAttributes="Bold" FontSize="14" VerticalTextAlignment="Center"></Label>
+                            <Label TextColor="Black" FontSize="14" VerticalTextAlignment="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{x:Static res:AppResources.RenewalAmount}" TextColor="Black" FontSize="14"></Span>
+                                        <Span Text=" "></Span>
+                                        <Span Text="{Binding Amount}" FontAttributes="Bold" TextColor="Black" FontSize="14"></Span>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label TextColor="Black" FontSize="14" VerticalTextAlignment="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{x:Static res:AppResources.lblOn}" TextColor="Black" FontSize="14"></Span>
+                                        <Span Text=" "></Span>
+                                        <Span Text="{Binding NextBillingDate}" TextColor="Black" FontSize="14"></Span>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </StackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <!--Billing Activity-->
+        <Label Text="{x:Static res:AppResources.lblBillingActivity}" TextColor="Black" FontSize="16" FontAttributes="Bold" VerticalTextAlignment="Center"
+               Margin="0,10,0,10"></Label>
+        <CollectionView ItemsSource="{Binding PaymentDetailsModels.PaymentHistory}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10"></GridItemsLayout>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Yellow" BackgroundColor="White">
+                        <StackLayout Spacing="5">
+                            <HorizontalStackLayout Spacing="3">
+                                <Label Text="{x:Static res:AppResources.lblDate}" TextColor="Gray" FontSize="13" VerticalTextAlignment="Center"></Label>
+                                <Label Text=":" TextColor="Black" FontSize="13" VerticalTextAlignment="Center"></Label>
+                                <Label Text="{Binding CreatedAtView}" TextColor="Black" FontSize="13" VerticalTextAlignment="Center"></Label>
+                            </HorizontalStackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <HorizontalStackLayout Spacing="3">
+                                    <Label Text="{x:Static res:AppResources.lblAction}" TextColor="Gray" FontSize="13" VerticalTextAlignment="Center"></Label>
+                                    <Label Text=":" TextColor="Black" FontSize="13" VerticalTextAlignment="Center"></Label>
+                                    <Label Text="{Binding Description}" TextColor="Black" FontSize="13" VerticalTextAlignment="Center"></Label>
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout Spacing="3" HorizontalOptions="EndAndExpand">
+                                    <Label Text="{x:Static res:AppResources.lblAmount}" TextColor="Gray" FontSize="13" VerticalTextAlignment="Center"></Label>
+                                    <Label Text=":" TextColor="Black" FontSize="13" VerticalTextAlignment="Center"></Label>
+                                    <Label Text="{Binding Amount}" TextColor="Black" FontSize="13" VerticalTextAlignment="Center"></Label>
+                                    <Label Text="{Binding Currency}" TextColor="Black" FontSize="13" VerticalTextAlignment="Center"></Label>
+                                </HorizontalStackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding Status}" Value="succeeded">
+                                <Setter Property="Stroke" Value="Green"></Setter>
+                            </DataTrigger>
+                        </Border.Triggers>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</Controls:CustomControl> 

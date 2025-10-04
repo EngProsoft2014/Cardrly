@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Controls="clr-namespace:Cardrly.Controls"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
+             x:Class="Cardrly.Pages.ScanQrPage"
+             Title="ScanQrPage">
+    <StackLayout VerticalOptions="FillAndExpand">
+        <Grid VerticalOptions="FillAndExpand">
+            <zxing:CameraBarcodeReaderView x:Name="cameraBarcodeReaderView" BarcodesDetected="cameraBarcodeReaderView_BarcodesDetected" 
+                                       VerticalOptions="FillAndExpand" />
+            
+            
+            <Border StrokeShape="RoundRectangle 20" Stroke="White" StrokeThickness="2" VerticalOptions="CenterAndExpand" Padding="5" Margin="100,0">
+                <Image Source="qrcode" Opacity="0.5" VerticalOptions="FillAndExpand" HeightRequest="{OnPlatform iOS=200}"></Image>
+            </Border>
+            <Image VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Margin="20">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="30" Color="White"></FontImageSource>
+                </Image.Source>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+
+            <Button Text="{x:Static res:AppResources.btnManualQRCode}" CornerRadius="10" Margin="0,0,0,10" BackgroundColor="OrangeRed" HorizontalOptions="CenterAndExpand" VerticalOptions="End" Clicked="Button_Clicked"></Button>
+        </Grid>
+        
+    </StackLayout>
+</Controls:CustomControl>

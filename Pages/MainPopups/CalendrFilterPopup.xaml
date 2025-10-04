@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+             xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+             x:Class="Cardrly.Pages.MainPopups.CalendrFilterPopup"
+             NavigationPage.HasNavigationBar="False" 
+             CloseWhenBackgroundIsClicked="False"
+             BackgroundColor="#90000000"
+             Title="CalendrFilterPopup">
+    <mopups:PopupPage.Animation>
+        <mopupsanim:MoveAnimation
+               DurationIn="700"
+               EasingIn="BounceOut"
+               PositionIn="Bottom"
+               PositionOut="Center" />
+    </mopups:PopupPage.Animation>
+    <Border Padding="10" Margin="0" BackgroundColor="Transparent" StrokeThickness="0" VerticalOptions="CenterAndExpand">
+        <StackLayout  HorizontalOptions="FillAndExpand" Spacing="20">
+
+            <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
+                <StackLayout  BackgroundColor="#FFFFFF" Spacing="3" Padding="10">
+
+                    <VerticalStackLayout Spacing="7">
+
+                        <Image HorizontalOptions="EndAndExpand" Margin="20,0">
+                            <Image.Source>
+                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="25"></FontImageSource>
+                            </Image.Source>
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <!--Upper Data Menu-->
+                        <StackLayout Orientation="Horizontal" Spacing="10"  HorizontalOptions="FillAndExpand">
+                            <Grid ColumnSpacing="10" HorizontalOptions="FillAndExpand">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <!--From-->
+                                <VerticalStackLayout Spacing="5" Grid.Column="0">
+                                    <Label Text="{x:Static res:AppResources.lblFrom}" TextColor="#333" FontSize="13"></Label>
+                                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
+                                        <DatePicker x:Name="FromPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
+                                                    Date="{Binding FromDate}"></DatePicker>
+                                    </Border>
+                                </VerticalStackLayout>
+                                <!--To-->
+                                <VerticalStackLayout Spacing="5" Grid.Column="1">
+                                    <Label Text="{x:Static res:AppResources.lblTo}" TextColor="#333" FontSize="13"></Label>
+                                    <Border  StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
+                                        <DatePicker x:Name="ToPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0"
+                                                    Date="{Binding ToDate}"></DatePicker>
+                                    </Border>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </StackLayout>
+                        <!--Lower Data Menu-->
+                        <StackLayout Orientation="Horizontal" Spacing="14" HorizontalOptions="FillAndExpand">
+                            <Grid ColumnSpacing="10" HorizontalOptions="FillAndExpand">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <!--Select Card-->
+                                <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand" Grid.Column="1">
+                                    <Label Text="{x:Static res:AppResources.lblCard}" TextColor="#333" FontSize="13"></Label>
+                                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40">
+                                        <Grid>
+                                            <Label x:Name="PlaceholderCardLabel"
+                                                         Text="{x:Static res:AppResources.plcCard}"
+                                                         TextColor="Gray"
+                                                         VerticalOptions="Center"
+                                                         HorizontalOptions="Start"
+                                                         IsVisible="True"
+                                                         Padding="10"
+                                                         BackgroundColor="Transparent"
+                                                         InputTransparent="True"/>
+
+                                            <Picker x:Name="CalenderCardPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding CardName}" SelectedIndexChanged="CalenderCardPicker_SelectedIndexChanged"></Picker>
+
+                                        </Grid>
+
+                                    </Border>
+                                </VerticalStackLayout>
+                                <!--Provider-->
+                                <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{x:Static res:AppResources.lblProvider}" TextColor="#333" FontSize="13"></Label>
+                                    <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="40" Grid.Column="0" VerticalOptions="EndAndExpand">
+
+                                        <Grid>
+                                            <Label x:Name="PlaceholderProviderLabel"
+                                                    Text="{x:Static res:AppResources.plcProvider}"
+                                                    TextColor="Gray"
+                                                    VerticalOptions="Center"
+                                                    HorizontalOptions="Start"
+                                                    IsVisible="True"
+                                                    Padding="10"
+                                                    BackgroundColor="Transparent"
+                                                    InputTransparent="True"/>
+
+                                            <Picker x:Name="ProviderPicker" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0" ItemDisplayBinding="{Binding Name}" SelectedIndexChanged="ProviderPicker_SelectedIndexChanged"></Picker>
+
+                                        </Grid>
+                                    </Border>
+                                </VerticalStackLayout>
+
+                            </Grid>
+                        </StackLayout>
+                        <!--Save Button-->
+                        <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnSave}" FontSize="16" FontAttributes="Bold"
+                                 BackgroundColor="#FF7F3E" TextColor="White" HorizontalOptions="FillAndExpand" Margin="0,10,0,0" Clicked="Save_Clicked"></Button>
+                    </VerticalStackLayout>
+
+                </StackLayout>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="25"></RoundRectangle>
+                </Border.StrokeShape>
+            </Border>
+        </StackLayout>
+    </Border>
+
+</mopups:PopupPage>

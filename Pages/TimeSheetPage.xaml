@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:Controls="clr-namespace:Cardrly.Controls"
+                        xmlns:vm="clr-namespace:Cardrly.ViewModels"
+                        xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+                        xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+                        xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
+                        x:Class="Cardrly.Pages.TimeSheetPage"
+                        BackgroundColor="White"
+                        Title="TimeSheetPage">
+
+    <StackLayout x:Name="TimeSheetsView" Margin="0,20,0,10" Spacing="5">
+
+        <!--Header-->
+        <StackLayout Orientation="Horizontal" Margin="20,0,20,15">
+            <Image VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="{x:Static res:AppResources.lblTimeSheet}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
+            </Label>
+        </StackLayout>
+        
+        <!--Date-->
+        <Border StrokeShape="RoundRectangle 20" Margin="20,0,20,0" BackgroundColor="White" HeightRequest="60" HorizontalOptions="FillAndExpand">
+            <StackLayout Orientation="Horizontal" Padding="20,0,20,0" Spacing="0">
+
+                <!--Back Date-->
+                <Image>
+                    <Image.Source>
+                        <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="20"></FontImageSource>
+                    </Image.Source>
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackDayCommand}"></TapGestureRecognizer>
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <Border BackgroundColor="White" HorizontalOptions="FillAndExpand" HeightRequest="60" Margin="50,0,50,0">
+                    <StackLayout Orientation="Horizontal" Spacing="10" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                        <Label x:Name="lblDate" Text="{Binding Date}" TextColor="#333" FontSize="16"></Label>
+                        <Image>
+                            <Image.Source>
+                                <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="16"></FontImageSource>
+                            </Image.Source>
+                        </Image>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectedDateCommand}"></TapGestureRecognizer>
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                    <Border.Shadow>
+                        <Shadow Brush="{OnPlatform Android=LightGray, iOS=LightGray}" Radius="{OnPlatform Android=5,iOS=3}"></Shadow>
+                    </Border.Shadow>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="{OnPlatform Android=50,iOS=25}"></RoundRectangle>
+                    </Border.StrokeShape>
+                </Border>
+
+                <!--Next Date-->
+                <Image>
+                    <Image.Source>
+                        <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="20"></FontImageSource>
+                    </Image.Source>
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NextDayCommand}"></TapGestureRecognizer>
+                    </Image.GestureRecognizers>
+                </Image>
+            </StackLayout>
+        </Border>
+        <!--Search Bar-->
+        <Border BackgroundColor="White" Margin="20,10,20,10" HeightRequest="{OnPlatform Android=42, iOS=55}" HorizontalOptions="FillAndExpand">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <SearchBar x:Name="srcBarEmployee"
+                           Placeholder="Search" TextColor="#333"
+                           HorizontalOptions="FillAndExpand" 
+                           BackgroundColor="White"
+                           FontSize="14"></SearchBar>
+            </StackLayout>
+
+            <Border.Shadow>
+                <Shadow Brush="{OnPlatform Android=LightGray, iOS=LightGray}" Radius="{OnPlatform Android=5,iOS=3}"></Shadow>
+            </Border.Shadow>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="{OnPlatform Android=20,iOS=20}" Stroke="LightGray" StrokeThickness="1"></RoundRectangle>
+            </Border.StrokeShape>
+        </Border>
+        <tabView:SfTabView IndicatorBackground="#f7e3d2" IndicatorPlacement="Fill" FlowDirection="LeftToRight" Padding="0"
+                           TabBarHeight="50" VerticalOptions="FillAndExpand" TabBarPlacement="Top"
+                           SelectionChanged="TimeSheet_SelectionChanged">
+            <!--Check In-->
+            <tabView:SfTabItem Header="Check In" TextColor="Black" BadgeText="{Binding NumIn}" FontSize="15" FontFamily="Almarai-Regular" 
+                               BackgroundColor="Transparent" FontAttributes="Bold">
+
+                <tabView:SfTabItem.BadgeSettings>
+                    <core:BadgeSettings FontSize="12" 
+                                        TextPadding="{OnPlatform Android=3,iOS=1}"
+                                        Position="TopRight" 
+                                        Background="#f26d29"
+                                        FontAttributes="Bold">
+                    </core:BadgeSettings>
+                </tabView:SfTabItem.BadgeSettings>
+
+                <tabView:SfTabItem.Content>
+                    <ContentView Margin="10,20,10,0">
+                        <!--Clock IN-->
+                        <StackLayout x:Name="stkClockIN" VerticalOptions="FillAndExpand">
+
+                            <CollectionView x:Name="lstEmployeesIn" SelectionMode="None" BackgroundColor="White"
+                                          ItemsSource="{Binding LstEmployeesIn}" VerticalOptions="FillAndExpand"
+                                          VerticalScrollBarVisibility="Never">
+                                <CollectionView.ItemsLayout>
+                                    <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="15"></GridItemsLayout>
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout Spacing="10">
+                                            <StackLayout Orientation="Horizontal">
+                                                <Border BackgroundColor="#f26d29" HorizontalOptions="FillAndExpand">
+                                                    <Label Text="{Binding EmployeeName}"
+                                                                FontAttributes="Bold"
+                                                                TextColor="White" 
+                                                                HorizontalTextAlignment="Start"
+                                                                VerticalTextAlignment="Center"
+                                                                Padding="20,7,20,7"></Label>
+                                                    <Border.Shadow>
+                                                        <Shadow Brush="{OnPlatform Android=Gray, iOS=LightGray}" Radius="{OnPlatform Android=5,iOS=3}"></Shadow>
+                                                    </Border.Shadow>
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="10"></RoundRectangle>
+                                                    </Border.StrokeShape>
+                                                    <Border.Triggers>
+                                                        <DataTrigger TargetType="Border" Binding="{Binding MytimeSheet}" Value="1">
+                                                            <Setter Property="BackgroundColor" Value="#8f1fff"></Setter>
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Border" Binding="{Binding MytimeSheet}" Value="2">
+                                                            <Setter Property="BackgroundColor" Value="#8f1fff"></Setter>
+                                                        </DataTrigger>
+                                                    </Border.Triggers>
+                                                </Border>
+
+                                                <Label Text="{Binding HoursFrom}" 
+                                                        FontSize="12" TextColor="#333" 
+                                                        Margin="50,0,0,0"
+                                                        FontAttributes="Bold"
+                                                        HorizontalOptions="End"
+                                                        HorizontalTextAlignment="Center"
+                                                        VerticalTextAlignment="Center"></Label>
+                                            </StackLayout>
+
+
+                                            <StackLayout Orientation="Horizontal" Spacing="10" Padding="10,0,0,0">
+                                                <Image>
+                                                    <Image.Source>
+                                                        <FontImageSource FontFamily="FontIconSolid" Color="#f26d29" Glyph="" Size="18"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding MytimeSheet}" Value="1">
+                                                            <Setter Property="Source">
+                                                                <Setter.Value>
+                                                                    <FontImageSource FontFamily="FontIconSolid" Color="#8f1fff" Glyph="" Size="18"></FontImageSource>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding MytimeSheet}" Value="2">
+                                                            <Setter Property="Source">
+                                                                <Setter.Value>
+                                                                    <FontImageSource FontFamily="FontIconSolid" Color="#8f1fff" Glyph="" Size="18"></FontImageSource>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <Grid HorizontalOptions="FillAndExpand">
+
+                                                    <ScrollView Orientation="Horizontal" VerticalOptions="CenterAndExpand" HorizontalScrollBarVisibility="Never">
+                                                        <Label Text="{Binding BranchName}" TextColor="#333" FontAttributes="Italic" FontSize="14"></Label>
+                                                    </ScrollView>
+                                                </Grid>
+                                                <Grid>
+                                                    <StackLayout x:Name="stkBaseButton" IsVisible="False" Orientation="Horizontal" Spacing="5" HorizontalOptions="EndAndExpand">
+                                                        <Button Text="{x:Static res:AppResources.btnCheckIn}" 
+                                                                 FontSize="11" 
+                                                                 WidthRequest="{OnPlatform iOS=70}"
+                                                                 TextTransform="None"
+                                                                 FontAttributes="Bold"
+                                                                 CornerRadius="{OnPlatform Android=25,iOS=18}"                  
+                                                                 HeightRequest="35" 
+                                                                 TextColor="White"
+                                                                 BorderColor="#f26d29"
+                                                                 BorderWidth="1"
+                                                                 BackgroundColor="#f26d29" 
+                                                                 HorizontalOptions="Start"
+                                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedTimeInCommand}" CommandParameter="{Binding}">
+                                                            <!--<Button.Triggers>
+                                                                 <DataTrigger TargetType="Button" Binding="{Binding MytimeSheet}" Value="2">
+                                                                     <Setter Property="BackgroundColor" Value="#a80724"></Setter>
+                                                                     <Setter Property="BorderColor" Value="#a80724"></Setter>
+                                                                 </DataTrigger>
+                                                             </Button.Triggers>-->
+                                                        </Button>
+
+                                                        <Button Text="{x:Static res:AppResources.btnCheckout}"
+                                                                 FontSize="11" 
+                                                                 WidthRequest="{OnPlatform iOS=70}"
+                                                                 TextTransform="None"
+                                                                 FontAttributes="Bold"
+                                                                 CornerRadius="{OnPlatform Android=25,iOS=18}" 
+                                                                 HeightRequest="35" 
+                                                                 TextColor="Black"
+                                                                 BorderColor="#f26d29"
+                                                                 BorderWidth="1"
+                                                                 BackgroundColor="#eedeff" 
+                                                                 HorizontalOptions="EndAndExpand"
+                                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedTimeOutCommand}" CommandParameter="{Binding}">
+                                                            <Button.Triggers>
+                                                                <DataTrigger TargetType="Button" Binding="{Binding Id}" Value="0">
+                                                                    <Setter Property="IsVisible" Value="False"></Setter>
+                                                                </DataTrigger>
+                                                            </Button.Triggers>
+                                                        </Button>
+                                                        <StackLayout.Triggers>
+                                                            <DataTrigger TargetType="StackLayout" Binding="{Binding MytimeSheet}" Value="0">
+                                                                <Setter Property="IsVisible" Value="True"></Setter>
+                                                            </DataTrigger>
+                                                        </StackLayout.Triggers>
+                                                        <!--<StackLayout.Triggers>
+                                                             <DataTrigger TargetType="StackLayout" Binding="{Binding Source={x:Reference stkMyButton},Path=IsVisible}" Value="True">
+                                                                 <Setter Property="IsVisible" Value="False"></Setter>
+                                                             </DataTrigger>
+                                                         </StackLayout.Triggers>-->
+                                                    </StackLayout>
+                                                </Grid>
+
+                                                <StackLayout x:Name="stkMyButton" IsVisible="False" Orientation="Horizontal" Spacing="5" HorizontalOptions="EndAndExpand">
+                                                    <Button Text="{x:Static res:AppResources.btnCheckIn}" 
+                                                             FontSize="11" IsVisible="False"
+                                                             WidthRequest="{OnPlatform iOS=70}"
+                                                             TextTransform="None"
+                                                             FontAttributes="Bold"
+                                                             CornerRadius="{OnPlatform Android=25,iOS=18}"                  
+                                                             HeightRequest="35" 
+                                                             TextColor="White"
+                                                             BorderColor="#8f1fff"
+                                                             BorderWidth="1"
+                                                             BackgroundColor="#8f1fff" 
+                                                             Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedTimeMyStartCommand}" CommandParameter="{Binding}">
+
+                                                        <Button.Triggers>
+                                                            <DataTrigger TargetType="Button" Binding="{Binding ShowEndTimeBtn}" Value="0">
+                                                                <Setter Property="IsVisible" Value="True"></Setter>
+                                                            </DataTrigger>
+                                                        </Button.Triggers>
+                                                    </Button>
+
+                                                    <Button Text="{x:Static res:AppResources.btnCheckout}" 
+                                                             FontSize="11" IsVisible="False"
+                                                             WidthRequest="{OnPlatform iOS=70}"
+                                                             TextTransform="None"
+                                                             FontAttributes="Bold"
+                                                             CornerRadius="{OnPlatform Android=25,iOS=18}"                  
+                                                             HeightRequest="35" 
+                                                             TextColor="White"
+                                                             BorderColor="#8f1fff"
+                                                             BorderWidth="1"
+                                                             BackgroundColor="#8f1fff" 
+                                                             Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedTimeMyEndCommand}" CommandParameter="{Binding}">
+                                                        <Button.Triggers>
+                                                            <DataTrigger TargetType="Button" Binding="{Binding ShowEndTimeBtn}" Value="1">
+                                                                <Setter Property="IsVisible" Value="True"></Setter>
+                                                            </DataTrigger>
+                                                        </Button.Triggers>
+                                                    </Button>
+
+                                                    <StackLayout.Triggers>
+                                                        <DataTrigger TargetType="StackLayout" Binding="{Binding MytimeSheet}" Value="1">
+                                                            <Setter Property="IsVisible" Value="True"></Setter>
+                                                        </DataTrigger>
+                                                    </StackLayout.Triggers>
+                                                </StackLayout>
+
+                                            </StackLayout>
+
+
+
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                                <CollectionView.Triggers>
+                                    <DataTrigger TargetType="CollectionView" Binding="{Binding LstEmployeesIn.Count}" Value="0">
+                                        <Setter Property="IsVisible" Value="False"></Setter>
+                                        <Setter Property="HeightRequest" Value="0"></Setter>
+                                    </DataTrigger>
+                                </CollectionView.Triggers>
+                            </CollectionView>
+
+                            <StackLayout x:Name="stkNoDataIN" IsVisible="{Binding IsShowNoDataIn}" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                                <Label Text="{x:Static res:AppResources.msgNoavailableData}" TextColor="Black" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+                                        FontSize="16"></Label>
+                                <StackLayout.Triggers>
+                                    <DataTrigger TargetType="StackLayout" Binding="{Binding LstEmployeesIn.Count}" Value="0">
+                                        <Setter Property="IsVisible" Value="True"></Setter>
+                                    </DataTrigger>
+                                </StackLayout.Triggers>
+                            </StackLayout>
+                        </StackLayout>
+                    </ContentView>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+            <!--Check Out-->
+            <tabView:SfTabItem Header="Check Out" BadgeText="{Binding NumOut}" TextColor="Black" FontSize="15" FontFamily="Almarai-Regular" 
+                               BackgroundColor="Transparent" FontAttributes="Bold">
+                <tabView:SfTabItem.BadgeSettings >
+                    <core:BadgeSettings FontSize="12" 
+                                        TextPadding="{OnPlatform Android=3,iOS=1}"
+                                        Position="TopRight"
+                                        Background="#f26d29"
+                                        FontAttributes="Bold">
+                    </core:BadgeSettings>
+                </tabView:SfTabItem.BadgeSettings>
+                <tabView:SfTabItem.Content>
+                    <ContentView Margin="10,20,10,0">
+                        <!--Clock OUT-->
+                        <StackLayout x:Name="stkClockOUT" VerticalOptions="FillAndExpand" IsVisible="False">
+
+                            <CollectionView x:Name="lstEmployeesOut" IsVisible="False" SelectionMode="None" VerticalOptions="FillAndExpand"
+                                            ItemsSource="{Binding LstEmployeesOut}" BackgroundColor="White"
+                                            VerticalScrollBarVisibility="Never">
+                                <CollectionView.ItemsLayout>
+                                    <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="15"></GridItemsLayout>
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout Spacing="10">
+                                            <StackLayout Orientation="Horizontal">
+                                                <Border BackgroundColor="#eedeff" HorizontalOptions="FillAndExpand">
+                                                    <Label Text="{Binding EmployeeName}"
+                                                            FontAttributes="Bold"
+                                                            TextColor="Gray" 
+                                                            HorizontalTextAlignment="Start"
+                                                            VerticalTextAlignment="Center"
+                                                            Padding="20,7,20,7"></Label>
+
+                                                    <Border.Shadow>
+                                                        <Shadow Brush="{OnPlatform Android=Gray, iOS=LightGray}" Radius="{OnPlatform Android=5,iOS=3}"></Shadow>
+                                                    </Border.Shadow>
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="10" Stroke="#f26d29" StrokeThickness="2"></RoundRectangle>
+                                                    </Border.StrokeShape>
+                                                </Border>
+
+                                                <StackLayout Orientation="Horizontal" HorizontalOptions="End" Margin="20,0,0,0" Spacing="20">
+                                                    <StackLayout Spacing="0">
+                                                        <Label Text="{x:Static res:AppResources.lblIn}" FontSize="12" 
+                                                                TextColor="#65a88c"
+                                                                FontAttributes="Bold"
+                                                                HorizontalTextAlignment="Center"
+                                                                VerticalTextAlignment="Center"></Label>
+                                                        <Label Text="{Binding HoursFrom,StringFormat='{0:HH:mm}'}" 
+                                                                    FontSize="12" 
+                                                                    TextColor="#65a88c"
+                                                                    FontAttributes="Bold"
+                                                                    HorizontalTextAlignment="Center"
+                                                                    VerticalTextAlignment="Center"></Label>
+                                                    </StackLayout>
+
+                                                    <StackLayout Spacing="0">
+                                                        <Label Text="{x:Static res:AppResources.lblOut}" 
+                                                                FontSize="12" 
+                                                                TextColor="Red"
+                                                                FontAttributes="Bold"
+                                                                HorizontalTextAlignment="Center"
+                                                                VerticalTextAlignment="Center"></Label>
+                                                        <Label Text="{Binding HoursTo,StringFormat='{0:HH:mm}'}" 
+                                                                FontSize="12" 
+                                                                TextColor="Red"
+                                                                FontAttributes="Bold"
+                                                                HorizontalTextAlignment="Center"
+                                                                VerticalTextAlignment="Center"></Label>
+                                                    </StackLayout>
+
+                                                </StackLayout>
+
+                                            </StackLayout>
+
+                                            <StackLayout Orientation="Horizontal" Spacing="10" Padding="10,0,0,0">
+                                                <Image>
+                                                    <Image.Source>
+                                                        <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="18"></FontImageSource>
+                                                    </Image.Source>
+                                                </Image>
+                                                <Label Text="{Binding BranchName}" TextColor="#333" FontAttributes="Italic" VerticalTextAlignment="Center" FontSize="14"></Label>
+
+                                            </StackLayout>
+
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                                <CollectionView.Triggers>
+                                    <DataTrigger TargetType="CollectionView" Binding="{Binding LstEmployeesOut.Count}" Value="0">
+                                        <Setter Property="IsVisible" Value="False"></Setter>
+                                        <Setter Property="HeightRequest" Value="0"></Setter>
+                                    </DataTrigger>
+                                </CollectionView.Triggers>
+                            </CollectionView>
+
+                            <StackLayout x:Name="stkNoDataOUT" IsVisible="{Binding IsShowNoDataOut}" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                                <Label Text="{x:Static res:AppResources.msgNoavailableData}" TextColor="Black" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" FontSize="16"></Label>
+                                <StackLayout.Triggers>
+                                    <DataTrigger TargetType="StackLayout" Binding="{Binding LstEmployeesOut.Count}" Value="0">
+                                        <Setter Property="IsVisible" Value="True"></Setter>
+                                    </DataTrigger>
+                                </StackLayout.Triggers>
+                            </StackLayout>
+                        </StackLayout>
+                    </ContentView>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+        </tabView:SfTabView>
+    </StackLayout>
+
+</Controls:CustomControl>

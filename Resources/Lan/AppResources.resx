@@ -1,0 +1,1050 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="btnActivateanotherDevice" xml:space="preserve">
+    <value>Activate another Device</value>
+  </data>
+  <data name="btnCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="btnEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="btnEditLinks" xml:space="preserve">
+    <value>Edit links</value>
+  </data>
+  <data name="btnLogin" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="btnPassed" xml:space="preserve">
+    <value>Past</value>
+  </data>
+  <data name="btnPreview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="btnSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="btnUpcoming" xml:space="preserve">
+    <value>Upcoming</value>
+  </data>
+  <data name="hdrAddCard" xml:space="preserve">
+    <value>Add Card</value>
+  </data>
+  <data name="hdrCalendar" xml:space="preserve">
+    <value>Calendar</value>
+  </data>
+  <data name="hdrCards" xml:space="preserve">
+    <value>Cards</value>
+  </data>
+  <data name="hdrComments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="hdrCreateLead" xml:space="preserve">
+    <value>Create Lead</value>
+  </data>
+  <data name="hdrEditCard" xml:space="preserve">
+    <value>Edit Card</value>
+  </data>
+  <data name="hdrEditLead" xml:space="preserve">
+    <value>Edit Lead</value>
+  </data>
+  <data name="hdrHome" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="hdrLeads" xml:space="preserve">
+    <value>Leads</value>
+  </data>
+  <data name="hdrLinkCategory" xml:space="preserve">
+    <value>Link Category</value>
+  </data>
+  <data name="hdrMore" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="hdrMyLinks" xml:space="preserve">
+    <value>My Links</value>
+  </data>
+  <data name="hdrSelectLanguage" xml:space="preserve">
+    <value>Select Language</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="lblEndTime" xml:space="preserve">
+    <value>End Time</value>
+  </data>
+  <data name="lbl1day" xml:space="preserve">
+    <value>1 day</value>
+  </data>
+  <data name="lbl1hour" xml:space="preserve">
+    <value>1 hour</value>
+  </data>
+  <data name="lbl1month" xml:space="preserve">
+    <value>1 month</value>
+  </data>
+  <data name="lbl1week" xml:space="preserve">
+    <value>1 week</value>
+  </data>
+  <data name="lbl3days" xml:space="preserve">
+    <value>3 days</value>
+  </data>
+  <data name="lblAccessDenied" xml:space="preserve">
+    <value>Access Denied</value>
+  </data>
+  <data name="lblACD" xml:space="preserve">
+    <value>Activate Cardrly Device</value>
+  </data>
+  <data name="lblAction" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="lblActivateat" xml:space="preserve">
+    <value>Activate at</value>
+  </data>
+  <data name="lblAdd/Remove" xml:space="preserve">
+    <value>Add/Remove</value>
+  </data>
+  <data name="lblAddComment" xml:space="preserve">
+    <value>Add Comment</value>
+  </data>
+  <data name="lblAddress" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="lblAmount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="lblAnotherUpgrade" xml:space="preserve">
+    <value>Another Upgrade for you! 🚀</value>
+  </data>
+  <data name="lblBilling" xml:space="preserve">
+    <value>Billing</value>
+  </data>
+  <data name="lblBillingActivity" xml:space="preserve">
+    <value>Billing Activity</value>
+  </data>
+  <data name="lblBillingInfo" xml:space="preserve">
+    <value>Billing Info</value>
+  </data>
+  <data name="lblBio" xml:space="preserve">
+    <value>Bio</value>
+  </data>
+  <data name="lblBusiness" xml:space="preserve">
+    <value>Business</value>
+  </data>
+  <data name="lblCall" xml:space="preserve">
+    <value>Call</value>
+  </data>
+  <data name="lblCard" xml:space="preserve">
+    <value>Card</value>
+  </data>
+  <data name="lblCardLinkType" xml:space="preserve">
+    <value>Card Link Type</value>
+  </data>
+  <data name="lblCardName" xml:space="preserve">
+    <value>Card Name</value>
+  </data>
+  <data name="lblCardtheme" xml:space="preserve">
+    <value>Card theme</value>
+  </data>
+  <data name="lblCardViews" xml:space="preserve">
+    <value>Card Views</value>
+  </data>
+  <data name="lblChoosetheDeviceyouareactivating" xml:space="preserve">
+    <value>Choose the Device you are activating</value>
+  </data>
+  <data name="lblComment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="lblCompany" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="lblContact" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="lblDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="lblDeleteCard" xml:space="preserve">
+    <value>Delete Card</value>
+  </data>
+  <data name="lblDeleteLead" xml:space="preserve">
+    <value>Delete Lead</value>
+  </data>
+  <data name="lblEdit Photo" xml:space="preserve">
+    <value>Edit Photo</value>
+  </data>
+  <data name="lblEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="lblEndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="lblEventName" xml:space="preserve">
+    <value>Event Name</value>
+  </data>
+  <data name="lblEventType" xml:space="preserve">
+    <value>Event Type</value>
+  </data>
+  <data name="lblExpire" xml:space="preserve">
+    <value>Expire</value>
+  </data>
+  <data name="lblFAQ" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+  <data name="lblFrom" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="lblFullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="lblGuestsNumber" xml:space="preserve">
+    <value>Guests Number</value>
+  </data>
+  <data name="lblHelpSupport" xml:space="preserve">
+    <value>Help &amp; Support</value>
+  </data>
+  <data name="lblIfyouupdatedlasttime" xml:space="preserve">
+    <value>If you updated last time, great this one's even better!</value>
+  </data>
+  <data name="lblInvite" xml:space="preserve">
+    <value>Invite to Cardrly</value>
+  </data>
+  <data name="lblIs ShareToUsers" xml:space="preserve">
+    <value>Is Share To Users</value>
+  </data>
+  <data name="lblJobtitle" xml:space="preserve">
+    <value>Job Title</value>
+  </data>
+  <data name="lblJoinnow" xml:space="preserve">
+    <value>Join now</value>
+  </data>
+  <data name="lblLanguage" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="lblLeadCategory" xml:space="preserve">
+    <value>Lead Category</value>
+  </data>
+  <data name="lblLeadCount" xml:space="preserve">
+    <value>Leads Count</value>
+  </data>
+  <data name="lblLeadsRegistered" xml:space="preserve">
+    <value>Leads Registered</value>
+  </data>
+  <data name="lblLet us know if you'd like any tweaks" xml:space="preserve">
+    <value>Let us know if you'd like any tweaks! 😊</value>
+  </data>
+  <data name="lblLink" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="lblLinkClicks" xml:space="preserve">
+    <value>Link Clicks</value>
+  </data>
+  <data name="lblLinkColor" xml:space="preserve">
+    <value>Link color</value>
+  </data>
+  <data name="lblLocation" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="lblLogout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="lblMyDevices" xml:space="preserve">
+    <value>My Devices</value>
+  </data>
+  <data name="lblName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="lblNow" xml:space="preserve">
+    <value>Now</value>
+  </data>
+  <data name="lblOn" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="lblOR" xml:space="preserve">
+    <value>OR</value>
+  </data>
+  <data name="lblPersonName" xml:space="preserve">
+    <value>Person name</value>
+  </data>
+  <data name="lblPersonnickname" xml:space="preserve">
+    <value>Person nickname</value>
+  </data>
+  <data name="lblPhone Number" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="lblPickPhoto" xml:space="preserve">
+    <value>Pick Photo</value>
+  </data>
+  <data name="lblReminder" xml:space="preserve">
+    <value>Reminder</value>
+  </data>
+  <data name="lblSaveContacts" xml:space="preserve">
+    <value>Save Contacts</value>
+  </data>
+  <data name="lblSavetoContact" xml:space="preserve">
+    <value>Save to Contact</value>
+  </data>
+  <data name="lblScanCard" xml:space="preserve">
+    <value>Scan Card</value>
+  </data>
+  <data name="lblSCS" xml:space="preserve">
+    <value>Scan to share Card</value>
+  </data>
+  <data name="lblShareCardLink" xml:space="preserve">
+    <value>Share Card Link</value>
+  </data>
+  <data name="lblShareLead" xml:space="preserve">
+    <value>Share Lead</value>
+  </data>
+  <data name="lblShareOfflineCard" xml:space="preserve">
+    <value>Share Offline Card</value>
+  </data>
+  <data name="lblShareVCard" xml:space="preserve">
+    <value>Share VCard</value>
+  </data>
+  <data name="lblShowComments" xml:space="preserve">
+    <value>Show Comments</value>
+  </data>
+  <data name="lblSocial Media" xml:space="preserve">
+    <value>Social Media</value>
+  </data>
+  <data name="lblStarRecording" xml:space="preserve">
+    <value>Start Recording</value>
+  </data>
+  <data name="lblStartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="lblStartTime" xml:space="preserve">
+    <value>Start Time</value>
+  </data>
+  <data name="lblSubscriptions" xml:space="preserve">
+    <value>Subscriptions</value>
+  </data>
+  <data name="lblSummary" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="lblTakePhoto" xml:space="preserve">
+    <value>Take Photo</value>
+  </data>
+  <data name="lblTCDS" xml:space="preserve">
+    <value>Total Count by Device System</value>
+  </data>
+  <data name="lblThismakesitclear" xml:space="preserve">
+    <value>This makes it clear that it's a second update while keeping it engaging.</value>
+  </data>
+  <data name="lblTimeZone" xml:space="preserve">
+    <value>Time Zone</value>
+  </data>
+  <data name="lblTo" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="lblTotalClicks" xml:space="preserve">
+    <value>Total Clicks</value>
+  </data>
+  <data name="lblUpdatenow" xml:space="preserve">
+    <value>Update now for a smoother experience and exciting new improvements ahead! 🔥✨</value>
+  </data>
+  <data name="lblUsers" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="lblValue" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="lblWebSite" xml:space="preserve">
+    <value>WebSite</value>
+  </data>
+  <data name="msgAccountHasExpired" xml:space="preserve">
+    <value>Account Has Expired</value>
+  </data>
+  <data name="msgAnerroroccurred" xml:space="preserve">
+    <value>An error occurred:</value>
+  </data>
+  <data name="msgAudiofilenotsavedPleasetryagain" xml:space="preserve">
+    <value>Audio file not saved. Please try again.</value>
+  </data>
+  <data name="msgCameranotsupported" xml:space="preserve">
+    <value>Camera not supported</value>
+  </data>
+  <data name="msgCan'tDeleteThisLeadNowTryagainLater" xml:space="preserve">
+    <value>Can't Delete This Lead Now Try again Later.</value>
+  </data>
+  <data name="msgContactSaved" xml:space="preserve">
+    <value>Successfully Contact saved</value>
+  </data>
+  <data name="msgContactsavedat" xml:space="preserve">
+    <value>Contact saved at:</value>
+  </data>
+  <data name="msgcontactwasnotsaved" xml:space="preserve">
+    <value>The contact was not saved because the data is incomplete.</value>
+  </data>
+  <data name="msgCreateCardtoActivethedevice" xml:space="preserve">
+    <value>Create Card to Active the device</value>
+  </data>
+  <data name="msgDate_HomePage" xml:space="preserve">
+    <value>The To Date Must be greater Than From Date.</value>
+  </data>
+  <data name="msgDeleteDevice" xml:space="preserve">
+    <value>Delete Device</value>
+  </data>
+  <data name="msgDeleteDevice_qu" xml:space="preserve">
+    <value>Are you sure you want to delete this device?</value>
+  </data>
+  <data name="msgDeleteLead" xml:space="preserve">
+    <value>Are you sure to delete This Lead?</value>
+  </data>
+  <data name="msgDeveloperOptionOn" xml:space="preserve">
+    <value>Developer Options are enabled. Please disable them to continue using this app.</value>
+  </data>
+  <data name="msgDeviceAddedSuccessfully" xml:space="preserve">
+    <value>Device Added Successfully.</value>
+  </data>
+  <data name="msgDevicejailbroken" xml:space="preserve">
+    <value>Your device is jailbroken. For security reasons, this app cannot run on jailbroken devices.</value>
+  </data>
+  <data name="msgDeviceRooted" xml:space="preserve">
+    <value>Your device is rooted. For security reasons, this app cannot run on rooted devices.</value>
+  </data>
+  <data name="msgDontGetAccount" xml:space="preserve">
+    <value>There is no data for this account.</value>
+  </data>
+  <data name="msgDoYouWantToLogout" xml:space="preserve">
+    <value>Do you want to Logout ?</value>
+  </data>
+  <data name="msgEndRecording" xml:space="preserve">
+    <value>End Recording</value>
+  </data>
+  <data name="msgErrorduringspeechrecognition" xml:space="preserve">
+    <value>Error during speech recognition:</value>
+  </data>
+  <data name="msgErrorinstartandenddate" xml:space="preserve">
+    <value>Error in start and end date</value>
+  </data>
+  <data name="msgFailedToChangeStatus" xml:space="preserve">
+    <value>Failed To Change Status.</value>
+  </data>
+  <data name="msgFRCardName" xml:space="preserve">
+    <value>Required Field : Card Name</value>
+  </data>
+  <data name="msgFRComment" xml:space="preserve">
+    <value>Required Field : Comment</value>
+  </data>
+  <data name="msgFRDescription" xml:space="preserve">
+    <value>Required Field : Description</value>
+  </data>
+  <data name="msgFREmail" xml:space="preserve">
+    <value>Required Field : Email</value>
+  </data>
+  <data name="msgFRFullName" xml:space="preserve">
+    <value>Required Field : Full Name</value>
+  </data>
+  <data name="msgFRLink" xml:space="preserve">
+    <value>Required Field : Link</value>
+  </data>
+  <data name="msgFRLocation" xml:space="preserve">
+    <value>Required Field : Location</value>
+  </data>
+  <data name="msgFromDateShouldbeStartFromNow" xml:space="preserve">
+    <value>"From" Date Should be Start From Now</value>
+  </data>
+  <data name="msgFRPassword" xml:space="preserve">
+    <value>Required Field : Password</value>
+  </data>
+  <data name="msgFRSummary" xml:space="preserve">
+    <value>Required Field : Summary</value>
+  </data>
+  <data name="msgFRUserName" xml:space="preserve">
+    <value>Required Field : User Name</value>
+  </data>
+  <data name="msgFRValue" xml:space="preserve">
+    <value>Required Field : Value</value>
+  </data>
+  <data name="msgLeadDeletedSuccessfully" xml:space="preserve">
+    <value>Lead Deleted Successfully</value>
+  </data>
+  <data name="msgLeadEmail" xml:space="preserve">
+    <value>This lead don't have email.</value>
+  </data>
+  <data name="msgLeadPhone" xml:space="preserve">
+    <value>This lead don't have Phone Number.</value>
+  </data>
+  <data name="msgLoadingImage" xml:space="preserve">
+    <value>Loading Image</value>
+  </data>
+  <data name="MsgloggedOut" xml:space="preserve">
+    <value>You’ve been logged out.(account is Changed permissions)</value>
+  </data>
+  <data name="msgMicrophoneaccessisrequiredtorecordaudio" xml:space="preserve">
+    <value>Microphone access is required to record audio.</value>
+  </data>
+  <data name="msgNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="msgNoActivatedDevices" xml:space="preserve">
+    <value>No Activated Devices</value>
+  </data>
+  <data name="msgNoavailableusers" xml:space="preserve">
+    <value>No available users</value>
+  </data>
+  <data name="msgNoComment here" xml:space="preserve">
+    <value>No Comments here</value>
+  </data>
+  <data name="msgNoIDfoundintheQr" xml:space="preserve">
+    <value>No ID found in the Qr.</value>
+  </data>
+  <data name="msgOk" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="msgPermissionToDoAction" xml:space="preserve">
+    <value>You don't have permission to do this action.</value>
+  </data>
+  <data name="msgPleaseCreateCardFirst." xml:space="preserve">
+    <value>Please Create a Card First.</value>
+  </data>
+  <data name="msgPleaseSelectImageFirst" xml:space="preserve">
+    <value>Please Select Image First</value>
+  </data>
+  <data name="msgRecordingstarted" xml:space="preserve">
+    <value>Recording started...</value>
+  </data>
+  <data name="msgServicedown" xml:space="preserve">
+    <value>Service is currently down. Please try again later.</value>
+  </data>
+  <data name="msgServicenotfound" xml:space="preserve">
+    <value>Service not found!</value>
+  </data>
+  <data name="msgSpeechnotrecognizedPleasetryagain" xml:space="preserve">
+    <value>Speech not recognized. Please try again.</value>
+  </data>
+  <data name="msgSpeechrecognitionfailed" xml:space="preserve">
+    <value>Speech recognition failed:</value>
+  </data>
+  <data name="msgSuccessfullyAddCard" xml:space="preserve">
+    <value>Successfully Add Card.</value>
+  </data>
+  <data name="msgSuccessfullyAddComment" xml:space="preserve">
+    <value>Successfully Add Comment.</value>
+  </data>
+  <data name="msgSuccessfullyAddLead" xml:space="preserve">
+    <value>Successfully Add Lead.</value>
+  </data>
+  <data name="msgSuccessfullyAddLink" xml:space="preserve">
+    <value>Successfully Add Link.</value>
+  </data>
+  <data name="msgSuccessfullyReordered" xml:space="preserve">
+    <value>Successfully Reordered.</value>
+  </data>
+  <data name="msgSuccessfullyScanCard" xml:space="preserve">
+    <value>Successfully Scan Card.</value>
+  </data>
+  <data name="msgSuccessfullyUpdateCard" xml:space="preserve">
+    <value>Successfully Update Card.</value>
+  </data>
+  <data name="msgSuccessfullyUpdateLead" xml:space="preserve">
+    <value>Successfully Update Lead.</value>
+  </data>
+  <data name="msgSuccessfullyUpdateLink" xml:space="preserve">
+    <value>Successfully Update Link.</value>
+  </data>
+  <data name="msgTheDeviceHasNotBeenDeleted." xml:space="preserve">
+    <value>The device has not been deleted.</value>
+  </data>
+  <data name="msgThevaluenotmatchCardLinkType" xml:space="preserve">
+    <value>The value not match Card Link Type.</value>
+  </data>
+  <data name="msgThevaluenotmatchlinkformat" xml:space="preserve">
+    <value>The value not match link format.</value>
+  </data>
+  <data name="msgTODateShouldbelessThanTodayDate" xml:space="preserve">
+    <value>"To" Date Should be less Than Today Date</value>
+  </data>
+  <data name="msgUnexpected" xml:space="preserve">
+    <value>An unexpected error occurred. Please restart the app or contact support.</value>
+  </data>
+  <data name="msgWarning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="msgWarning_qu" xml:space="preserve">
+    <value>Are you sure to delete This Card?</value>
+  </data>
+  <data name="msgYes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="mshPermissionToViewData" xml:space="preserve">
+    <value>You don't have permission to view this data.</value>
+  </data>
+  <data name="No_Internet_connection" xml:space="preserve">
+    <value>No Internet connection!</value>
+  </data>
+  <data name="PasswordInvalid" xml:space="preserve">
+    <value>Your password is invalid</value>
+  </data>
+  <data name="PlcNoAvailableAppointments" xml:space="preserve">
+    <value>No Available Appointments</value>
+  </data>
+  <data name="plcNoAvailableCards" xml:space="preserve">
+    <value>No Available Cards</value>
+  </data>
+  <data name="PlcNoAvailableEvents" xml:space="preserve">
+    <value>No Available Events</value>
+  </data>
+  <data name="plcNoAvailableLaeds" xml:space="preserve">
+    <value>No Available Leads</value>
+  </data>
+  <data name="plcNoAvailableLinks" xml:space="preserve">
+    <value>No Available Links</value>
+  </data>
+  <data name="plcPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="plcSearch" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="plcUserName" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="RenewalAmount" xml:space="preserve">
+    <value>Renewal Amount </value>
+  </data>
+  <data name="Retry" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+  <data name="Your_Token_expired_Please_Enter_Your_Password" xml:space="preserve">
+    <value>Your Token expired, Please Enter Your Password</value>
+  </data>
+  <data name="lblAttendees" xml:space="preserve">
+    <value>Attendees</value>
+  </data>
+  <data name="lblDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="lblConference" xml:space="preserve">
+    <value>Conference</value>
+  </data>
+  <data name="lblAddEvent" xml:space="preserve">
+    <value>Add Event</value>
+  </data>
+  <data name="lblProvider" xml:space="preserve">
+    <value>Provider</value>
+  </data>
+  <data name="plcTimeZone" xml:space="preserve">
+    <value>Select a time zone</value>
+  </data>
+  <data name="plcSummary" xml:space="preserve">
+    <value>Select a summary</value>
+  </data>
+  <data name="plcLocation" xml:space="preserve">
+    <value>Select a location</value>
+  </data>
+  <data name="plcAttendees" xml:space="preserve">
+    <value>Select an attendees</value>
+  </data>
+  <data name="plcDescription" xml:space="preserve">
+    <value>Select a description</value>
+  </data>
+  <data name="plcProvider" xml:space="preserve">
+    <value>Select a provider</value>
+  </data>
+  <data name="plcCard" xml:space="preserve">
+    <value>Select a card</value>
+  </data>
+  <data name="msgFRTimeZone" xml:space="preserve">
+    <value>Required Field : Time Zone</value>
+  </data>
+  <data name="msgStart_date_must_be_before_end_date" xml:space="preserve">
+    <value>Start date must be before end date.</value>
+  </data>
+  <data name="msgStart_date_must_be_from_todays_date" xml:space="preserve">
+    <value>The start date must be from today's date.</value>
+  </data>
+  <data name="msgPlease select a provider" xml:space="preserve">
+    <value>Please select a provider.</value>
+  </data>
+  <data name="msgPlease select a Card" xml:space="preserve">
+    <value>Please select a Card.</value>
+  </data>
+  <data name="msgAttendance must be in email format" xml:space="preserve">
+    <value>Attendance must be in email format.</value>
+  </data>
+  <data name="msgThe comment has not been deleted" xml:space="preserve">
+    <value>The comment has not been deleted.</value>
+  </data>
+  <data name="msgDeleteComment" xml:space="preserve">
+    <value>Are you sure you want to delete this comment?</value>
+  </data>
+  <data name="msgAll Fields is Required" xml:space="preserve">
+    <value>All Fields is Required.</value>
+  </data>
+  <data name="lblDocumentation" xml:space="preserve">
+    <value>Documentation</value>
+  </data>
+  <data name="msgSuccessfullyAddEvent" xml:space="preserve">
+    <value>Successfully Add Event</value>
+  </data>
+  <data name="msgCheck_your_email_and_reEnter_it_correctly" xml:space="preserve">
+    <value>Check your email and re-enter it correctly.</value>
+  </data>
+  <data name="msgDeleteEvent" xml:space="preserve">
+    <value>Are you sure you want to delete this event?</value>
+  </data>
+  <data name="msgTheEventHasNotBeenDeleted" xml:space="preserve">
+    <value>The Event Has Not Been Deleted.</value>
+  </data>
+  <data name="lblShowing" xml:space="preserve">
+    <value>Showing</value>
+  </data>
+  <data name="lblSortby" xml:space="preserve">
+    <value>Sort by</value>
+  </data>
+  <data name="lblAlphabetSorting" xml:space="preserve">
+    <value>Alphabet Sorting</value>
+  </data>
+  <data name="lblLeadCaptureMode" xml:space="preserve">
+    <value>Lead Capture Mode</value>
+  </data>
+  <data name="msgStart_time_must_be_before_end_time" xml:space="preserve">
+    <value>Start time must be before end time.</value>
+  </data>
+  <data name="btnSort" xml:space="preserve">
+    <value>Sort</value>
+  </data>
+  <data name="hdrAccountInfo" xml:space="preserve">
+    <value>Account Info</value>
+  </data>
+  <data name="lblCompanyName" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
+  <data name="lblChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="lblCurrentPassword" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
+  <data name="lblNewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="lblConfirmNewPassword" xml:space="preserve">
+    <value>Confirm New Password</value>
+  </data>
+  <data name="RFCurrentPassword" xml:space="preserve">
+    <value>Required Field : Current Password</value>
+  </data>
+  <data name="FRNewPassword" xml:space="preserve">
+    <value>Required Field : New Password</value>
+  </data>
+  <data name="FRConfirmNewPassword" xml:space="preserve">
+    <value>Required Field : Confirm New Password</value>
+  </data>
+  <data name="msgNew Password Doesn't Match Confirm New Password" xml:space="preserve">
+    <value>New Password Doesn't Match with Confirm Password</value>
+  </data>
+  <data name="lblForgotPassword" xml:space="preserve">
+    <value>Forgot Password ?</value>
+  </data>
+  <data name="enter_vaild_Email" xml:space="preserve">
+    <value>Please enter vaild E-mail</value>
+  </data>
+  <data name="lblUserLinkEngagements" xml:space="preserve">
+    <value>User Link Engagements</value>
+  </data>
+  <data name="lblResetPassword" xml:space="preserve">
+    <value>Reset Password</value>
+  </data>
+  <data name="btnSend" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="btnConfirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="lblDeviceSystem" xml:space="preserve">
+    <value>Devices System</value>
+  </data>
+  <data name="lblUserEngagements" xml:space="preserve">
+    <value>User Engagements</value>
+  </data>
+  <data name="lblShop" xml:space="preserve">
+    <value>Shop</value>
+  </data>
+  <data name="Don't have an account" xml:space="preserve">
+    <value>Don't have an account ? </value>
+  </data>
+  <data name="lblSignUp Now" xml:space="preserve">
+    <value>SignUp Now</value>
+  </data>
+  <data name="msgSuccess" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="msgFullname_and_phone_numbe_fields_required" xml:space="preserve">
+    <value>Fullname and phone number fields are required.</value>
+  </data>
+  <data name="lblCardLayout" xml:space="preserve">
+    <value>Card Layout</value>
+  </data>
+  <data name="lblCardView" xml:space="preserve">
+    <value>Card View</value>
+  </data>
+  <data name="lbl_CardView_Distribution_by_Country" xml:space="preserve">
+    <value>Card View Distribution by Country</value>
+  </data>
+  <data name="lbl_Link_Clicks_by_Country" xml:space="preserve">
+    <value>Link Clicks by Country</value>
+  </data>
+  <data name="lblDevices" xml:space="preserve">
+    <value>Devices</value>
+  </data>
+  <data name="lblEngagements" xml:space="preserve">
+    <value>Engagements</value>
+  </data>
+  <data name="msgError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="msgInvalidQRcode" xml:space="preserve">
+    <value>Invalid QR code</value>
+  </data>
+  <data name="btnManualQRCode" xml:space="preserve">
+    <value>Manual QR Code</value>
+  </data>
+  <data name="plcNoAvailableMeetings" xml:space="preserve">
+    <value>No Available Meetings</value>
+  </data>
+  <data name="lblCreatedBy" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="lblDateFrom" xml:space="preserve">
+    <value>Date From</value>
+  </data>
+  <data name="lblDateTo" xml:space="preserve">
+    <value>Date To</value>
+  </data>
+  <data name="lblMeetingsScript" xml:space="preserve">
+    <value>Meetings Script</value>
+  </data>
+  <data name="lblMeetings" xml:space="preserve">
+    <value>Meetings</value>
+  </data>
+  <data name="lblMeetingDetails" xml:space="preserve">
+    <value>Meeting Details</value>
+  </data>
+  <data name="btnGetScript" xml:space="preserve">
+    <value>Get Script</value>
+  </data>
+  <data name="msgEnterTitleofMeeting" xml:space="preserve">
+    <value>Enter Title of Meeting !!</value>
+  </data>
+  <data name="msgSuccessfullyforaddmeeting" xml:space="preserve">
+    <value>Successfully for add meeting</value>
+  </data>
+  <data name="msgEntermeetingnameisvalid" xml:space="preserve">
+    <value>Enter meeting name is valid should be bigger than 3 letters</value>
+  </data>
+  <data name="msgDeleteMeeting" xml:space="preserve">
+    <value>Delete Meeting</value>
+  </data>
+  <data name="msgAreyousuredeletemeeting" xml:space="preserve">
+    <value>Are you sure delete meeting?</value>
+  </data>
+  <data name="msgTheMeetinghasnotbeendeleted" xml:space="preserve">
+    <value>The Meeting has not been deleted</value>
+  </data>
+  <data name="msgCouldnotstartrecording" xml:space="preserve">
+    <value>Could not start recording:</value>
+  </data>
+  <data name="msgCouldnotstoprecording" xml:space="preserve">
+    <value>Could not stop recording:</value>
+  </data>
+  <data name="msgSuccessfullyforaddRecord" xml:space="preserve">
+    <value>Successfully for add Record</value>
+  </data>
+  <data name="msgDeleteRecord" xml:space="preserve">
+    <value>Delete Record</value>
+  </data>
+  <data name="msgAreyousuredeleterecord" xml:space="preserve">
+    <value>Are you sure delete record?</value>
+  </data>
+  <data name="msgTheRecordhasnotbeendeleted" xml:space="preserve">
+    <value>The Record has not been deleted</value>
+  </data>
+  <data name="msgSuccessfullyforcreatemeetingscript" xml:space="preserve">
+    <value>Successfully for create meeting script</value>
+  </data>
+  <data name="msgRequiredminimumselectonerecord" xml:space="preserve">
+    <value>Required minimum select one record !!</value>
+  </data>
+  <data name="lblClearCardData" xml:space="preserve">
+    <value>Clear Card Data</value>
+  </data>
+  <data name="lblNote" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="lblScript" xml:space="preserve">
+    <value>Script</value>
+  </data>
+  <data name="lblTimeSheet" xml:space="preserve">
+    <value>Time Sheet</value>
+  </data>
+  <data name="msgNoavailableData" xml:space="preserve">
+    <value>No available Data</value>
+  </data>
+  <data name="btnCheckIn" xml:space="preserve">
+    <value>Check In</value>
+  </data>
+  <data name="btnCheckout" xml:space="preserve">
+    <value>Check out</value>
+  </data>
+  <data name="lblIn" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="lblOut" xml:space="preserve">
+    <value>Out</value>
+  </data>
+  <data name="lblToday" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="msgSuccessfullyCheckInTime" xml:space="preserve">
+    <value>Successfully Check In Time.</value>
+  </data>
+  <data name="msgPleaseChooseTimeAfterCheckInTime" xml:space="preserve">
+    <value>Please Choose Time After Check In Time.</value>
+  </data>
+  <data name="msgFailedCheckInTime" xml:space="preserve">
+    <value>Failed Check In Time.</value>
+  </data>
+  <data name="msgSuccessfullyCheckOutTime" xml:space="preserve">
+    <value>Successfully Check Out Time.</value>
+  </data>
+  <data name="lblTracking" xml:space="preserve">
+    <value>Tracking</value>
+  </data>
+  <data name="lblEmployeesWorking" xml:space="preserve">
+    <value>Employees Working</value>
+  </data>
+  <data name="lblSearch" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="msgNoavailablelocationcoordinates" xml:space="preserve">
+    <value>No available location coordinates.</value>
+  </data>
+  <data name="msgvCardtoolongforastandardQRcode" xml:space="preserve">
+    <value>vCard too long for a standard QR code Because of the number of links.</value>
+  </data>
+  <data name="lblFilterByCard" xml:space="preserve">
+    <value>Filter By Card</value>
+  </data>
+  <data name="lblComments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+</root>

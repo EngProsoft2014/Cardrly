@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+             xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+             x:Class="Cardrly.Pages.MainPopups.ReminderPopup"
+             CloseWhenBackgroundIsClicked="True"
+             NavigationPage.HasNavigationBar="False" 
+             BackgroundColor="#90000000"
+             Title="ReminderPopup">
+    <mopups:PopupPage.Animation>
+        <mopupsanim:MoveAnimation
+DurationIn="700"
+EasingIn="BounceOut"
+PositionIn="Bottom"
+PositionOut="Center" />
+    </mopups:PopupPage.Animation>
+    <StackLayout VerticalOptions="EndAndExpand">
+        <Border Padding="10" Margin="0" BackgroundColor="Transparent" StrokeThickness="0">
+            <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
+                <Border Padding="0,10,0,0" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
+                    <StackLayout BackgroundColor="#FFFFFF" Spacing="3">
+                        <CollectionView x:Name="ReminderColc">
+                            
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="3"></GridItemsLayout>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <VerticalStackLayout>
+                                        <!--Call-->
+                                        <StackLayout Orientation="Horizontal" Padding="20,0,20,0">
+                                            <Label Text="{Binding Name}"
+                                                   TextColor="#FF7F3E"
+                                                   FontSize="16"
+                                                   HorizontalTextAlignment="Center"
+                                                   VerticalTextAlignment="Center"
+                                                   HorizontalOptions="CenterAndExpand" 
+                                                   Padding="8">
+                                            </Label>
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="Colc_Tapped" CommandParameter="{Binding}"></TapGestureRecognizer>
+                                            </StackLayout.GestureRecognizers>
+                                        </StackLayout>
+                                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15"></RoundRectangle>
+                    </Border.StrokeShape>
+                </Border>
+                <!--Cancel-->
+                <Border Padding="10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
+
+
+                    <Label Text="{x:Static res:AppResources.btnCancel}"
+            TextColor="#FF7F3E"
+            FontSize="16"
+            
+            HorizontalTextAlignment="Center"
+            VerticalTextAlignment="Center"
+            HorizontalOptions="CenterAndExpand"
+            Padding="10">
+
+                    </Label>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Cancel"></TapGestureRecognizer>
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20"></RoundRectangle>
+                    </Border.StrokeShape>
+                </Border>
+            </StackLayout>
+        </Border>
+    </StackLayout>
+</mopups:PopupPage>

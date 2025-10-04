@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             xmlns:Controls="clr-namespace:Cardrly.Controls"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+             x:Class="Cardrly.Pages.LoginPage"
+             Title="LoginPage"
+             IsEnabled="{Binding IsEnable}">
+    <ScrollView VerticalOptions="FillAndExpand">
+        <StackLayout Margin="20" Spacing="20">
+            <skia:SKLottieView RepeatCount="-1"
+                               RepeatMode="Reverse"
+                               Source="nfc.json"
+                               HeightRequest="300"
+                               WidthRequest="300" />
+
+            <VerticalStackLayout Spacing="15">
+                <Border StrokeShape="RoundRectangle 8">
+                    <Entry x:Name="entryEmail" Text="{Binding LoginRequest.UserName}" Placeholder="{x:Static res:AppResources.plcUserName}" FontSize="14" TextColor="Black" PlaceholderColor="Gray"
+                       HorizontalTextAlignment="Center" FontAttributes="Bold" ></Entry>
+                </Border>
+                <Border StrokeShape="RoundRectangle 8">
+                    <Grid>
+                        <Entry x:Name="entryPassword" Text="{Binding LoginRequest.Password}" Placeholder="{x:Static res:AppResources.plcPassword}" FontAutoScalingEnabled="False"
+                           Keyboard="Text" TextColor="Black" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center"  IsPassword="True" PlaceholderColor="Gray"
+                           HorizontalOptions="FillAndExpand">
+                        </Entry>
+                        <Image x:Name="imgEyePass" Margin="0,0,10,0" HorizontalOptions="End">
+                            <Image.Source>
+                                <FontImageSource FontFamily="FontIconSolid" Glyph="" Color="Gray" Size="15"></FontImageSource>
+                            </Image.Source>
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image" Binding="{Binding Source={x:Reference entryPassword},Path=IsPassword}" Value="False">
+                                    <Setter Property="Source">
+                                        <Setter.Value>
+                                            <FontImageSource FontFamily="FontIconSolid" Glyph="" Color="Gray" Size="15"></FontImageSource>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Image.Triggers>
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Grid>
+                </Border>
+                <Label Text="{x:Static res:AppResources.lblForgotPassword}" TextColor="#327cdb" FontSize="14" VerticalOptions="CenterAndExpand"
+                       FontAttributes="Bold">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ForgotPasswordClickCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </VerticalStackLayout>
+            <Button Text="{x:Static res:AppResources.btnLogin}" FontSize="16" FontAttributes="Bold" BackgroundColor="Black" TextColor="White"
+                Command="{Binding LoginClickCommand}" CommandParameter="{Binding LoginRequest}" VerticalOptions="EndAndExpand"></Button>
+            <HorizontalStackLayout  HorizontalOptions="CenterAndExpand" Margin="0,0,0,20">
+                <Label Text="{x:Static res:AppResources.Don_t_have_an_account}" TextColor="Gray" FontSize="14" 
+                       FontAttributes="Bold" HorizontalOptions="CenterAndExpand"></Label>
+                <Label Text="{x:Static res:AppResources.lblSignUp_Now}" TextColor="#327cdb" FontSize="14" 
+                       FontAttributes="Bold" TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SignUpClickCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+            
+        </StackLayout>
+    </ScrollView>
+</Controls:CustomControl>

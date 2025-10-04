@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Controls="clr-namespace:Cardrly.Controls"
+             xmlns:vm="clr-namespace:Cardrly.ViewModels"   
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+             x:Class="Cardrly.Pages.AddCustomCardPage"
+             Title="AddCustomCardPage"
+             IsEnabled="{Binding IsEnable}">
+    <StackLayout Margin="20">
+        <!--Header-->
+        <StackLayout Orientation="Horizontal">
+            <Image VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="{x:Static res:AppResources.hdrAddCard}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+           TextColor="Black" VerticalOptions="CenterAndExpand" >
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding AddOrUpdate}" Value="2">
+                        <Setter Property="Text" Value="{x:Static res:AppResources.hdrEditCard}"></Setter>
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
+        </StackLayout>
+        <!--Data-->
+        <ScrollView VerticalOptions="FillAndExpand">
+            <StackLayout Margin="0,20,0,0">
+                <!--Cover Image-->
+                <Grid HeightRequest="160">
+                    <Border StrokeShape="RoundRectangle 15" HeightRequest="150" Stroke="#FF7F3E" HorizontalOptions="FillAndExpand" BackgroundColor="White">
+                        <Image Source="{Binding Request.ImgCoverFile}" Aspect="AspectFill"></Image>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenFullScreenCoverPhotoCommand}" CommandParameter="{Binding Request.ImgCoverFile}"></TapGestureRecognizer>
+                        </Border.GestureRecognizers>
+                    </Border>
+                    <Image WidthRequest="25" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand">
+                        <Image.Source>
+                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E"></FontImageSource>
+                        </Image.Source>
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddCoverImageClickCommand}"></TapGestureRecognizer>
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
+                <!--Profile Image-->
+                <Grid HeightRequest="100" WidthRequest="100">
+                    <Border StrokeShape="RoundRectangle 50" HeightRequest="100" WidthRequest="100" HorizontalOptions="FillAndExpand" BackgroundColor="White"
+                        StrokeThickness="1" TranslationY="-50" Stroke="#FF7F3E">
+                        <Image Source="{Binding Request.ImgProfileFile}" Aspect="Fill"></Image>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenFullScreenProfilePhotoCommand}" CommandParameter="{Binding Request.ImgProfileFile}"></TapGestureRecognizer>
+                        </Border.GestureRecognizers>
+                    </Border>
+                    <Image WidthRequest="25" HorizontalOptions="EndAndExpand" Margin="0,0,0,10">
+                        <Image.Source>
+                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E"></FontImageSource>
+                        </Image.Source>
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddProfileImageClickCommand}"></TapGestureRecognizer>
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
+                <!--Data-->
+                <Border StrokeShape="RoundRectangle 20" VerticalOptions="FillAndExpand" Padding="15,0,15,15" Stroke="Black" 
+                        BackgroundColor="White" Margin="0,10,0,0" TranslationY="-50">
+                    <VerticalStackLayout Margin="0,20,0,0">
+                        <!--Email-->
+                        <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                            <Label Text="{x:Static res:AppResources.lblEmail}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                            <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                                <Entry Keyboard="Email" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                Text="{Binding Request.Email}"></Entry>
+                            </Border>
+                            <VerticalStackLayout.Triggers>
+                                <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding AddOrUpdate}" Value="2">
+                                    <Setter Property="IsVisible" Value="False"></Setter>
+                                </DataTrigger>
+                            </VerticalStackLayout.Triggers>
+                        </VerticalStackLayout>
+                        <!--Card Name-->
+                        <VerticalStackLayout HorizontalOptions="FillAndExpand" Margin="0,0,0,0" >
+                            <Label Text="{x:Static res:AppResources.lblCardName}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                            <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                                <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                    Text="{Binding Request.CardName}" ></Entry>
+                            </Border>
+                        </VerticalStackLayout>
+                        <!--Card Layout-->
+                        <VerticalStackLayout HorizontalOptions="FillAndExpand" Margin="0,0,0,0" >
+                            <Label Text="{x:Static res:AppResources.lblCardLayout}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                            <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                                <Picker ItemsSource="{Binding CardLayouts}" ItemDisplayBinding="{Binding Name}" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                                        SelectedItem="{Binding SelectedLayout}" ></Picker>
+                            </Border>
+                            <VerticalStackLayout.Triggers>
+                                <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding AddOrUpdate}" Value="1">
+                                    <Setter Property="IsVisible" Value="False"></Setter>
+                                </DataTrigger>
+                            </VerticalStackLayout.Triggers>
+                        </VerticalStackLayout>
+                        <!--location-->
+                        <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                            <Label Text="{x:Static res:AppResources.lblLocation}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                            <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                                <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                    Text="{Binding Request.location}"></Entry>
+                            </Border>
+                        </VerticalStackLayout>
+                        <!--Person Name-->
+                        <VerticalStackLayout HorizontalOptions="FillAndExpand" >
+                            <Label Text="{x:Static res:AppResources.lblPersonName}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                            <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                                <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                    Text="{Binding Request.PersonName}"></Entry>
+                            </Border>
+                        </VerticalStackLayout>
+                        <!--Person Nike Name-->
+                        <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                            <Label Text="{x:Static res:AppResources.lblPersonnickname}" TextColor="Gray"  FontSize="13" Margin="0,15,0,5"></Label>
+                            <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                                <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                    Text="{Binding Request.PersonNikeName}"></Entry>
+                            </Border>
+                        </VerticalStackLayout>
+                        <!--Job Title-->
+                        <VerticalStackLayout HorizontalOptions="FillAndExpand">
+                            <Label Text="{x:Static res:AppResources.lblJobtitle}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                            <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="40">
+                                <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                Text="{Binding Request.JobTitle}"></Entry>
+                            </Border>
+                        </VerticalStackLayout>
+                        <!--Link Color-->
+                        <StackLayout HorizontalOptions="FillAndExpand">
+                            <Label Text="{x:Static res:AppResources.lblLinkColor}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                            <CollectionView HeightRequest="40" ItemsSource="{Binding LinkColor}">
+                                <CollectionView.ItemsLayout>
+                                    <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="10"></GridItemsLayout>
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border StrokeShape="RoundRectangle 20" WidthRequest="40" HeightRequest="40" BackgroundColor="{Binding HexCode}">
+                                            <Border.Triggers>
+                                                <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="true">
+                                                    <Setter Property="Stroke" Value="#FF7F3E"></Setter>
+                                                    <Setter Property="StrokeThickness" Value="2"></Setter>
+                                                </DataTrigger>
+                                            </Border.Triggers>
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AddCustomCardViewModel}},Path=LinkColorClickCommand}"
+                                                                      CommandParameter="{Binding}"></TapGestureRecognizer>
+                                            </Border.GestureRecognizers>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </StackLayout>
+                        <!--Card Theme-->
+                        <StackLayout HorizontalOptions="FillAndExpand">
+                            <Label Text="{x:Static res:AppResources.lblCardtheme}" TextColor="Gray" FontSize="13" Margin="0,15,0,5"></Label>
+                            <CollectionView HeightRequest="40" ItemsSource="{Binding ThemColor}">
+                                <CollectionView.ItemsLayout>
+                                    <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="10"></GridItemsLayout>
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border StrokeShape="RoundRectangle 20" WidthRequest="40" HeightRequest="40" BackgroundColor="{Binding HexCode}">
+                                            <Border.Triggers>
+                                                <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="true">
+                                                    <Setter Property="Stroke" Value="#FF7F3E"></Setter>
+                                                    <Setter Property="StrokeThickness" Value="2"></Setter>
+                                                </DataTrigger>
+                                            </Border.Triggers>
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AddCustomCardViewModel}},Path=ThemeColorClickCommand}"
+                                                                      CommandParameter="{Binding}"></TapGestureRecognizer>
+                                            </Border.GestureRecognizers>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </StackLayout>
+                        <!--Bio-->
+                        <VerticalStackLayout HorizontalOptions="FillAndExpand" HeightRequest="100" Margin="0,15,0,0" >
+                            <Label Text="{x:Static res:AppResources.lblBio}" TextColor="Gray" FontSize="13"></Label>
+                            <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" StrokeThickness="1" Stroke="Black" HeightRequest="80">
+                                <Entry Keyboard="Text" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"
+                Text="{Binding Request.Bio}" HorizontalOptions="FillAndExpand"></Entry>
+                            </Border>
+                        </VerticalStackLayout>
+                        <HorizontalStackLayout Spacing="0">
+                            <CheckBox IsChecked="{Binding Request.IsAddLeadFromProfileCard}" Color="#FF7F3E" VerticalOptions="CenterAndExpand"></CheckBox>
+                            <Label Text="{x:Static res:AppResources.lblLeadCaptureMode}" TextColor="Black" FontSize="13" VerticalOptions="CenterAndExpand"
+                                   FontAttributes="Bold"></Label>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+                <!--Save Button  & Edit Links-->
+                <StackLayout Orientation="Horizontal" Spacing="25" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
+                    <!--Save Button-->
+                    <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnSave}" FontSize="16" FontAttributes="Bold" 
+                            BackgroundColor="#FF7F3E" TextColor="White" Command="{Binding SaveClickCommand}"
+                             HorizontalOptions="FillAndExpand"></Button>
+                    <!--Edit Links-->
+                    <Border StrokeShape="RoundRectangle 10" VerticalOptions="End" BackgroundColor="White" Stroke="#FF7F3E" IsVisible="False">
+                        <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnEditLinks}" FontSize="16" FontAttributes="Bold" Command="{Binding EditLinksClickCommand}" 
+                                 BackgroundColor="Transparent" TextColor="Black" HorizontalOptions="FillAndExpand" Padding="20,0">
+                        </Button>
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding AddOrUpdate}" Value="2">
+                                <Setter Property="IsVisible" Value="True"></Setter>
+                            </DataTrigger>
+                        </Border.Triggers>
+                    </Border>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</Controls:CustomControl>

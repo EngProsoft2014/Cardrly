@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        x:Class="Cardrly.Pages.TrackingPages.EmployeesWorkingPage"
+                        xmlns:Controls="clr-namespace:Cardrly.Controls"
+                        xmlns:Helpers="clr-namespace:Cardrly.Helpers"
+                        xmlns:vm="clr-namespace:Cardrly.ViewModels"
+                        xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+                        Visual="Material"
+                        BackgroundColor="White"
+                        IsEnabled="{Binding IsEnable}">
+
+    <StackLayout>
+        <!--Header-->
+        <StackLayout Orientation="Horizontal" Margin="20">
+            <Image VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="{x:Static res:AppResources.lblEmployeesWorking}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
+            </Label>
+        </StackLayout>
+
+        <!--Search Bar-->
+        <Border BackgroundColor="White" HeightRequest="{OnPlatform Android=42, iOS=55}" Margin="30,0,30,10" Padding="0" HorizontalOptions="FillAndExpand">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
+                <SearchBar x:Name="srcBarEmployee"
+                           Placeholder="{x:Static res:AppResources.lblSearch}"    
+                           TextChanged="srcBarEmployee_TextChanged"
+                           HorizontalOptions="FillAndExpand" 
+                           TextColor="#333"
+                           Margin="5,0,5,0" BackgroundColor="White" 
+                           FontSize="14"></SearchBar>
+            </StackLayout>
+
+            <Border.Shadow>
+                <Shadow Brush="{OnPlatform Android=LightGray, iOS=LightGray}" Radius="{OnPlatform Android=5,iOS=3}"></Shadow>
+            </Border.Shadow>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="{OnPlatform Android=25,iOS=20}" Stroke="LightGray" StrokeThickness="1"></RoundRectangle>
+            </Border.StrokeShape>
+        </Border>
+
+        <Line  X1="400" HorizontalOptions="CenterAndExpand" BackgroundColor="LightGray"></Line>
+
+        <StackLayout Padding="0,0,0,30">
+
+            <StackLayout>
+                <ListView x:Name="lstEmployees" 
+                      ItemsSource="{Binding LstWorkingEmployees}"
+                      HasUnevenRows="True" BackgroundColor="White"
+                      SelectionMode="None"
+                      VerticalScrollBarVisibility="Never">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Margin="20,10,20,10" Spacing="10">
+                                    <Border x:Name="yumEmployee" BackgroundColor="#f26d29" HorizontalOptions="FillAndExpand">
+                                        <Label 
+                                          FontAttributes="Bold"
+                                          TextColor="White" 
+                                          HorizontalTextAlignment="Start"
+                                          VerticalTextAlignment="Center"
+                                          Padding="20,7,20,7">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                    <Binding Path="FirstName" />
+                                                    <Binding Path="LastName" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10"></RoundRectangle>
+                                        </Border.StrokeShape>
+
+                                    </Border>
+
+                                    <StackLayout Orientation="Horizontal" Spacing="10" Padding="10,0,0,0">
+                                        <Image>
+                                            <Image.Source>
+                                                <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="18"></FontImageSource>
+                                            </Image.Source>
+                                        </Image>
+                                        <Label Text="{Binding BranchName}" FontAttributes="Italic" TextColor="#333" VerticalTextAlignment="Center" FontSize="14"></Label>
+                                        <Label Text="{Binding TotalBranches,StringFormat='+{0}'}" TextColor="#333" FontAttributes="Italic" VerticalTextAlignment="Center" FontSize="14">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding TotalBranches}" Value="0">
+                                                    <Setter Property="IsVisible" Value="False"></Setter>
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </StackLayout>
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:EmployeesViewModel}}, Path=SelectedEmployeeInMapCommand}" CommandParameter="{Binding}"></TapGestureRecognizer>
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding Source={x:Reference stkNoData2}, Path=IsVisible}" Value="True">
+                        <Setter Property="HeightRequest" Value="0"></Setter>
+                        <Setter Property="IsVisible" Value="False"></Setter>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+
+            <!--No Data-->
+            <StackLayout x:Name="stkNoData2" IsVisible="False" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                <Label Text="{x:Static res:AppResources.msgNoavailableData}" TextColor="Black" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" FontSize="16"></Label>
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding LstWorkingEmployees.Count}" Value="0">
+                        <Setter Property="IsVisible" Value="True"></Setter>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+
+        </StackLayout>
+    </StackLayout>
+</Controls:CustomControl>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Cardrly.Pages.MainPopups.DatePopup"
+                  xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+                  xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+                  xmlns:vm="clr-namespace:Cardrly.ViewModels"
+                  xmlns:calendar="clr-namespace:Syncfusion.Maui.Calendar;assembly=Syncfusion.Maui.Calendar"
+                  BackgroundColor="#80000000"
+                  IsEnabled="{Binding IsEnable}">
+
+    <mopups:PopupPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label" x:Key="HeaderTextKey">
+                <Setter Property="FontSize" Value="18"></Setter>
+                <Setter Property="FontFamily" Value="InterMedium"></Setter>
+                <Setter Property="TextColor" Value="#FFFFFF"></Setter>
+                <Setter Property="FontAttributes" Value="Bold"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </mopups:PopupPage.Resources>
+
+    <Grid Padding="0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" HeightRequest="500" WidthRequest="300">
+        <Border TranslationY="0" HeightRequest="120" VerticalOptions="Start" BackgroundColor="White">
+            <StackLayout Padding="20,20,20,20" VerticalOptions="StartAndExpand" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="Use Range" FontSize="16" TextColor="#333" HorizontalOptions="Start" VerticalTextAlignment="Center"></Label>
+
+                <Switch x:Name="switchRangeDate" HorizontalOptions="EndAndExpand">
+                    <Switch.Triggers>
+                        <DataTrigger TargetType="Switch" Binding="{Binding Source={x:Reference switchRangeDate}, Path=IsToggled}" Value="True">
+                            <Setter Property="ThumbColor" Value="#f26d29" />
+                        </DataTrigger>
+                    </Switch.Triggers>
+                </Switch>
+            </StackLayout>
+
+            <Border.Shadow>
+                <Shadow Brush="{OnPlatform Android=Gray, iOS=Gray}" Radius="{OnPlatform Android=15,iOS=15}"></Shadow>
+            </Border.Shadow>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="20,20,0,0"></RoundRectangle>
+            </Border.StrokeShape>
+        </Border>
+
+        <Border HeightRequest="370" BackgroundColor="#FFFFFF" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+            <StackLayout>
+                <calendar:SfCalendar  x:Name="calendar" 
+                                    EnablePastDates="True"
+                                    View="Month" TodayHighlightBrush="#f26d29" SelectionBackground="#f26d29" 
+                                    SelectionMode="Single"
+                                    HeightRequest="300" 
+                                    Margin="0,0,0,0">
+                    <calendar:SfCalendar.HeaderView>
+                        <calendar:CalendarHeaderView Height="70" TextStyle="{StaticResource HeaderTextKey}"
+                                                     Background="#f26d29">
+                            
+                        </calendar:CalendarHeaderView>
+                    </calendar:SfCalendar.HeaderView>
+                    
+                    <calendar:SfCalendar.Triggers>
+                        <DataTrigger TargetType="calendar:SfCalendar" Binding="{Binding Source={x:Reference switchRangeDate}, Path=IsToggled}" Value="True">
+                            <Setter Property="SelectionMode" Value="Range" />
+                        </DataTrigger>
+                    </calendar:SfCalendar.Triggers>
+                </calendar:SfCalendar>
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Padding="10" Spacing="20">
+                    <Button Text="Cancel" TextTransform="None" BackgroundColor="Transparent" FontAttributes="Bold" FontSize="16" TextColor="#f26d29" Clicked="Button_Clicked"></Button>
+                    <Button Text="OK" BackgroundColor="Transparent" FontAttributes="Bold" FontSize="16" TextColor="#f26d29" x:Name="btnOk" Clicked="btnOk_Clicked"></Button>
+                </StackLayout>
+            </StackLayout>
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="20"></RoundRectangle>
+            </Border.StrokeShape>
+        </Border>
+
+    </Grid>
+</mopups:PopupPage>

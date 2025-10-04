@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+             xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+             x:Class="Cardrly.Pages.MainPopups.LeadOptionsPopup"
+             CloseWhenBackgroundIsClicked="True"
+             NavigationPage.HasNavigationBar="False" 
+             BackgroundColor="#90000000"
+             Title="LeadOptionsPopup">
+    <mopups:PopupPage.Animation>
+        <mopupsanim:MoveAnimation
+       DurationIn="700"
+       EasingIn="BounceOut"
+       PositionIn="Bottom"
+       PositionOut="Center" />
+    </mopups:PopupPage.Animation>
+
+    <StackLayout VerticalOptions="EndAndExpand">
+
+        <Border Padding="10" Margin="0" BackgroundColor="Transparent" StrokeThickness="0">
+            <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
+                <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
+                    <StackLayout  BackgroundColor="#FFFFFF" Spacing="3">
+                        <!--Call-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="{x:Static res:AppResources.lblCall}"
+                                   TextColor="#FF7F3E"
+                                   FontSize="16"
+           
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="CenterAndExpand" 
+                                   Padding="8">
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Call"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Email-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="{x:Static res:AppResources.lblEmail}"
+           TextColor="#FF7F3E"
+           FontSize="16"
+           
+           HorizontalTextAlignment="Center"
+           VerticalTextAlignment="Center"
+           HorizontalOptions="CenterAndExpand" 
+           Padding="8">
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Email"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Save to Contact-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="{x:Static res:AppResources.lblSavetoContact}"
+                                    TextColor="#FF7F3E"
+                                    FontSize="16"
+                                    HorizontalTextAlignment="Center"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalOptions="CenterAndExpand" 
+                                    Padding="8">
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="SaveToContact_Tapped"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Add Comment-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="{x:Static res:AppResources.lblAddComment}"
+                                   TextColor="#FF7F3E"
+                                   FontSize="16"
+                                   
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="CenterAndExpand" 
+                                   Padding="8">
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Comment"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Show Comments-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="{x:Static res:AppResources.lblShowComments}"
+                                   TextColor="#FF7F3E"
+                                   FontSize="16"
+                                   
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="CenterAndExpand" 
+                                   Padding="8">
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_ShowComments"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Share Lead-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="{x:Static res:AppResources.lblShareLead}"
+                                   TextColor="#FF7F3E"
+                                   FontSize="16"
+                                   
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="CenterAndExpand" 
+                                   Padding="8">
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_ShareLead"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Reminder-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="{x:Static res:AppResources.lblReminder}"
+TextColor="#FF7F3E"
+FontSize="16"
+HorizontalTextAlignment="Center"
+VerticalTextAlignment="Center"
+HorizontalOptions="CenterAndExpand" 
+Padding="8">
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Reminder"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Invite to Cardrly-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="{x:Static res:AppResources.lblInvite}"
+TextColor="#FF7F3E"
+FontSize="16"
+HorizontalTextAlignment="Center"
+VerticalTextAlignment="Center"
+HorizontalOptions="CenterAndExpand" 
+Padding="8">
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Invite"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Delete-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="{x:Static res:AppResources.lblDeleteLead}"
+                                   TextColor="Red"
+                                   FontSize="16"
+                                   
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="CenterAndExpand" 
+                                   Padding="8">
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_DeleteLead"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </StackLayout>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="25"></RoundRectangle>
+                    </Border.StrokeShape>
+                </Border>
+                <!--Cancel-->
+                <Border Padding="10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
+                    <Label Text="{x:Static res:AppResources.btnCancel}"
+                   TextColor="#FF7F3E"
+                   FontSize="16"
+                   
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   HorizontalOptions="CenterAndExpand"
+                   Padding="10">
+
+                    </Label>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Cancel"></TapGestureRecognizer>
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20"></RoundRectangle>
+                    </Border.StrokeShape>
+                </Border>
+            </StackLayout>
+        </Border>
+    </StackLayout>
+</mopups:PopupPage>

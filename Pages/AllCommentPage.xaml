@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Controls="clr-namespace:Cardrly.Controls"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+             xmlns:vm="clr-namespace:Cardrly.ViewModels"
+             x:Class="Cardrly.Pages.AllCommentPage"
+             Title="AllCommentPage">
+    
+        <StackLayout Margin="20" Spacing="20">
+            <!--Header-->
+        <StackLayout Orientation="Horizontal">
+            <Image VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="{x:Static res:AppResources.hdrComments}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
+           TextColor="Black" VerticalOptions="CenterAndExpand" ></Label>
+        </StackLayout>
+        <!--Data-->
+        <CollectionView VerticalOptions="FillAndExpand" ItemsSource="{Binding LeadComments}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="5"></GridItemsLayout>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding CreatedDate}" FontSize="12" TextColor='Gray' FontAttributes="Italic" HorizontalOptions="EndAndExpand"></Label>
+                        </StackLayout>
+                        <Border StrokeShape="RoundRectangle 10,10,0,10" Padding="10" BackgroundColor="White" Stroke="Black">
+                            <VerticalStackLayout Spacing="5">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding CardPersonName}" FontSize="13" TextColor='#FF7F3E' FontAttributes="Bold"></Label>
+                                    <Image HorizontalOptions="EndAndExpand" Margin="5,0" IsVisible="{Binding ActiveDelete}">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="16"></FontImageSource>
+                                        </Image.Source>
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AllCommentViewModel}},Path=DeleteClickCommand}"
+                                                                  CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </StackLayout>
+                                <Label Text="{Binding Comment}" FontSize="12" TextColor='Gray'></Label>
+                            </VerticalStackLayout>
+                        </Border>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <ContentView>
+                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                        <Label Text="{x:Static res:AppResources.msgNoComment_here}" FontSize="14" TextColor="Black" FontAttributes="Bold"></Label>
+                    </StackLayout>
+                </ContentView>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </StackLayout>
+    
+
+</Controls:CustomControl>

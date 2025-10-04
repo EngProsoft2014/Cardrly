@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+             xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+             x:Class="Cardrly.Pages.MainPopups.CardOptionPopup"
+             CloseWhenBackgroundIsClicked="True"
+             NavigationPage.HasNavigationBar="False" 
+             BackgroundColor="#90000000"
+             Title="CardOptionPopup">
+    <mopups:PopupPage.Animation>
+        <mopupsanim:MoveAnimation
+           DurationIn="700"
+           EasingIn="BounceOut"
+           PositionIn="Bottom"
+           PositionOut="Center" />
+    </mopups:PopupPage.Animation>
+
+    <StackLayout VerticalOptions="EndAndExpand">
+
+        <Border Padding="10" Margin="0" BackgroundColor="Transparent" StrokeThickness="0">
+            <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
+                <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
+                    <StackLayout  BackgroundColor="#FFFFFF" Spacing="3">
+                        <!--Qr code Iamge-->
+                        <Border StrokeShape="RoundRectangle 20" HeightRequest="250" WidthRequest="250">
+                            <zxing:BarcodeGeneratorView
+                                    x:Name="QRCodeImage" 
+                                    HeightRequest="250"
+                                    WidthRequest="250"
+                                    BackgroundColor="Transparent"      
+                                    ForegroundColor="Black"
+                                    Format="QrCode"/>
+                        </Border>
+                        <!--Share Card Link-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="{x:Static res:AppResources.lblShareCardLink}"
+                                   TextColor="#FF7F3E"
+                                   FontSize="16"
+                                   
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="CenterAndExpand" 
+                                   Padding="8">
+
+                            </Label>
+
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_ShareCard"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Share Offline Card-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Grid HorizontalOptions="FillAndExpand">
+                                <Label Text="{x:Static res:AppResources.lblShareOfflineCard}"
+                                   TextColor="#FF7F3E"
+                                   FontSize="16"
+                                   
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="CenterAndExpand" 
+                                   Padding="8">
+                                </Label>
+                                <CheckBox x:Name="chkoffline" CheckedChanged="CheckBox_ShareOfflineCard" HorizontalOptions="EndAndExpand" Color="#FF7F3E"></CheckBox>
+                            </Grid>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Share VCard-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label Text="{x:Static res:AppResources.lblShareVCard}"
+                                    TextColor="#FF7F3E"
+                                    FontSize="16"
+                                    
+                                    HorizontalTextAlignment="Center"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalOptions="CenterAndExpand" 
+                                    Padding="8">
+
+                            </Label>
+
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_ShareVcard"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Edit Card-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label 
+                               Text="{x:Static res:AppResources.hdrEditCard}"
+                               TextColor="#FF7F3E"
+                               FontSize="16"
+                               
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="CenterAndExpand"
+                               Padding="8">
+
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_EditCaed"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Preview Card-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label 
+                               Text="{x:Static res:AppResources.btnPreview}"
+                               TextColor="#FF7F3E"
+                               FontSize="16"
+                               
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="CenterAndExpand"
+                               Padding="8">
+
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_PreviewCard"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView HeightRequest="0.7" HorizontalOptions="FillAndExpand" BackgroundColor="{OnPlatform Android=Gray,iOS=LightGray}"></BoxView>
+                        <!--Delete Card-->
+                        <StackLayout Orientation="Horizontal" Spacing="0" Padding="20,0,20,0">
+                            <Label 
+                               Text="{x:Static res:AppResources.lblDeleteCard}"
+                               TextColor="Red"
+                               FontSize="16"
+                               
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="CenterAndExpand"
+                               Padding="8">
+
+                            </Label>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_DeleteCard"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </StackLayout>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="25"></RoundRectangle>
+                    </Border.StrokeShape>
+                </Border>
+                <!--Cancel-->
+                <Border Padding="10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
+
+
+                    <Label Text="{x:Static res:AppResources.btnCancel}"
+                       TextColor="#FF7F3E"
+                       FontSize="16"
+                       
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       HorizontalOptions="CenterAndExpand"
+                       Padding="10">
+
+                    </Label>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Cancel"></TapGestureRecognizer>
+                    </Border.GestureRecognizers>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20"></RoundRectangle>
+                    </Border.StrokeShape>
+                </Border>
+            </StackLayout>
+        </Border>
+    </StackLayout>
+</mopups:PopupPage>

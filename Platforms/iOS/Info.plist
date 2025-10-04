@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>UIDeviceFamily</key>
+	<array>
+		<integer>1</integer>
+		<integer>2</integer>
+	</array>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>arm64</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/images.appiconset</string>
+	<key>NFCReaderUsageDescription</key>
+	<string>Your app needs NFC access to write to tags.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>We need access to your contacts to save the contact information.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We require access to your camera to allow you to capture photos for your profile For example, you can use a picture to upload as your profile image</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We require access to your gallery to allow you to use photos for your profile For example, you can use a picture to upload as your profile image</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We require access to your gallery to allow you to use photos for your profile For example, you can use a picture to upload as your profile image</string>
+	<key>CFBundleName</key>
+	<string>com.companyname.cardrly</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need access to your microphone to recognize your speech.</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>mailto</string>
+	</array>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.5</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.0.1</string>
+	<key>NSUserNotificationUsageDescription</key>
+	<string>We need notification permissions to send you updates.</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>CFBundleIdentifier</key>
+	<string></string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:Controls="clr-namespace:Cardrly.Controls"
+                        x:Class="Cardrly.Pages.MeetingsScript.FullScreenRecordNotePage"
+                        xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+                        Title="FullScreenRecordNotePage"
+                        BackgroundColor="White">
+
+
+    <StackLayout>
+
+        <!--Header-->
+        <StackLayout Orientation="Horizontal" Margin="20">
+            <Image VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="{x:Static res:AppResources.lblNote}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
+            </Label>
+
+        </StackLayout>
+
+
+        <StackLayout Margin="20,0,20,20" VerticalOptions="FillAndExpand">
+            <Frame BorderColor="LightGray" BackgroundColor="White" HorizontalOptions="FillAndExpand" HasShadow="False" VerticalOptions="FillAndExpand" Padding="10" CornerRadius="15">
+                <Editor x:Name="edtNote" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" TextColor="#333">
+
+                </Editor>
+            </Frame>
+
+        </StackLayout>
+    </StackLayout>
+</Controls:CustomControl>

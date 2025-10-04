@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+             xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+             xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+             x:Class="Cardrly.Pages.MainPopups.UpdateVersionPopup"
+             CloseWhenBackgroundIsClicked="False"
+             NavigationPage.HasNavigationBar="False" 
+             BackgroundColor="#90000000"
+             Title="UpdateVersionPopup">
+    <mopups:PopupPage.Animation>
+        <mopupsanim:MoveAnimation
+       DurationIn="700"
+       EasingIn="BounceOut"
+       PositionIn="Bottom"
+       PositionOut="Center" />
+    </mopups:PopupPage.Animation>
+
+    <StackLayout VerticalOptions="CenterAndExpand">
+        <Border Padding="10" Margin="10" BackgroundColor="Transparent" StrokeThickness="0">
+            <StackLayout  HorizontalOptions="FillAndExpand" Spacing="10">
+                <Border StrokeShape="RoundRectangle 15" Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center" >
+                    <VerticalStackLayout Spacing="15" Padding="10">
+                        <Label Text="{x:Static res:AppResources.lblAnotherUpgrade}" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" TextColor="Black"/>
+
+                        <Label x:Name="lblMsg" Text="{x:Static res:AppResources.lblIfyouupdatedlasttime}" LineHeight="1.5" FontSize="14" HorizontalTextAlignment="Center" TextColor="Black"/>
+                        
+                        <!--<Label x:Name="lblMsg" Text="{x:Static res:AppResources.lblIfyouupdatedlasttime}" FontSize="14" HorizontalTextAlignment="Center" TextColor="Black"/>-->
+                        <!--<Label Text="{x:Static res:AppResources.lblUpdatenow}" HorizontalTextAlignment="Center" TextColor="Black" />
+                        <Label Text="{x:Static res:AppResources.lblThismakesitclear}" HorizontalTextAlignment="Center" TextColor="Black"/>
+                        <Label Text="{x:Static res:AppResources.lblLet_us_know_if_you_d_like_any_tweaks}" HorizontalTextAlignment="Center" TextColor="Black"/>-->
+                        
+                        <Button x:Name="btnStoreLink" BackgroundColor="Transparent" FontSize="14" TextColor="#FF7F3E" 
+                                BorderColor="#FF7F3E" BorderWidth="1" Clicked="btnStoreLink_Clicked"/>
+                    </VerticalStackLayout>
+                </Border>
+
+            </StackLayout>
+        </Border>
+    </StackLayout>
+</mopups:PopupPage>
