@@ -119,6 +119,9 @@ namespace Cardrly.ViewModels
 
         async void Init()
         {
+            ScriptTypes.Add(new ScriptTypeModel { Id = 1, Name = "Simple Script" });
+            ScriptTypes.Add(new ScriptTypeModel { Id = 2, Name = "Meeting Script" });
+
             // Initialize Azure Speech Service client
             speechKey = Controls.StaticMember.AzureMeetingAiSekrtKey;
             speechRegion = "eastus"; //"YOUR_REGION"; // Example: "eastus"
@@ -149,8 +152,6 @@ namespace Cardrly.ViewModels
                 "ar-EG", // Arabic (Egypt)
             });
 
-            ScriptTypes.Add(new ScriptTypeModel { Id = 1, Name = "Simple Script" });
-            ScriptTypes.Add(new ScriptTypeModel { Id = 2, Name = "Meeting Script" });
         }
 
         // Assign consistent color per speaker
