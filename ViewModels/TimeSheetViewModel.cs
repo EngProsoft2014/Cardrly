@@ -86,12 +86,7 @@ namespace Cardrly.ViewModels
                 Date = Controls.StaticMember.SelectedDate.ToString("MM-dd-yyyy");
             }
 
-            GetCheckInOutEmployees(dateDF.ToString("MM-dd-yyyy"));
 
-        }
-
-        public async void GetCheckInOutEmployees(string date)
-        {
             CheckInOutModel oCheckInOutModel = new CheckInOutModel
             {
                 Id = 1,
@@ -108,14 +103,21 @@ namespace Cardrly.ViewModels
                 DurationHours = "",
                 DurationMinutes = "",
                 Notes = "",
-
             };
-            //LstEmployeesIn.Add(new CheckInOutModel { Id = 1, EmployeeName = Preferences.Default.Get(ApiConstants.username, "") });
-            //LstEmployeesOut.Add(new CheckInOutModel { Id = 1, EmployeeName = Preferences.Default.Get(ApiConstants.username, "") });
+
             LstEmployeesIn.Add(oCheckInOutModel);
             LstEmployeesOut.Add(oCheckInOutModel);
             NumIn = LstEmployeesIn.Count.ToString();
             NumOut = LstEmployeesOut.Count.ToString();
+
+
+
+            GetCheckInOutEmployees(dateDF.ToString("MM-dd-yyyy"));
+
+        }
+
+        public async void GetCheckInOutEmployees(string date)
+        {
 
             //if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             //{

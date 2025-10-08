@@ -34,12 +34,10 @@
 	<string>We require access to your gallery to allow you to use photos for your profile For example, you can use a picture to upload as your profile image</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We require access to your gallery to allow you to use photos for your profile For example, you can use a picture to upload as your profile image</string>
-
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Cardrly uses your location to enable location-based features.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Cardrly requires location access to function properly, even when running in the background.</string>
-
 	<key>CFBundleName</key>
 	<string>com.companyname.cardrly</string>
 	<key>NSMicrophoneUsageDescription</key>
@@ -51,7 +49,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.5</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.0.2</string>
+	<string>1.0.0.3</string>
 	<key>NSUserNotificationUsageDescription</key>
 	<string>We need notification permissions to send you updates.</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>

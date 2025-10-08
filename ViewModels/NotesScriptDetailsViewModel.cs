@@ -114,11 +114,25 @@ namespace Cardrly.ViewModels
             MeetingInfoModel = item;
             _audioService = audioService;
 
+            Init();
+        }
+
+        async void Init()
+        {
             // Initialize Azure Speech Service client
             speechKey = Controls.StaticMember.AzureMeetingAiSekrtKey;
             speechRegion = "eastus"; //"YOUR_REGION"; // Example: "eastus"
 
             IsScriptBtn = MeetingInfoModel.MeetingAiActionRecords.Count > 0 ? true : false;
+
+            if (DeviceInfo.Platform == DevicePlatform.iOS && DeviceInfo.DeviceType == DeviceType.Virtual)
+            {
+                await App.Current!.MainPage!.DisplayAlert(
+                    "Speech Disabled",
+                    "Speech recognition is not supported on iOS simulator. Please test on a real device.",
+                    "OK");
+                return;
+            }
 
             //Test Speech to Text
             speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
