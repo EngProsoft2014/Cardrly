@@ -924,7 +924,7 @@
                                             </StackLayout>
                                             
                                             
-                                            <!--Time Sheet--><!--
+                                            <!--Time Sheet-->
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="{x:Static res:AppResources.lblTimeSheet}" FontAutoScalingEnabled="False" TextColor="Black"
                                                        FontSize="14" VerticalTextAlignment="Start"></Label>
@@ -942,7 +942,7 @@
                                                     <TapGestureRecognizer Command="{Binding TimeSheetClickCommand}"></TapGestureRecognizer>
                                                 </StackLayout.GestureRecognizers>
                                             </StackLayout>
-                                            --><!--Tracking--><!--
+                                            <!--Tracking--><!--
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="{x:Static res:AppResources.lblTracking}" FontAutoScalingEnabled="False" TextColor="Black"
                                                        FontSize="14" VerticalTextAlignment="Start"></Label>
@@ -1000,7 +1000,7 @@
                                             </StackLayout>
                                             
                                             
-                                            <!--Meetings Script--><!--
+                                            <!--Meetings Script-->
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="{x:Static res:AppResources.lblMeetingsScript}" FontAutoScalingEnabled="False" TextColor="Black"
                                                        FontSize="14" VerticalTextAlignment="Start"></Label>
@@ -1017,7 +1017,7 @@
                                                 <StackLayout.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding MeetingsScriptClickCommand}"></TapGestureRecognizer>
                                                 </StackLayout.GestureRecognizers>
-                                            </StackLayout>-->
+                                            </StackLayout>
                                             
                                             
                                         </VerticalStackLayout>

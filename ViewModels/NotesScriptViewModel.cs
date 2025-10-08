@@ -56,7 +56,6 @@ namespace Cardrly.ViewModels
 
         public IAudioRecorder recorder { get; set; }
 
-
         private readonly IAudioStreamService _audioService;
 
         public NotesScriptViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioStreamService audioService)
@@ -97,6 +96,7 @@ namespace Cardrly.ViewModels
                 if (json != null)
                 {
                     LstMeetingModel = json;
+                    Controls.StaticMember.AzureMeetingAiSekrtKey = json.FirstOrDefault()?.SecretKey ?? "";
                 }
             }
             IsEnable = true;

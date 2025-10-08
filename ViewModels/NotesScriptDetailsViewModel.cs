@@ -5,7 +5,6 @@ using Cardrly.Models;
 using Cardrly.Models.MeetingAiAction;
 using Cardrly.Models.MeetingAiActionRecord;
 using Cardrly.Models.MeetingAiActionRecordAnalyze;
-using Cardrly.Pages;
 using Cardrly.Pages.MeetingsScript;
 using Cardrly.Resources.Lan;
 using Cardrly.Services.AudioStream;
@@ -13,20 +12,25 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
+using Microsoft.CognitiveServices.Speech;
+using Microsoft.CognitiveServices.Speech.Audio;
+using Microsoft.CognitiveServices.Speech.Transcription;
 using Plugin.Maui.Audio;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+
 
 
 namespace Cardrly.ViewModels
 {
     public partial class NotesScriptDetailsViewModel : BaseViewModel
     {
+
+        [ObservableProperty]
+        ObservableCollection<MeetingMessage> messages = new();
+        private readonly Dictionary<string, Color> _speakerColors = new();
+        private readonly Random _random = new();
+
         #region Service
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
@@ -39,7 +43,22 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         bool isShowStopBtn;
 
+
+        [ObservableProperty]
+        ObservableCollection<ScriptTypeModel> scriptTypes = new();
+        [ObservableProperty]
+        ScriptTypeModel selectedScriptType = new();
+
         MeetingAiActionRecordResponse? _currentlyPlaying;
+
+        [ObservableProperty]
+        string selectedLanguage = string.Empty;
+
+        [ObservableProperty]
+        bool isEnableLang = true;
+
+        [ObservableProperty]
+        bool isEnableScriptType = true;
 
         [ObservableProperty]
         MeetingAiActionRecordResponse audioDetails;
@@ -58,14 +77,34 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         MeetingAiActionInfoResponse meetingInfoModel;
 
+        private StringBuilder _transcriptBuilder = new();
+
 
         public IAudioRecorder recorder { get; set; }
 
-        private DateTime? _recordStartTime;
-        private TimeSpan _accumulatedDuration = TimeSpan.Zero;
+        public DateTime? _recordStartTime;
+        public TimeSpan _accumulatedDuration = TimeSpan.Zero;
 
         public IAudioStreamService _audioService;
 
+        //Test Speech to Text
+        SpeechRecognizer _speechRecognizer;
+        SpeechConfig speechConfig;
+
+        private string _partialText = string.Empty; // stores current live phrase
+
+        // Track live partials by speaker
+        private readonly Dictionary<string, string> _partialTexts = new();
+
+        private readonly Dictionary<string, MeetingMessage> _liveMessages = new();
+
+        private ConversationTranscriber? _conversationTranscriber;
+        private bool _isTranscribing = false;
+
+        AutoDetectSourceLanguageConfig autoLangConfig;
+
+        string speechKey;
+        string speechRegion;
 
         //Details
         public NotesScriptDetailsViewModel(MeetingAiActionInfoResponse item, IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioStreamService audioService)
@@ -75,10 +114,72 @@ namespace Cardrly.ViewModels
             MeetingInfoModel = item;
             _audioService = audioService;
 
+            // Initialize Azure Speech Service client
+            speechKey = Controls.StaticMember.AzureMeetingAiSekrtKey;
+            speechRegion = "eastus"; //"YOUR_REGION"; // Example: "eastus"
+
             IsScriptBtn = MeetingInfoModel.MeetingAiActionRecords.Count > 0 ? true : false;
 
+            //Test Speech to Text
+            speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
+
+            speechConfig.SetProperty("ConversationTranscriptionInRealTime", "true");
+            speechConfig.SetProperty("SpeechServiceResponse_PostProcessingOption", "TrueText"); // optional
+            speechConfig.SetProperty("ConversationTranscriptionInRealTime", "true");
+            speechConfig.SetProperty("SpeechServiceResponse_EnablePartialResultStabilization", "true");
+            speechConfig.SetProperty("SpeechServiceResponse_StablePartialResultThreshold", "2");
+
+            autoLangConfig = AutoDetectSourceLanguageConfig.FromLanguages(new string[]
+            {
+                "en-US", // English
+                "ar-EG", // Arabic (Egypt)
+            });
+
+            ScriptTypes.Add(new ScriptTypeModel { Id = 1, Name = "Simple Script" });
+            ScriptTypes.Add(new ScriptTypeModel { Id = 2, Name = "Meeting Script" });
         }
 
+        // Assign consistent color per speaker
+        private void AddTranscript(string speaker, string text)
+        {
+            if (!_speakerColors.ContainsKey(speaker))
+            {
+                var colors = new[] { Colors.OrangeRed, Colors.Black, Colors.Blue, Colors.DarkBlue, Colors.Green, Colors.Brown, Colors.Purple };
+                _speakerColors[speaker] = colors[_random.Next(colors.Length)];
+            }
+
+            Messages.Add(new MeetingMessage
+            {
+                Speaker = speaker,
+                Text = text,
+                TextColor = _speakerColors[speaker]
+            });
+        }
+
+        private bool IsTextValidLanguage(string text)
+        {
+            foreach (var c in text)
+            {
+                // Arabic letters & symbols
+                bool isArabic =
+                    (c >= 0x0600 && c <= 0x06FF) ||
+                    (c >= 0x0750 && c <= 0x077F) ||
+                    (c >= 0x08A0 && c <= 0x08FF);
+
+                // English letters
+                bool isEnglish = char.IsLetter(c) && c <= 0x007A; // a-zA-Z plus basic Latin letters
+
+                // Digits
+                bool isDigit = char.IsDigit(c);
+
+                // Whitespace or common punctuation
+                bool isAllowedPunctuation = char.IsWhiteSpace(c) || ".,!?':;-()\"".Contains(c) || "،؛؟".Contains(c);
+
+                if (!(isArabic || isEnglish || isDigit || isAllowedPunctuation))
+                    return false;
+            }
+            return true;
+        }
 
         public async Task GetMeetingInfo(string meetingAiActionId)
         {
@@ -101,8 +202,56 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task BackButtonClicked()
         {
-            //CheckAudio(AudioDetails);
-            _audioService.Stop();
+            if (Messages.Count > 0 || !string.IsNullOrEmpty(NoteScript))
+            {
+                bool Pass = await App.Current!.MainPage!.DisplayAlert(AppResources.Info,AppResources.msgDoyouwanttosavetherecording, AppResources.msgOk, AppResources.btnCancel);
+
+                if (Pass)
+                {
+                    _audioService.Stop();
+                    await StopRecording();
+                    await App.Current!.MainPage!.Navigation.PopAsync();
+                }
+                else
+                {
+                    // Reset everything
+                    await ResetUi();
+                }
+            }
+            else
+            {
+                // Reset everything
+                await ResetUi();
+            }
+        }
+
+        public async Task ResetUi()
+        {
+            // Reset everything
+
+            await recorder.StopAsync();
+            StopDurationTimer();
+            IsRecording = false;
+
+            if (_recordStartTime != null)
+            {
+                // Save elapsed time into accumulator
+                _accumulatedDuration += DateTime.UtcNow - _recordStartTime.Value;
+            }
+
+            if (SelectedScriptType.Id == 1) //Simple Script
+            {
+                await _speechRecognizer.StopContinuousRecognitionAsync();
+            }
+            else if (SelectedScriptType.Id == 2) //Meeting Script
+            {
+                if (_conversationTranscriber != null && _isTranscribing)
+                {
+                    await _conversationTranscriber.StopTranscribingAsync();
+                    _isTranscribing = false;
+                }
+            }
+
             await App.Current!.MainPage!.Navigation.PopAsync();
         }
 
@@ -122,18 +271,155 @@ namespace Cardrly.ViewModels
 
                 try
                 {
-                    // Mark start point (don’t reset _accumulatedDuration, so timer continues)
-                    _recordStartTime = DateTime.UtcNow;
+                    if (string.IsNullOrEmpty(SelectedLanguage))
+                    {
+                        var toast = Toast.Make(AppResources.msgRequiredFieldLanguage, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();     
+                    }
+                    else if (SelectedScriptType == null || SelectedScriptType.Id == 0)
+                    {
+                        var toast = Toast.Make(AppResources.msgRequiredFieldScriptType, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();
+                    }
+                    else
+                    {
+                        if (SelectedLanguage == "English")
+                            speechConfig.SpeechRecognitionLanguage = "en-US";
+                        else if (SelectedLanguage == "العربية")
+                            speechConfig.SpeechRecognitionLanguage = "ar-EG";
 
-                    if (string.IsNullOrEmpty(DurationDisplay))
-                        DurationDisplay = "00:00:00";
+                        IsEnableLang = false;
+                        IsEnableScriptType = false;
 
-                    StartDurationTimer();
+                        // Mark start point (don’t reset _accumulatedDuration, so timer continues)
+                        _recordStartTime = DateTime.UtcNow;
 
-                    recorder = AudioManager.Current.CreateRecorder();
-                    await recorder.StartAsync(filePath);
-                    IsRecording = true;
-                    IsShowStopBtn = true;
+                        if (string.IsNullOrEmpty(DurationDisplay))
+                            DurationDisplay = "00:00:00";
+
+                        StartDurationTimer();
+
+                        recorder = AudioManager.Current.CreateRecorder();
+                        await recorder.StartAsync(filePath);
+                        IsRecording = true;
+                        IsShowStopBtn = true;
+
+                        if (SelectedScriptType.Id == 1) //Simple Script
+                        {
+                            if (_speechRecognizer == null)
+                            {
+                                _speechRecognizer = new SpeechRecognizer(speechConfig, autoLangConfig, AudioConfig.FromDefaultMicrophoneInput());
+
+                                _speechRecognizer.Recognizing += async (s, e) =>
+                                {
+                                    // keep live partial UI
+                                    _partialText = e.Result.Text?.Trim() ?? string.Empty;
+                                    NoteScript = $"{_transcriptBuilder}{(_partialText.Length > 0 ? " " + _partialText : string.Empty)}";
+                                };
+
+                                // 🔹 FINAL event - recognized (stable result)
+                                _speechRecognizer.Recognized += (s, e) =>
+                                {
+                                    if (e.Result.Reason == ResultReason.RecognizedSpeech && !string.IsNullOrWhiteSpace(e.Result.Text))
+                                    {
+                                        _transcriptBuilder.AppendLine(e.Result.Text.Trim());
+                                        _partialText = string.Empty;
+                                        NoteScript = _transcriptBuilder.ToString();
+                                    }
+                                };
+
+                                _speechRecognizer.Canceled += (s, e) => { /* optional logging */ };
+                                _speechRecognizer.SessionStopped += (s, e) => { /* optional logging */ };
+                            }
+                            await _speechRecognizer.StartContinuousRecognitionAsync();
+                        }
+                        else if (SelectedScriptType.Id == 2) //Meeting Script
+                        {
+                            _conversationTranscriber = new ConversationTranscriber(speechConfig, AudioConfig.FromDefaultMicrophoneInput());
+
+                            // 🔹 Event: partial recognized speech
+                            _conversationTranscriber.Transcribing += (s, e) =>
+                            {
+                                var speaker = e.Result.SpeakerId ?? "Unknown";
+                                var partial = e.Result.Text?.Trim() ?? string.Empty;
+
+                                if (string.IsNullOrEmpty(partial))
+                                    return;
+
+                                MainThread.BeginInvokeOnMainThread(() =>
+                                {
+                                    if (!_liveMessages.ContainsKey(speaker))
+                                    {
+                                        // Create a temporary live message
+                                        var msg = new MeetingMessage
+                                        {
+                                            Speaker = speaker,
+                                            Text = partial + "...",
+                                            TextColor = _speakerColors.ContainsKey(speaker)
+                                                ? _speakerColors[speaker]
+                                                : Colors.Red
+                                        };
+                                        _liveMessages[speaker] = msg;
+                                        Messages.Add(msg);
+                                    }
+                                    else
+                                    {
+                                        _liveMessages[speaker].Text = partial + "...";
+                                    }
+                                });
+                            };
+
+                            // 🔹 Event: finalized text (speaker + content)
+                            _conversationTranscriber.Transcribed += (s, e) =>
+                            {
+                                if (e.Result.Reason == ResultReason.RecognizedSpeech && !string.IsNullOrWhiteSpace(e.Result.Text))
+                                {
+                                    var speaker = e.Result.SpeakerId ?? "Unknown";
+                                    var text = e.Result.Text.Trim();
+
+                                    MainThread.BeginInvokeOnMainThread(async () =>
+                                    {
+                                        if (!IsTextValidLanguage(text))
+                                        {
+                                            await App.Current!.MainPage!.DisplayAlert("Unsupported Language",
+                                                "The speech could not be recognized. Only Arabic and English are supported.",
+                                                "OK");
+                                            return;
+                                        }
+
+                                        if (_liveMessages.ContainsKey(speaker))
+                                        {
+                                            // Update the existing message to final text
+                                            _liveMessages[speaker].Text = text;
+                                            _liveMessages.Remove(speaker);
+                                        }
+                                        else
+                                        {
+                                            AddTranscript(speaker, text);
+                                        }
+                                    });
+                                }
+                            };
+
+                            _conversationTranscriber.Canceled += (s, e) =>
+                            {
+                                MainThread.BeginInvokeOnMainThread(async () =>
+                                {
+                                    await App.Current!.MainPage!.DisplayAlert("Error",
+                                        $"Recognition failed. Reason: {e.Reason}\nDetails: {e.ErrorDetails}",
+                                        "OK");
+                                });
+                            };
+
+                            _conversationTranscriber.SessionStopped += (s, e) =>
+                            {
+                                // Optional logging or UI cleanup
+                            };
+
+                            await _conversationTranscriber.StartTranscribingAsync();
+                            _isTranscribing = true;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -156,6 +442,21 @@ namespace Cardrly.ViewModels
                     StopDurationTimer();
                     IsRecording = false;
                     _recordStartTime = null; // important, since paused
+
+                    IsEnableLang = true;
+
+                    if (SelectedScriptType.Id == 1) //Simple Script
+                    {
+                        await _speechRecognizer.StopContinuousRecognitionAsync();
+                    }
+                    else if (SelectedScriptType.Id == 2) //Meeting Script
+                    {
+                        if (_conversationTranscriber != null && _isTranscribing)
+                        {
+                            await _conversationTranscriber.StopTranscribingAsync();
+                            _isTranscribing = false;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -164,8 +465,10 @@ namespace Cardrly.ViewModels
             }
         }
 
+
+
         [RelayCommand]
-        async Task StopRecording()
+        public async Task StopRecording()
         {
             try
             {
@@ -247,7 +550,7 @@ namespace Cardrly.ViewModels
         }
 
 
-        void StartDurationTimer()
+        public void StartDurationTimer()
         {
             _timerCts?.Cancel();
             _timerCts = new CancellationTokenSource();
@@ -263,7 +566,7 @@ namespace Cardrly.ViewModels
             });
         }
 
-        void StopDurationTimer()
+        public void StopDurationTimer()
         {
             _timerCts?.Cancel();
         }
@@ -359,9 +662,7 @@ namespace Cardrly.ViewModels
                     UserDialogs.Instance.HideHud();
                     if (response == "")
                     {
-                        UserDialogs.Instance.ShowLoading();
                         await GetMeetingInfo(model.MeetingAiActionId);
-                        UserDialogs.Instance.HideHud();
                     }
                     else
                     {
@@ -432,6 +733,14 @@ namespace Cardrly.ViewModels
         {
             IsEnable = false;
             await App.Current!.MainPage!.Navigation.PushAsync(new FullScreenScriptPage(this, model.MeetingAiActionRecordAnalyzeResponse?.AnalyzeScript));
+            IsEnable = true;
+        }
+
+        [RelayCommand]
+        public async Task GoToRecordPage()
+        {
+            IsEnable = false;
+            await App.Current!.MainPage!.Navigation.PushAsync(new RecordPage(this));
             IsEnable = true;
         }
 

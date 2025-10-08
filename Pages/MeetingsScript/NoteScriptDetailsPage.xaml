@@ -162,28 +162,23 @@
         </StackLayout>
 
         <StackLayout VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
-            <!-- Duration -->
-            <Label Text="{Binding DurationDisplay}" FontSize="13" TextColor="Gray" HorizontalOptions="CenterAndExpand"/>
+            <!-- Duration --><!--
+            <Label Text="{Binding DurationDisplay}" FontSize="13" TextColor="Gray" HorizontalOptions="CenterAndExpand"/>-->
 
-            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                <!--Start Recording-->
-                <Border x:Name="RecordButton" StrokeShape="RoundRectangle 100" TranslationX="45" Margin="0,15,0,20" HeightRequest="60" WidthRequest="60" BackgroundColor="White" Padding="15" Stroke="Black" HorizontalOptions="CenterAndExpand">
+            <StackLayout>
+                <!--Go To Start Recording-->
+                <Border x:Name="RecordButton" StrokeShape="RoundRectangle 100" Margin="0,15,0,20" HeightRequest="60" WidthRequest="60" BackgroundColor="White" Padding="15" Stroke="Black" HorizontalOptions="CenterAndExpand">
                     <Image>
                         <Image.Source>
-                            <FontImageSource Glyph="{Binding IsRecording, Converter={StaticResource BoolToMicPauseConverter}}" FontFamily="FontIconSolid" Color="Gray" Size="40"></FontImageSource>
+                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="40"></FontImageSource>
                         </Image.Source>
                     </Image>
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ToggleRecordingCommand}"></TapGestureRecognizer>
+                        <TapGestureRecognizer Command="{Binding GoToRecordPageCommand}"></TapGestureRecognizer>
                     </Border.GestureRecognizers>
-                    <Border.Triggers>
-                        <DataTrigger TargetType="Border" Binding="{Binding Source={x:Reference StopRecordButton},Path=IsVisible}" Value="False">
-                            <Setter Property="TranslationX" Value="0"></Setter>
-                        </DataTrigger>
-                    </Border.Triggers>
                 </Border>
 
-                <!--StopRecordButton-->
+                <!--StopRecordButton--><!--
                 <Border x:Name="StopRecordButton" IsVisible="{Binding IsShowStopBtn}" StrokeShape="RoundRectangle 10" Margin="20,15,20,20" HeightRequest="50" WidthRequest="50" BackgroundColor="White" Padding="12" Stroke="Black" HorizontalOptions="End">
                     <Image>
                         <Image.Source>
@@ -193,7 +188,7 @@
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding StopRecordingCommand}"></TapGestureRecognizer>
                     </Border.GestureRecognizers>
-                </Border>
+                </Border>-->
             </StackLayout>
 
             <Button Text="{x:Static res:AppResources.btnGetScript}" 

@@ -43,6 +43,8 @@ namespace Cardrly.Controls
         public static bool ShowSendOfferBtn { get; set; } = false;
         public static DateTime EndRequestStatic { get; set; }
 
+        public static string AzureMeetingAiSekrtKey { get; set; } = "";
+
         public static List<PermissionsValues> LstPermissions = new List<PermissionsValues>();
         public static List<UpdateVersionModel> LstUpdateVersions = new List<UpdateVersionModel>();
         #endregion

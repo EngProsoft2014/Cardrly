@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:Controls="clr-namespace:Cardrly.Controls"
+                        xmlns:vm="clr-namespace:Cardrly.ViewModels"
+                        xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+                        xmlns:local="clr-namespace:Cardrly"
+                        xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                        xmlns:xct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                        x:Class="Cardrly.Pages.MeetingsScript.RecordPage"
+                        Title="RecordPage">
+
+    <Controls:CustomControl.Resources>
+        <ResourceDictionary>
+            <local:BoolToGlyphConverter x:Key="BoolToGlyphConverter" />
+        </ResourceDictionary>
+        <local:BoolToGlyphConverter x:Key="BoolToMicPauseConverter"
+                              RecordGlyph="&#xf130;"
+                              PauseGlyph="&#xf04c;">
+        </local:BoolToGlyphConverter>
+    </Controls:CustomControl.Resources>
+
+    <StackLayout VerticalOptions="FillAndExpand">
+        <!-- ✅ HEADER -->
+        <StackLayout Orientation="Horizontal" Margin="20" Grid.Row="0">
+            <Image VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"/>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"/>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackButtonClickedCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+
+            <Label Text="{x:Static res:AppResources.lblRecord}"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   HorizontalOptions="CenterAndExpand"
+                   TextColor="Black"
+                   VerticalOptions="CenterAndExpand"/>
+
+            
+        </StackLayout>
+
+        
+        <Grid VerticalOptions="FillAndExpand" Padding="0">
+
+            <!-- ✅ MAIN CONTENT SCROLL AREA -->
+            <ScrollView Margin="20,0,20,150">
+                <StackLayout VerticalOptions="FillAndExpand">
+                    <CollectionView ItemsSource="{Binding Messages}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <VerticalStackLayout Spacing="3">
+                                    <Label Text="{Binding Speaker}"
+                                           FontAttributes="Bold"
+                                           TextColor="{Binding TextColor}" />
+                                    <Label Text="{Binding Text}"
+                                           FontSize="14"
+                                           TextColor="{Binding TextColor}"
+                                           LineBreakMode="WordWrap" />
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        <CollectionView.Triggers>
+                            <DataTrigger TargetType="CollectionView" Binding="{Binding SelectedScriptType.Id}" Value="1">
+                                <Setter Property="IsVisible" Value="False"/>
+                                <Setter Property="HeightRequest" Value="0"/>
+                            </DataTrigger>
+                        </CollectionView.Triggers>
+                    </CollectionView>
+
+                    <Label Text="{Binding NoteScript}"
+                           IsVisible="False"
+                           FontSize="14"
+                           TextColor="Black"
+                           LineBreakMode="WordWrap">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding SelectedScriptType.Id}" Value="1">
+                                <Setter Property="IsVisible" Value="True"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </StackLayout>
+            </ScrollView>
+            <!-- ✅ BOTTOM CONTROL BAR -->
+            <StackLayout Grid.Row="2"
+                         VerticalOptions="End"
+                         HorizontalOptions="FillAndExpand"
+                         Padding="0,10"
+                         BackgroundColor="White">
+
+                <Label Text="{Binding DurationDisplay}"
+                       FontSize="13"
+                       TextColor="Gray"
+                       HorizontalOptions="Center"/>
+
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="FillAndExpand"
+                             Margin="20,10,20,0">
+ 
+                    <!-- Record / Pause Button -->
+                    <Border StrokeShape="RoundRectangle 100"
+                            HeightRequest="60"
+                            WidthRequest="60"
+                            BackgroundColor="White"
+                            Padding="15"
+                            Stroke="Black"
+                            HorizontalOptions="CenterAndExpand">
+                        <Image x:Name="imgRecord">
+                            <Image.Source>
+                                <FontImageSource Glyph="{Binding IsRecording, Converter={StaticResource BoolToMicPauseConverter}}"
+                                         FontFamily="FontIconSolid"
+                                         Color="Gray"
+                                         Size="40"/>
+                            </Image.Source>
+                        </Image>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleRecordingCommand}"/>
+                        </Border.GestureRecognizers>
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsShowStopBtn}" Value="True">
+                                <Setter Property="TranslationX" Value="25"/>
+                            </DataTrigger>
+                        </Border.Triggers>
+                    </Border>
+
+                    <!-- Stop Button -->
+                    <Border IsVisible="{Binding IsShowStopBtn}"
+                            StrokeShape="RoundRectangle 10"
+                            Margin="0,0"
+                            HeightRequest="50"
+                            WidthRequest="50"
+                            BackgroundColor="White"
+                            Padding="12"
+                            Stroke="Black"
+                            HorizontalOptions="End">
+                        <Image>
+                            <Image.Source>
+                                <FontImageSource Glyph=""
+                                         FontFamily="FontIconSolid"
+                                         Color="Gray"
+                                         Size="40"/>
+                            </Image.Source>
+                        </Image>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding StopRecordingCommand}"/>
+                        </Border.GestureRecognizers>
+                    </Border>
+
+                   
+                </StackLayout>
+            </StackLayout>
+
+            <!--Expender-->
+            <Border BackgroundColor="White" Stroke="Gray" StrokeThickness=".7" Padding="2" VerticalOptions="End" HorizontalOptions="Start" Margin="20">
+                <xct:Expander>
+                    <xct:Expander.Header>
+                        <Image Margin="10">
+                            <Image.Source>
+                                <FontImageSource FontFamily="FontIconSolid" Color="Black" Glyph="" Size="25"></FontImageSource>
+                            </Image.Source>
+                        </Image>
+                    </xct:Expander.Header>
+                    <StackLayout Spacing="30" Margin="0,8">
+
+                        <!--Language-->
+
+                        <!--<Image>
+                                    <Image.Source>
+                                        <FontImageSource FontFamily="FontIconSolid" Color="White" Glyph="" Size="22"></FontImageSource>
+                                    </Image.Source>
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding AddEventClickCommand}"></TapGestureRecognizer>
+                                    </Image.GestureRecognizers>
+                                </Image>-->
+
+                        <!--<Label Text="Language" HorizontalOptions="CenterAndExpand" FontSize="12" FontAttributes="Bold" TextColor="Black" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectLanguageCommand}"></TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>-->
+
+                        <Picker 
+                             SelectedItem="{Binding SelectedLanguage}"
+                             Title="{x:Static res:AppResources.lblLanguage}"
+                             IsEnabled="{Binding IsEnableLang}"
+                             FontSize="14" 
+                             HorizontalTextAlignment="Center"
+                            TitleColor="Black"
+                             TextColor="Black" 
+                             HorizontalOptions="End"
+                             WidthRequest="100"
+                             VerticalOptions="CenterAndExpand"
+                             BackgroundColor="Transparent"
+                             SelectedIndexChanged="picLang_SelectedIndexChanged">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>English</x:String>
+                                    <x:String>العربية</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                            <Picker.Triggers>
+                                <DataTrigger TargetType="Picker" Binding="{Binding Lang}" Value="ar">
+                                    <Setter Property="FlowDirection" Value="RightToLeft"/>
+                                </DataTrigger>
+                            </Picker.Triggers>
+                        </Picker>
+
+                        <!--<Border StrokeShape="RoundRectangle 10" HorizontalOptions="Start">
+                                    
+                                </Border>-->
+
+                        <!--Script Type-->
+
+                        <!--<Image>
+                                    <Image.Source>
+                                        <FontImageSource FontFamily="FontIconSolid" Color="White" Glyph="" Size="22"></FontImageSource>
+                                    </Image.Source>
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding AddEventClickCommand}"></TapGestureRecognizer>
+                                    </Image.GestureRecognizers>
+                                </Image>-->
+
+                        <!--<Label Text="Script Type" HorizontalOptions="CenterAndExpand" FontSize="12" FontAttributes="Bold" TextColor="Black" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectScriptTypeCommand}"></TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>-->
+
+
+                        <Picker 
+                             ItemsSource="{Binding ScriptTypes}"
+                             ItemDisplayBinding="{Binding Name}"
+                             SelectedItem="{Binding SelectedScriptType}"
+                             Title="{x:Static res:AppResources.lblScriptType}"
+                             IsEnabled="{Binding IsEnableScriptType}"
+                             FontSize="14" 
+                             HorizontalTextAlignment="Center"
+                            TitleColor="Black"
+                             TextColor="Black" 
+                             HorizontalOptions="End"
+                             WidthRequest="100"
+                             VerticalOptions="CenterAndExpand"
+                             BackgroundColor="Transparent"
+                             SelectedIndexChanged="Picker_SelectedIndexChanged">
+                            <Picker.Triggers>
+                                <DataTrigger TargetType="Picker" Binding="{Binding Lang}" Value="ar">
+                                    <Setter Property="FlowDirection" Value="RightToLeft"/>
+                                </DataTrigger>
+                            </Picker.Triggers>
+                        </Picker>
+                    </StackLayout>
+                </xct:Expander>
+                <!--<Border.StrokeShape>
+                    <RoundRectangle CornerRadius="{OnPlatform Android=100, iOS=23}"></RoundRectangle>
+                </Border.StrokeShape>-->
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="{OnPlatform Android=10, iOS=23}"></RoundRectangle>
+                </Border.StrokeShape>
+                <!--<Border.Shadow>
+                    <Shadow Offset="1,2" Brush="{OnPlatform Android=Gray, iOS=LightGray}" Radius="5" Opacity="1"></Shadow>
+                </Border.Shadow>-->
+            </Border>
+        </Grid>
+
+    </StackLayout>
+
+    
+</Controls:CustomControl>

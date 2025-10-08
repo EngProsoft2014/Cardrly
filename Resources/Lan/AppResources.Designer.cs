@@ -538,6 +538,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arabic.
+        /// </summary>
+        internal static string lblArabic {
+            get {
+                return ResourceManager.GetString("lblArabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attendees.
         /// </summary>
         internal static string lblAttendees {
@@ -903,6 +912,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblEngagements {
             get {
                 return ResourceManager.GetString("lblEngagements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        internal static string lblEnglish {
+            get {
+                return ResourceManager.GetString("lblEnglish", resourceCulture);
             }
         }
         
@@ -1294,6 +1312,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Record.
+        /// </summary>
+        internal static string lblRecord {
+            get {
+                return ResourceManager.GetString("lblRecord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reminder.
         /// </summary>
         internal static string lblReminder {
@@ -1344,6 +1371,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblScript {
             get {
                 return ResourceManager.GetString("lblScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Script Type.
+        /// </summary>
+        internal static string lblScriptType {
+            get {
+                return ResourceManager.GetString("lblScriptType", resourceCulture);
             }
         }
         
@@ -1906,6 +1942,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to save the recording?.
+        /// </summary>
+        internal static string msgDoyouwanttosavetherecording {
+            get {
+                return ResourceManager.GetString("msgDoyouwanttosavetherecording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End Recording.
         /// </summary>
         internal static string msgEndRecording {
@@ -2307,6 +2352,24 @@ namespace Cardrly.Resources.Lan {
         internal static string msgRecordingstarted {
             get {
                 return ResourceManager.GetString("msgRecordingstarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Required Field : Language.
+        /// </summary>
+        internal static string msgRequiredFieldLanguage {
+            get {
+                return ResourceManager.GetString("msgRequiredFieldLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Required Field : Script Type.
+        /// </summary>
+        internal static string msgRequiredFieldScriptType {
+            get {
+                return ResourceManager.GetString("msgRequiredFieldScriptType", resourceCulture);
             }
         }
         

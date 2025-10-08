@@ -124,10 +124,10 @@
                                     <DataTemplate>
                                         <StackLayout Spacing="10">
                                             <StackLayout Orientation="Horizontal">
-                                                <Border BackgroundColor="#f26d29" HorizontalOptions="FillAndExpand">
+                                                <Border BackgroundColor="#f58245" HorizontalOptions="FillAndExpand">
                                                     <Label Text="{Binding EmployeeName}"
                                                                 FontAttributes="Bold"
-                                                                TextColor="White" 
+                                                                TextColor="#333" 
                                                                 HorizontalTextAlignment="Start"
                                                                 VerticalTextAlignment="Center"
                                                                 Padding="20,7,20,7"></Label>
@@ -139,10 +139,10 @@
                                                     </Border.StrokeShape>
                                                     <Border.Triggers>
                                                         <DataTrigger TargetType="Border" Binding="{Binding MytimeSheet}" Value="1">
-                                                            <Setter Property="BackgroundColor" Value="#8f1fff"></Setter>
+                                                            <Setter Property="BackgroundColor" Value="#f26d29"></Setter>
                                                         </DataTrigger>
                                                         <DataTrigger TargetType="Border" Binding="{Binding MytimeSheet}" Value="2">
-                                                            <Setter Property="BackgroundColor" Value="#8f1fff"></Setter>
+                                                            <Setter Property="BackgroundColor" Value="#f26d29"></Setter>
                                                         </DataTrigger>
                                                     </Border.Triggers>
                                                 </Border>
@@ -160,20 +160,20 @@
                                             <StackLayout Orientation="Horizontal" Spacing="10" Padding="10,0,0,0">
                                                 <Image>
                                                     <Image.Source>
-                                                        <FontImageSource FontFamily="FontIconSolid" Color="#f26d29" Glyph="" Size="18"></FontImageSource>
+                                                        <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="18"></FontImageSource>
                                                     </Image.Source>
                                                     <Image.Triggers>
                                                         <DataTrigger TargetType="Image" Binding="{Binding MytimeSheet}" Value="1">
                                                             <Setter Property="Source">
                                                                 <Setter.Value>
-                                                                    <FontImageSource FontFamily="FontIconSolid" Color="#8f1fff" Glyph="" Size="18"></FontImageSource>
+                                                                    <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="18"></FontImageSource>
                                                                 </Setter.Value>
                                                             </Setter>
                                                         </DataTrigger>
                                                         <DataTrigger TargetType="Image" Binding="{Binding MytimeSheet}" Value="2">
                                                             <Setter Property="Source">
                                                                 <Setter.Value>
-                                                                    <FontImageSource FontFamily="FontIconSolid" Color="#8f1fff" Glyph="" Size="18"></FontImageSource>
+                                                                    <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="18"></FontImageSource>
                                                                 </Setter.Value>
                                                             </Setter>
                                                         </DataTrigger>
@@ -182,7 +182,8 @@
                                                 <Grid HorizontalOptions="FillAndExpand">
 
                                                     <ScrollView Orientation="Horizontal" VerticalOptions="CenterAndExpand" HorizontalScrollBarVisibility="Never">
-                                                        <Label Text="{Binding BranchName}" TextColor="#333" FontAttributes="Italic" FontSize="14"></Label>
+                                                        <!--<Label Text="{Binding BranchName}" TextColor="#333" FontAttributes="Italic" FontSize="14"></Label>-->
+                                                        <Label Text="Kevin L. Dilliard, Texas Branch" TextColor="#333" FontAttributes="Italic" FontSize="14"></Label>
                                                     </ScrollView>
                                                 </Grid>
                                                 <Grid>
@@ -249,9 +250,9 @@
                                                              CornerRadius="{OnPlatform Android=25,iOS=18}"                  
                                                              HeightRequest="35" 
                                                              TextColor="White"
-                                                             BorderColor="#8f1fff"
+                                                             BorderColor="#f26d29"
                                                              BorderWidth="1"
-                                                             BackgroundColor="#8f1fff" 
+                                                             BackgroundColor="#f26d29" 
                                                              Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedTimeMyStartCommand}" CommandParameter="{Binding}">
 
                                                         <Button.Triggers>
@@ -269,9 +270,9 @@
                                                              CornerRadius="{OnPlatform Android=25,iOS=18}"                  
                                                              HeightRequest="35" 
                                                              TextColor="White"
-                                                             BorderColor="#8f1fff"
+                                                             BorderColor="#f26d29"
                                                              BorderWidth="1"
-                                                             BackgroundColor="#8f1fff" 
+                                                             BackgroundColor="#f26d29" 
                                                              Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedTimeMyEndCommand}" CommandParameter="{Binding}">
                                                         <Button.Triggers>
                                                             <DataTrigger TargetType="Button" Binding="{Binding ShowEndTimeBtn}" Value="1">
@@ -341,7 +342,7 @@
                                     <DataTemplate>
                                         <StackLayout Spacing="10">
                                             <StackLayout Orientation="Horizontal">
-                                                <Border BackgroundColor="#eedeff" HorizontalOptions="FillAndExpand">
+                                                <Border BackgroundColor="#fae1d4" HorizontalOptions="FillAndExpand">
                                                     <Label Text="{Binding EmployeeName}"
                                                             FontAttributes="Bold"
                                                             TextColor="Gray" 
@@ -364,12 +365,18 @@
                                                                 FontAttributes="Bold"
                                                                 HorizontalTextAlignment="Center"
                                                                 VerticalTextAlignment="Center"></Label>
-                                                        <Label Text="{Binding HoursFrom,StringFormat='{0:HH:mm}'}" 
+                                                        <!--<Label Text="{Binding HoursFrom,StringFormat='{0:HH:mm}'}" 
                                                                     FontSize="12" 
                                                                     TextColor="#65a88c"
                                                                     FontAttributes="Bold"
                                                                     HorizontalTextAlignment="Center"
-                                                                    VerticalTextAlignment="Center"></Label>
+                                                                    VerticalTextAlignment="Center"></Label>-->
+                                                        <Label Text="08:00" 
+                                                                FontSize="12" 
+                                                                TextColor="#65a88c"
+                                                                FontAttributes="Bold"
+                                                                HorizontalTextAlignment="Center"
+                                                                VerticalTextAlignment="Center"></Label>
                                                     </StackLayout>
 
                                                     <StackLayout Spacing="0">
@@ -379,7 +386,13 @@
                                                                 FontAttributes="Bold"
                                                                 HorizontalTextAlignment="Center"
                                                                 VerticalTextAlignment="Center"></Label>
-                                                        <Label Text="{Binding HoursTo,StringFormat='{0:HH:mm}'}" 
+                                                        <!--<Label Text="{Binding HoursTo,StringFormat='{0:HH:mm}'}" 
+                                                                FontSize="12" 
+                                                                TextColor="Red"
+                                                                FontAttributes="Bold"
+                                                                HorizontalTextAlignment="Center"
+                                                                VerticalTextAlignment="Center"></Label>-->
+                                                        <Label Text="15:00" 
                                                                 FontSize="12" 
                                                                 TextColor="Red"
                                                                 FontAttributes="Bold"
@@ -397,8 +410,13 @@
                                                         <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="18"></FontImageSource>
                                                     </Image.Source>
                                                 </Image>
-                                                <Label Text="{Binding BranchName}" TextColor="#333" FontAttributes="Italic" VerticalTextAlignment="Center" FontSize="14"></Label>
+                                                <!--<Label Text="{Binding BranchName}" TextColor="#333" FontAttributes="Italic" VerticalTextAlignment="Center" FontSize="14"></Label>-->
 
+                                                <Grid HorizontalOptions="FillAndExpand">
+                                                    <ScrollView Orientation="Horizontal" VerticalOptions="CenterAndExpand" HorizontalScrollBarVisibility="Never">
+                                                        <Label Text="Kevin L. Dilliard, Texas Branch" TextColor="#333" FontAttributes="Italic" FontSize="14"></Label>
+                                                    </ScrollView>
+                                                </Grid>
                                             </StackLayout>
 
                                         </StackLayout>

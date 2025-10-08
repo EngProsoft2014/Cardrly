@@ -1047,4 +1047,25 @@
   <data name="lblComments" xml:space="preserve">
     <value>Comments</value>
   </data>
+  <data name="lblRecord" xml:space="preserve">
+    <value>Record</value>
+  </data>
+  <data name="lblEnglish" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="lblArabic" xml:space="preserve">
+    <value>Arabic</value>
+  </data>
+  <data name="msgRequiredFieldLanguage" xml:space="preserve">
+    <value>Required Field : Language</value>
+  </data>
+  <data name="msgDoyouwanttosavetherecording" xml:space="preserve">
+    <value>Do you want to save the recording?</value>
+  </data>
+  <data name="msgRequiredFieldScriptType" xml:space="preserve">
+    <value>Required Field : Script Type</value>
+  </data>
+  <data name="lblScriptType" xml:space="preserve">
+    <value>Script Type</value>
+  </data>
 </root>

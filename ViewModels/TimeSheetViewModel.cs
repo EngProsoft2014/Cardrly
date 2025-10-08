@@ -30,10 +30,10 @@ namespace Cardrly.ViewModels
 
         #region Prop
         [ObservableProperty]
-        ObservableCollection<CheckInOutModel> lstEmployeesIn;
+        ObservableCollection<CheckInOutModel> lstEmployeesIn = new ObservableCollection<CheckInOutModel>();
 
         [ObservableProperty]
-        ObservableCollection<CheckInOutModel> lstEmployeesOut;
+        ObservableCollection<CheckInOutModel> lstEmployeesOut = new ObservableCollection<CheckInOutModel>();
 
         [ObservableProperty]
         bool isRefresh;
@@ -86,14 +86,37 @@ namespace Cardrly.ViewModels
                 Date = Controls.StaticMember.SelectedDate.ToString("MM-dd-yyyy");
             }
 
-            LstEmployeesIn = new ObservableCollection<CheckInOutModel>();
-            LstEmployeesOut = new ObservableCollection<CheckInOutModel>();
-
             GetCheckInOutEmployees(dateDF.ToString("MM-dd-yyyy"));
+
         }
 
         public async void GetCheckInOutEmployees(string date)
         {
+            CheckInOutModel oCheckInOutModel = new CheckInOutModel
+            {
+                Id = 1,
+                EmployeeName = Preferences.Default.Get(ApiConstants.username, ""),
+                EmployeeId = int.TryParse(Preferences.Default.Get(ApiConstants.userid, "0"), out var empId) ? empId : 0,
+                AccountId = Preferences.Default.Get(ApiConstants.AccountId, ""),
+                Date = dateDF.ToString("yyyy-MM-dd"),
+                CreateDate = DateTime.Now,
+                CreateUser = int.TryParse(Preferences.Default.Get(ApiConstants.userid, "0"), out var createUser) ? createUser : 0,
+                SheetColor = "#26cc8a",
+                Active = true,
+                HoursFrom = "",
+                HoursTo = "",
+                DurationHours = "",
+                DurationMinutes = "",
+                Notes = "",
+
+            };
+            //LstEmployeesIn.Add(new CheckInOutModel { Id = 1, EmployeeName = Preferences.Default.Get(ApiConstants.username, "") });
+            //LstEmployeesOut.Add(new CheckInOutModel { Id = 1, EmployeeName = Preferences.Default.Get(ApiConstants.username, "") });
+            LstEmployeesIn.Add(oCheckInOutModel);
+            LstEmployeesOut.Add(oCheckInOutModel);
+            NumIn = LstEmployeesIn.Count.ToString();
+            NumOut = LstEmployeesOut.Count.ToString();
+
             //if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             //{
             //    UserDialogs.Instance.ShowLoading();

@@ -1047,4 +1047,25 @@
   <data name="lblComments" xml:space="preserve">
     <value>تعليقات</value>
   </data>
+  <data name="lblRecord" xml:space="preserve">
+    <value>تسجيل</value>
+  </data>
+  <data name="lblEnglish" xml:space="preserve">
+    <value>الإنجليزية</value>
+  </data>
+  <data name="lblArabic" xml:space="preserve">
+    <value>العربية</value>
+  </data>
+  <data name="msgRequiredFieldLanguage" xml:space="preserve">
+    <value>الحقل المطلوب : اللغة</value>
+  </data>
+  <data name="msgDoyouwanttosavetherecording" xml:space="preserve">
+    <value>هل تريد حفظ التسجيل؟</value>
+  </data>
+  <data name="msgRequiredFieldScriptType" xml:space="preserve">
+    <value>الحقل المطلوب : نوع البرنامج النصي</value>
+  </data>
+  <data name="lblScriptType" xml:space="preserve">
+    <value>نوع النص</value>
+  </data>
 </root>
