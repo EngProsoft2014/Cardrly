@@ -12,6 +12,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
+using GoogleApi.Entities.Translate.Common.Enums;
 using Microsoft.CognitiveServices.Speech;
 using Microsoft.CognitiveServices.Speech.Audio;
 using Microsoft.CognitiveServices.Speech.Transcription;
@@ -115,6 +116,15 @@ namespace Cardrly.ViewModels
             _audioService = audioService;
 
             Init();
+
+            //AddOrDeleteRecord
+            MessagingCenter.Subscribe<NotesScriptDetailsViewModel, string>(this, "AddOrDeleteRecord", async (sender, message) =>
+            {
+                if (true)
+                {
+                    await GetMeetingInfo(message);
+                }
+            });
         }
 
         async void Init()
@@ -238,6 +248,12 @@ namespace Cardrly.ViewModels
                 // Reset everything
                 await ResetUi();
             }
+        }
+
+        [RelayCommand]
+        async Task BackButtonInfoClicked()
+        {
+            await App.Current!.MainPage!.Navigation.PopAsync();
         }
 
         public async Task ResetUi()
@@ -518,6 +534,7 @@ namespace Cardrly.ViewModels
                     {
                         AudioTime = DurationDisplay,
                         AudioData = fileBytes,
+                        AudioScript = NoteScript,
                         Extension = ".wav"
                     };
 
@@ -543,6 +560,10 @@ namespace Cardrly.ViewModels
                             await toast.Show();
 
                             MeetingInfoModel.MeetingAiActionRecords.Add(json.Item1);
+
+                            MessagingCenter.Send(this, "AddOrDeleteRecord", json.Item1.MeetingAiActionId);
+
+                            await App.Current!.MainPage!.Navigation.PopAsync();
                         }
                         else
                         {
@@ -677,7 +698,8 @@ namespace Cardrly.ViewModels
                     UserDialogs.Instance.HideHud();
                     if (response == "")
                     {
-                        await GetMeetingInfo(model.MeetingAiActionId);
+                        //await GetMeetingInfo(model.MeetingAiActionId);
+                        MessagingCenter.Send(this, "AddOrDeleteRecord", model.MeetingAiActionId);
                     }
                     else
                     {

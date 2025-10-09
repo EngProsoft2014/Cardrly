@@ -43,7 +43,7 @@
                     </DataTrigger>
                 </Image.Triggers>
                 <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding BackButtonClickedCommand}"></TapGestureRecognizer>
+                    <TapGestureRecognizer Command="{Binding BackButtonInfoClickedCommand}"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
             </Image>
             <Label Text="{x:Static res:AppResources.lblMeetingDetails}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
@@ -56,6 +56,12 @@
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding  Source={RelativeSource AncestorType={x:Type vm:NotesScriptDetailsViewModel}}, Path=FullScreenScriptCommand}" CommandParameter="{Binding MeetingInfoModel}"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
+                <!--Return back to check by All Script text-->
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding MeetingInfoModel.MeetingAiActionRecords.Count}" Value="0">
+                        <Setter Property="IsVisible" Value="False"/>
+                    </DataTrigger>
+                </Image.Triggers>
             </Image>
         </StackLayout>
 
@@ -78,7 +84,7 @@
                                     <StackLayout VerticalOptions="Center" Spacing="5">
                                         <StackLayout Orientation="Horizontal">
 
-                                            <CheckBox IsChecked="{Binding IsScript}" Scale="1.2"></CheckBox>
+                                            <CheckBox IsChecked="{Binding IsScript}" Scale="1.2" Color="OrangeRed"></CheckBox>
 
                                             <StackLayout Orientation="Horizontal" HeightRequest="35"   
                                                 HorizontalOptions="FillAndExpand"

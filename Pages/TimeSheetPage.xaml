@@ -124,7 +124,7 @@
                                     <DataTemplate>
                                         <StackLayout Spacing="10">
                                             <StackLayout Orientation="Horizontal">
-                                                <Border BackgroundColor="#f58245" HorizontalOptions="FillAndExpand">
+                                                <Border StrokeThickness=".5" BackgroundColor="#f58245" HorizontalOptions="FillAndExpand">
                                                     <Label Text="{Binding EmployeeName}"
                                                                 FontAttributes="Bold"
                                                                 TextColor="#333" 
@@ -187,7 +187,7 @@
                                                     </ScrollView>
                                                 </Grid>
                                                 <Grid>
-                                                    <StackLayout x:Name="stkBaseButton" IsVisible="False" Orientation="Horizontal" Spacing="5" HorizontalOptions="EndAndExpand">
+                                                    <StackLayout x:Name="stkBaseButton" IsVisible="True" Orientation="Horizontal" Spacing="5" HorizontalOptions="EndAndExpand">
                                                         <Button Text="{x:Static res:AppResources.btnCheckIn}" 
                                                                  FontSize="11" 
                                                                  WidthRequest="{OnPlatform iOS=70}"

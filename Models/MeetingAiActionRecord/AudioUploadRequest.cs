@@ -11,6 +11,7 @@ namespace Cardrly.Models.MeetingAiActionRecord
     {
         public string AudioTime { get; set; }
         public byte[] AudioData { get; set; } // Audio data to be uploaded
+        public string AudioScript { get; set; }
         public string Extension { get; set; } // File extension of the image (e.g., ".jpg", ".png")
     }
 }
