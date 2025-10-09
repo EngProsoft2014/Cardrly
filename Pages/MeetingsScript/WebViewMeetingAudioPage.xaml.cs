@@ -1,3 +1,4 @@
+using CoreFoundation;
 using Microsoft.Maui.Controls.Compatibility;
 using System.Threading.Tasks;
 
@@ -10,20 +11,17 @@ public partial class WebViewMeetingAudioPage : Controls.CustomControl
 		InitializeComponent();
         audioWebView.Source = new Uri(url);
 
-    }
-    protected override async void OnDisappearing()
-    {
-        base.OnDisappearing();
-
-        if (audioWebView != null)
-        {
-            await StopWebViewMediaAsync(audioWebView);
-        }
-    }
-
+    }    
+    
     private async void TapGestureRecognizer_Tapped_1(object sender, TappedEventArgs e)
     {
         await Navigation.PopAsync();
+    }
+
+    protected override async void OnDisappearing()
+    {
+        base.OnDisappearing();
+        await StopWebViewMediaAsync(audioWebView);
     }
 
     private async Task StopWebViewMediaAsync(WebView webView)
@@ -34,73 +32,68 @@ public partial class WebViewMeetingAudioPage : Controls.CustomControl
         try
         {
 #if IOS
-        // Get native WKWebView
-        if (webView.Handler?.PlatformView is WebKit.WKWebView wkWebView)
+        // Always run cleanup on the main thread for iOS UI stability
+        await MainThread.InvokeOnMainThreadAsync(() =>
         {
             try
             {
-                // 1. Stop <audio>/<video> via JS
-                await webView.EvaluateJavaScriptAsync(@"
-                    document.querySelectorAll('audio,video').forEach(m => {
-                        m.pause();
-                        m.removeAttribute('src');
-                        m.load();
+                if (webView.Handler?.PlatformView is WebKit.WKWebView wkWebView)
+                {
+                    // Stop any network or media activity
+                    wkWebView.StopLoading();
+
+                    // Clear the HTML (breaks the audio context)
+                    wkWebView.LoadHtmlString("<html><body></body></html>", null);
+
+                    // Force release of the player after a small delay
+                    DispatchQueue.MainQueue.DispatchAfter(new DispatchTime(DispatchTime.Now, 300_000_000), () =>
+                    {
+                        try
+                        {
+                            wkWebView.RemoveFromSuperview();
+                            wkWebView.Dispose();
+                        }
+                        catch
+                        {
+                            // ignore if already disposed
+                        }
                     });
-                ");
+                }
             }
             catch
             {
-                // Ignore if JS evaluation fails (likely disposed)
+                // ignore
             }
+        });
 
-            // 2. Force stop any loading or playback
-            wkWebView.StopLoading();
-
-            // 3. Clear HTML and dispose safely
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                try
-                {
-                    wkWebView.LoadHtmlString("<html><body></body></html>", null);
-                    wkWebView.RemoveFromSuperview();
-                    wkWebView.Dispose();
-                }
-                catch { /* swallow if already disposed */ }
-            });
-        }
 #elif ANDROID
             try
             {
-                // Try to stop audio/video via JS first
-                await audioWebView.EvaluateJavaScriptAsync(@"
-                var audios = document.getElementsByTagName('audio');
-                for (var i = 0; i < audios.length; i++) { 
-                    audios[i].pause(); 
-                    audios[i].src=''; 
-                }
-
-                var videos = document.getElementsByTagName('video');
-                for (var i = 0; i < videos.length; i++) { 
-                    videos[i].pause(); 
-                    videos[i].src=''; 
-                }
+                // Safe to use JS on Android
+                await webView.EvaluateJavaScriptAsync(@"
+                document.querySelectorAll('audio,video').forEach(m => {
+                    m.pause();
+                    m.src='';
+                });
             ");
 
-                // Android cleanup
                 webView.Source = new HtmlWebViewSource { Html = "<html><body></body></html>" };
+
+                // Delay a bit before disposing (to avoid ObjectDisposedException)
+                await Task.Delay(100);
                 webView.Handler?.DisconnectHandler();
             }
             catch
             {
                 // ignore
             }
-
 #endif
         }
         catch
         {
-            // Never throw from teardown
+            // Final catch — never throw from cleanup
         }
     }
+
 
 }
