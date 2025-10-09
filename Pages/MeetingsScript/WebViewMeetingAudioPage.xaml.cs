@@ -1,4 +1,6 @@
+#if IOS
 using CoreFoundation;
+#endif
 using Microsoft.Maui.Controls.Compatibility;
 using System.Threading.Tasks;
 
@@ -32,66 +34,64 @@ public partial class WebViewMeetingAudioPage : Controls.CustomControl
         try
         {
 #if IOS
-        // Always run cleanup on the main thread for iOS UI stability
-        await MainThread.InvokeOnMainThreadAsync(() =>
+        if (webView.Handler?.PlatformView is WebKit.WKWebView wkWebView)
         {
             try
             {
-                if (webView.Handler?.PlatformView is WebKit.WKWebView wkWebView)
-                {
-                    // Stop any network or media activity
-                    wkWebView.StopLoading();
-
-                    // Clear the HTML (breaks the audio context)
-                    wkWebView.LoadHtmlString("<html><body></body></html>", null);
-
-                    // Force release of the player after a small delay
-                    DispatchQueue.MainQueue.DispatchAfter(new DispatchTime(DispatchTime.Now, 300_000_000), () =>
-                    {
-                        try
-                        {
-                            wkWebView.RemoveFromSuperview();
-                            wkWebView.Dispose();
-                        }
-                        catch
-                        {
-                            // ignore if already disposed
-                        }
+                // Stop any <audio>/<video> playback via JS
+                await webView.EvaluateJavaScriptAsync(@"
+                    document.querySelectorAll('audio,video').forEach(m => {
+                        m.pause();
+                        m.removeAttribute('src');
+                        m.load();
                     });
-                }
+                ");
             }
             catch
             {
-                // ignore
+                // ignore if JS fails
             }
-        });
 
+            // Safely clear the page — DO NOT dispose yet!
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                try
+                {
+                    wkWebView.StopLoading();
+                    wkWebView.LoadHtmlString("<html><body></body></html>", null);
+                }
+                catch
+                {
+                    // ignore
+                }
+            });
+        }
 #elif ANDROID
             try
             {
-                // Safe to use JS on Android
                 await webView.EvaluateJavaScriptAsync(@"
                 document.querySelectorAll('audio,video').forEach(m => {
                     m.pause();
-                    m.src='';
+                    m.removeAttribute('src');
+                    m.load();
                 });
             ");
-
-                webView.Source = new HtmlWebViewSource { Html = "<html><body></body></html>" };
-
-                // Delay a bit before disposing (to avoid ObjectDisposedException)
-                await Task.Delay(100);
-                webView.Handler?.DisconnectHandler();
             }
-            catch
+            catch { }
+
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                // ignore
-            }
+                try
+                {
+                    webView.Source = new HtmlWebViewSource { Html = "<html><body></body></html>" };
+                }
+                catch { }
+            });
 #endif
         }
         catch
         {
-            // Final catch — never throw from cleanup
+            // Never throw from cleanup
         }
     }
 
