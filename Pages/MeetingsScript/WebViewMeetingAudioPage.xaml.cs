@@ -11,7 +11,6 @@ public partial class WebViewMeetingAudioPage : Controls.CustomControl
         audioWebView.Source = new Uri(url);
 
     }
-
     protected override async void OnDisappearing()
     {
         base.OnDisappearing();
@@ -20,39 +19,35 @@ public partial class WebViewMeetingAudioPage : Controls.CustomControl
         {
             try
             {
-                // Stop <audio> or <video> elements if they exist
+                // Try to stop audio/video via JS first
                 await audioWebView.EvaluateJavaScriptAsync(@"
                 var audios = document.getElementsByTagName('audio');
-                for (var i = 0; i < audios.length; i++) { audios[i].pause(); audios[i].src=''; }
+                for (var i = 0; i < audios.length; i++) { 
+                    audios[i].pause(); 
+                    audios[i].src=''; 
+                }
 
                 var videos = document.getElementsByTagName('video');
-                for (var i = 0; i < videos.length; i++) { videos[i].pause(); videos[i].src=''; }
+                for (var i = 0; i < videos.length; i++) { 
+                    videos[i].pause(); 
+                    videos[i].src=''; 
+                }
             ");
             }
             catch
             {
-
+                // ignore
             }
+
 #if IOS
-        try
+        // Hard stop and dispose for iOS
+        if (audioWebView.Handler?.PlatformView is WebKit.WKWebView wk)
         {
-            // Remove from UI to release underlying WKWebView
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                var parent = audioWebView.Parent as Layout<View>;
-                parent?.Children.Remove(audioWebView);
-                audioWebView.Handler?.DisconnectHandler();
-                audioWebView = null;
-            });
+            wk.StopLoading();
+            wk.LoadHtmlString("<html><body></body></html>", null);
+            wk.RemoveFromSuperview();
+            wk.Dispose();
         }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"WebView dispose error: {ex.Message}");
-        }
-#else
-            // Android fallback
-            audioWebView.Source = new HtmlWebViewSource { Html = "<html><body></body></html>" };
-            audioWebView.Handler?.DisconnectHandler();
 #endif
         }
     }
