@@ -17,6 +17,58 @@ public partial class WebViewMeetingAudioPage : Controls.CustomControl
 
         if (audioWebView != null)
         {
+            await StopWebViewMediaAsync(audioWebView);
+        }
+    }
+
+    private async void TapGestureRecognizer_Tapped_1(object sender, TappedEventArgs e)
+    {
+        await Navigation.PopAsync();
+    }
+
+    private async Task StopWebViewMediaAsync(WebView webView)
+    {
+        if (webView == null)
+            return;
+
+        try
+        {
+#if IOS
+        // Get native WKWebView
+        if (webView.Handler?.PlatformView is WebKit.WKWebView wkWebView)
+        {
+            try
+            {
+                // 1. Stop <audio>/<video> via JS
+                await webView.EvaluateJavaScriptAsync(@"
+                    document.querySelectorAll('audio,video').forEach(m => {
+                        m.pause();
+                        m.removeAttribute('src');
+                        m.load();
+                    });
+                ");
+            }
+            catch
+            {
+                // Ignore if JS evaluation fails (likely disposed)
+            }
+
+            // 2. Force stop any loading or playback
+            wkWebView.StopLoading();
+
+            // 3. Clear HTML and dispose safely
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                try
+                {
+                    wkWebView.LoadHtmlString("<html><body></body></html>", null);
+                    wkWebView.RemoveFromSuperview();
+                    wkWebView.Dispose();
+                }
+                catch { /* swallow if already disposed */ }
+            });
+        }
+#elif ANDROID
             try
             {
                 // Try to stop audio/video via JS first
@@ -33,27 +85,22 @@ public partial class WebViewMeetingAudioPage : Controls.CustomControl
                     videos[i].src=''; 
                 }
             ");
+
+                // Android cleanup
+                webView.Source = new HtmlWebViewSource { Html = "<html><body></body></html>" };
+                webView.Handler?.DisconnectHandler();
             }
             catch
             {
                 // ignore
             }
 
-#if IOS
-        // Hard stop and dispose for iOS
-        if (audioWebView.Handler?.PlatformView is WebKit.WKWebView wk)
-        {
-            wk.StopLoading();
-            wk.LoadHtmlString("<html><body></body></html>", null);
-            wk.RemoveFromSuperview();
-            wk.Dispose();
-        }
 #endif
+        }
+        catch
+        {
+            // Never throw from teardown
         }
     }
 
-    private async void TapGestureRecognizer_Tapped_1(object sender, TappedEventArgs e)
-    {
-        await Navigation.PopAsync();
-    }
 }
