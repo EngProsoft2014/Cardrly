@@ -243,8 +243,8 @@ namespace Cardrly.ViewModels
         public async Task ResetUi()
         {
             // Reset everything
-
-            await recorder.StopAsync();
+            if(recorder != null)
+                await recorder.StopAsync();
             StopDurationTimer();
             IsRecording = false;
 
