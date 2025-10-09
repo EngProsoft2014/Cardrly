@@ -1,3 +1,4 @@
+using Microsoft.Maui.Controls.Compatibility;
 using System.Threading.Tasks;
 
 namespace Cardrly.Pages.MeetingsScript;
@@ -30,10 +31,29 @@ public partial class WebViewMeetingAudioPage : Controls.CustomControl
             }
             catch
             {
-                // fallback: hard reset WebView
-                audioWebView.Source = new HtmlWebViewSource { Html = "<html><body></body></html>" };
-                audioWebView.Handler?.DisconnectHandler();
+
             }
+#if IOS
+        try
+        {
+            // Remove from UI to release underlying WKWebView
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                var parent = audioWebView.Parent as Layout<View>;
+                parent?.Children.Remove(audioWebView);
+                audioWebView.Handler?.DisconnectHandler();
+                audioWebView = null;
+            });
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"WebView dispose error: {ex.Message}");
+        }
+#else
+            // Android fallback
+            audioWebView.Source = new HtmlWebViewSource { Html = "<html><body></body></html>" };
+            audioWebView.Handler?.DisconnectHandler();
+#endif
         }
     }
 

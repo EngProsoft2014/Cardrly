@@ -264,7 +264,7 @@
                     <RoundRectangle CornerRadius="{OnPlatform Android=100, iOS=23}"></RoundRectangle>
                 </Border.StrokeShape>-->
                 <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="{OnPlatform Android=10, iOS=23}"></RoundRectangle>
+                    <RoundRectangle CornerRadius="{OnPlatform Android=10, iOS=10}"></RoundRectangle>
                 </Border.StrokeShape>
                 <!--<Border.Shadow>
                     <Shadow Offset="1,2" Brush="{OnPlatform Android=Gray, iOS=LightGray}" Radius="5" Opacity="1"></Shadow>

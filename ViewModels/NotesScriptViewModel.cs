@@ -95,8 +95,7 @@ namespace Cardrly.ViewModels
                 UserDialogs.Instance.HideHud();
                 if (json != null)
                 {
-                    LstMeetingModel = json;
-                    Controls.StaticMember.AzureMeetingAiSekrtKey = json.FirstOrDefault()?.SecretKey ?? "";
+                    LstMeetingModel = json;     
                 }
             }
             IsEnable = true;
@@ -156,6 +155,7 @@ namespace Cardrly.ViewModels
                
                 if (json != null)
                 {
+                    Controls.StaticMember.AzureMeetingAiSekrtKey = json.SecretKey ?? "";
                     await App.Current!.MainPage!.Navigation.PushAsync(new NoteScriptDetailsPage(new NotesScriptDetailsViewModel(json, Rep, _service, _audioService)));
                 }
                 UserDialogs.Instance.HideHud();

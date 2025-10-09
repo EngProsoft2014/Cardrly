@@ -11,6 +11,7 @@ namespace Cardrly.Models.MeetingAiAction
         public string title { get; set; } = default!;
         public string GoogleDriveFolderId { get; set; } = default!;
         public DateTime CreatedDate { get; set; }
+        public string SecretKey { get; set; }
         public MeetingAiActionRecordAnalyzeResponse MeetingAiActionRecordAnalyzeResponse { get; set; }= default!;
         public ObservableCollection<MeetingAiActionRecordResponse> MeetingAiActionRecords { get; set; } = [];
     }

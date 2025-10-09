@@ -6,6 +6,7 @@
                          xmlns:local="clr-namespace:Cardrly"
                          xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                          xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+                        xmlns:xct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                          x:Class="Cardrly.Pages.MeetingsScript.NoteScriptDetailsPage"
                          Title="NoteScriptDetailsPage"
                          BackgroundColor="White">
@@ -49,20 +50,19 @@
             <Label Text="{x:Static res:AppResources.lblMeetingDetails}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
             </Label>
 
-            <Image>
+            <!--<Image>
                 <Image.Source>
                     <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="28"></FontImageSource>
                 </Image.Source>
                 <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding  Source={RelativeSource AncestorType={x:Type vm:NotesScriptDetailsViewModel}}, Path=FullScreenScriptCommand}" CommandParameter="{Binding MeetingInfoModel}"></TapGestureRecognizer>
+                    <TapGestureRecognizer Command="{Binding  Source={RelativeSource AncestorType={x:Type vm:NotesScriptDetailsViewModel}}, Path=FullScreenAnalyzeScriptCommand}" CommandParameter="{Binding MeetingInfoModel}"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
-                <!--Return back to check by All Script text-->
                 <Image.Triggers>
-                    <DataTrigger TargetType="Image" Binding="{Binding MeetingInfoModel.MeetingAiActionRecords.Count}" Value="0">
+                    <DataTrigger TargetType="Image" Binding="{Binding MeetingInfoModel.MeetingAiActionRecordAnalyzeResponse.AudioAllScript}" Value="">
                         <Setter Property="IsVisible" Value="False"/>
                     </DataTrigger>
                 </Image.Triggers>
-            </Image>
+            </Image>-->
         </StackLayout>
 
         <StackLayout VerticalOptions="FillAndExpand">
@@ -123,25 +123,25 @@
                                                 </Image>-->
                                             </Border>
 
-                                        </StackLayout>
-
-                                        <StackLayout Orientation="Horizontal" Margin="10,0">
-
-                                            <!--Duration-->
-
-                                            <Label Text="{Binding AudioTime}" HorizontalOptions="StartAndExpand" FontSize="12" TextColor="Gray" VerticalOptions="Center" />
 
                                             <!--Note-->
-                                            <Image>
+                                            <Image Margin="5,0,0,0">
                                                 <Image.Source>
-                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="20"></FontImageSource>
                                                 </Image.Source>
                                                 <Image.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding  Source={RelativeSource AncestorType={x:Type vm:NotesScriptDetailsViewModel}}, Path=FullScreenRecordNoteCommand}" CommandParameter="{Binding .}"></TapGestureRecognizer>
                                                 </Image.GestureRecognizers>
                                             </Image>
-                                            <!--Time-->
 
+                                        </StackLayout>
+
+                                        <StackLayout Orientation="Horizontal" Margin="10,0">
+
+                                            <!--Duration-->
+                                            <Label Text="{Binding AudioTime}" HorizontalOptions="StartAndExpand" FontSize="12" TextColor="Gray" VerticalOptions="Center" />
+
+                                            <!--Time-->
                                             <Label Text="{Binding CreatedDate}" HorizontalOptions="EndAndExpand" FontSize="12" TextColor="Gray" VerticalOptions="Center" />
                                         </StackLayout>
 
@@ -167,48 +167,129 @@
 
         </StackLayout>
 
-        <StackLayout VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
-            <!-- Duration --><!--
+        <Grid>
+            <Grid VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" Margin="25">
+                <!--<Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>-->
+                <!-- Duration -->
+                <!--
             <Label Text="{Binding DurationDisplay}" FontSize="13" TextColor="Gray" HorizontalOptions="CenterAndExpand"/>-->
 
-            <StackLayout>
-                <!--Go To Start Recording-->
-                <Border x:Name="RecordButton" StrokeShape="RoundRectangle 100" Margin="0,15,0,20" HeightRequest="60" WidthRequest="60" BackgroundColor="White" Padding="15" Stroke="Black" HorizontalOptions="CenterAndExpand">
-                    <Image>
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                    <!--<Image HorizontalOptions="Start" VerticalOptions="Center">
+                    <Image.Source>
+                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="28"></FontImageSource>
+                    </Image.Source>
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding  Source={RelativeSource AncestorType={x:Type vm:NotesScriptDetailsViewModel}}, Path=FullScreenAudioAllScriptCommand}" CommandParameter="{Binding MeetingInfoModel}"></TapGestureRecognizer>
+                    </Image.GestureRecognizers>
+                    <Image.Triggers>
+                        <DataTrigger TargetType="Image" Binding="{Binding MeetingInfoModel.MeetingAiActionRecordAnalyzeResponse.AnalyzeScript}" Value="">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                    </Image.Triggers>
+                </Image>-->
+
+                    <!--Expender-->
+
+
+                    <Button Text="{x:Static res:AppResources.btnGetSummary}" 
+                        IsVisible="{Binding IsScriptBtn}"  
+                        FontAttributes="Bold" 
+                        FontSize="13" 
+                        TextColor="White" 
+                        BackgroundColor="#f26d29" 
+                        HorizontalOptions="CenterAndExpand" 
+                        VerticalOptions="Center"
+                        Command="{Binding CreateAnalyzeScriptCommand}" CommandParameter="{Binding MeetingInfoModel}"></Button>
+                </StackLayout>
+
+
+                <StackLayout  VerticalOptions="Center" HorizontalOptions="End">
+                    <!--Go To Start Recording-->
+                    <!--<Image>
                         <Image.Source>
-                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="40"></FontImageSource>
+                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="35"></FontImageSource>
                         </Image.Source>
-                    </Image>
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding GoToRecordPageCommand}"></TapGestureRecognizer>
-                    </Border.GestureRecognizers>
-                </Border>
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToRecordPageCommand}"></TapGestureRecognizer>
+                        </Image.GestureRecognizers>
+                    </Image>-->
 
-                <!--StopRecordButton--><!--
-                <Border x:Name="StopRecordButton" IsVisible="{Binding IsShowStopBtn}" StrokeShape="RoundRectangle 10" Margin="20,15,20,20" HeightRequest="50" WidthRequest="50" BackgroundColor="White" Padding="12" Stroke="Black" HorizontalOptions="End">
-                    <Image>
-                        <Image.Source>
-                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="40"></FontImageSource>
-                        </Image.Source>
-                    </Image>
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding StopRecordingCommand}"></TapGestureRecognizer>
-                    </Border.GestureRecognizers>
-                </Border>-->
-            </StackLayout>
+                    <Label Text="{x:Static res:AppResources.lblgorecord}" FontAttributes="Bold" FontSize="14" TextColor="#f26d29" >
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToRecordPageCommand}"></TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>
 
-            <Button Text="{x:Static res:AppResources.btnGetScript}" 
-                    IsVisible="{Binding IsScriptBtn}" 
-                    Margin="0,0,0,20" 
-                    FontAttributes="Bold" 
-                    FontSize="13" 
-                    TextColor="White" 
-                    BackgroundColor="#f26d29" 
-                    HorizontalOptions="CenterAndExpand" 
-                    VerticalOptions="Center"
-                    Command="{Binding CreateAnalyzeScriptCommand}" CommandParameter="{Binding MeetingInfoModel}"></Button>
 
-        </StackLayout>
 
+
+                    <!--StopRecordButton-->
+                    <!--
+                 <Border x:Name="StopRecordButton" IsVisible="{Binding IsShowStopBtn}" StrokeShape="RoundRectangle 10" Margin="20,15,20,20" HeightRequest="50" WidthRequest="50" BackgroundColor="White" Padding="12" Stroke="Black" HorizontalOptions="End">
+                     <Image>
+                         <Image.Source>
+                             <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="40"></FontImageSource>
+                         </Image.Source>
+                     </Image>
+                     <Border.GestureRecognizers>
+                         <TapGestureRecognizer Command="{Binding StopRecordingCommand}"></TapGestureRecognizer>
+                     </Border.GestureRecognizers>
+                 </Border>-->
+                </StackLayout>
+            </Grid>
+
+
+            <Border Margin="20,0,0,5" IsVisible="{Binding IsShowExpander}" VerticalOptions="Center" BackgroundColor="White" Stroke="Gray" StrokeThickness=".7" Padding="5,1" HorizontalOptions="Start">
+                <xct:Expander>
+                    <xct:Expander.Header>
+                        <Image Margin="7">
+                            <Image.Source>
+                                <FontImageSource FontFamily="FontIconSolid" Color="Black" Glyph="" Size="25"></FontImageSource>
+                            </Image.Source>
+                        </Image>
+                    </xct:Expander.Header>
+                    <StackLayout Spacing="30" Margin="0,8">
+
+                        <Label Text="{x:Static res:AppResources.lblSummary}" FontAttributes="Bold" FontSize="14" TextColor="#333" >
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding FullScreenAnalyzeScriptCommand}" CommandParameter="{Binding MeetingInfoModel}"></TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding MeetingInfoModel.MeetingAiActionRecordAnalyzeResponse.AnalyzeScript}" Value="">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+
+
+                        <Label Text="{x:Static res:AppResources.lblAllScript}" FontAttributes="Bold" FontSize="14" TextColor="#333" >
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding FullScreenAudioAllScriptCommand}" CommandParameter="{Binding MeetingInfoModel}"></TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding MeetingInfoModel.MeetingAiActionRecordAnalyzeResponse.AudioAllScript}" Value="">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </StackLayout>
+                </xct:Expander>
+                <!--<Border.StrokeShape>
+               <RoundRectangle CornerRadius="{OnPlatform Android=100, iOS=23}"></RoundRectangle>
+           </Border.StrokeShape>-->
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="{OnPlatform Android=10, iOS=10}"></RoundRectangle>
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Offset="1,2" Brush="{OnPlatform Android=LightGray, iOS=LightGray}" Radius="5" Opacity="1"></Shadow>
+                </Border.Shadow>
+            </Border>
+
+        </Grid>
     </StackLayout>
 </Controls:CustomControl>

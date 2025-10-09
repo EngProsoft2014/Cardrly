@@ -73,6 +73,9 @@ namespace Cardrly.ViewModels
         string noteScript;
 
         [ObservableProperty]
+        bool isShowExpander = false;
+
+        [ObservableProperty]
         ObservableCollection<AudioItem> audioSources = new();
 
         [ObservableProperty]
@@ -117,6 +120,11 @@ namespace Cardrly.ViewModels
 
             Init();
 
+            if(!string.IsNullOrEmpty(MeetingInfoModel.MeetingAiActionRecordAnalyzeResponse?.AnalyzeScript) || !string.IsNullOrEmpty(MeetingInfoModel.MeetingAiActionRecordAnalyzeResponse?.AudioAllScript))
+            {
+                IsShowExpander = true;
+            }
+
             //AddOrDeleteRecord
             MessagingCenter.Subscribe<NotesScriptDetailsViewModel, string>(this, "AddOrDeleteRecord", async (sender, message) =>
             {
@@ -148,13 +156,20 @@ namespace Cardrly.ViewModels
             }
 
             //Test Speech to Text
-            speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
+            if (string.IsNullOrEmpty(speechKey))
+            {
+                return;
+            }
+            else
+            {
+                speechConfig = SpeechConfig.FromSubscription(speechKey, speechRegion);
 
-            speechConfig.SetProperty("ConversationTranscriptionInRealTime", "true");
-            speechConfig.SetProperty("SpeechServiceResponse_PostProcessingOption", "TrueText"); // optional
-            speechConfig.SetProperty("ConversationTranscriptionInRealTime", "true");
-            speechConfig.SetProperty("SpeechServiceResponse_EnablePartialResultStabilization", "true");
-            speechConfig.SetProperty("SpeechServiceResponse_StablePartialResultThreshold", "2");
+                speechConfig.SetProperty("ConversationTranscriptionInRealTime", "true");
+                speechConfig.SetProperty("SpeechServiceResponse_PostProcessingOption", "TrueText"); // optional
+                speechConfig.SetProperty("ConversationTranscriptionInRealTime", "true");
+                speechConfig.SetProperty("SpeechServiceResponse_EnablePartialResultStabilization", "true");
+                speechConfig.SetProperty("SpeechServiceResponse_StablePartialResultThreshold", "2");
+            }
 
             autoLangConfig = AutoDetectSourceLanguageConfig.FromLanguages(new string[]
             {
@@ -229,7 +244,7 @@ namespace Cardrly.ViewModels
         {
             if (Messages.Count > 0 || !string.IsNullOrEmpty(NoteScript))
             {
-                bool Pass = await App.Current!.MainPage!.DisplayAlert(AppResources.Info,AppResources.msgDoyouwanttosavetherecording, AppResources.msgOk, AppResources.btnCancel);
+                bool Pass = await App.Current!.MainPage!.DisplayAlert(AppResources.Info, AppResources.msgDoyouwanttosavetherecording, AppResources.msgOk, AppResources.btnCancel);
 
                 if (Pass)
                 {
@@ -259,29 +274,31 @@ namespace Cardrly.ViewModels
         public async Task ResetUi()
         {
             // Reset everything
-            if(recorder != null)
-                await recorder.StopAsync();
-            StopDurationTimer();
-            IsRecording = false;
+            if (recorder != null)
+            {
+                await recorder.StopAsync(); 
+                StopDurationTimer();
+                IsRecording = false;
 
-            if (_recordStartTime != null)
-            {
-                // Save elapsed time into accumulator
-                _accumulatedDuration += DateTime.UtcNow - _recordStartTime.Value;
-            }
-
-            if (SelectedScriptType.Id == 1) //Simple Script
-            {
-                await _speechRecognizer.StopContinuousRecognitionAsync();
-            }
-            else if (SelectedScriptType.Id == 2) //Meeting Script
-            {
-                if (_conversationTranscriber != null && _isTranscribing)
+                if (_recordStartTime != null)
                 {
-                    await _conversationTranscriber.StopTranscribingAsync();
-                    _isTranscribing = false;
+                    // Save elapsed time into accumulator
+                    _accumulatedDuration += DateTime.UtcNow - _recordStartTime.Value;
                 }
-            }
+
+                if (SelectedScriptType.Id == 1) //Simple Script
+                {
+                    await _speechRecognizer.StopContinuousRecognitionAsync();
+                }
+                else if (SelectedScriptType.Id == 2) //Meeting Script
+                {
+                    if (_conversationTranscriber != null && _isTranscribing)
+                    {
+                        await _conversationTranscriber.StopTranscribingAsync();
+                        _isTranscribing = false;
+                    }
+                }
+           }
 
             await App.Current!.MainPage!.Navigation.PopAsync();
         }
@@ -305,7 +322,7 @@ namespace Cardrly.ViewModels
                     if (string.IsNullOrEmpty(SelectedLanguage))
                     {
                         var toast = Toast.Make(AppResources.msgRequiredFieldLanguage, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();     
+                        await toast.Show();
                     }
                     else if (SelectedScriptType == null || SelectedScriptType.Id == 0)
                     {
@@ -766,10 +783,18 @@ namespace Cardrly.ViewModels
         }
 
         [RelayCommand]
-        public async Task FullScreenScript(MeetingAiActionInfoResponse model)
+        public async Task FullScreenAnalyzeScript(MeetingAiActionInfoResponse model)
         {
             IsEnable = false;
             await App.Current!.MainPage!.Navigation.PushAsync(new FullScreenScriptPage(this, model.MeetingAiActionRecordAnalyzeResponse?.AnalyzeScript));
+            IsEnable = true;
+        }
+
+        [RelayCommand]
+        public async Task FullScreenAudioAllScript(MeetingAiActionInfoResponse model)
+        {
+            IsEnable = false;
+            await App.Current!.MainPage!.Navigation.PushAsync(new FullScreenScriptPage(this, model.MeetingAiActionRecordAnalyzeResponse?.AudioAllScript));
             IsEnable = true;
         }
 

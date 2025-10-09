@@ -939,8 +939,8 @@
   <data name="lblMeetingDetails" xml:space="preserve">
     <value>معلومات الاجتماع</value>
   </data>
-  <data name="btnGetScript" xml:space="preserve">
-    <value>الحصول على نص</value>
+  <data name="btnGetSummary" xml:space="preserve">
+    <value>استخراج ملخص</value>
   </data>
   <data name="msgEnterTitleofMeeting" xml:space="preserve">
     <value>أدخل عنوان الاجتماع !!</value>
@@ -1067,5 +1067,11 @@
   </data>
   <data name="lblScriptType" xml:space="preserve">
     <value>نوع النص</value>
+  </data>
+  <data name="lblAllScript" xml:space="preserve">
+    <value>كل النصوص</value>
+  </data>
+  <data name="lblgorecord" xml:space="preserve">
+    <value>اذهب للتسجيل</value>
   </data>
 </root>

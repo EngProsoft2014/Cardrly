@@ -124,11 +124,11 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get Script.
+        ///   Looks up a localized string similar to Get Summary.
         /// </summary>
-        internal static string btnGetScript {
+        internal static string btnGetSummary {
             get {
-                return ResourceManager.GetString("btnGetScript", resourceCulture);
+                return ResourceManager.GetString("btnGetSummary", resourceCulture);
             }
         }
         
@@ -507,6 +507,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblAddress {
             get {
                 return ResourceManager.GetString("lblAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Script.
+        /// </summary>
+        internal static string lblAllScript {
+            get {
+                return ResourceManager.GetString("lblAllScript", resourceCulture);
             }
         }
         
@@ -993,6 +1002,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblFullName {
             get {
                 return ResourceManager.GetString("lblFullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go Record.
+        /// </summary>
+        internal static string lblgorecord {
+            get {
+                return ResourceManager.GetString("lblgorecord", resourceCulture);
             }
         }
         
