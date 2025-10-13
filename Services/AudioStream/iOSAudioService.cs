@@ -21,7 +21,7 @@ namespace Cardrly.Services.AudioStream
             player = AVPlayer.FromUrl(NSUrl.FromString(audio.AudioUrl)!);
             player.Play();
             audio.IsPlaying = true;
-            audio.StartWaveAnimation();
+            //audio.StartWaveAnimation();
         }
 
         public void Stop()
@@ -41,7 +41,7 @@ namespace Cardrly.Services.AudioStream
         {
             Stop();
             audio.IsPlaying = false;
-            audio.StopWaveAnimation();
+            //audio.StopWaveAnimation();
             audio.Player = null;
             return Task.FromResult(audio);
         }
