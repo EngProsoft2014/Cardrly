@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Cardrly.Helpers;
+using Cardrly.Mode_s.ApplicationUser;
+using Cardrly.Models.MeetingAiAction;
+using Newtonsoft.Json;
+using Plugin.Maui.Audio;
+using Polly;
+using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
-using Newtonsoft.Json;
-using Polly;
-using Cardrly.Mode_s.ApplicationUser;
-using Cardrly.Helpers;
-using Plugin.Maui.Audio;
 
 
 
@@ -169,6 +170,7 @@ namespace Cardrly.Helpers
                 return "";
             }
         }
+
 
         public async Task<ApplicationUserResponse> GetLoginAsync<T>(string uri, string authToken = "")
         {
@@ -1056,5 +1058,7 @@ namespace Cardrly.Helpers
                 return default(TR);
             }
         }
+
+       
     }
 }

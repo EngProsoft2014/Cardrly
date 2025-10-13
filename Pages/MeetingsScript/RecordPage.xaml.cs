@@ -58,20 +58,20 @@ public partial class RecordPage : Controls.CustomControl
         return true;
     }
 
-    private void picLang_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        var picker = sender as Picker;
-        var selectedLanguage = picker.SelectedItem as string;
+    //private void picLang_SelectedIndexChanged(object sender, EventArgs e)
+    //{
+    //    var picker = sender as Picker;
+    //    var selectedLanguage = picker.SelectedItem as string;
 
-        viewModel.SelectedLanguage = selectedLanguage;
+    //    viewModel.SelectedLanguage = selectedLanguage;
 
-    }
+    //}
 
-    private void Picker_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        var picker = sender as Picker;
-        var selectedScriptType = picker.SelectedItem as ScriptTypeModel;
+    //private void Picker_SelectedIndexChanged(object sender, EventArgs e)
+    //{
+    //    var picker = sender as Picker;
+    //    var selectedScriptType = picker.SelectedItem as ScriptTypeModel;
 
-        viewModel.SelectedScriptType = selectedScriptType;
-    }
+    //    viewModel.SelectedScriptType = selectedScriptType;
+    //}
 }

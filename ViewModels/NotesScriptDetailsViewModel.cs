@@ -16,6 +16,7 @@ using GoogleApi.Entities.Translate.Common.Enums;
 using Microsoft.CognitiveServices.Speech;
 using Microsoft.CognitiveServices.Speech.Audio;
 using Microsoft.CognitiveServices.Speech.Transcription;
+using Mopups.Services;
 using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -76,6 +77,9 @@ namespace Cardrly.ViewModels
         bool isShowExpander = false;
 
         [ObservableProperty]
+        bool isShowGetScript = false;
+
+        [ObservableProperty]
         ObservableCollection<AudioItem> audioSources = new();
 
         [ObservableProperty]
@@ -111,19 +115,13 @@ namespace Cardrly.ViewModels
         string speechRegion;
 
         //Details
-        public NotesScriptDetailsViewModel(MeetingAiActionInfoResponse item, IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioStreamService audioService)
+        public NotesScriptDetailsViewModel(MeetingAiActionResponse model, IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioStreamService audioService)
         {
             Rep = GenericRep;
             _service = service;
-            MeetingInfoModel = item;
             _audioService = audioService;
 
-            Init();
-
-            if(!string.IsNullOrEmpty(MeetingInfoModel.MeetingAiActionRecordAnalyzeResponse?.AnalyzeScript) || !string.IsNullOrEmpty(MeetingInfoModel.MeetingAiActionRecordAnalyzeResponse?.AudioAllScript))
-            {
-                IsShowExpander = true;
-            }
+            Init(model.Id);
 
             //AddOrDeleteRecord
             MessagingCenter.Subscribe<NotesScriptDetailsViewModel, string>(this, "AddOrDeleteRecord", async (sender, message) =>
@@ -135,16 +133,23 @@ namespace Cardrly.ViewModels
             });
         }
 
-        async void Init()
+        async void Init(string meetingAiActionId)
         {
+            await GetMeetingInfo(meetingAiActionId);
+
             ScriptTypes.Add(new ScriptTypeModel { Id = 1, Name = "Simple Script" });
             ScriptTypes.Add(new ScriptTypeModel { Id = 2, Name = "Meeting Script" });
+
+            IsScriptBtn = MeetingInfoModel.MeetingAiActionRecords.Count > 0 ? true : false;
+
+            if (!string.IsNullOrEmpty(MeetingInfoModel.MeetingAiActionRecordAnalyzeResponse?.AnalyzeScript) || !string.IsNullOrEmpty(MeetingInfoModel.MeetingAiActionRecordAnalyzeResponse?.AudioAllScript))
+            {
+                IsShowExpander = true;
+            }
 
             // Initialize Azure Speech Service client
             speechKey = Controls.StaticMember.AzureMeetingAiSekrtKey;
             speechRegion = "eastus"; //"YOUR_REGION"; // Example: "eastus"
-
-            IsScriptBtn = MeetingInfoModel.MeetingAiActionRecords.Count > 0 ? true : false;
 
             if (DeviceInfo.Platform == DevicePlatform.iOS && DeviceInfo.DeviceType == DeviceType.Virtual)
             {
@@ -169,6 +174,8 @@ namespace Cardrly.ViewModels
                 speechConfig.SetProperty("ConversationTranscriptionInRealTime", "true");
                 speechConfig.SetProperty("SpeechServiceResponse_EnablePartialResultStabilization", "true");
                 speechConfig.SetProperty("SpeechServiceResponse_StablePartialResultThreshold", "2");
+
+                speechConfig.SpeechRecognitionLanguage = "ar-EG";//Default Language
             }
 
             autoLangConfig = AutoDetectSourceLanguageConfig.FromLanguages(new string[]
@@ -176,7 +183,6 @@ namespace Cardrly.ViewModels
                 "en-US", // English
                 "ar-EG", // Arabic (Egypt)
             });
-
         }
 
         // Assign consistent color per speaker
@@ -232,6 +238,7 @@ namespace Cardrly.ViewModels
                 UserDialogs.Instance.HideHud();
                 if (json != null)
                 {
+                    Controls.StaticMember.AzureMeetingAiSekrtKey = json.SecretKey ?? "";
                     MeetingInfoModel = json;
                 }
             }
@@ -276,9 +283,12 @@ namespace Cardrly.ViewModels
             // Reset everything
             if (recorder != null)
             {
-                await recorder.StopAsync(); 
+                await recorder.StopAsync();
                 StopDurationTimer();
                 IsRecording = false;
+
+                SelectedScriptType = new();
+                SelectedLanguage = "";
 
                 if (_recordStartTime != null)
                 {
@@ -298,7 +308,7 @@ namespace Cardrly.ViewModels
                         _isTranscribing = false;
                     }
                 }
-           }
+            }
 
             await App.Current!.MainPage!.Navigation.PopAsync();
         }
@@ -319,12 +329,12 @@ namespace Cardrly.ViewModels
 
                 try
                 {
-                    if (string.IsNullOrEmpty(SelectedLanguage))
-                    {
-                        var toast = Toast.Make(AppResources.msgRequiredFieldLanguage, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
-                    }
-                    else if (SelectedScriptType == null || SelectedScriptType.Id == 0)
+                    //if (string.IsNullOrEmpty(SelectedLanguage))
+                    //{
+                    //    var toast = Toast.Make(AppResources.msgRequiredFieldLanguage, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    //    await toast.Show();
+                    //}
+                    if (SelectedScriptType == null || SelectedScriptType.Id == 0)
                     {
                         var toast = Toast.Make(AppResources.msgRequiredFieldScriptType, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                         await toast.Show();
@@ -388,7 +398,7 @@ namespace Cardrly.ViewModels
                             // 🔹 Event: partial recognized speech
                             _conversationTranscriber.Transcribing += (s, e) =>
                             {
-                                var speaker = e.Result.SpeakerId ?? "Unknown";
+                                var speaker = e.Result.SpeakerId ?? AppResources.lblScript;
                                 var partial = e.Result.Text?.Trim() ?? string.Empty;
 
                                 if (string.IsNullOrEmpty(partial))
@@ -422,17 +432,15 @@ namespace Cardrly.ViewModels
                             {
                                 if (e.Result.Reason == ResultReason.RecognizedSpeech && !string.IsNullOrWhiteSpace(e.Result.Text))
                                 {
-                                    var speaker = e.Result.SpeakerId ?? "Unknown";
+                                    var speaker = e.Result.SpeakerId ?? AppResources.lblScript;
                                     var text = e.Result.Text.Trim();
 
                                     MainThread.BeginInvokeOnMainThread(async () =>
                                     {
                                         if (!IsTextValidLanguage(text))
                                         {
-                                            await App.Current!.MainPage!.DisplayAlert("Unsupported Language",
-                                                "The speech could not be recognized. Only Arabic and English are supported.",
-                                                "OK");
-                                            return;
+                                            var toast = Toast.Make(AppResources.msgUnsupportLang, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                                            await toast.Show();
                                         }
 
                                         if (_liveMessages.ContainsKey(speaker))
@@ -527,9 +535,9 @@ namespace Cardrly.ViewModels
                 {
                     AudioItem audio = new AudioItem { AudioSource = audioSource };
 
-                    var rnd = new Random();
-                    for (int i = 0; i < audio.Waveform.Count; i++)
-                        audio.Waveform[i] = rnd.Next(5, 40);
+                    //var rnd = new Random();
+                    //for (int i = 0; i < audio.Waveform.Count; i++)
+                    //    audio.Waveform[i] = rnd.Next(5, 40);
 
                     IsScriptBtn = true;
 
@@ -552,6 +560,7 @@ namespace Cardrly.ViewModels
                         AudioTime = DurationDisplay,
                         AudioData = fileBytes,
                         AudioScript = NoteScript,
+                        LstMeetingMessage = Messages.ToList(),
                         Extension = ".wav"
                     };
 
@@ -786,7 +795,7 @@ namespace Cardrly.ViewModels
         public async Task FullScreenAnalyzeScript(MeetingAiActionInfoResponse model)
         {
             IsEnable = false;
-            await App.Current!.MainPage!.Navigation.PushAsync(new FullScreenScriptPage(this, model.MeetingAiActionRecordAnalyzeResponse?.AnalyzeScript));
+            await App.Current!.MainPage!.Navigation.PushAsync(new FullScreenScriptPage(this, model.MeetingAiActionRecordAnalyzeResponse, 1));//1 = AnalyzeScript
             IsEnable = true;
         }
 
@@ -794,7 +803,15 @@ namespace Cardrly.ViewModels
         public async Task FullScreenAudioAllScript(MeetingAiActionInfoResponse model)
         {
             IsEnable = false;
-            await App.Current!.MainPage!.Navigation.PushAsync(new FullScreenScriptPage(this, model.MeetingAiActionRecordAnalyzeResponse?.AudioAllScript));
+            await App.Current!.MainPage!.Navigation.PushAsync(new FullScreenScriptPage(this, model.MeetingAiActionRecordAnalyzeResponse, 2));//2 = AudioAllScript
+            IsEnable = true;
+        }
+
+        [RelayCommand]
+        public async Task GoToSettingPopupBeforeRecordPage()
+        {
+            IsEnable = false;
+            await MopupService.Instance.PushAsync(new MeetingSettingPopup(this));
             IsEnable = true;
         }
 
@@ -802,9 +819,70 @@ namespace Cardrly.ViewModels
         public async Task GoToRecordPage()
         {
             IsEnable = false;
+
             await App.Current!.MainPage!.Navigation.PushAsync(new RecordPage(this));
+
+            await MopupService.Instance.PopAsync();
+
+            await ToggleRecording();
+
             IsEnable = true;
         }
+
+
+        [RelayCommand]
+        public async Task GetPDF(string scriptText)
+        {
+            IsEnable = false;
+            string UserToken = await _service.UserToken();
+            if (!string.IsNullOrEmpty(UserToken))
+            {
+                GeneratePdfRequest oGeneratePdfRequest = new GeneratePdfRequest
+                {
+                    Text = scriptText,
+                };
+                UserDialogs.Instance.ShowLoading();
+                var json = await Rep.PostTRAsync<GeneratePdfRequest, PdfResponse>(ApiConstants.PostMeetingAiScriptTextToPDFApi, oGeneratePdfRequest, UserToken);
+                UserDialogs.Instance.HideHud();
+                if (json.Item1 != null)
+                {
+                    if (json.Item1 != null && json.Item1.Success && !string.IsNullOrEmpty(json.Item1.PdfBytes))
+                    {
+                        // Convert Base64 string to bytes
+                        byte[] pdfBytes = Convert.FromBase64String(json.Item1.PdfBytes);
+
+                        // Use filename from server or default
+                        string fileName = string.IsNullOrEmpty(json.Item1.FileName)
+                            ? "Meeting.pdf"
+                            : json.Item1.FileName;
+
+                        await SaveAndOpenPdfAsync(pdfBytes, fileName);
+                    }
+                    else
+                    {
+                        await App.Current!.MainPage!.DisplayAlert(AppResources.msgError, AppResources.msgFailedtoparsePDFresponse, AppResources.msgOk);
+                    }
+                }
+                else
+                {
+                    var toast = Toast.Make($"{json.Item2?.errors?.FirstOrDefault().Key + " " + json.Item2?.errors?.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
+            }
+            IsEnable = true;
+        }
+
+
+        public async Task SaveAndOpenPdfAsync(byte[] pdfBytes, string fileName = "Meeting.pdf")
+        {
+            string filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
+            File.WriteAllBytes(filePath, pdfBytes);
+            await Launcher.OpenAsync(new OpenFileRequest
+            {
+                File = new ReadOnlyFile(filePath)
+            });
+        }
+
 
         //private async Task<string> ConvertSpeechToTextAsync()
         //{

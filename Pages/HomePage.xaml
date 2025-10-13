@@ -1001,7 +1001,7 @@
                                             
                                             
                                             <!--Meetings Script-->
-                                            <StackLayout Orientation="Horizontal">
+                                            <StackLayout Orientation="Horizontal" IsVisible="{Binding IsShowMeetingSCript}">
                                                 <Label Text="{x:Static res:AppResources.lblMeetingsScript}" FontAutoScalingEnabled="False" TextColor="Black"
                                                        FontSize="14" VerticalTextAlignment="Start"></Label>
                                                 <Image HorizontalOptions="EndAndExpand">

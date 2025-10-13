@@ -25,9 +25,17 @@
                     <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
             </Image>
-            <Label Text="{x:Static res:AppResources.lblNote}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
+            <Label Text="{x:Static res:AppResources.lblScript}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
             </Label>
 
+            <Image VerticalOptions="End">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIcon" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GetPDFCommand}" CommandParameter="{Binding Source={x:Reference edtNote}, Path=Text}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
         </StackLayout>
 
 

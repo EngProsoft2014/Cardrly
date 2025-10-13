@@ -33,4 +33,26 @@ public partial class NoteScriptDetailsPage : Controls.CustomControl
         return true;
     }
 
+    private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        if(e.Value)
+        {
+            viewModel.IsShowGetScript = true;
+        }
+        else
+        {
+            if(viewModel.MeetingInfoModel?.MeetingAiActionRecords.Count > 0)
+            {
+                bool IsAnyScripting = viewModel.MeetingInfoModel.MeetingAiActionRecords.Any(x => x.IsScript);
+                if (IsAnyScripting)
+                {
+                    viewModel.IsShowGetScript = true;
+                }
+                else
+                {
+                    viewModel.IsShowGetScript = false;
+                }
+            }
+        }
+    }
 }

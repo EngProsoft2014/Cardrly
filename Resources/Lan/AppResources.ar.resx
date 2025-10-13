@@ -1074,4 +1074,19 @@
   <data name="lblgorecord" xml:space="preserve">
     <value>اذهب للتسجيل</value>
   </data>
+  <data name="btnCreateNewMeeting" xml:space="preserve">
+    <value>إنشاء اجتماع جديد</value>
+  </data>
+  <data name="msgUnsupportLang" xml:space="preserve">
+    <value>لم يتم التعرف على الكلام. يدعم البرنامج اللغتين العربية والإنجليزية فقط.</value>
+  </data>
+  <data name="lblSettings" xml:space="preserve">
+    <value>الضبط</value>
+  </data>
+  <data name="msgFailedtoparsePDFresponse" xml:space="preserve">
+    <value>فشل في تحليل استجابة PDF.</value>
+  </data>
+  <data name="btnStartRecord" xml:space="preserve">
+    <value>ابدأ التسجيل</value>
+  </data>
 </root>

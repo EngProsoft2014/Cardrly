@@ -81,12 +81,12 @@
                             <StackLayout>
 
                                 <Frame Padding="10,5,10,5" CornerRadius="10" BackgroundColor="White" Margin="10,5,10,10" VerticalOptions="FillAndExpand">
-                                    <StackLayout VerticalOptions="Center" Spacing="5">
+                                    <StackLayout VerticalOptions="Center" Spacing="0">
                                         <StackLayout Orientation="Horizontal">
 
-                                            <CheckBox IsChecked="{Binding IsScript}" Scale="1.2" Color="OrangeRed"></CheckBox>
+                                            <CheckBox IsChecked="{Binding IsScript}" Scale="1.2" Color="OrangeRed" CheckedChanged="CheckBox_CheckedChanged"></CheckBox>
 
-                                            <StackLayout Orientation="Horizontal" HeightRequest="35"   
+                                            <!--<StackLayout Orientation="Horizontal" HeightRequest="35"   
                                                 HorizontalOptions="FillAndExpand"
                                                 Spacing="2"
                                                 Margin="5,0,20,0"
@@ -96,13 +96,18 @@
                                                 <BindableLayout.ItemTemplate>
                                                     <DataTemplate>
                                                         <BoxView 
-                                                    WidthRequest="1.5"
-                                                    HeightRequest="{Binding .}" 
-                                                    Color="#FF7F3E"
-                                                    VerticalOptions="Center"/>
+                                                                WidthRequest="1.5"
+                                                                HeightRequest="{Binding .}" 
+                                                                Color="#FF7F3E"
+                                                                VerticalOptions="Center"/>
                                                     </DataTemplate>
                                                 </BindableLayout.ItemTemplate>
-                                            </StackLayout>
+                                            </StackLayout>-->
+
+                                            <Image Source="wave.png"
+                                                   HeightRequest="40"
+                                                   Aspect="Fill"
+                                                   HorizontalOptions="FillAndExpand" />
 
                                             <!--open/close Button-->
 
@@ -168,7 +173,7 @@
         </StackLayout>
 
         <Grid>
-            <Grid VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" Margin="25">
+            <Grid VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" Margin="20">
                 <!--<Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                     <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -178,7 +183,51 @@
                 <!--
             <Label Text="{Binding DurationDisplay}" FontSize="13" TextColor="Gray" HorizontalOptions="CenterAndExpand"/>-->
 
-                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+
+                <StackLayout  VerticalOptions="Center" HorizontalOptions="Center">
+                    <!--Go To Start Recording-->
+                    <Border StrokeShape="RoundRectangle 10"
+                            HeightRequest="70"
+                            WidthRequest="100"
+                            BackgroundColor="#f26d29"
+                            Padding="15"
+                            Stroke="Transparent"
+                            HorizontalOptions="CenterAndExpand">
+                        <Image>
+                            <Image.Source>
+                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="White" Size="30"></FontImageSource>
+                            </Image.Source>
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoToSettingPopupBeforeRecordPageCommand}"></TapGestureRecognizer>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Border.Shadow>
+                            <Shadow Offset="1,2" Brush="{OnPlatform Android=LightGray, iOS=LightGray}" Radius="5" Opacity="1"></Shadow>
+                        </Border.Shadow>
+                    </Border>
+
+                    <!--<Label Text="{x:Static res:AppResources.lblgorecord}" FontAttributes="Bold" FontSize="14" TextColor="#f26d29" >
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToRecordPageCommand}"></TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>-->
+
+                    <!--StopRecordButton-->
+                    <!--
+                 <Border x:Name="StopRecordButton" IsVisible="{Binding IsShowStopBtn}" StrokeShape="RoundRectangle 10" Margin="20,15,20,20" HeightRequest="50" WidthRequest="50" BackgroundColor="White" Padding="12" Stroke="Black" HorizontalOptions="End">
+                     <Image>
+                         <Image.Source>
+                             <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="40"></FontImageSource>
+                         </Image.Source>
+                     </Image>
+                     <Border.GestureRecognizers>
+                         <TapGestureRecognizer Command="{Binding StopRecordingCommand}"></TapGestureRecognizer>
+                     </Border.GestureRecognizers>
+                 </Border>-->
+                </StackLayout>
+
+
+                <StackLayout VerticalOptions="Center" HorizontalOptions="End" IsVisible="{Binding IsShowGetScript}">
                     <!--<Image HorizontalOptions="Start" VerticalOptions="Center">
                     <Image.Source>
                         <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="28"></FontImageSource>
@@ -197,55 +246,26 @@
 
 
                     <Button Text="{x:Static res:AppResources.btnGetSummary}" 
-                        IsVisible="{Binding IsScriptBtn}"  
-                        FontAttributes="Bold" 
-                        FontSize="13" 
-                        TextColor="White" 
-                        BackgroundColor="#f26d29" 
-                        HorizontalOptions="CenterAndExpand" 
-                        VerticalOptions="Center"
-                        Command="{Binding CreateAnalyzeScriptCommand}" CommandParameter="{Binding MeetingInfoModel}"></Button>
+                            IsVisible="{Binding IsScriptBtn}"  
+                            FontAttributes="Bold" 
+                            FontSize="13" 
+                            TextColor="#f26d29" 
+                            BorderColor="#f26d29"
+                            BorderWidth="1"
+                            Padding="5,0"
+                            BackgroundColor="White" 
+                            HorizontalOptions="CenterAndExpand" 
+                            VerticalOptions="Center"
+                            Command="{Binding CreateAnalyzeScriptCommand}" CommandParameter="{Binding MeetingInfoModel}"></Button>
                 </StackLayout>
 
 
-                <StackLayout  VerticalOptions="Center" HorizontalOptions="End">
-                    <!--Go To Start Recording-->
-                    <!--<Image>
-                        <Image.Source>
-                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="35"></FontImageSource>
-                        </Image.Source>
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoToRecordPageCommand}"></TapGestureRecognizer>
-                        </Image.GestureRecognizers>
-                    </Image>-->
 
-                    <Label Text="{x:Static res:AppResources.lblgorecord}" FontAttributes="Bold" FontSize="14" TextColor="#f26d29" >
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoToRecordPageCommand}"></TapGestureRecognizer>
-                        </Label.GestureRecognizers>
-                    </Label>
-
-
-
-
-                    <!--StopRecordButton-->
-                    <!--
-                 <Border x:Name="StopRecordButton" IsVisible="{Binding IsShowStopBtn}" StrokeShape="RoundRectangle 10" Margin="20,15,20,20" HeightRequest="50" WidthRequest="50" BackgroundColor="White" Padding="12" Stroke="Black" HorizontalOptions="End">
-                     <Image>
-                         <Image.Source>
-                             <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="40"></FontImageSource>
-                         </Image.Source>
-                     </Image>
-                     <Border.GestureRecognizers>
-                         <TapGestureRecognizer Command="{Binding StopRecordingCommand}"></TapGestureRecognizer>
-                     </Border.GestureRecognizers>
-                 </Border>-->
-                </StackLayout>
             </Grid>
 
 
-            <Border Margin="20,0,0,5" IsVisible="{Binding IsShowExpander}" VerticalOptions="Center" BackgroundColor="White" Stroke="Gray" StrokeThickness=".7" Padding="5,1" HorizontalOptions="Start">
-                <xct:Expander>
+            <Border Margin="20,32,0,32" IsVisible="{Binding IsShowExpander}" BackgroundColor="White" Stroke="#f26d29" WidthRequest="85" StrokeThickness="1" Padding="5,2" HorizontalOptions="Start">
+                <xct:Expander HorizontalOptions="Center" VerticalOptions="Center">
                     <xct:Expander.Header>
                         <Image Margin="7">
                             <Image.Source>
@@ -285,9 +305,9 @@
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="{OnPlatform Android=10, iOS=10}"></RoundRectangle>
                 </Border.StrokeShape>
-                <Border.Shadow>
+                <!--<Border.Shadow>
                     <Shadow Offset="1,2" Brush="{OnPlatform Android=LightGray, iOS=LightGray}" Radius="5" Opacity="1"></Shadow>
-                </Border.Shadow>
+                </Border.Shadow>-->
             </Border>
 
         </Grid>

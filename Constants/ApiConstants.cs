@@ -207,6 +207,7 @@
         public static string CreateMeetingAiActionApi = "api/MeetingAiAction/AddMeetingAiAction/";
         public static string GetAllMeetingAiActionApi = "api/MeetingAiAction/GetAll/";
         public static string GetMeetingAiActionInfoApi = "api/MeetingAiAction/GetAllInfo/";
+        public static string PostMeetingAiScriptTextToPDFApi = "api/MeetingAiAction/GeneratePdf";
         public static string DeleteMeetingAiActionApi = "api/MeetingAiAction/Delete/";
 
         public static string AddMeetingAiActionRecordApi = "api/MeetingAiActionRecord/AddMeetingAiActionRecord/";

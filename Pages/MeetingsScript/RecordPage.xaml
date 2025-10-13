@@ -161,7 +161,7 @@
             </StackLayout>
 
             <!--Expender-->
-            <Border BackgroundColor="White" Stroke="Gray" StrokeThickness=".7" Padding="2" VerticalOptions="End" HorizontalOptions="Start" Margin="20">
+            <!--<Border BackgroundColor="White" Stroke="Gray" StrokeThickness=".7" Padding="2" VerticalOptions="End" HorizontalOptions="Start" Margin="20">
                 <xct:Expander>
                     <xct:Expander.Header>
                         <Image Margin="10">
@@ -172,30 +172,13 @@
                     </xct:Expander.Header>
                     <StackLayout Spacing="30" Margin="0,8">
 
-                        <!--Language-->
-
-                        <!--<Image>
-                                    <Image.Source>
-                                        <FontImageSource FontFamily="FontIconSolid" Color="White" Glyph="" Size="22"></FontImageSource>
-                                    </Image.Source>
-                                    <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding AddEventClickCommand}"></TapGestureRecognizer>
-                                    </Image.GestureRecognizers>
-                                </Image>-->
-
-                        <!--<Label Text="Language" HorizontalOptions="CenterAndExpand" FontSize="12" FontAttributes="Bold" TextColor="Black" VerticalOptions="Center">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding SelectLanguageCommand}"></TapGestureRecognizer>
-                            </Label.GestureRecognizers>
-                        </Label>-->
-
                         <Picker 
                              SelectedItem="{Binding SelectedLanguage}"
                              Title="{x:Static res:AppResources.lblLanguage}"
                              IsEnabled="{Binding IsEnableLang}"
                              FontSize="14" 
                              HorizontalTextAlignment="Center"
-                            TitleColor="Black"
+                             TitleColor="Black"
                              TextColor="Black" 
                              HorizontalOptions="End"
                              WidthRequest="100"
@@ -215,28 +198,6 @@
                             </Picker.Triggers>
                         </Picker>
 
-                        <!--<Border StrokeShape="RoundRectangle 10" HorizontalOptions="Start">
-                                    
-                                </Border>-->
-
-                        <!--Script Type-->
-
-                        <!--<Image>
-                                    <Image.Source>
-                                        <FontImageSource FontFamily="FontIconSolid" Color="White" Glyph="" Size="22"></FontImageSource>
-                                    </Image.Source>
-                                    <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding AddEventClickCommand}"></TapGestureRecognizer>
-                                    </Image.GestureRecognizers>
-                                </Image>-->
-
-                        <!--<Label Text="Script Type" HorizontalOptions="CenterAndExpand" FontSize="12" FontAttributes="Bold" TextColor="Black" VerticalOptions="Center">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding SelectScriptTypeCommand}"></TapGestureRecognizer>
-                            </Label.GestureRecognizers>
-                        </Label>-->
-
-
                         <Picker 
                              ItemsSource="{Binding ScriptTypes}"
                              ItemDisplayBinding="{Binding Name}"
@@ -245,7 +206,7 @@
                              IsEnabled="{Binding IsEnableScriptType}"
                              FontSize="14" 
                              HorizontalTextAlignment="Center"
-                            TitleColor="Black"
+                             TitleColor="Black"
                              TextColor="Black" 
                              HorizontalOptions="End"
                              WidthRequest="100"
@@ -260,16 +221,16 @@
                         </Picker>
                     </StackLayout>
                 </xct:Expander>
-                <!--<Border.StrokeShape>
+                --><!--<Border.StrokeShape>
                     <RoundRectangle CornerRadius="{OnPlatform Android=100, iOS=23}"></RoundRectangle>
-                </Border.StrokeShape>-->
+                </Border.StrokeShape>--><!--
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="{OnPlatform Android=10, iOS=10}"></RoundRectangle>
                 </Border.StrokeShape>
-                <!--<Border.Shadow>
+                --><!--<Border.Shadow>
                     <Shadow Offset="1,2" Brush="{OnPlatform Android=Gray, iOS=LightGray}" Radius="5" Opacity="1"></Shadow>
-                </Border.Shadow>-->
-            </Border>
+                </Border.Shadow>--><!--
+            </Border>-->
         </Grid>
 
     </StackLayout>

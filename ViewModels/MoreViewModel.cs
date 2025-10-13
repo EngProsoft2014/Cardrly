@@ -22,6 +22,8 @@ namespace Cardrly.ViewModels
     {
         [ObservableProperty]
         bool isShowBullingInfo;
+        [ObservableProperty]
+        bool isShowMeetingSCript;
 
         private readonly IAudioStreamService _audioService;
         #region Service
@@ -36,7 +38,8 @@ namespace Cardrly.ViewModels
             _service = service;
             _audioService = audioService;
 
-            IsShowBullingInfo = StaticMember.CheckPermission(ApiConstants.GetStripe) == true ? true : false;      
+            IsShowBullingInfo = StaticMember.CheckPermission(ApiConstants.GetStripe) == true ? true : false;
+            IsShowMeetingSCript = StaticMember.CheckPermission(ApiConstants.GetMeetingAi) == true ? true : false;
         }
         #endregion
 

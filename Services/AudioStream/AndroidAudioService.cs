@@ -24,7 +24,7 @@ namespace Cardrly.Services.AudioStream
             player.PrepareAsync();
             player.Prepared += (s, e) => player.Start();
             audio.IsPlaying = true;
-            audio.StartWaveAnimation();
+            //audio.StartWaveAnimation();
         }
 
         public void Stop()
@@ -44,7 +44,7 @@ namespace Cardrly.Services.AudioStream
         {
             Stop();
             audio.IsPlaying = false;
-            audio.StopWaveAnimation();
+            //audio.StopWaveAnimation();
             audio.Player = null;
             return Task.FromResult(audio);
         }

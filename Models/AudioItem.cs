@@ -21,39 +21,51 @@ namespace Cardrly.Models
 
         CancellationTokenSource? cts;
 
-        public ObservableCollection<int> Waveform { get; } =
-            new(Enumerable.Range(0, 55).Select(_ => new Random().Next(5, 30)));
+        //private static readonly Random _random = new();
+
+        //public static ObservableCollection<int> SharedWaveform { get; } =
+        //    new(CreateWaveform(50));
+
+        //private static IEnumerable<int> CreateWaveform(int count)
+        //{
+        //    for (int i = 0; i < count; i++)
+        //        yield return _random.Next(5, 30);
+        //}
+
+        //public ObservableCollection<int> Waveform => SharedWaveform;
+
+        //public ObservableCollection<int> Waveform { get; } = new(Enumerable.Range(0, 50).Select(_ => new Random().Next(5, 30)));
 
 
-        public void StartWaveAnimation()
-        {
-            cts?.Cancel();
-            cts = new CancellationTokenSource();
+        //public void StartWaveAnimation()
+        //{
+        //    cts?.Cancel();
+        //    cts = new CancellationTokenSource();
 
-            Task.Run(async () =>
-            {
-                var rnd = new Random();
-                while (!cts.IsCancellationRequested)
-                {
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        for (int i = 0; i < Waveform.Count; i++)
-                            Waveform[i] = rnd.Next(5, 40);
-                    });
-                    await Task.Delay(100);
-                }
-            });
-        }
+        //    Task.Run(async () =>
+        //    {
+        //        var rnd = new Random();
+        //        while (!cts.IsCancellationRequested)
+        //        {
+        //            MainThread.BeginInvokeOnMainThread(() =>
+        //            {
+        //                for (int i = 0; i < Waveform.Count; i++)
+        //                    Waveform[i] = rnd.Next(5, 40);
+        //            });
+        //            await Task.Delay(100);
+        //        }
+        //    });
+        //}
 
-        public void StopWaveAnimation()
-        {
-            cts?.Cancel();
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                for (int i = 0; i < Waveform.Count; i++)
-                    Waveform[i] = 5;
-            });
-        }
+        //public void StopWaveAnimation()
+        //{
+        //    cts?.Cancel();
+        //    MainThread.BeginInvokeOnMainThread(() =>
+        //    {
+        //        for (int i = 0; i < Waveform.Count; i++)
+        //            Waveform[i] = 5;
+        //    });
+        //}
 
 
     }

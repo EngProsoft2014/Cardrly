@@ -1074,4 +1074,19 @@
   <data name="lblgorecord" xml:space="preserve">
     <value>Go Record</value>
   </data>
+  <data name="btnCreateNewMeeting" xml:space="preserve">
+    <value>Create New Meeting</value>
+  </data>
+  <data name="msgUnsupportLang" xml:space="preserve">
+    <value>The speech could not be recognized. Only Arabic and English are supported.</value>
+  </data>
+  <data name="lblSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="msgFailedtoparsePDFresponse" xml:space="preserve">
+    <value>Failed to parse PDF response.</value>
+  </data>
+  <data name="btnStartRecord" xml:space="preserve">
+    <value>Start Record</value>
+  </data>
 </root>

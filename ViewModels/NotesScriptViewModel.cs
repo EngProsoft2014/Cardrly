@@ -95,7 +95,8 @@ namespace Cardrly.ViewModels
                 UserDialogs.Instance.HideHud();
                 if (json != null)
                 {
-                    LstMeetingModel = json;     
+                    //var LstMeeting = new ObservableCollection<MeetingAiActionResponse>(json.OrderByDescending(x=> x.CreatedDate).ToList());
+                    LstMeetingModel = json;
                 }
             }
             IsEnable = true;
@@ -147,19 +148,9 @@ namespace Cardrly.ViewModels
         public async Task GoToMeetingDetails(MeetingAiActionResponse model)
         {
             IsEnable = false;
-            string UserToken = await _service.UserToken();
-            if (!string.IsNullOrEmpty(UserToken))
-            {
-                UserDialogs.Instance.ShowLoading();
-                var json = await Rep.GetAsync<MeetingAiActionInfoResponse>($"{ApiConstants.GetMeetingAiActionInfoApi}{model.Id}", UserToken);
-               
-                if (json != null)
-                {
-                    Controls.StaticMember.AzureMeetingAiSekrtKey = json.SecretKey ?? "";
-                    await App.Current!.MainPage!.Navigation.PushAsync(new NoteScriptDetailsPage(new NotesScriptDetailsViewModel(json, Rep, _service, _audioService)));
-                }
-                UserDialogs.Instance.HideHud();
-            }
+            UserDialogs.Instance.ShowLoading();
+            await App.Current!.MainPage!.Navigation.PushAsync(new NoteScriptDetailsPage(new NotesScriptDetailsViewModel(model, Rep, _service, _audioService)));
+            UserDialogs.Instance.HideHud();
             IsEnable = true;
         }
 

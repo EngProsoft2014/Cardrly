@@ -8,7 +8,7 @@
                          x:Class="Cardrly.Pages.MeetingsScript.NotesScriptPage"
                          BackgroundColor="White"
                          Title="NotesScriptPage">
-    
+
     <Controls:CustomControl.Resources>
         <ResourceDictionary>
             <local:BoolToGlyphConverter x:Key="BoolToGlyphConverter" />
@@ -22,7 +22,7 @@
     <StackLayout VerticalOptions="FillAndExpand">
 
         <!--Header-->
-        <StackLayout Orientation="Horizontal" Margin="20">
+        <StackLayout Orientation="Horizontal" Margin="20,20,20,10">
             <Image VerticalOptions="CenterAndExpand">
                 <Image.Source>
                     <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
@@ -41,8 +41,13 @@
 
         </StackLayout>
 
+        <!--SearchBar-->
+        <Border Margin="20,10" StrokeShape="RoundRectangle 15" Stroke="OrangeRed" StrokeThickness="1" BackgroundColor="White" HeightRequest="40" HorizontalOptions="FillAndExpand">
+            <SearchBar x:Name="MeetingsSearch" Placeholder="{x:Static res:AppResources.plcSearch}" TextColor="Black" FontSize="14" TextChanged="MeetingsSearch_TextChanged" BackgroundColor="White"></SearchBar>
+        </Border>
+
         <StackLayout VerticalOptions="FillAndExpand">
-            <CollectionView ItemsSource="{Binding LstMeetingModel}">
+            <CollectionView x:Name="colListMeetings" ItemsSource="{Binding LstMeetingModel}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <SwipeView>
@@ -56,29 +61,30 @@
                             </SwipeView.RightItems>
 
                             <Frame Padding="10,10,15,5" CornerRadius="10" BackgroundColor="White" Margin="10">
-                                <StackLayout VerticalOptions="Center" Spacing="10">
-                                    <StackLayout Orientation="Horizontal" HeightRequest="35" Spacing="20">
-                                        <!-- Note icon -->
-                                        <Border StrokeShape="RoundRectangle 5" BackgroundColor="White" Padding="6">
 
-                                            <Image WidthRequest="22" HeightRequest="22">
-                                                <Image.Source>
-                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#333" Size="20"/>
-                                                </Image.Source>
-                                            </Image>
-                                        </Border>
+                                <StackLayout Orientation="Horizontal" HeightRequest="35" Spacing="20">
+                                    <!-- Note icon -->
+                                    <Border StrokeShape="RoundRectangle 5" BackgroundColor="White" Padding="6">
 
-                                        <StackLayout Orientation="Horizontal" Spacing="10">
-                                            <!-- Duration -->
-                                            <Label Text="{Binding title}" HorizontalOptions="StartAndExpand" FontSize="13" FontAttributes="Bold" TextColor="#333" VerticalOptions="Center" />
+                                        <Image WidthRequest="22" HeightRequest="22">
+                                            <Image.Source>
+                                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#333" Size="20"/>
+                                            </Image.Source>
+                                        </Image>
+                                    </Border>
 
-                                            <!-- Time -->
-                                            <Label Text="{Binding CreatedDate}" HorizontalOptions="EndAndExpand" FontSize="12" TextColor="Gray" VerticalOptions="Center" />
-                                        </StackLayout>
+                                    <StackLayout Orientation="Horizontal" Spacing="10">
+                                        <!-- Duration -->
+                                        <Label Text="{Binding title}" HorizontalOptions="StartAndExpand" FontSize="13" FontAttributes="Bold" TextColor="#333" VerticalOptions="Center" />
+
+                                        <!-- Time -->
+                                        <Label Text="{Binding CreatedDate}" HorizontalOptions="EndAndExpand" FontSize="12" TextColor="Gray" VerticalOptions="Center" />
                                     </StackLayout>
+
                                 </StackLayout>
+
                                 <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotesScriptViewModel}}, Path=GoToMeetingDetailsCommand}" CommandParameter="{Binding}"></TapGestureRecognizer>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotesScriptViewModel}}, Path=GoToMeetingDetailsCommand}" CommandParameter="{Binding .}"></TapGestureRecognizer>
                                 </Frame.GestureRecognizers>
                             </Frame>
                         </SwipeView>
@@ -95,8 +101,8 @@
         </StackLayout>
 
         <StackLayout VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
-            <Button Text="Create New Meeting" 
-                    Margin="0,0,0,30" 
+            <Button Text="{x:Static res:AppResources.btnCreateNewMeeting}" 
+                    Margin="0,0,0,20" 
                     FontAttributes="Bold" 
                     FontSize="14" 
                     TextColor="White" 

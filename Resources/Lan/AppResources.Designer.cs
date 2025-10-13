@@ -106,6 +106,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create New Meeting.
+        /// </summary>
+        internal static string btnCreateNewMeeting {
+            get {
+                return ResourceManager.GetString("btnCreateNewMeeting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string btnEdit {
@@ -192,6 +201,15 @@ namespace Cardrly.Resources.Lan {
         internal static string btnSort {
             get {
                 return ResourceManager.GetString("btnSort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Record.
+        /// </summary>
+        internal static string btnStartRecord {
+            get {
+                return ResourceManager.GetString("btnStartRecord", resourceCulture);
             }
         }
         
@@ -1420,6 +1438,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string lblSettings {
+            get {
+                return ResourceManager.GetString("lblSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Share Card Link.
         /// </summary>
         internal static string lblShareCardLink {
@@ -2037,6 +2064,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgFailedToChangeStatus {
             get {
                 return ResourceManager.GetString("msgFailedToChangeStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to parse PDF response..
+        /// </summary>
+        internal static string msgFailedtoparsePDFresponse {
+            get {
+                return ResourceManager.GetString("msgFailedtoparsePDFresponse", resourceCulture);
             }
         }
         
@@ -2685,6 +2721,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgUnexpected {
             get {
                 return ResourceManager.GetString("msgUnexpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The speech could not be recognized. Only Arabic and English are supported..
+        /// </summary>
+        internal static string msgUnsupportLang {
+            get {
+                return ResourceManager.GetString("msgUnsupportLang", resourceCulture);
             }
         }
         
