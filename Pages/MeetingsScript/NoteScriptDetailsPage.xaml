@@ -65,7 +65,7 @@
             </Image>-->
         </StackLayout>
 
-        <StackLayout VerticalOptions="FillAndExpand">
+        <ScrollView VerticalOptions="FillAndExpand">
             <CollectionView ItemsSource="{Binding MeetingInfoModel.MeetingAiActionRecords}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -170,7 +170,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-        </StackLayout>
+        </ScrollView>
 
         <Grid>
             <Grid VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" Margin="20">
