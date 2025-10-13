@@ -107,7 +107,11 @@ namespace Cardrly.ViewModels
         {
             string Pass = await App.Current!.MainPage!.DisplayPromptAsync(AppResources.Info, AppResources.msgEnterTitleofMeeting, AppResources.msgOk, AppResources.btnCancel);
 
-            if (!string.IsNullOrEmpty(Pass) && Pass.Length > 3)
+            if (string.IsNullOrEmpty(Pass)) 
+            {
+                return;
+            }
+            else if (Pass.Length > 3)
             {
 
                 IsEnable = false;
