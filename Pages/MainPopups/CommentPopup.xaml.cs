@@ -92,10 +92,6 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
         this.IsEnabled = true;
     }
 
-    private async void Cancel_Clicked(object sender, EventArgs e)
-    {
-        await MopupService.Instance.PopAsync();
-    }
 
     private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
     {

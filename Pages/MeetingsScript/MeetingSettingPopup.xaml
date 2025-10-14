@@ -23,7 +23,7 @@
                 <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" >
                     <StackLayout  BackgroundColor="#FFFFFF" Spacing="20">
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                            <Image HorizontalOptions="Start" Margin="20,0,0,0">
+                            <Image x:Name="imgClose" HorizontalOptions="Start" Margin="20,0,0,0">
                                 <Image.Source>
                                     <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="25"></FontImageSource>
                                 </Image.Source>
@@ -87,8 +87,7 @@
                                          HorizontalOptions="FillAndExpand"
                                          TitleColor="Black"
                                          TextColor="Black" 
-                                         VerticalOptions="CenterAndExpand"
-                                         BackgroundColor="Aqua"
+                                         VerticalOptions="CenterAndExpand"   
                                          SelectedIndexChanged="Picker_SelectedIndexChanged">
                                         <Picker.Triggers>
                                             <DataTrigger TargetType="Picker" Binding="{Binding Lang}" Value="ar">
@@ -98,12 +97,12 @@
                                     </Picker>
                                 </Border>
                             </StackLayout>
-
                         </StackLayout>
+                        
                         <!--Save Button-->
-                        <StackLayout Orientation="Horizontal" Spacing="10" Padding="10,0,10,0" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
+                        <StackLayout Orientation="Horizontal" Spacing="10" Padding="20,10,20,10" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
                             <!--Save Button-->
-                            <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnStartRecord}" FontSize="16" WidthRequest="100" FontAttributes="Bold" 
+                            <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnStartRecord}" FontSize="16" FontAttributes="Bold" 
                                      Command="{Binding GoToRecordPageCommand}"
                                      BackgroundColor="#FF7F3E" TextColor="White" HorizontalOptions="FillAndExpand"></Button>
                         </StackLayout>
