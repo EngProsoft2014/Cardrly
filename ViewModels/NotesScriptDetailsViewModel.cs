@@ -21,6 +21,11 @@ using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 using System.Text;
 
+#if IOS
+using Cardrly.Services.NativeAudioRecorder;
+using Cardrly.Services.AudioRecord;
+#endif
+
 
 
 namespace Cardrly.ViewModels
@@ -37,6 +42,11 @@ namespace Cardrly.ViewModels
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
         #endregion
+
+#if IOS
+        private INativeAudioRecorder nativeRecorder;
+        private bool isNativeRecordingStarted = false;
+#endif
 
         [ObservableProperty]
         bool isRecording;
@@ -87,8 +97,11 @@ namespace Cardrly.ViewModels
 
         private StringBuilder _transcriptBuilder = new();
 
-
-        public IAudioRecorder recorder { get; set; }
+#if IOS
+        private INativeAudioRecorder? recorder;
+#else
+        private IAudioRecorder? recorder;
+#endif
 
         public DateTime? _recordStartTime;
         public TimeSpan _accumulatedDuration = TimeSpan.Zero;
@@ -333,12 +346,6 @@ namespace Cardrly.ViewModels
                 IsEnableLang = false;
                 IsEnableScriptType = false;
 
-                // 🧹 Dispose previous recorder safely
-                if (recorder != null)
-                {
-                    recorder = null;
-                }
-
                 var filePath = Path.Combine(FileSystem.AppDataDirectory, $"recording_{DateTime.Now:yyyyMMddHHmmss}.wav");
 
                 try
@@ -349,9 +356,14 @@ namespace Cardrly.ViewModels
                     else if (SelectedLanguage == "العربية")
                         speechConfig.SpeechRecognitionLanguage = "ar-EG";
 
-
+#if IOS
+                    recorder = new iOSAudioRecorder();
+                    await recorder.Start(filePath);
+#else
                     recorder = AudioManager.Current.CreateRecorder();
                     await recorder.StartAsync(filePath);
+#endif
+
 
                     // Save path for merging later
                     recordedParts.Add(filePath);
@@ -491,16 +503,19 @@ namespace Cardrly.ViewModels
                 {
                     // ⏸️ PAUSE RECORDING
                     IsRecording = false;
-
-                    var audioSource = await recorder.StopAsync();
-                    // 🔹 iOS needs time to finalize the WAV file
 #if IOS
-            await Task.Delay(800);
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-#endif
+                    if (recorder != null)
+                    {
+                        await recorder.Stop();
+                        recorder = null;
+                    }
+#else
+                if (recorder != null)
+                {
+                    await recorder.StopAsync();
                     recorder = null;
-
+                }
+#endif
 
                     if (_recordStartTime != null)
                     {
@@ -539,17 +554,18 @@ namespace Cardrly.ViewModels
         {
             try
             {
+#if IOS
+                if (recorder != null)
+                {
+                    await recorder.Stop();
+                    recorder = null;
+                }
+#else
                 if (recorder != null)
                 {
                     await recorder.StopAsync();
                     recorder = null;
                 }
-
-                // 🔹 Make sure iOS flushes last part
-#if IOS
-        await Task.Delay(800);
-        GC.Collect();
-        GC.WaitForPendingFinalizers();
 #endif
 
                 UserDialogs.Instance.ShowLoading();
