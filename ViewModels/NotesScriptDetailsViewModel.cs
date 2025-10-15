@@ -389,20 +389,26 @@ if (recorder != null)
 
                             _speechRecognizer.Recognizing += async (s, e) =>
                             {
-                                // keep live partial UI
-                                _partialText = e.Result.Text?.Trim() ?? string.Empty;
-                                NoteScript = $"{_transcriptBuilder}{(_partialText.Length > 0 ? " " + _partialText : string.Empty)}";
+                                MainThread.BeginInvokeOnMainThread(async () =>
+                                {
+                                    // keep live partial UI
+                                    _partialText = e.Result.Text?.Trim() ?? string.Empty;
+                                    NoteScript = $"{_transcriptBuilder}{(_partialText.Length > 0 ? " " + _partialText : string.Empty)}";
+                                });
                             };
 
                             // 🔹 FINAL event - recognized (stable result)
                             _speechRecognizer.Recognized += (s, e) =>
                             {
-                                if (e.Result.Reason == ResultReason.RecognizedSpeech && !string.IsNullOrWhiteSpace(e.Result.Text))
+                                MainThread.BeginInvokeOnMainThread(async () =>
                                 {
-                                    _transcriptBuilder.AppendLine(e.Result.Text.Trim());
-                                    _partialText = string.Empty;
-                                    NoteScript = _transcriptBuilder.ToString();
-                                }
+                                    if (e.Result.Reason == ResultReason.RecognizedSpeech && !string.IsNullOrWhiteSpace(e.Result.Text))
+                                    {
+                                        _transcriptBuilder.AppendLine(e.Result.Text.Trim());
+                                        _partialText = string.Empty;
+                                        NoteScript = _transcriptBuilder.ToString();
+                                    }
+                                });
                             };
 
                             _speechRecognizer.Canceled += (s, e) => { /* optional logging */ };
