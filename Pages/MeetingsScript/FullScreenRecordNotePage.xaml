@@ -28,7 +28,7 @@
             <Label Text="{x:Static res:AppResources.lblScript}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
             </Label>
 
-            <Image VerticalOptions="End">
+            <Image x:Name="imgPDF" VerticalOptions="End">
                 <Image.Source>
                     <FontImageSource Glyph="" FontFamily="FontIcon" Color="Gray" Size="25"></FontImageSource>
                 </Image.Source>

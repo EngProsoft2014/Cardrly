@@ -10,5 +10,9 @@ public partial class FullScreenRecordNotePage : Controls.CustomControl
 		InitializeComponent();
 		this.BindingContext = viewModel;
 		edtNote.Text = note;
+        if (string.IsNullOrEmpty(note))
+        {
+            imgPDF.IsVisible = false;
+        }
     }
 }

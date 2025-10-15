@@ -279,11 +279,6 @@
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding FullScreenAnalyzeScriptCommand}" CommandParameter="{Binding MeetingInfoModel}"></TapGestureRecognizer>
                             </Label.GestureRecognizers>
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label" Binding="{Binding MeetingInfoModel.MeetingAiActionRecordAnalyzeResponse.AnalyzeScript}" Value="">
-                                    <Setter Property="IsVisible" Value="False"/>
-                                </DataTrigger>
-                            </Label.Triggers>
                         </Label>
 
 
@@ -291,11 +286,6 @@
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding FullScreenAudioAllScriptCommand}" CommandParameter="{Binding MeetingInfoModel}"></TapGestureRecognizer>
                             </Label.GestureRecognizers>
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label" Binding="{Binding MeetingInfoModel.MeetingAiActionRecordAnalyzeResponse.AudioAllScript}" Value="">
-                                    <Setter Property="IsVisible" Value="False"/>
-                                </DataTrigger>
-                            </Label.Triggers>
                         </Label>
                     </StackLayout>
                 </xct:Expander>

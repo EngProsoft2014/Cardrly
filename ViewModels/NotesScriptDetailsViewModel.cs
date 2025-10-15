@@ -394,7 +394,7 @@ namespace Cardrly.ViewModels
                         // 🔹 Event: partial recognized speech
                         _conversationTranscriber.Transcribing += (s, e) =>
                         {
-                            var speaker = e.Result.SpeakerId ?? AppResources.lblScript;
+                            var speaker = (e.Result.SpeakerId == "Unknown" || string.IsNullOrEmpty(e.Result.SpeakerId)) ? AppResources.lblScript : e.Result.SpeakerId;
                             var partial = e.Result.Text?.Trim() ?? string.Empty;
 
                             if (string.IsNullOrEmpty(partial))
@@ -428,7 +428,7 @@ namespace Cardrly.ViewModels
                         {
                             if (e.Result.Reason == ResultReason.RecognizedSpeech && !string.IsNullOrWhiteSpace(e.Result.Text))
                             {
-                                var speaker = e.Result.SpeakerId ?? AppResources.lblScript;
+                                var speaker = (e.Result.SpeakerId == "Unknown" || string.IsNullOrEmpty(e.Result.SpeakerId)) ? AppResources.lblScript : e.Result.SpeakerId;
                                 var text = e.Result.Text.Trim();
 
                                 MainThread.BeginInvokeOnMainThread(async () =>
@@ -490,6 +490,13 @@ namespace Cardrly.ViewModels
 
                     recorder = null;
 
+                    // 🔹 iOS needs time to finalize the WAV file
+#if IOS
+            await Task.Delay(800);
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+#endif
+
                     if (_recordStartTime != null)
                     {
                         // Save elapsed time into accumulator
@@ -498,8 +505,6 @@ namespace Cardrly.ViewModels
                     }
 
                     StopDurationTimer();
-
-                    _recordStartTime = null; // important, since paused
 
                     IsEnableLang = true;
 
@@ -534,6 +539,13 @@ namespace Cardrly.ViewModels
                     await recorder.StopAsync();
                     recorder = null;
                 }
+
+                // 🔹 Make sure iOS flushes last part
+#if IOS
+        await Task.Delay(800);
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+#endif
 
                 UserDialogs.Instance.ShowLoading();
 

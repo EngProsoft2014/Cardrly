@@ -46,7 +46,7 @@
             <SearchBar x:Name="MeetingsSearch" Placeholder="{x:Static res:AppResources.plcSearch}" TextColor="Black" FontSize="14" TextChanged="MeetingsSearch_TextChanged" BackgroundColor="White"></SearchBar>
         </Border>
 
-        <ScrollView VerticalOptions="FillAndExpand">
+        <ScrollView VerticalOptions="FillAndExpand" Margin="10,0">
             <CollectionView x:Name="colListMeetings" ItemsSource="{Binding LstMeetingModel}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -60,7 +60,7 @@
                                 </SwipeItems>
                             </SwipeView.RightItems>
 
-                            <Frame Padding="10,10,15,5" CornerRadius="10" BackgroundColor="White" Margin="10">
+                            <Frame Padding="10,10,15,5" CornerRadius="10" BackgroundColor="White" Margin="7">
 
                                 <StackLayout Orientation="Horizontal" HeightRequest="35" Spacing="20">
                                     <!-- Note icon -->
