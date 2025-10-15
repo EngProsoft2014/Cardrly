@@ -299,7 +299,19 @@ namespace Cardrly.ViewModels
             // Reset everything
             if (recorder != null)
             {
-                await recorder.StopAsync();
+#if IOS
+                if (recorder != null)
+                {
+                    await recorder.Stop();
+                    recorder = null;
+                }
+#else
+                if (recorder != null)
+                {
+                    await recorder.StopAsync();
+                    recorder = null;
+                }
+#endif
                 StopDurationTimer();
                 IsRecording = false;
 
