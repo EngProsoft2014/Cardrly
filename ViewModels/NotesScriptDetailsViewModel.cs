@@ -333,6 +333,12 @@ namespace Cardrly.ViewModels
                 IsEnableLang = false;
                 IsEnableScriptType = false;
 
+                // 🧹 Dispose previous recorder safely
+                if (recorder != null)
+                {
+                    recorder = null;
+                }
+
                 var filePath = Path.Combine(FileSystem.AppDataDirectory, $"recording_{DateTime.Now:yyyyMMddHHmmss}.wav");
 
                 try
@@ -487,15 +493,14 @@ namespace Cardrly.ViewModels
                     IsRecording = false;
 
                     var audioSource = await recorder.StopAsync();
-
-                    recorder = null;
-
                     // 🔹 iOS needs time to finalize the WAV file
 #if IOS
             await Task.Delay(800);
             GC.Collect();
             GC.WaitForPendingFinalizers();
 #endif
+                    recorder = null;
+
 
                     if (_recordStartTime != null)
                     {
