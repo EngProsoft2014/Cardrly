@@ -11,6 +11,12 @@ using Microsoft.Maui.Handlers;
 using Plugin.Maui.Audio;
 using Cardrly.Services.AudioStream;
 
+#if IOS
+using Cardrly.Services.NativeAudioRecorder;
+using Cardrly.Services.AudioRecord;
+#endif
+
+
 
 
 #if ANDROID
@@ -101,6 +107,7 @@ namespace Cardrly
 #elif IOS
             Services.AddTransient<INotificationManagerService, Cardrly.Platforms.iOS.NotificationManagerService>();
             Services.AddSingleton<IAudioStreamService, iOSAudioService>();
+            Services.AddSingleton<INativeAudioRecorder, iOSAudioRecorder>();
 #endif
             Services.AddSingleton<IAudioManager, AudioManager>();
             return Services;

@@ -20,7 +20,10 @@ using Mopups.Services;
 using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 using System.Text;
-
+#if IOS
+using Cardrly.Services.NativeAudioRecorder;
+using Cardrly.Services.AudioRecord;
+#endif
 
 
 namespace Cardrly.ViewModels
@@ -87,8 +90,11 @@ namespace Cardrly.ViewModels
 
         private StringBuilder _transcriptBuilder = new();
 
-
-        public IAudioRecorder recorder { get; set; }
+#if IOS
+        private INativeAudioRecorder? recorder;
+#else
+        private IAudioRecorder? recorder;
+#endif
 
         public DateTime? _recordStartTime;
         public TimeSpan _accumulatedDuration = TimeSpan.Zero;
@@ -286,7 +292,20 @@ namespace Cardrly.ViewModels
             // Reset everything
             if (recorder != null)
             {
-                await recorder.StopAsync();
+#if IOS
+                if (recorder != null)
+                {
+                    await recorder.Stop();
+                    await Task.Delay(300); // ✅ Let iOS finalize the file
+                    recorder = null;
+                }
+#else
+if (recorder != null)
+{
+    await recorder.StopAsync();
+    recorder = null;
+}
+#endif
                 StopDurationTimer();
                 IsRecording = false;
 
@@ -343,9 +362,13 @@ namespace Cardrly.ViewModels
                     else if (SelectedLanguage == "العربية")
                         speechConfig.SpeechRecognitionLanguage = "ar-EG";
 
-
+#if IOS
+                    recorder = new iOSAudioRecorder();
+                    await recorder.Start(filePath);
+#else
                     recorder = AudioManager.Current.CreateRecorder();
                     await recorder.StartAsync(filePath);
+#endif
 
                     // Save path for merging later
                     recordedParts.Add(filePath);
@@ -486,8 +509,19 @@ namespace Cardrly.ViewModels
                     // ⏸️ PAUSE RECORDING
                     IsRecording = false;
 
-                    var audioSource = await recorder.StopAsync();
-                    recorder = null;
+#if IOS
+                    if (recorder != null)
+                    {
+                        await recorder.Stop();
+                        recorder = null;
+                    }
+#else
+                    if (recorder != null)
+                    {
+                        await recorder.StopAsync();
+                        recorder = null;
+                    }
+#endif
 
                     if (_recordStartTime != null)
                     {
@@ -526,11 +560,19 @@ namespace Cardrly.ViewModels
         {
             try
             {
+#if IOS
+                if (recorder != null)
+                {
+                    await recorder.Stop();
+                    recorder = null;
+                }
+#else
                 if (recorder != null)
                 {
                     await recorder.StopAsync();
                     recorder = null;
                 }
+#endif
 
                 UserDialogs.Instance.ShowLoading();
 
