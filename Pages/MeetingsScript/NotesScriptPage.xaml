@@ -76,12 +76,12 @@
                                     <StackLayout Orientation="Horizontal" Spacing="10" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
                                         <!-- Duration -->
                                         <StackLayout HorizontalOptions="StartAndExpand">
-                                            <Label Text="{Binding title}"  FontSize="13" FontAttributes="Bold" TextColor="#333333"/>
+                                            <Label Text="{Binding title}" VerticalTextAlignment="Center" FontSize="13" FontAttributes="Bold" TextColor="#333333"/>
                                         </StackLayout>
 
                                         <!-- Time -->
                                         <StackLayout HorizontalOptions="EndAndExpand">
-                                            <Label Text="{Binding CreatedDate}" FontSize="12" TextColor="Gray" />
+                                            <Label Text="{Binding CreatedDate}" VerticalTextAlignment="Center" FontSize="11" TextColor="Gray" />
                                         </StackLayout>
                                     </StackLayout>
 

@@ -21,11 +21,6 @@ using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 using System.Text;
 
-#if IOS
-using Cardrly.Services.NativeAudioRecorder;
-using Cardrly.Services.AudioRecord;
-#endif
-
 
 
 namespace Cardrly.ViewModels
@@ -42,11 +37,6 @@ namespace Cardrly.ViewModels
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
         #endregion
-
-#if IOS
-        private INativeAudioRecorder nativeRecorder;
-        private bool isNativeRecordingStarted = false;
-#endif
 
         [ObservableProperty]
         bool isRecording;
@@ -97,11 +87,8 @@ namespace Cardrly.ViewModels
 
         private StringBuilder _transcriptBuilder = new();
 
-#if IOS
-        private INativeAudioRecorder? recorder;
-#else
-        private IAudioRecorder? recorder;
-#endif
+
+        public IAudioRecorder recorder { get; set; }
 
         public DateTime? _recordStartTime;
         public TimeSpan _accumulatedDuration = TimeSpan.Zero;
@@ -299,19 +286,7 @@ namespace Cardrly.ViewModels
             // Reset everything
             if (recorder != null)
             {
-#if IOS
-                if (recorder != null)
-                {
-                    await recorder.Stop();
-                    recorder = null;
-                }
-#else
-                if (recorder != null)
-                {
-                    await recorder.StopAsync();
-                    recorder = null;
-                }
-#endif
+                await recorder.StopAsync();
                 StopDurationTimer();
                 IsRecording = false;
 
@@ -368,14 +343,9 @@ namespace Cardrly.ViewModels
                     else if (SelectedLanguage == "العربية")
                         speechConfig.SpeechRecognitionLanguage = "ar-EG";
 
-#if IOS
-                    recorder = new iOSAudioRecorder();
-                    await recorder.Start(filePath);
-#else
+
                     recorder = AudioManager.Current.CreateRecorder();
                     await recorder.StartAsync(filePath);
-#endif
-
 
                     // Save path for merging later
                     recordedParts.Add(filePath);
@@ -515,19 +485,9 @@ namespace Cardrly.ViewModels
                 {
                     // ⏸️ PAUSE RECORDING
                     IsRecording = false;
-#if IOS
-                    if (recorder != null)
-                    {
-                        await recorder.Stop();
-                        recorder = null;
-                    }
-#else
-                if (recorder != null)
-                {
-                    await recorder.StopAsync();
+
+                    var audioSource = await recorder.StopAsync();
                     recorder = null;
-                }
-#endif
 
                     if (_recordStartTime != null)
                     {
@@ -566,19 +526,11 @@ namespace Cardrly.ViewModels
         {
             try
             {
-#if IOS
-                if (recorder != null)
-                {
-                    await recorder.Stop();
-                    recorder = null;
-                }
-#else
                 if (recorder != null)
                 {
                     await recorder.StopAsync();
                     recorder = null;
                 }
-#endif
 
                 UserDialogs.Instance.ShowLoading();
 
@@ -596,7 +548,7 @@ namespace Cardrly.ViewModels
 
                     // ✅ Safe merging directly to file (not MemoryStream)
                     var mergedFilePath = Path.Combine(FileSystem.AppDataDirectory, $"merged_{DateTime.Now:yyyyMMddHHmmss}.wav");
-
+#if ANDROID
                     using (var output = File.Create(mergedFilePath))
                     {
                         bool isFirst = true;
@@ -634,6 +586,9 @@ namespace Cardrly.ViewModels
                         output.Seek(40, SeekOrigin.Begin);
                         await output.WriteAsync(BitConverter.GetBytes((int)totalDataLength));
                     }
+#elif IOS
+                    await MergeWavFilesFixedAsync(mergedFilePath, recordedParts);
+#endif
 
                     // 🔹 Convert merged file to bytes
                     var mergedBytes = await File.ReadAllBytesAsync(mergedFilePath);
@@ -710,6 +665,72 @@ namespace Cardrly.ViewModels
             }
         }
 
+        public static async Task MergeWavFilesFixedAsync(string outputPath, List<string> inputPaths)
+        {
+            if (inputPaths == null || inputPaths.Count == 0)
+                throw new InvalidOperationException("No input files to merge.");
+
+            const int sampleRate = 16000;
+            const short bitsPerSample = 16;
+            const short channels = 1;
+            const short blockAlign = (short)(channels * (bitsPerSample / 8));
+            const int byteRate = sampleRate * blockAlign;
+
+            using var output = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
+
+            // Reserve header space (44 bytes)
+            byte[] emptyHeader = new byte[44];
+            await output.WriteAsync(emptyHeader);
+
+            long totalDataLength = 0;
+
+            foreach (var path in inputPaths)
+            {
+                if (!File.Exists(path))
+                    continue;
+
+                var bytes = await File.ReadAllBytesAsync(path);
+                if (bytes.Length <= 44)
+                    continue;
+
+                await output.WriteAsync(bytes, 44, bytes.Length - 44);
+                totalDataLength += (bytes.Length - 44);
+            }
+
+            // Build correct WAV header
+            int fileSize = (int)(totalDataLength + 44 - 8);
+
+            using var headerStream = new MemoryStream();
+            using var writer = new BinaryWriter(headerStream);
+
+            // RIFF header
+            writer.Write(System.Text.Encoding.ASCII.GetBytes("RIFF"));
+            writer.Write(fileSize);
+            writer.Write(System.Text.Encoding.ASCII.GetBytes("WAVE"));
+
+            // fmt  sub-chunk
+            writer.Write(System.Text.Encoding.ASCII.GetBytes("fmt "));
+            writer.Write(16);                  // Subchunk1Size (PCM)
+            writer.Write((short)1);            // AudioFormat = PCM
+            writer.Write(channels);
+            writer.Write(sampleRate);
+            writer.Write(byteRate);
+            writer.Write(blockAlign);
+            writer.Write(bitsPerSample);
+
+            // data sub-chunk
+            writer.Write(System.Text.Encoding.ASCII.GetBytes("data"));
+            writer.Write((int)totalDataLength);
+
+            writer.Flush();
+
+            // Write header to file start
+            headerStream.Seek(0, SeekOrigin.Begin);
+            output.Seek(0, SeekOrigin.Begin);
+            await output.WriteAsync(headerStream.ToArray());
+
+            await output.FlushAsync();
+        }
 
 
         public void StartDurationTimer()
