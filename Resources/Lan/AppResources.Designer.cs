@@ -529,6 +529,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AdOns.
+        /// </summary>
+        internal static string lblAdOns {
+            get {
+                return ResourceManager.GetString("lblAdOns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Script.
         /// </summary>
         internal static string lblAllScript {

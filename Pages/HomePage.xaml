@@ -922,26 +922,9 @@
                                                     <TapGestureRecognizer Command="{Binding ChangePasswordClickCommand}"></TapGestureRecognizer>
                                                 </StackLayout.GestureRecognizers>
                                             </StackLayout>
-                                            
-                                            
-                                            <!--Time Sheet-->
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="{x:Static res:AppResources.lblTimeSheet}" FontAutoScalingEnabled="False" TextColor="Black"
-                                                       FontSize="14" VerticalTextAlignment="Start"></Label>
-                                                <Image HorizontalOptions="EndAndExpand">
-                                                    <Image.Source>
-                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
-                                                    </Image.Source>
-                                                    <Image.Triggers>
-                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
-                                                            <Setter Property="Rotation" Value="180"></Setter>
-                                                        </DataTrigger>
-                                                    </Image.Triggers>
-                                                </Image>
-                                                <StackLayout.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding TimeSheetClickCommand}"></TapGestureRecognizer>
-                                                </StackLayout.GestureRecognizers>
-                                            </StackLayout>
+
+
+
                                             <!--Tracking--><!--
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="{x:Static res:AppResources.lblTracking}" FontAutoScalingEnabled="False" TextColor="Black"
@@ -1001,7 +984,7 @@
                                             
                                             
                                             <!--Meetings Script-->
-                                            <StackLayout Orientation="Horizontal" IsVisible="{Binding IsShowMeetingSCript}">
+                                            <!--<StackLayout Orientation="Horizontal" IsVisible="{Binding IsShowMeetingSCript}">
                                                 <Label Text="{x:Static res:AppResources.lblMeetingsScript}" FontAutoScalingEnabled="False" TextColor="Black"
                                                        FontSize="14" VerticalTextAlignment="Start"></Label>
                                                 <Image HorizontalOptions="EndAndExpand">
@@ -1017,9 +1000,27 @@
                                                 <StackLayout.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding MeetingsScriptClickCommand}"></TapGestureRecognizer>
                                                 </StackLayout.GestureRecognizers>
+                                            </StackLayout>-->
+
+                                            <!--AdOns-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{x:Static res:AppResources.lblAdOns}" FontAutoScalingEnabled="False" TextColor="Black"
+                                                       FontSize="14" VerticalTextAlignment="Start"></Label>
+                                                <Image HorizontalOptions="EndAndExpand">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="20"></FontImageSource>
+                                                    </Image.Source>
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                                                            <Setter Property="Rotation" Value="180"></Setter>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding AdOnsPageClickCommand}"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
                                             </StackLayout>
-                                            
-                                            
+
                                         </VerticalStackLayout>
                                     </Border>
                                     <!--Billing-->

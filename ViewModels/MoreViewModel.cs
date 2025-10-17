@@ -22,8 +22,7 @@ namespace Cardrly.ViewModels
     {
         [ObservableProperty]
         bool isShowBullingInfo;
-        [ObservableProperty]
-        bool isShowMeetingSCript;
+
 
         private readonly IAudioStreamService _audioService;
         #region Service
@@ -39,7 +38,7 @@ namespace Cardrly.ViewModels
             _audioService = audioService;
 
             IsShowBullingInfo = StaticMember.CheckPermission(ApiConstants.GetStripe) == true ? true : false;
-            IsShowMeetingSCript = StaticMember.CheckPermission(ApiConstants.GetMeetingAi) == true ? true : false;
+
         }
         #endregion
 
@@ -74,16 +73,23 @@ namespace Cardrly.ViewModels
         {
             await App.Current!.MainPage!.Navigation.PushAsync(new ChangePasswordPage(new ChangePasswordViewModel(Rep,_service, _audioService)));
         }
+        //[RelayCommand]
+        //async Task TimeSheetClick()
+        //{
+        //    await App.Current!.MainPage!.Navigation.PushAsync(new TimeSheetPage(new TimeSheetViewModel(Rep, _service)));
+        //}
+
         [RelayCommand]
-        async Task TimeSheetClick()
+        async Task AdOnsPageClick()
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new TimeSheetPage(new TimeSheetViewModel(Rep, _service)));
+            await App.Current!.MainPage!.Navigation.PushAsync(new AdOnsPage(new ADOnsViewModel(Rep, _service, _audioService)));
         }
-        [RelayCommand]
-        async Task TrackingClick()
-        {
-            await App.Current!.MainPage!.Navigation.PushAsync(new EmployeesWorkingPage(new EmployeesViewModel(Rep, _service),Rep,_service));
-        }
+
+        //[RelayCommand]
+        //async Task TrackingClick()
+        //{
+        //    await App.Current!.MainPage!.Navigation.PushAsync(new EmployeesWorkingPage(new EmployeesViewModel(Rep, _service),Rep,_service));
+        //}
         [RelayCommand]
         async Task ActiveDeviceClick()
         {
@@ -94,19 +100,7 @@ namespace Cardrly.ViewModels
         {
             await App.Current!.MainPage!.Navigation.PushAsync(new DevicesPage(new DevicesViewModel(Rep, _service)));
         }
-        [RelayCommand]
-        async Task MeetingsScriptClick()
-        {
-            if (StaticMember.CheckPermission(ApiConstants.GetMeetingAi))
-            {
-                await App.Current!.MainPage!.Navigation.PushAsync(new NotesScriptPage(new NotesScriptViewModel(Rep, _service, _audioService)));
-            }
-            else
-            {
-                var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                await toast.Show();
-            }
-        }
+        
         [RelayCommand]
         async Task LanguageClick()
         {

@@ -46,9 +46,6 @@ namespace Cardrly.ViewModels
         string noteScript;
 
         [ObservableProperty]
-        ObservableCollection<AudioItem> audioSources = new();
-
-        [ObservableProperty]
         MeetingAiActionResponse meetingModel;
 
         [ObservableProperty]

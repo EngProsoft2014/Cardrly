@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                        xmlns:Controls="clr-namespace:Cardrly.Controls"
+                        xmlns:vm="clr-namespace:Cardrly.ViewModels"
+                        xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        x:Class="Cardrly.Pages.AdOnsPage"
+                        Title="AdOnsPage">
+
+    <StackLayout Margin="20" VerticalOptions="FillAndExpand">
+        <!--Header-->
+        <StackLayout Orientation="Horizontal">
+            <Image VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="{x:Static res:AppResources.lblAdOns}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" ></Label>
+        </StackLayout>
+
+        <ScrollView VerticalOptions="FillAndExpand" Margin="0,10,0,0">
+            <Grid Margin="20" ColumnSpacing="40" RowSpacing="30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <!--MeetingsScript-->
+                <StackLayout IsEnabled="{Binding IsShowMeetingSCript}" Spacing="5">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="30" Stroke="OrangeRed" HeightRequest="100">
+                        <Image>
+                            <Image.Source>
+                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="50"></FontImageSource>
+                            </Image.Source>
+                        </Image>
+                    </Border>
+                    <Label Text="{x:Static res:AppResources.lblMeetingsScript}" FontSize="16" TextColor="Black" HorizontalOptions="Center"></Label>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding MeetingsScriptClickCommand}"></TapGestureRecognizer>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+
+                <!--TimeSheet-->
+                <StackLayout Grid.Column="1" Spacing="5">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="30" Stroke="OrangeRed" HeightRequest="100">
+                        <Image>
+                            <Image.Source>
+                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="50"></FontImageSource>
+                            </Image.Source>
+                        </Image>
+                    </Border>
+                    <Label Text="{x:Static res:AppResources.lblTimeSheet}" FontSize="16" TextColor="Black" HorizontalOptions="Center"></Label>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TimeSheetClickCommand}"></TapGestureRecognizer>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+
+                <!--Tracking-->
+                <StackLayout Grid.Column="0" Grid.Row="1" Spacing="5" IsEnabled="False">
+                    <!--Show Only Now-->
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="30" Stroke="OrangeRed" HeightRequest="100" IsEnabled="False">
+                        <!--Show Only Now-->
+                        <Image>
+                            <Image.Source>
+                                <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="50"></FontImageSource>
+                            </Image.Source>
+                        </Image>
+                    </Border>
+                    <StackLayout Spacing="0">
+                        <Label Text="{x:Static res:AppResources.lblTracking}" FontSize="16" TextColor="Gray" HorizontalOptions="Center"></Label>
+                        <Label Text="Comming Soon ..." FontSize="12" TextColor="Gray" HorizontalOptions="Center"></Label>
+                    </StackLayout>
+
+                </StackLayout>
+            </Grid>
+
+        </ScrollView>
+
+    </StackLayout>
+
+</Controls:CustomControl>

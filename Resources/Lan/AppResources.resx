@@ -1089,4 +1089,7 @@
   <data name="btnStartRecord" xml:space="preserve">
     <value>Start Record</value>
   </data>
+  <data name="lblAdOns" xml:space="preserve">
+    <value>AdOns</value>
+  </data>
 </root>

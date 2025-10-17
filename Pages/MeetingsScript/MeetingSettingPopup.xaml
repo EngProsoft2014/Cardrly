@@ -42,7 +42,6 @@
                                 <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray">
                                     <Picker 
                                          SelectedItem="{Binding SelectedLanguage}"
-                                         IsEnabled="{Binding IsEnableLang}"
                                          FontSize="14" 
                                          HorizontalTextAlignment="Center"
                                          HorizontalOptions="FillAndExpand"
@@ -81,7 +80,6 @@
                                          ItemsSource="{Binding ScriptTypes}"
                                          ItemDisplayBinding="{Binding Name}"
                                          SelectedItem="{Binding SelectedScriptType}"
-                                         IsEnabled="{Binding IsEnableScriptType}"
                                          FontSize="14" 
                                          HorizontalTextAlignment="Center"
                                          HorizontalOptions="FillAndExpand"

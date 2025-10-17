@@ -175,7 +175,6 @@
                         <Picker 
                              SelectedItem="{Binding SelectedLanguage}"
                              Title="{x:Static res:AppResources.lblLanguage}"
-                             IsEnabled="{Binding IsEnableLang}"
                              FontSize="14" 
                              HorizontalTextAlignment="Center"
                              TitleColor="Black"
@@ -203,7 +202,6 @@
                              ItemDisplayBinding="{Binding Name}"
                              SelectedItem="{Binding SelectedScriptType}"
                              Title="{x:Static res:AppResources.lblScriptType}"
-                             IsEnabled="{Binding IsEnableScriptType}"
                              FontSize="14" 
                              HorizontalTextAlignment="Center"
                              TitleColor="Black"

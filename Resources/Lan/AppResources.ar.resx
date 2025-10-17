@@ -1089,4 +1089,7 @@
   <data name="btnStartRecord" xml:space="preserve">
     <value>ابدأ التسجيل</value>
   </data>
+  <data name="lblAdOns" xml:space="preserve">
+    <value>إضافات</value>
+  </data>
 </root>

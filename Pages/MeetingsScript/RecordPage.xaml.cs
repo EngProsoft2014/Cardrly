@@ -7,10 +7,10 @@ namespace Cardrly.Pages.MeetingsScript;
 public partial class RecordPage : Controls.CustomControl
 {
 
-    NotesScriptDetailsViewModel viewModel;
+    RecordViewModel viewModel;
     CancellationTokenSource? _cts;
 
-    public RecordPage(NotesScriptDetailsViewModel model)
+    public RecordPage(RecordViewModel model)
     {
         InitializeComponent();
         this.BindingContext = viewModel = model;
@@ -20,10 +20,9 @@ public partial class RecordPage : Controls.CustomControl
     {
         base.OnDisappearing();
 
-        viewModel.IsRecording = false;
-        viewModel.IsShowStopBtn = false;
-        viewModel.IsEnableLang = true;
-        viewModel.IsEnableScriptType = true;
+        //viewModel.IsRecording = false;
+        //viewModel.IsShowStopBtn = false;
+
     }
 
     protected override bool OnBackButtonPressed()

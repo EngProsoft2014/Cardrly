@@ -41,7 +41,7 @@
 
         <StackLayout Margin="20,0,20,20" VerticalOptions="FillAndExpand">
             <Frame BorderColor="LightGray" BackgroundColor="White" HorizontalOptions="FillAndExpand" HasShadow="False" VerticalOptions="FillAndExpand" Padding="10" CornerRadius="15">
-                <Editor x:Name="edtNote" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" TextColor="#333">
+                <Editor x:Name="edtNote" IsReadOnly="True" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" TextColor="#333">
 
                 </Editor>
             </Frame>
