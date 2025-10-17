@@ -616,13 +616,11 @@ namespace Cardrly.ViewModels
                     {
                         await _speechRecognizer.StopContinuousRecognitionAsync();
                         _isRecognizerRunning = false;
-                        await Task.Delay(300); // give SDK time to settle
                     }
                     else if (SelectedScriptType.Id == 2 && _conversationTranscriber != null && _isTranscribing)
                     {
                         await _conversationTranscriber.StopTranscribingAsync();
                         _isTranscribing = false;
-                        await Task.Delay(300);
                     }
                 }
                 catch (Exception ex)
