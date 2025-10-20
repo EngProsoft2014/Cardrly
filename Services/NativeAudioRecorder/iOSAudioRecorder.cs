@@ -89,7 +89,7 @@ namespace Cardrly.Services.AudioRecord
 
         private void RegisterForInterruptionNotifications()
         {
-            // Remove existing observer if re-registering
+            // remove existing observer if re-registering
             if (interruptionObserver != null)
             {
                 NSNotificationCenter.DefaultCenter.RemoveObserver(interruptionObserver);
@@ -100,32 +100,53 @@ namespace Cardrly.Services.AudioRecord
                 AVAudioSession.InterruptionNotification,
                 notification =>
                 {
-                    var interruptionTypeNumber = notification.UserInfo?[AVAudioSession.InterruptionTypeKey] as NSNumber;
-                    if (interruptionTypeNumber == null)
-                        return;
-
-                    var type = (AVAudioSessionInterruptionType)interruptionTypeNumber.Int32Value;
-
-                    if (type == AVAudioSessionInterruptionType.Began)
+                    try
                     {
-                        Console.WriteLine("📞 Audio interrupted — pausing");
-                        Pause();
+                        var userInfo = notification.UserInfo;
+                        if (userInfo == null)
+                            return;
+
+                        // Some Xamarin bindings don't expose AVAudioSession.InterruptionTypeKey,
+                        // so use the string key directly which is always present in the OS notification.
+                        var typeObj = userInfo.ObjectForKey(new NSString("AVAudioSessionInterruptionTypeKey"));
+
+                        if (typeObj is NSNumber num)
+                        {
+                            var interruptionType = (AVAudioSessionInterruptionType)num.Int32Value;
+
+                            if (interruptionType == AVAudioSessionInterruptionType.Began)
+                            {
+                                Console.WriteLine("📞 Audio interrupted — pausing");
+                                Pause();
+                            }
+                            else if (interruptionType == AVAudioSessionInterruptionType.Ended)
+                            {
+                                Console.WriteLine("📞 Interruption ended — trying to resume");
+
+                                // Optionally check interruption options (some devices provide resume hint)
+                                var optionObj = userInfo.ObjectForKey(new NSString("AVAudioSessionInterruptionOptionKey"));
+                                // optionObj may be null on older iOS; when present it is NSNumber
+
+                                try
+                                {
+                                    // Reactivate session and resume recording
+                                    AVAudioSession.SharedInstance().SetActive(true, out _);
+                                    Resume();
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine($"⚠️ Resume after interruption failed: {ex.Message}");
+                                }
+                            }
+                        }
                     }
-                    else if (type == AVAudioSessionInterruptionType.Ended)
+                    catch (Exception ex)
                     {
-                        Console.WriteLine("📞 Interruption ended — resuming");
-                        try
-                        {
-                            AVAudioSession.SharedInstance().SetActive(true, out _);
-                            Resume();
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"⚠️ Resume after interruption failed: {ex.Message}");
-                        }
+                        Console.WriteLine($"Interruption handler error: {ex}");
                     }
                 });
         }
+
 
         public void Pause()
         {
