@@ -15,9 +15,12 @@ using Microsoft.CognitiveServices.Speech.Transcription;
 using System.Collections.ObjectModel;
 using Plugin.Maui.Audio;
 using System.Text;
+
 #if IOS
 using Cardrly.Services.NativeAudioRecorder;
 using Cardrly.Services.AudioRecord;
+#elif ANDROID
+using Android.Content;
 #endif
 
 namespace Cardrly.ViewModels
@@ -293,6 +296,10 @@ namespace Cardrly.ViewModels
                     await recorder.StopAsync();
                     recorder = null;
                 }
+                // 🔹 Stop background recording service
+#if ANDROID
+                StopForegroundRecordingService();
+#endif
 #endif
 
                 UserDialogs.Instance.ShowLoading();
@@ -549,6 +556,10 @@ namespace Cardrly.ViewModels
 #else
                     recorder = AudioManager.Current.CreateRecorder();
                     await recorder.StartAsync(filePath);
+                    // 🔹 Keep recording active when screen locks (Android)
+#if ANDROID
+                    StartForegroundRecordingService();
+#endif
 #endif
 
                     // Save path for merging later
@@ -600,6 +611,10 @@ namespace Cardrly.ViewModels
                         await recorder.StopAsync();
                         recorder = null;
                     }
+                    // 🔹 Stop background recording service
+#if ANDROID
+                    StopForegroundRecordingService();
+#endif
 #endif
 
                     if (_recordStartTime != null)
@@ -780,5 +795,35 @@ namespace Cardrly.ViewModels
             }
         }
 
+
+#if ANDROID
+        private void StartForegroundRecordingService()
+        {
+            try
+            {
+                var context = Platform.AppContext;
+                var intent = new Intent(context, typeof(Cardrly.Platforms.Android.ForegroundAudioService));
+                context.StartForegroundService(intent);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"⚠️ Could not start foreground service: {ex.Message}");
+            }
+        }
+
+        private void StopForegroundRecordingService()
+        {
+            try
+            {
+                var context = Platform.AppContext;
+                var intent = new Intent(context, typeof(Cardrly.Platforms.Android.ForegroundAudioService));
+                context.StopService(intent);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"⚠️ Could not stop foreground service: {ex.Message}");
+            }
+        }
+#endif
     }
 }

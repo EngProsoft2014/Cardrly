@@ -28,10 +28,21 @@ namespace Cardrly.Services.AudioRecord
                     return false;
 
                 // 🎧 Configure session
+                //var session = AVAudioSession.SharedInstance();
+                //session.SetCategory(AVAudioSessionCategory.PlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker, out _);
+                //session.SetMode(AVAudioSession.ModeDefault, out _);
+                //session.SetActive(true, out _);
                 var session = AVAudioSession.SharedInstance();
-                session.SetCategory(AVAudioSessionCategory.PlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker, out _);
-                session.SetMode(AVAudioSession.ModeDefault, out _);
-                session.SetActive(true, out _);
+                session.SetCategory(
+                    AVAudioSessionCategory.PlayAndRecord,
+                    AVAudioSessionCategoryOptions.MixWithOthers |
+                    AVAudioSessionCategoryOptions.AllowBluetooth |
+                    AVAudioSessionCategoryOptions.AllowBluetoothA2DP |
+                    AVAudioSessionCategoryOptions.DefaultToSpeaker,
+                    out _
+                );
+                session.SetMode(AVAudioSession.ModeMeasurement, out _);
+                session.SetActive(true, AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation, out _);
 
                 // 🗂️ Create recorder
                 var url = NSUrl.FromFilename(filePath);
