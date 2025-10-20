@@ -13,7 +13,6 @@ using Cardrly.Services.AudioStream;
 
 #if IOS
 using Cardrly.Services.NativeAudioRecorder;
-using Cardrly.Services.AudioRecord;
 #endif
 
 

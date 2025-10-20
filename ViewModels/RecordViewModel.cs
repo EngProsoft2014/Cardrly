@@ -16,9 +16,10 @@ using System.Collections.ObjectModel;
 using Plugin.Maui.Audio;
 using System.Text;
 
+
+
 #if IOS
 using Cardrly.Services.NativeAudioRecorder;
-using Cardrly.Services.AudioRecord;
 #elif ANDROID
 using Android.Content;
 #endif
@@ -73,9 +74,9 @@ namespace Cardrly.ViewModels
         private StringBuilder _transcriptBuilder = new();
 
 #if IOS
-        private INativeAudioRecorder? recorder;
+        private Cardrly.Services.NativeAudioRecorder.INativeAudioRecorder recorder;
 #else
-        private IAudioRecorder? recorder;
+        private Plugin.Maui.Audio.IAudioRecorder recorder;
 #endif
 
         public DateTime? _recordStartTime;
@@ -246,7 +247,6 @@ namespace Cardrly.ViewModels
             // 🔹 Stop background recording service
 #if ANDROID
                 StopForegroundRecordingService();
-                Cardrly.Platforms.Android.Receivers.PhoneCallReceiver.OnCallStateChanged = null;
 #endif
 #endif
 
@@ -304,7 +304,6 @@ namespace Cardrly.ViewModels
                 // 🔹 Stop background recording service
 #if ANDROID
                     StopForegroundRecordingService();
-                    Cardrly.Platforms.Android.Receivers.PhoneCallReceiver.OnCallStateChanged = null;
 #endif
 #endif
 
@@ -528,166 +527,6 @@ namespace Cardrly.ViewModels
         }
 
 
-        [RelayCommand]
-        public async Task ToggleRecording()
-        {
-            if (!IsRecording)
-            {
-                UserDialogs.Instance.ShowLoading();
-                // Start recording
-                if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
-                {
-                    await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgMicrophoneaccessisrequiredtorecordaudio, AppResources.msgOk);
-                    return;
-                }
-
-                // 🎤 START or RESUME RECORDING
-                IsRecording = true;
-                IsShowStopBtn = true;
-                IsEnable = false;
-
-                var filePath = Path.Combine(FileSystem.AppDataDirectory, $"recording_{DateTime.Now:yyyyMMddHHmmss}.wav");
-
-                try
-                {
-
-                    if (SelectedLanguage == "English")
-                        speechConfig.SpeechRecognitionLanguage = "en-US";
-                    else if (SelectedLanguage == "العربية")
-                        speechConfig.SpeechRecognitionLanguage = "ar-EG";
-
-#if IOS
-                    recorder = new iOSAudioRecorder();
-                    await recorder.Start(filePath);
-#else
-                    recorder = AudioManager.Current.CreateRecorder();
-                    await recorder.StartAsync(filePath);
-                    // 🔹 Keep recording active when screen locks (Android)
-#if ANDROID
-                    StartForegroundRecordingService();
-
-                    Cardrly.Platforms.Android.Receivers.PhoneCallReceiver.OnCallStateChanged = async (inCall) =>
-                    {
-                        if (inCall)
-                        {
-                            try
-                            {
-                                if (recorder != null)
-                                {
-                                    await recorder.StopAsync();
-                                    Console.WriteLine("📞 Incoming call detected — paused recording");
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine($"Pause on call exception: {ex.Message}");
-                            }
-                        }
-                        else
-                        {
-                            try
-                            {
-                                // Resume recording after call ends
-                                var newFilePath = Path.Combine(FileSystem.AppDataDirectory, $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
-                                recorder = AudioManager.Current.CreateRecorder();
-                                await recorder.StartAsync(newFilePath);
-                                recordedParts.Add(newFilePath);
-                                Console.WriteLine("📞 Call ended — resumed recording");
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine($"Resume after call exception: {ex.Message}");
-                            }
-                        }
-                    };
-#endif
-#endif
-
-                    // Save path for merging later
-                    recordedParts.Add(filePath);
-
-                    // Mark start point (don’t reset _accumulatedDuration, so timer continues)
-                    _recordStartTime = DateTime.UtcNow;
-
-                    if (string.IsNullOrEmpty(DurationDisplay))
-                        DurationDisplay = "00:00:00";
-
-                    StartDurationTimer();
-
-                    // 🎤 Handle speech recognition type
-                    if (SelectedScriptType.Id == 1) // SIMPLE SCRIPT
-                    {
-                        await StartSpeechRecognitionAsync();
-                    }
-                    else if (SelectedScriptType.Id == 2) // MEETING SCRIPT
-                    {
-                        await StartTranscriptionAsync();
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    await App.Current!.MainPage!.DisplayAlert(AppResources.msgError, $"{AppResources.msgCouldnotstartrecording} {ex.Message}", AppResources.msgOk);
-                }
-                UserDialogs.Instance.HideHud();
-            }
-            else
-            {
-                UserDialogs.Instance.ShowLoading();
-                // Pause recording
-                try
-                {
-                    // ⏸️ PAUSE RECORDING
-                    IsRecording = false;
-
-#if IOS
-                    if (recorder != null)
-                    {
-                        await recorder.Stop();
-                        recorder = null;
-                    }
-#else
-                    if (recorder != null)
-                    {
-                        await recorder.StopAsync();
-                        recorder = null;
-                    }
-                    // 🔹 Stop background recording service
-#if ANDROID
-                    StopForegroundRecordingService();
-#endif
-#endif
-
-                    if (_recordStartTime != null)
-                    {
-                        // Save elapsed time into accumulator
-                        _accumulatedDuration += DateTime.UtcNow - _recordStartTime.Value;
-                        _recordStartTime = null;
-                    }
-
-                    StopDurationTimer();
-
-
-                    if (SelectedScriptType.Id == 1 && _speechRecognizer != null && _isRecognizerRunning)
-                    {
-                        await _speechRecognizer.StopContinuousRecognitionAsync();
-                        _isRecognizerRunning = false;
-                    }
-                    else if (SelectedScriptType.Id == 2 && _conversationTranscriber != null && _isTranscribing)
-                    {
-                        await _conversationTranscriber.StopTranscribingAsync();
-                        _isTranscribing = false;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    await App.Current!.MainPage!.DisplayAlert(AppResources.msgError, $"{AppResources.msgCouldnotstoprecording} {ex.Message}", AppResources.msgOk);
-                }
-                UserDialogs.Instance.HideHud();
-            }
-        }
-
-
         private async Task StartSpeechRecognitionAsync()
         {
             try
@@ -837,7 +676,248 @@ namespace Cardrly.ViewModels
         }
 
 
+        [RelayCommand]
+        public async Task ToggleRecording()
+        {
+            if (!IsRecording)
+            {
+                await StartRecordingAsync();
+            }
+            else
+            {
+                await StopRecordingAsync();
+            }
+        }
+
+        private async Task StartRecordingAsync()
+        {
+            UserDialogs.Instance.ShowLoading();
+
+            try
+            {
+                if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
+                {
+                    await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning,
+                        AppResources.msgMicrophoneaccessisrequiredtorecordaudio, AppResources.msgOk);
+                    return;
+                }
+
+                PrepareForRecording();
+
+                var filePath = Path.Combine(FileSystem.AppDataDirectory,
+                    $"recording_{DateTime.Now:yyyyMMddHHmmss}.wav");
+
+#if IOS
+                await StartRecordingIOSAsync(filePath);
+#else
+                recorder = AudioManager.Current.CreateRecorder();
+                await recorder.StartAsync(filePath);
 #if ANDROID
+                await StartRecordingAndroidAsync(filePath);
+#endif
+
+#endif
+
+                recordedParts.Add(filePath);
+                _recordStartTime = DateTime.UtcNow;
+
+                if (string.IsNullOrEmpty(DurationDisplay))
+                    DurationDisplay = "00:00:00";
+
+                StartDurationTimer();
+
+                await StartRecognitionOrTranscriptionAsync();
+            }
+            catch (Exception ex)
+            {
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgError,
+                    $"{AppResources.msgCouldnotstartrecording} {ex.Message}", AppResources.msgOk);
+            }
+            finally
+            {
+                UserDialogs.Instance.HideHud();
+            }
+        }
+
+        private async Task StopRecordingAsync()
+        {
+            UserDialogs.Instance.ShowLoading();
+
+            try
+            {
+                IsRecording = false;
+
+#if IOS
+                if (recorder != null)
+                {
+                    await recorder.Stop();
+                    recorder = null;
+                }
+#else
+        if (recorder != null)
+        {
+            await recorder.StopAsync();
+            recorder = null;
+        }
+
+#if ANDROID
+        StopForegroundRecordingService();
+#endif
+#endif
+
+                SaveElapsedTime();
+                StopDurationTimer();
+
+                await StopRecognitionOrTranscriptionAsync();
+            }
+            catch (Exception ex)
+            {
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgError,
+                    $"{AppResources.msgCouldnotstoprecording} {ex.Message}", AppResources.msgOk);
+            }
+            finally
+            {
+                UserDialogs.Instance.HideHud();
+            }
+        }
+
+        private void PrepareForRecording()
+        {
+            IsRecording = true;
+            IsShowStopBtn = true;
+            IsEnable = false;
+
+            if (SelectedLanguage == "English")
+                speechConfig.SpeechRecognitionLanguage = "en-US";
+            else if (SelectedLanguage == "العربية")
+                speechConfig.SpeechRecognitionLanguage = "ar-EG";
+        }
+
+        private void SaveElapsedTime()
+        {
+            if (_recordStartTime != null)
+            {
+                _accumulatedDuration += DateTime.UtcNow - _recordStartTime.Value;
+                _recordStartTime = null;
+            }
+        }
+
+        private async Task StartRecognitionOrTranscriptionAsync()
+        {
+            if (SelectedScriptType.Id == 1)
+                await StartSpeechRecognitionAsync();
+            else if (SelectedScriptType.Id == 2)
+                await StartTranscriptionAsync();
+        }
+
+        private async Task StopRecognitionOrTranscriptionAsync()
+        {
+            if (SelectedScriptType.Id == 1 && _speechRecognizer != null && _isRecognizerRunning)
+            {
+                await _speechRecognizer.StopContinuousRecognitionAsync();
+                _isRecognizerRunning = false;
+            }
+            else if (SelectedScriptType.Id == 2 && _conversationTranscriber != null && _isTranscribing)
+            {
+                await _conversationTranscriber.StopTranscribingAsync();
+                _isTranscribing = false;
+            }
+        }
+
+#if IOS
+        private async Task StartRecordingIOSAsync(string filePath)
+        {
+            recorder = new Cardrly.Services.NativeAudioRecorder.iOSAudioRecorder();
+
+            recorder.OnInterruptionBegan += async () =>
+            {
+                try
+                {
+                    if (recorder?.IsRecording == true)
+                        await recorder.Stop();
+
+                    await StopRecognitionOrTranscriptionAsync();
+                    SaveElapsedTime();
+                    StopDurationTimer();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"OnInterruptionBegan Error: {ex.Message}");
+                }
+            };
+
+            recorder.OnInterruptionEnded += async () =>
+            {
+                try
+                {
+                    var newFilePath = Path.Combine(FileSystem.AppDataDirectory,
+                        $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
+
+                    recorder = new iOSAudioRecorder();
+                    await recorder.Start(newFilePath);
+
+                    recordedParts.Add(newFilePath);
+
+                    await StartRecognitionOrTranscriptionAsync();
+
+                    _recordStartTime = DateTime.UtcNow;
+                    StartDurationTimer();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"OnInterruptionEnded Error: {ex.Message}");
+                }
+            };
+
+            await recorder.Start(filePath);
+        }
+#endif
+
+#if ANDROID
+        private async Task StartRecordingAndroidAsync(string filePath)
+        {
+            StartForegroundRecordingService();
+
+            var audioManager = (Android.Media.AudioManager)Platform.AppContext.GetSystemService(Context.AudioService);
+            var focusListener = new Cardrly.Platforms.Android.Receivers.AudioFocusChangeListener();
+
+            audioManager.RequestAudioFocus(focusListener, Android.Media.Stream.Music, Android.Media.AudioFocus.Gain);
+
+            Cardrly.Platforms.Android.Receivers.AudioFocusChangeListener.OnAudioFocusChanged = async (focus) =>
+            {
+                try
+                {
+                    if (focus == "LOST")
+                    {
+                        if (recorder != null)
+                            await recorder.StopAsync();
+
+                        await StopRecognitionOrTranscriptionAsync();
+                        SaveElapsedTime();
+                        StopDurationTimer();
+                    }
+                    else if (focus == "GAIN")
+                    {
+                        var newFilePath = Path.Combine(FileSystem.AppDataDirectory,
+                            $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
+
+                        recorder = AudioManager.Current.CreateRecorder();
+                        await recorder.StartAsync(newFilePath);
+                        recordedParts.Add(newFilePath);
+
+                        await StartRecognitionOrTranscriptionAsync();
+
+                        _recordStartTime = DateTime.UtcNow;
+                        StartDurationTimer();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Audio focus handling error: {ex.Message}");
+                }
+            };
+        }
+
         private void StartForegroundRecordingService()
         {
             try
@@ -866,5 +946,6 @@ namespace Cardrly.ViewModels
             }
         }
 #endif
+
     }
 }

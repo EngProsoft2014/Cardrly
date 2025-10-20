@@ -9,9 +9,14 @@ namespace Cardrly.Services.NativeAudioRecorder
 {
     public interface INativeAudioRecorder
     {
-        Task<bool> Start(string path); // start new recording
-        void Pause();                  // pause but keep same file
-        bool Resume();                 // resume recording
-        Task<string> Stop();           // stop and return the file path
+        bool IsRecording { get; }
+        Task<bool> Start(string path);
+        void Pause();
+        bool Resume();
+        Task<string> Stop();
+
+        event Action OnInterruptionBegan;
+        event Action OnInterruptionEnded;
+        event Action<string> OnRecordingResumed;
     }
 }

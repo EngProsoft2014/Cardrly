@@ -5,51 +5,47 @@ using System.Threading.Tasks;
 using AVFoundation;
 using Foundation;
 using AudioToolbox;
-using Cardrly.Services.NativeAudioRecorder;
+using Microsoft.Maui.Storage;
 
-namespace Cardrly.Services.AudioRecord
+namespace Cardrly.Services.NativeAudioRecorder
 {
     public class iOSAudioRecorder : INativeAudioRecorder
     {
-        AVAudioRecorder? recorder;
-        string? filePath;
-        NSObject? interruptionObserver;
+        private AVAudioRecorder recorder;
+        private string currentFilePath;
+        private NSObject interruptionObserver;
+
+        public event Action OnInterruptionBegan;
+        public event Action OnInterruptionEnded;
+        public event Action<string> OnRecordingResumed;
 
         public bool IsRecording => recorder?.Recording ?? false;
 
-        public async Task<bool> Start(string path)
+        public async Task<bool> Start(string filePath)
         {
             try
             {
-                filePath = path;
+                currentFilePath = filePath;
 
-                // 🎤 Request permission first
                 var permissionGranted = await RequestPermission();
                 if (!permissionGranted)
                     return false;
 
-                // 🎧 Configure session
-                //var session = AVAudioSession.SharedInstance();
-                //session.SetCategory(AVAudioSessionCategory.PlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker, out _);
-                //session.SetMode(AVAudioSession.ModeDefault, out _);
-                //session.SetActive(true, out _);
-                var session = AVAudioSession.SharedInstance();
-                session.SetCategory(
+                var audioSession = AVAudioSession.SharedInstance();
+                NSError error = null;
+
+                audioSession.SetCategory(
                     AVAudioSessionCategory.PlayAndRecord,
-                    AVAudioSessionCategoryOptions.MixWithOthers |
-                    AVAudioSessionCategoryOptions.AllowBluetooth |
+                    AVAudioSessionCategoryOptions.DefaultToSpeaker |
                     AVAudioSessionCategoryOptions.AllowBluetoothA2DP |
-                    AVAudioSessionCategoryOptions.DefaultToSpeaker,
-                    out _
-                );
-                session.SetMode(AVAudioSession.ModeMeasurement, out _);
-                session.SetActive(true, AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation, out _);
+                    AVAudioSessionCategoryOptions.AllowBluetooth,
+                    out error);
 
-                // 🎧 Subscribe to interruptions (e.g., phone calls)
+                audioSession.SetMode(AVAudioSession.ModeDefault, out error);
+                audioSession.SetActive(true, AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation, out error);
+
+                // 🎧 Subscribe to interruptions (calls, WhatsApp, etc.)
                 RegisterForInterruptionNotifications();
-
-                // 🗂️ Create recorder
-                var url = NSUrl.FromFilename(filePath);
 
                 var settings = new AudioSettings
                 {
@@ -62,34 +58,19 @@ namespace Cardrly.Services.AudioRecord
                     LinearPcmFloat = false
                 };
 
-                NSError? err;
-                recorder = AVAudioRecorder.Create(url, settings, out err);
-
-                if (err != null)
-                {
-                    Console.WriteLine($"❌ Recorder init error: {err.LocalizedDescription}");
-                    return false;
-                }
-
-                recorder.MeteringEnabled = true;
+                recorder = AVAudioRecorder.Create(NSUrl.FromFilename(filePath), settings, out error);
                 recorder.PrepareToRecord();
 
-                bool started = recorder.Record();
-                if (!started)
-                    Console.WriteLine("❌ Recorder failed to start recording");
-
-                return started;
+                return recorder.Record();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ Start() Exception: {ex.Message}");
                 return false;
             }
         }
 
         private void RegisterForInterruptionNotifications()
         {
-            // remove existing observer if re-registering
             if (interruptionObserver != null)
             {
                 NSNotificationCenter.DefaultCenter.RemoveObserver(interruptionObserver);
@@ -98,87 +79,86 @@ namespace Cardrly.Services.AudioRecord
 
             interruptionObserver = NSNotificationCenter.DefaultCenter.AddObserver(
                 AVAudioSession.InterruptionNotification,
-                notification =>
+                async notification =>
                 {
-                    try
+                    var userInfo = notification.UserInfo;
+                    var typeValue = userInfo?["AVAudioSessionInterruptionTypeKey"] as NSNumber;
+                    if (typeValue == null)
+                        return;
+
+                    var type = (AVAudioSessionInterruptionType)typeValue.Int32Value;
+
+                    if (type == AVAudioSessionInterruptionType.Began)
                     {
-                        var userInfo = notification.UserInfo;
-                        if (userInfo == null)
-                            return;
+                        if (recorder?.Recording == true)
+                            recorder.Stop();
 
-                        // Some Xamarin bindings don't expose AVAudioSession.InterruptionTypeKey,
-                        // so use the string key directly which is always present in the OS notification.
-                        var typeObj = userInfo.ObjectForKey(new NSString("AVAudioSessionInterruptionTypeKey"));
-
-                        if (typeObj is NSNumber num)
-                        {
-                            var interruptionType = (AVAudioSessionInterruptionType)num.Int32Value;
-
-                            if (interruptionType == AVAudioSessionInterruptionType.Began)
-                            {
-                                Console.WriteLine("📞 Audio interrupted — pausing");
-                                Pause();
-                            }
-                            else if (interruptionType == AVAudioSessionInterruptionType.Ended)
-                            {
-                                Console.WriteLine("📞 Interruption ended — trying to resume");
-
-                                // Optionally check interruption options (some devices provide resume hint)
-                                var optionObj = userInfo.ObjectForKey(new NSString("AVAudioSessionInterruptionOptionKey"));
-                                // optionObj may be null on older iOS; when present it is NSNumber
-
-                                try
-                                {
-                                    // Reactivate session and resume recording
-                                    AVAudioSession.SharedInstance().SetActive(true, out _);
-                                    Resume();
-                                }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine($"⚠️ Resume after interruption failed: {ex.Message}");
-                                }
-                            }
-                        }
+                        OnInterruptionBegan?.Invoke();
                     }
-                    catch (Exception ex)
+                    else if (type == AVAudioSessionInterruptionType.Ended)
                     {
-                        Console.WriteLine($"Interruption handler error: {ex}");
+                        NSError error;
+                        var session = AVAudioSession.SharedInstance();
+                        session.SetActive(true, AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation, out error);
+
+                        if (error != null)
+                        {
+                            return;
+                        }
+
+                        // Create new file for resumed recording
+                        var newPath = Path.Combine(FileSystem.AppDataDirectory, $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
+
+                        var settings = new AudioSettings
+                        {
+                            SampleRate = 16000f,
+                            NumberChannels = 1,
+                            AudioQuality = AVAudioQuality.High,
+                            Format = AudioFormatType.LinearPCM,
+                            LinearPcmBitDepth = 16,
+                            LinearPcmBigEndian = false,
+                            LinearPcmFloat = false
+                        };
+
+                        var newRecorder = AVAudioRecorder.Create(NSUrl.FromFilename(newPath), settings, out error);
+                        newRecorder.PrepareToRecord();
+                        newRecorder.Record();
+
+                        recorder = newRecorder; // replace old instance
+                        currentFilePath = newPath;
+
+                        OnInterruptionEnded?.Invoke();
+                        OnRecordingResumed?.Invoke(newPath);
                     }
                 });
         }
 
 
+        private static async Task<bool> RequestPermission()
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            AVAudioSession.SharedInstance().RequestRecordPermission(granted => tcs.SetResult(granted));
+            return await tcs.Task;
+        }
+
         public void Pause()
         {
-            try
-            {
-                if (recorder?.Recording ?? false)
-                    recorder?.Pause();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"⚠️ Pause() Exception: {ex.Message}");
-            }
+            if (recorder?.Recording == true)
+                recorder.Pause();
         }
 
         public bool Resume()
         {
-            try
-            {
-                return recorder?.Record() ?? false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"⚠️ Resume() Exception: {ex.Message}");
-                return false;
-            }
+            return recorder?.Record() ?? false;
         }
 
         public async Task<string> Stop()
         {
             try
             {
-                recorder?.Stop();
+                if (recorder?.Recording == true)
+                    recorder.Stop();
+
                 recorder?.Dispose();
                 recorder = null;
 
@@ -188,22 +168,14 @@ namespace Cardrly.Services.AudioRecord
                     interruptionObserver = null;
                 }
 
-                var session = AVAudioSession.SharedInstance();
-                session.SetActive(false, out _);
+                var audioSession = AVAudioSession.SharedInstance();
+                audioSession.SetActive(false, out _);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Stop error: {ex.Message}");
             }
 
-            return filePath ?? string.Empty;
-        }
-
-        private static async Task<bool> RequestPermission()
-        {
-            var tcs = new TaskCompletionSource<bool>();
-            AVAudioSession.SharedInstance().RequestRecordPermission(granted => tcs.SetResult(granted));
-            return await tcs.Task;
+            return currentFilePath ?? string.Empty;
         }
     }
 }
