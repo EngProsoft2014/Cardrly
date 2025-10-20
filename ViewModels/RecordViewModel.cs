@@ -243,6 +243,11 @@ namespace Cardrly.ViewModels
                 await recorder.StopAsync();
                 recorder = null;
             }
+            // 🔹 Stop background recording service
+#if ANDROID
+                StopForegroundRecordingService();
+                Cardrly.Platforms.Android.Receivers.PhoneCallReceiver.OnCallStateChanged = null;
+#endif
 #endif
 
 
@@ -298,7 +303,8 @@ namespace Cardrly.ViewModels
                 }
                 // 🔹 Stop background recording service
 #if ANDROID
-                StopForegroundRecordingService();
+                    StopForegroundRecordingService();
+                    Cardrly.Platforms.Android.Receivers.PhoneCallReceiver.OnCallStateChanged = null;
 #endif
 #endif
 
@@ -559,6 +565,41 @@ namespace Cardrly.ViewModels
                     // 🔹 Keep recording active when screen locks (Android)
 #if ANDROID
                     StartForegroundRecordingService();
+
+                    Cardrly.Platforms.Android.Receivers.PhoneCallReceiver.OnCallStateChanged = async (inCall) =>
+                    {
+                        if (inCall)
+                        {
+                            try
+                            {
+                                if (recorder != null)
+                                {
+                                    await recorder.StopAsync();
+                                    Console.WriteLine("📞 Incoming call detected — paused recording");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Pause on call exception: {ex.Message}");
+                            }
+                        }
+                        else
+                        {
+                            try
+                            {
+                                // Resume recording after call ends
+                                var newFilePath = Path.Combine(FileSystem.AppDataDirectory, $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
+                                recorder = AudioManager.Current.CreateRecorder();
+                                await recorder.StartAsync(newFilePath);
+                                recordedParts.Add(newFilePath);
+                                Console.WriteLine("📞 Call ended — resumed recording");
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Resume after call exception: {ex.Message}");
+                            }
+                        }
+                    };
 #endif
 #endif
 

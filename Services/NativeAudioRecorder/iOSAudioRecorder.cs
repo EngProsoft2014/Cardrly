@@ -13,6 +13,7 @@ namespace Cardrly.Services.AudioRecord
     {
         AVAudioRecorder? recorder;
         string? filePath;
+        NSObject? interruptionObserver;
 
         public bool IsRecording => recorder?.Recording ?? false;
 
@@ -43,6 +44,9 @@ namespace Cardrly.Services.AudioRecord
                 );
                 session.SetMode(AVAudioSession.ModeMeasurement, out _);
                 session.SetActive(true, AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation, out _);
+
+                // 🎧 Subscribe to interruptions (e.g., phone calls)
+                RegisterForInterruptionNotifications();
 
                 // 🗂️ Create recorder
                 var url = NSUrl.FromFilename(filePath);
@@ -83,6 +87,46 @@ namespace Cardrly.Services.AudioRecord
             }
         }
 
+        private void RegisterForInterruptionNotifications()
+        {
+            // Remove existing observer if re-registering
+            if (interruptionObserver != null)
+            {
+                NSNotificationCenter.DefaultCenter.RemoveObserver(interruptionObserver);
+                interruptionObserver = null;
+            }
+
+            interruptionObserver = NSNotificationCenter.DefaultCenter.AddObserver(
+                AVAudioSession.InterruptionNotification,
+                notification =>
+                {
+                    var interruptionTypeNumber = notification.UserInfo?[AVAudioSession.InterruptionTypeKey] as NSNumber;
+                    if (interruptionTypeNumber == null)
+                        return;
+
+                    var type = (AVAudioSessionInterruptionType)interruptionTypeNumber.Int32Value;
+
+                    if (type == AVAudioSessionInterruptionType.Began)
+                    {
+                        Console.WriteLine("📞 Audio interrupted — pausing");
+                        Pause();
+                    }
+                    else if (type == AVAudioSessionInterruptionType.Ended)
+                    {
+                        Console.WriteLine("📞 Interruption ended — resuming");
+                        try
+                        {
+                            AVAudioSession.SharedInstance().SetActive(true, out _);
+                            Resume();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"⚠️ Resume after interruption failed: {ex.Message}");
+                        }
+                    }
+                });
+        }
+
         public void Pause()
         {
             try
@@ -116,6 +160,12 @@ namespace Cardrly.Services.AudioRecord
                 recorder?.Stop();
                 recorder?.Dispose();
                 recorder = null;
+
+                if (interruptionObserver != null)
+                {
+                    NSNotificationCenter.DefaultCenter.RemoveObserver(interruptionObserver);
+                    interruptionObserver = null;
+                }
 
                 var session = AVAudioSession.SharedInstance();
                 session.SetActive(false, out _);
