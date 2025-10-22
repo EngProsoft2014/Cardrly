@@ -12,9 +12,11 @@ using Controls.UserDialogs.Maui;
 using Microsoft.CognitiveServices.Speech;
 using Microsoft.CognitiveServices.Speech.Audio;
 using Microsoft.CognitiveServices.Speech.Transcription;
-using System.Collections.ObjectModel;
+using Newtonsoft.Json;
 using Plugin.Maui.Audio;
+using System.Collections.ObjectModel;
 using System.Text;
+using System.ComponentModel;
 
 
 
@@ -55,7 +57,13 @@ namespace Cardrly.ViewModels
         MeetingAiActionRecordResponse audioDetails;
 
         [ObservableProperty]
-        string durationDisplay;
+        string durationDisplay = "00:00:00";
+
+        [ObservableProperty]
+        string startDurationDisplay = "00:00:00";
+
+        [ObservableProperty]
+        string bradgeDurationDisplay = "00:00:00";
 
         CancellationTokenSource? _timerCts;
 
@@ -168,12 +176,17 @@ namespace Cardrly.ViewModels
                 _speakerColors[speaker] = colors[_random.Next(colors.Length)];
             }
 
+            StartDurationDisplay = BradgeDurationDisplay;
+
             Messages.Add(new MeetingMessage
             {
                 Speaker = speaker,
+                SpeakerDuration = StartDurationDisplay,
                 Text = text,
                 TextColor = _speakerColors[speaker]
             });
+
+            BradgeDurationDisplay = DurationDisplay;
         }
 
         private bool IsTextValidLanguage(string text)
@@ -217,20 +230,32 @@ namespace Cardrly.ViewModels
                 else
                 {
                     // Reset everything
-                    //await ResetUi();
-                    await App.Current!.MainPage!.Navigation.PopAsync();
+                    await ResetUi();
                 }
             }
             else
             {
                 // Reset everything
-                //await ResetUi();
-                await App.Current!.MainPage!.Navigation.PopAsync();
+                await ResetUi();
             }
         }
 
         public async Task ResetUi()
         {
+
+            StopDurationTimer();
+            IsRecording = false;
+
+            if (string.IsNullOrEmpty(DurationDisplay))
+                DurationDisplay = "00:00:00";
+
+            if (_recordStartTime != null)
+            {
+                _accumulatedDuration = TimeSpan.Zero;
+            }
+            Messages.Clear();
+            NoteScript = string.Empty;
+
 #if IOS
             if (recorder != null)
             {
@@ -246,7 +271,7 @@ namespace Cardrly.ViewModels
             }
             // 🔹 Stop background recording service
 #if ANDROID
-                StopForegroundRecordingService();
+            StopForegroundRecordingService();
 #endif
 #endif
 
@@ -268,21 +293,9 @@ namespace Cardrly.ViewModels
                 }
             }
 
-            StopDurationTimer();
-            IsRecording = false;
-
-            if (string.IsNullOrEmpty(DurationDisplay))
-                DurationDisplay = "00:00:00";
-
-            if (_recordStartTime != null)
-            {
-                _accumulatedDuration = TimeSpan.Zero;
-            }
-            Messages.Clear();
-            NoteScript = string.Empty;
-
             await App.Current!.MainPage!.Navigation.PopAsync();
         }
+
 
         [RelayCommand]
         public async Task StopRecording()
@@ -303,11 +316,12 @@ namespace Cardrly.ViewModels
                 }
                 // 🔹 Stop background recording service
 #if ANDROID
-                    StopForegroundRecordingService();
+                StopForegroundRecordingService();
 #endif
 #endif
 
-                UserDialogs.Instance.ShowLoading();
+                // 🔹 Show Uploading dialog (spinner with progress text)
+                UserDialogs.Instance.Loading("Uploading... 0%", maskType: MaskType.Clear);
 
                 if (recordedParts.Count > 0)
                 {
@@ -374,7 +388,12 @@ namespace Cardrly.ViewModels
                         AudioTime = DurationDisplay,
                         AudioData = mergedBytes,
                         AudioScript = NoteScript,
-                        LstMeetingMessage = Messages.ToList(),
+                        LstMeetingMessage = Messages.Select(f => new MeetingMessage
+                        {
+                            Speaker = f.Speaker + "  " + f.SpeakerDuration,
+                            Text = f.Text,
+                            TextColor = f.TextColor
+                        }).ToList(),
                         Extension = ".wav"
                     };
 
@@ -388,10 +407,33 @@ namespace Cardrly.ViewModels
                     string userToken = await _service.UserToken();
                     if (!string.IsNullOrEmpty(userToken))
                     {
+                        var progressValue = 0;
+                        var progressCts = new CancellationTokenSource();
+
+                        // 🔹 Start fake progress in background
+                        var progressTask = Task.Run(async () =>
+                        {
+                            while (progressValue < 90 && !progressCts.Token.IsCancellationRequested)
+                            {
+                                progressValue += 5;
+                                UserDialogs.Instance.Loading($"Uploading... {progressValue}%", null, true, MaskType.Clear, null);
+                                await Task.Delay(300, progressCts.Token); // smooth animation
+                            }
+                        });
+
                         var json = await Rep.PostTRAsync<AudioUploadRequest, MeetingAiActionRecordResponse>(
                             $"{ApiConstants.AddMeetingAiActionRecordApi}{MeetingInfoModel.Id}",
                             audioRequest,
                             userToken);
+
+                        // 🔹 Stop fake progress
+                        progressCts.Cancel();
+                        UserDialogs.Instance.HideHud();
+
+                        // 🔹 Show final completion (100%)
+                        UserDialogs.Instance.Loading("Uploading... 100%", null, true, MaskType.Clear, null);
+                        await Task.Delay(500);
+                        UserDialogs.Instance.HideHud();
 
                         if (json.Item1 != null)
                         {
@@ -408,6 +450,7 @@ namespace Cardrly.ViewModels
                                 CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
                         }
+
                     }
 
                     // 🧹 Cleanup temporary files
@@ -505,6 +548,8 @@ namespace Cardrly.ViewModels
             await output.FlushAsync();
         }
 
+        private System.Timers.Timer? _timer;
+
         public void StartDurationTimer()
         {
             _timerCts?.Cancel();
@@ -521,7 +566,7 @@ namespace Cardrly.ViewModels
             });
         }
 
-        public void StopDurationTimer()
+        public async void StopDurationTimer()
         {
             _timerCts?.Cancel();
         }
@@ -588,6 +633,7 @@ namespace Cardrly.ViewModels
 
                     _conversationTranscriber.Transcribing += (s, e) =>
                     {
+                        e.Result.Duration.ToString();
                         var speaker = (string.IsNullOrEmpty(e.Result.SpeakerId) || e.Result.SpeakerId == "Unknown")
                             ? AppResources.lblScript : e.Result.SpeakerId;
 
@@ -603,8 +649,9 @@ namespace Cardrly.ViewModels
                                     Speaker = speaker,
                                     Text = partial + "...",
                                     TextColor = _speakerColors.TryGetValue(speaker, out var color)
-                                        ? color : Colors.Red
+                                        ? color : Colors.Red,
                                 };
+
                                 _liveMessages[speaker] = msg;
                                 Messages.Add(msg);
                             }
@@ -620,7 +667,7 @@ namespace Cardrly.ViewModels
                         if (e.Result.Reason == ResultReason.RecognizedSpeech && !string.IsNullOrWhiteSpace(e.Result.Text))
                         {
                             var speaker = (string.IsNullOrEmpty(e.Result.SpeakerId) || e.Result.SpeakerId == "Unknown")
-                                ? AppResources.lblScript : e.Result.SpeakerId;
+                                ? AppResources.lblScript : e.Result.SpeakerId.Replace("Guest", "Speaker");
 
                             var text = e.Result.Text.Trim();
 
@@ -754,14 +801,14 @@ namespace Cardrly.ViewModels
                     recorder = null;
                 }
 #else
-        if (recorder != null)
-        {
-            await recorder.StopAsync();
-            recorder = null;
-        }
+                if (recorder != null)
+                {
+                    await recorder.StopAsync();
+                    recorder = null;
+                }
 
 #if ANDROID
-        StopForegroundRecordingService();
+                StopForegroundRecordingService();
 #endif
 #endif
 

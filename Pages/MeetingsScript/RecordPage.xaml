@@ -60,9 +60,17 @@
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <VerticalStackLayout Spacing="3">
-                                    <Label Text="{Binding Speaker}"
-                                           FontAttributes="Bold"
-                                           TextColor="{Binding TextColor}" />
+                                    <StackLayout Orientation="Horizontal" Spacing="10">
+                                        <Label Text="{Binding Speaker}"
+                                               FontAttributes="Bold"
+                                               FontSize="15"
+                                               TextColor="{Binding TextColor}" />
+                                        <Label Text="{Binding SpeakerDuration}"
+                                               FontAttributes="Bold"
+                                               VerticalTextAlignment="Center"
+                                               FontSize="10"
+                                               TextColor="Gray" />
+                                    </StackLayout>
                                     <Label Text="{Binding Text}"
                                            FontSize="14"
                                            TextColor="{Binding TextColor}"

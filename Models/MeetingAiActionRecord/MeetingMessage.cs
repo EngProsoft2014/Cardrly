@@ -24,6 +24,20 @@ namespace Cardrly.Models.MeetingAiActionRecord
             }
         }
 
+        private string _speakerDuration;
+        public string SpeakerDuration
+        {
+            get => _speakerDuration;
+            set
+            {
+                if (_speakerDuration != value)
+                {
+                    _speakerDuration = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private string _text;
         public string Text
         {

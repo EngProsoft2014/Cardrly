@@ -7,14 +7,19 @@
                         NavigationPage.HasNavigationBar="False">
 
     <Controls:CustomControl.Content>
-        <Grid VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand" Margin="0,100,0,0">
+        <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
             <StackLayout Spacing="30">
-                <Image Source="nointernet.jpg" Aspect="Fill" HeightRequest="250" WidthRequest="250"/>
+                <Image>
+                    <Image.Source>
+                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#333" Size="100"/>
+                    </Image.Source>
+                </Image>
 
                 <Label Text="{Static res:AppResources.No_Internet_connection}" FontSize="22" TextColor="#333" HorizontalOptions="CenterAndExpand"></Label>
 
                 <Button Text="{Static res:AppResources.Retry}" 
                          TextTransform="None"
+                        FontAttributes="Bold"
                          BackgroundColor="#FF7F3E"
                          TextColor="#333" 
                          BorderColor="Black"

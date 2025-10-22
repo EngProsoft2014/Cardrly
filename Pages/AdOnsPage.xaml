@@ -38,7 +38,7 @@
                 </Grid.ColumnDefinitions>
                 <!--MeetingsScript-->
                 <StackLayout IsEnabled="{Binding IsShowMeetingSCript}" Spacing="5">
-                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="30" Stroke="OrangeRed" HeightRequest="100">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="30" Stroke="OrangeRed" HeightRequest="{OnPlatform Android=110,iOS=120}">
                         <Image>
                             <Image.Source>
                                 <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="50"></FontImageSource>
@@ -53,7 +53,7 @@
 
                 <!--TimeSheet-->
                 <StackLayout Grid.Column="1" Spacing="5">
-                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="30" Stroke="OrangeRed" HeightRequest="100">
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="30" Stroke="OrangeRed" HeightRequest="{OnPlatform Android=110,iOS=120}">
                         <Image>
                             <Image.Source>
                                 <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Black" Size="50"></FontImageSource>
@@ -67,10 +67,10 @@
                 </StackLayout>
 
                 <!--Tracking-->
-                <StackLayout Grid.Column="0" Grid.Row="1" Spacing="5" IsEnabled="False">
-                    <!--Show Only Now-->
-                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="30" Stroke="OrangeRed" HeightRequest="100" IsEnabled="False">
-                        <!--Show Only Now-->
+                <!--<StackLayout Grid.Column="0" Grid.Row="1" Spacing="5" IsEnabled="False">
+                    --><!--Show Only Now--><!--
+                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="30" Stroke="OrangeRed" HeightRequest="{OnPlatform Android=100,iOS=110}" IsEnabled="False">
+                        --><!--Show Only Now--><!--
                         <Image>
                             <Image.Source>
                                 <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="50"></FontImageSource>
@@ -82,7 +82,7 @@
                         <Label Text="Comming Soon ..." FontSize="12" TextColor="Gray" HorizontalOptions="Center"></Label>
                     </StackLayout>
 
-                </StackLayout>
+                </StackLayout>-->
             </Grid>
 
         </ScrollView>

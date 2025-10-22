@@ -1,6 +1,8 @@
 ﻿using Cardrly.Helpers;
 using Cardrly.Mode_s.ApplicationUser;
 using Cardrly.Models.MeetingAiAction;
+using Cardrly.Models.MeetingAiActionRecord;
+using GoogleApi.Entities.Translate.Common.Enums;
 using Newtonsoft.Json;
 using Plugin.Maui.Audio;
 using Polly;
@@ -32,6 +34,11 @@ namespace Cardrly.Helpers
         Task DeleteAsync(string uri, string authToken = "");
         Task<string> DeleteStrItemAsync(string uri, string authToken = "");
         Task<R> PostAsync<T, R>(string uri, T data, string authToken = "");
+        Task<(TR, ErrorResult?)> PostProgressTRAsync<T, TR>(
+        string uri,
+        T data,
+        string authToken = "",
+        IProgress<double>? progress = null);
     }
 
 
@@ -1059,6 +1066,100 @@ namespace Cardrly.Helpers
             }
         }
 
-       
+
+
+        public async Task<(TR, ErrorResult?)> PostProgressTRAsync<T, TR>(
+        string uri,
+        T data,
+        string authToken = "",
+        IProgress<double>? progress = null)
+        {
+            try
+            {
+                using var httpClient = CreateHttpClient(Utility.ServerUrl + uri);
+                if (!string.IsNullOrEmpty(authToken))
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+
+                var content = new StringContent(JsonConvert.SerializeObject(data));
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                // ✅ Wrap content to track upload progress
+                var progressContent = new ProgressableStreamContent(content, progress);
+
+                var response = await httpClient.PostAsync(Utility.ServerUrl + uri, progressContent);
+                var jsonResult = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = JsonConvert.DeserializeObject<TR>(jsonResult);
+                    return (result!, null);
+                }
+                else
+                {
+                    var error = JsonConvert.DeserializeObject<ErrorResult>(jsonResult);
+                    return (default!, error);
+                }
+            }
+            catch (Exception ex)
+            {
+                return (default!, new ErrorResult
+                {
+                    title = "Upload failed",
+                    errors = new Dictionary<string, object> { { "Exception", ex.Message } }
+                });
+            }
+        }
+
+
+
+
+        public class ProgressableStreamContent : HttpContent
+        {
+            private readonly HttpContent _content;
+            private readonly IProgress<double>? _progress;
+
+            public ProgressableStreamContent(HttpContent content, IProgress<double>? progress = null)
+            {
+                _content = content ?? throw new ArgumentNullException(nameof(content));
+                _progress = progress;
+
+                // copy headers from the inner content
+                foreach (var header in _content.Headers)
+                    Headers.TryAddWithoutValidation(header.Key, header.Value);
+            }
+
+            protected override async Task SerializeToStreamAsync(Stream stream, TransportContext? context)
+            {
+                var buffer = new byte[81920];
+                TryComputeLength(out long size);
+                long uploaded = 0;
+
+                using var inputStream = await _content.ReadAsStreamAsync();
+                int bytesRead;
+                while ((bytesRead = await inputStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                {
+                    await stream.WriteAsync(buffer, 0, bytesRead);
+                    uploaded += bytesRead;
+                    _progress?.Report((uploaded / (double)size) * 100);
+                }
+            }
+
+            protected override bool TryComputeLength(out long length)
+            {
+                if (_content.Headers.ContentLength != null)
+                {
+                    length = _content.Headers.ContentLength.Value;
+                    return true;
+                }
+                length = -1;
+                return false;
+            }
+        }
+
+
+
+
+
+
     }
 }

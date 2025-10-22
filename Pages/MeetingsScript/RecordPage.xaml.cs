@@ -8,7 +8,6 @@ public partial class RecordPage : Controls.CustomControl
 {
 
     RecordViewModel viewModel;
-    CancellationTokenSource? _cts;
 
     public RecordPage(RecordViewModel model)
     {
@@ -19,10 +18,6 @@ public partial class RecordPage : Controls.CustomControl
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-
-        //viewModel.IsRecording = false;
-        //viewModel.IsShowStopBtn = false;
-
     }
 
     protected override bool OnBackButtonPressed()
