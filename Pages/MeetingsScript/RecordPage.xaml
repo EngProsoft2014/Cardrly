@@ -2,7 +2,7 @@
 <Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                         xmlns:Controls="clr-namespace:Cardrly.Controls"
-                        xmlns:vm="clr-namespace:Cardrly.ViewModels"
+                        xmlns:vm="clr-namespace:Cardrly.ViewModels.MeetingsAi"
                         xmlns:res="clr-namespace:Cardrly.Resources.Lan"
                         xmlns:local="clr-namespace:Cardrly"
                         xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"

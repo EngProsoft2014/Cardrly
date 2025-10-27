@@ -3,7 +3,7 @@ using Azure.AI.TextAnalytics;
 using Cardrly.Helpers;
 using Cardrly.Models.MeetingAiAction;
 using Cardrly.Resources.Lan;
-using Cardrly.ViewModels;
+using Cardrly.ViewModels.MeetingsAi;
 using Microsoft.CognitiveServices.Speech;
 using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;

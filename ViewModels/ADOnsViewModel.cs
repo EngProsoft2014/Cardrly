@@ -6,6 +6,7 @@ using Cardrly.Pages.MeetingsScript;
 using Cardrly.Pages.TrackingPages;
 using Cardrly.Resources.Lan;
 using Cardrly.Services.AudioStream;
+using Cardrly.ViewModels.MeetingsAi;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;

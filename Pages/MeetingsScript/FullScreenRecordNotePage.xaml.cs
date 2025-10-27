@@ -1,4 +1,5 @@
 using Cardrly.ViewModels;
+using Cardrly.ViewModels.MeetingsAi;
 
 namespace Cardrly.Pages.MeetingsScript;
 

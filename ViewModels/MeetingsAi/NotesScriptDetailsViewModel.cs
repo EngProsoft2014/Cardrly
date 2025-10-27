@@ -22,7 +22,7 @@ using System.Text;
 
 
 
-namespace Cardrly.ViewModels
+namespace Cardrly.ViewModels.MeetingsAi
 {
     public partial class NotesScriptDetailsViewModel : BaseViewModel
     {
@@ -35,19 +35,11 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         bool isScriptBtn;
 
-        [ObservableProperty]
-        ObservableCollection<ScriptTypeModel> scriptTypes = new();
-        [ObservableProperty]
-        ScriptTypeModel selectedScriptType = new();
-
-        MeetingAiActionRecordResponse? _currentlyPlaying;
-
-        [ObservableProperty]
-        string selectedLanguage = string.Empty;
-
 
         [ObservableProperty]
         MeetingAiActionRecordResponse audioDetails;
+
+        MeetingAiActionRecordResponse _currentlyPlaying;
 
 
         [ObservableProperty]
@@ -98,9 +90,6 @@ namespace Cardrly.ViewModels
         async void Init(string meetingAiActionId)
         {
             await GetMeetingInfo(meetingAiActionId);
-
-            ScriptTypes.Add(new ScriptTypeModel { Id = 1, Name = "Simple Script" });
-            ScriptTypes.Add(new ScriptTypeModel { Id = 2, Name = "Meeting Script" });
 
             IsScriptBtn = MeetingInfoModel.MeetingAiActionRecords.Count > 0 ? true : false;
 
@@ -265,35 +254,11 @@ namespace Cardrly.ViewModels
         public async Task GoToSettingPopupBeforeRecordPage()
         {
             IsEnable = false;
-            await MopupService.Instance.PushAsync(new MeetingSettingPopup(this));
+            await MopupService.Instance.PushAsync(new MeetingSettingPopup(new MeetingSettingViewModel(MeetingInfoModel,Rep,_service,_audioService)));
             IsEnable = true;
         }
 
-        [RelayCommand]
-        public async Task GoToRecordPage()
-        {
-            IsEnable = false;
-            //if (string.IsNullOrEmpty(SelectedLanguage))
-            //{
-            //    var toast = Toast.Make(AppResources.msgRequiredFieldLanguage, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-            //    await toast.Show();
-            //}
-            if (SelectedScriptType == null || SelectedScriptType.Id == 0)
-            {
-                var toast = Toast.Make(AppResources.msgRequiredFieldScriptType, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                await toast.Show();
-            }
-            else
-            {
-                await App.Current!.MainPage!.Navigation.PushAsync(new RecordPage(new RecordViewModel(MeetingInfoModel, SelectedScriptType, SelectedLanguage, Rep, _service, _audioService)));
-
-                await MopupService.Instance.PopAsync();
-
-                //await ToggleRecording();
-            }
-
-            IsEnable = true;
-        }
+       
 
 
         [RelayCommand]

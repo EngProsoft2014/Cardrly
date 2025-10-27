@@ -295,6 +295,9 @@
 	  <MauiXaml Update="Pages\MainPopups\UpdateVersionPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\MeetingsScript\ConfirmRecordPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\MeetingsScript\FullScreenRecordNotePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

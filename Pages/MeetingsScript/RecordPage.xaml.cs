@@ -1,6 +1,7 @@
 using Cardrly.Models.MeetingAiActionRecord;
 using Cardrly.Resources.Lan;
 using Cardrly.ViewModels;
+using Cardrly.ViewModels.MeetingsAi;
 
 namespace Cardrly.Pages.MeetingsScript;
 
@@ -15,9 +16,19 @@ public partial class RecordPage : Controls.CustomControl
         this.BindingContext = viewModel = model;
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+    }
+
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
+
+        if (BindingContext is RecordViewModel vm)
+        {
+            vm.StopDurationTimer();
+        }
     }
 
     protected override bool OnBackButtonPressed()
@@ -27,18 +38,7 @@ public partial class RecordPage : Controls.CustomControl
         {
             if (viewModel.Messages.Count > 0 || !string.IsNullOrEmpty(viewModel.NoteScript))
             {
-                bool Pass = await App.Current!.MainPage!.DisplayAlert(AppResources.Info, AppResources.msgDoyouwanttosavetherecording, AppResources.msgOk, AppResources.btnCancel);
-
-                if (Pass)
-                {
-                    await viewModel.StopRecording();
-                    await Navigation.PopAsync();
-                }
-                else
-                {
-                    // Reset everything
-                    await viewModel.ResetUi();
-                }
+                await Mopups.Services.MopupService.Instance.PushAsync(new ConfirmRecordPopup(viewModel));
             }
             else
             {

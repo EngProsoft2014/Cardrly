@@ -1,16 +1,15 @@
 using Cardrly.Models.MeetingAiActionRecord;
-using Cardrly.ViewModels;
+using Cardrly.ViewModels.MeetingsAi;
 using Mopups.Services;
-using Syncfusion.Maui.Core.Carousel;
 using System.Globalization;
 
 namespace Cardrly.Pages.MeetingsScript;
 
 public partial class MeetingSettingPopup : Mopups.Pages.PopupPage
 {
-    NotesScriptDetailsViewModel viewModel;
+    MeetingSettingViewModel viewModel;
 
-    public MeetingSettingPopup(NotesScriptDetailsViewModel model)
+    public MeetingSettingPopup(MeetingSettingViewModel model)
 	{
 		InitializeComponent();
         this.BindingContext = viewModel = model;
@@ -28,7 +27,6 @@ public partial class MeetingSettingPopup : Mopups.Pages.PopupPage
             CultureInfo.CurrentCulture = new CultureInfo("en");
         }
     }
-
 
     private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
     {

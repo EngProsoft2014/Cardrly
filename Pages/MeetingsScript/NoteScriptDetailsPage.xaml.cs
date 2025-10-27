@@ -3,6 +3,7 @@ using Cardrly.Models.MeetingAiActionRecord;
 using Cardrly.Resources.Lan;
 using Cardrly.Services.AudioStream;
 using Cardrly.ViewModels;
+using Cardrly.ViewModels.MeetingsAi;
 
 namespace Cardrly.Pages.MeetingsScript;
 

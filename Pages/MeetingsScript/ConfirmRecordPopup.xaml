@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<popups:PopupPage
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+        xmlns:vm="clr-namespace:Cardrly.ViewModels.MeetingsAi"
+        xmlns:popups="clr-namespace:Mopups.Pages;assembly=Mopups"
+        x:Class="Cardrly.Pages.MeetingsScript.ConfirmRecordPopup"
+        BackgroundColor="#80000000"
+        CloseWhenBackgroundIsClicked="True">
+
+    <Frame
+        VerticalOptions="Center"
+        HorizontalOptions="Center"
+        Padding="20"
+        BackgroundColor="White"
+        CornerRadius="16"
+        WidthRequest="280">
+
+        <VerticalStackLayout Spacing="15">
+            <Label x:Name="TitleLabel"
+                   Text="{x:Static res:AppResources.Info}"
+                   TextColor="Black"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                   HorizontalOptions="Center" />
+
+            <Label x:Name="MessageLabel"
+                   Text="{x:Static res:AppResources.msgDoyouwanttosavetherecording}"
+                   TextColor="#333"
+                   FontSize="16"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   LineBreakMode="WordWrap" />
+
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Margin="0,20,0,0">
+                <Button x:Name="OkButton" Text="{x:Static res:AppResources.msgOk}" FontSize="15" TextColor="White" BackgroundColor="#f26d29" WidthRequest="100" Clicked="OkButton_Clicked"/>
+                <Button x:Name="CancelButton" Text="{x:Static res:AppResources.btnCancel}" FontSize="15" TextColor="#f26d29" BackgroundColor="White" BorderColor="#f26d29" BorderWidth="1" WidthRequest="100" Clicked="CancelButton_Clicked"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Frame>
+</popups:PopupPage>

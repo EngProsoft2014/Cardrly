@@ -34,11 +34,15 @@ namespace Cardrly.Helpers
         Task DeleteAsync(string uri, string authToken = "");
         Task<string> DeleteStrItemAsync(string uri, string authToken = "");
         Task<R> PostAsync<T, R>(string uri, T data, string authToken = "");
-        Task<(TR, ErrorResult?)> PostProgressTRAsync<T, TR>(
-        string uri,
-        T data,
-        string authToken = "",
-        IProgress<double>? progress = null);
+        Task<(TR, ErrorResult?)> PostFileWithFormAsync<TR>(
+            string uri,
+            string filePath,
+            string audioTime,
+            string? audioScript,
+            List<MeetingMessage>? lstMeetingMessage,
+            string extension,
+            string authToken = "",
+            IProgress<double>? progress = null);
     }
 
 
@@ -1067,26 +1071,46 @@ namespace Cardrly.Helpers
         }
 
 
-
-        public async Task<(TR, ErrorResult?)> PostProgressTRAsync<T, TR>(
-        string uri,
-        T data,
-        string authToken = "",
-        IProgress<double>? progress = null)
+        public async Task<(TR, ErrorResult?)> PostFileWithFormAsync<TR>(
+            string uri,
+            string filePath,
+            string audioTime,
+            string? audioScript,
+            List<MeetingMessage>? lstMeetingMessage,
+            string extension,
+            string authToken = "",
+            IProgress<double>? progress = null)
         {
             try
             {
-                using var httpClient = CreateHttpClient(Utility.ServerUrl + uri);
+                using var httpClient = new HttpClient();
+
                 if (!string.IsNullOrEmpty(authToken))
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
 
-                var content = new StringContent(JsonConvert.SerializeObject(data));
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                using var form = new MultipartFormDataContent();
 
-                // ✅ Wrap content to track upload progress
-                var progressContent = new ProgressableStreamContent(content, progress);
+                // 🗂 Add the file stream
+                var fileStream = File.OpenRead(filePath);
+                var fileContent = new StreamContent(fileStream);
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue("audio/wav");
+                form.Add(fileContent, "AudioFile", Path.GetFileName(filePath));
 
+                // 🕒 Add other fields
+                form.Add(new StringContent(audioTime), "AudioTime");
+                form.Add(new StringContent(extension), "Extension");
+                if (!string.IsNullOrEmpty(audioScript))
+                    form.Add(new StringContent(audioScript), "AudioScript");
+
+                if (lstMeetingMessage != null && lstMeetingMessage.Count > 0)
+                {
+                    form.Add(new StringContent(JsonConvert.SerializeObject(lstMeetingMessage)), "LstMeetingMessage");
+                }
+
+                // 📤 Upload with progress
+                var progressContent = new ProgressableStreamContent(form, progress);
                 var response = await httpClient.PostAsync(Utility.ServerUrl + uri, progressContent);
+
                 var jsonResult = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
@@ -1109,6 +1133,8 @@ namespace Cardrly.Helpers
                 });
             }
         }
+
+
 
 
 

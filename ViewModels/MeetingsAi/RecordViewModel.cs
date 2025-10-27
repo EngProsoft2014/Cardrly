@@ -17,7 +17,7 @@ using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.ComponentModel;
-
+using Cardrly.Pages.MeetingsScript;
 
 
 #if IOS
@@ -26,7 +26,7 @@ using Cardrly.Services.NativeAudioRecorder;
 using Android.Content;
 #endif
 
-namespace Cardrly.ViewModels
+namespace Cardrly.ViewModels.MeetingsAi
 {
     public partial class RecordViewModel : BaseViewModel
     {
@@ -66,6 +66,8 @@ namespace Cardrly.ViewModels
         string bradgeDurationDisplay = "00:00:00";
 
         CancellationTokenSource? _timerCts;
+
+        IDispatcherTimer? _timer;
 
         [ObservableProperty]
         string noteScript;
@@ -219,19 +221,21 @@ namespace Cardrly.ViewModels
         {
             if (Messages.Count > 0 || !string.IsNullOrEmpty(NoteScript))
             {
-                bool Pass = await App.Current!.MainPage!.DisplayAlert(AppResources.Info, AppResources.msgDoyouwanttosavetherecording, AppResources.msgOk, AppResources.btnCancel);
+                //bool Pass = await App.Current!.MainPage!.DisplayAlert(AppResources.Info, AppResources.msgDoyouwanttosavetherecording, AppResources.msgOk, AppResources.btnCancel);
 
-                if (Pass)
-                {
-                    _audioService.Stop();
-                    await StopRecording();
-                    await App.Current!.MainPage!.Navigation.PopAsync();
-                }
-                else
-                {
-                    // Reset everything
-                    await ResetUi();
-                }
+                //if (Pass)
+                //{
+                //    _audioService.Stop();
+                //    await StopRecording();
+                //    await App.Current!.MainPage!.Navigation.PopAsync();
+                //}
+                //else
+                //{
+                //    // Reset everything
+                //    await ResetUi();
+                //}
+
+                await Mopups.Services.MopupService.Instance.PushAsync(new ConfirmRecordPopup(this));
             }
             else
             {
@@ -379,23 +383,23 @@ namespace Cardrly.ViewModels
                     await MergeWavFilesFixedAsync(mergedFilePath, recordedParts);
 #endif
 
-                    // 🔹 Convert merged file to bytes
-                    var mergedBytes = await File.ReadAllBytesAsync(mergedFilePath);
+                    //// 🔹 Convert merged file to bytes
+                    //var mergedBytes = await File.ReadAllBytesAsync(mergedFilePath);
 
-                    // Prepare upload request
-                    AudioUploadRequest audioRequest = new AudioUploadRequest
-                    {
-                        AudioTime = DurationDisplay,
-                        AudioData = mergedBytes,
-                        AudioScript = NoteScript,
-                        LstMeetingMessage = Messages.Select(f => new MeetingMessage
-                        {
-                            Speaker = f.Speaker + "  " + f.SpeakerDuration,
-                            Text = f.Text,
-                            TextColor = f.TextColor
-                        }).ToList(),
-                        Extension = ".wav"
-                    };
+                    //// Prepare upload request
+                    //AudioUploadRequest audioRequest = new AudioUploadRequest
+                    //{
+                    //    AudioTime = DurationDisplay,
+                    //    AudioData = mergedBytes,
+                    //    AudioScript = NoteScript,
+                    //    LstMeetingMessage = Messages.Select(f => new MeetingMessage
+                    //    {
+                    //        Speaker = f.Speaker + "  " + f.SpeakerDuration,
+                    //        Text = f.Text,
+                    //        TextColor = f.TextColor
+                    //    }).ToList(),
+                    //    Extension = ".wav"
+                    //};
 
                     // 🔹 Reset state
                     _recordStartTime = null;
@@ -410,7 +414,6 @@ namespace Cardrly.ViewModels
                         var progressValue = 0;
                         var progressCts = new CancellationTokenSource();
 
-                        // 🔹 Start fake progress in background
                         var progressTask = Task.Run(async () =>
                         {
                             while (progressValue < 90 && !progressCts.Token.IsCancellationRequested)
@@ -420,14 +423,23 @@ namespace Cardrly.ViewModels
                                 await Task.Delay(300, progressCts.Token); // smooth animation
                             }
                         });
+                        var progress = new Progress<double>(percent =>
+                        {
+                            UserDialogs.Instance.Loading($"Uploading... {percent:F1}%", null, true, MaskType.Clear, null);
+                        });
 
-                        var json = await Rep.PostTRAsync<AudioUploadRequest, MeetingAiActionRecordResponse>(
-                            $"{ApiConstants.AddMeetingAiActionRecordApi}{MeetingInfoModel.Id}",
-                            audioRequest,
-                            userToken);
+                        var json = await Rep.PostFileWithFormAsync<MeetingAiActionRecordResponse>(
+                        $"{ApiConstants.AddMeetingAiActionRecordApi}{MeetingInfoModel.Id}",
+                        mergedFilePath,
+                        DurationDisplay,
+                        NoteScript,
+                        Messages.Select(f => new MeetingMessage { Speaker = f.Speaker, Text = f.Text }).ToList(),
+                        ".wav",
+                        userToken,
+                        progress);
 
                         // 🔹 Stop fake progress
-                        progressCts.Cancel();
+                        //progressCts.Cancel();
                         UserDialogs.Instance.HideHud();
 
                         // 🔹 Show final completion (100%)
@@ -548,29 +560,57 @@ namespace Cardrly.ViewModels
             await output.FlushAsync();
         }
 
-        private System.Timers.Timer? _timer;
+        //public void StartDurationTimer()
+        //{
+        //    _timerCts?.Cancel();
+        //    _timerCts = new CancellationTokenSource();
+
+        //    Task.Run(async () =>
+        //    {
+        //        while (!_timerCts.Token.IsCancellationRequested && _recordStartTime != null)
+        //        {
+        //            var elapsed = _accumulatedDuration + (DateTime.UtcNow - _recordStartTime.Value);
+        //            // ✅ Update UI property on main thread
+        //            MainThread.BeginInvokeOnMainThread(() =>
+        //            {
+        //                DurationDisplay = elapsed.ToString(@"hh\:mm\:ss");
+        //            });
+
+        //            await Task.Delay(500);
+        //        }
+        //    });
+        //}
+
+        //public async void StopDurationTimer()
+        //{
+        //    _timerCts?.Cancel();
+        //}
+
 
         public void StartDurationTimer()
         {
-            _timerCts?.Cancel();
-            _timerCts = new CancellationTokenSource();
+            StopDurationTimer(); // clean any old one
 
-            Task.Run(async () =>
+            _timer = Application.Current!.Dispatcher.CreateTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(500);
+            _timer.Tick += (s, e) =>
             {
-                while (!_timerCts.Token.IsCancellationRequested && _recordStartTime != null)
-                {
-                    var elapsed = _accumulatedDuration + (DateTime.UtcNow - _recordStartTime.Value);
-                    DurationDisplay = elapsed.ToString(@"hh\:mm\:ss");
-                    await Task.Delay(500);
-                }
-            });
+                if (_recordStartTime == null) return;
+                var elapsed = _accumulatedDuration + (DateTime.UtcNow - _recordStartTime.Value);
+                DurationDisplay = elapsed.ToString(@"hh\:mm\:ss");
+            };
+            _timer.Start();
         }
 
-        public async void StopDurationTimer()
+        public void StopDurationTimer()
         {
-            _timerCts?.Cancel();
+            if (_timer != null)
+            {
+                _timer.Stop();
+                _timer.Tick -= null;
+                _timer = null;
+            }
         }
-
 
         private async Task StartSpeechRecognitionAsync()
         {
@@ -766,6 +806,7 @@ namespace Cardrly.ViewModels
 #endif
 
                 recordedParts.Add(filePath);
+
                 _recordStartTime = DateTime.UtcNow;
 
                 if (string.IsNullOrEmpty(DurationDisplay))
@@ -828,7 +869,7 @@ namespace Cardrly.ViewModels
             }
         }
 
-        private void PrepareForRecording()
+        private async void PrepareForRecording()
         {
             IsRecording = true;
             IsShowStopBtn = true;
@@ -838,6 +879,21 @@ namespace Cardrly.ViewModels
                 speechConfig.SpeechRecognitionLanguage = "en-US";
             else if (SelectedLanguage == "العربية")
                 speechConfig.SpeechRecognitionLanguage = "ar-EG";
+
+#if IOS
+                if (recorder != null)
+                {
+                    await recorder.Stop();
+                    recorder = null;
+                }
+#else
+            recorder = null;
+            //if (recorder != null)
+            //{
+            //    await recorder.StopAsync();
+            //    recorder = null;
+            //}
+#endif
         }
 
         private void SaveElapsedTime()

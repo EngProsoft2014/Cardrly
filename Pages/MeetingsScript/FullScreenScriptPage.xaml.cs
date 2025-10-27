@@ -1,6 +1,7 @@
 using Cardrly.Models.MeetingAiActionRecordAnalyze;
 using Cardrly.Resources.Lan;
 using Cardrly.ViewModels;
+using Cardrly.ViewModels.MeetingsAi;
 
 namespace Cardrly.Pages.MeetingsScript;
 

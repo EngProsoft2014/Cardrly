@@ -33,7 +33,7 @@ namespace Cardrly.Helpers
 
         public static readonly string PathServerProfileImages = "https://projectservices.engprosoft.com/EmployeePic/";
 
-        public static readonly string ServerUrl = "https://api.cardrly.com/"; 
+        public static readonly string ServerUrl = "https://api.cardrly.com/";
 
         //public static readonly string ServerUrl = "https://apicards.engprosoft.net/";
         //public static readonly string ServerUrl = "https://dhm.engprosoft.net/";
