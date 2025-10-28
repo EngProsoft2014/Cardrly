@@ -165,17 +165,37 @@ namespace Cardrly.Services.NativeAudioRecorder
                 if (interruptionObserver != null)
                 {
                     NSNotificationCenter.DefaultCenter.RemoveObserver(interruptionObserver);
+                    interruptionObserver.Dispose();
                     interruptionObserver = null;
                 }
 
                 var audioSession = AVAudioSession.SharedInstance();
                 audioSession.SetActive(false, out _);
+                audioSession.SetCategory(AVAudioSessionCategory.Ambient); // releases focus cleanly
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"❌ Error in Stop(): {ex.Message}");
             }
 
             return currentFilePath ?? string.Empty;
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                recorder?.Dispose();
+                recorder = null;
+
+                if (interruptionObserver != null)
+                {
+                    NSNotificationCenter.DefaultCenter.RemoveObserver(interruptionObserver);
+                    interruptionObserver.Dispose();
+                    interruptionObserver = null;
+                }
+            }
+            catch { }
         }
     }
 }

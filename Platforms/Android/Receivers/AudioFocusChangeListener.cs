@@ -10,7 +10,7 @@ namespace Cardrly.Platforms.Android.Receivers
 {
     public class AudioFocusChangeListener : Java.Lang.Object, AudioManager.IOnAudioFocusChangeListener
     {
-        public static Action<string>? OnAudioFocusChanged;
+        public Action<string>? OnAudioFocusChanged { get; set; }
 
         public void OnAudioFocusChange([GeneratedEnum] AudioFocus focusChange)
         {

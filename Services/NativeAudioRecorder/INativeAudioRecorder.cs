@@ -14,6 +14,7 @@ namespace Cardrly.Services.NativeAudioRecorder
         void Pause();
         bool Resume();
         Task<string> Stop();
+        void Dispose();
 
         event Action OnInterruptionBegan;
         event Action OnInterruptionEnded;

@@ -89,6 +89,10 @@ namespace Cardrly.ViewModels.MeetingsAi
         private Plugin.Maui.Audio.IAudioRecorder recorder;
 #endif
 
+#if ANDROID
+        private Platforms.Android.Receivers.AudioFocusChangeListener? _focusListener;
+#endif
+
         public DateTime? _recordStartTime;
         public TimeSpan _accumulatedDuration = TimeSpan.Zero;
 
@@ -841,16 +845,16 @@ namespace Cardrly.ViewModels.MeetingsAi
                     await recorder.Stop();
                     recorder = null;
                 }
+                // ✅ Deactivate the audio session to release the microphone
+                var audioSession = AVFoundation.AVAudioSession.SharedInstance();
+                audioSession.SetActive(false);
+                audioSession.SetCategory(AVFoundation.AVAudioSessionCategory.Ambient);
 #else
                 if (recorder != null)
                 {
                     await recorder.StopAsync();
                     recorder = null;
                 }
-
-#if ANDROID
-                StopForegroundRecordingService();
-#endif
 #endif
 
                 SaveElapsedTime();
@@ -865,6 +869,9 @@ namespace Cardrly.ViewModels.MeetingsAi
             }
             finally
             {
+#if ANDROID
+                StopForegroundRecordingService();
+#endif
                 UserDialogs.Instance.HideHud();
             }
         }
@@ -879,21 +886,6 @@ namespace Cardrly.ViewModels.MeetingsAi
                 speechConfig.SpeechRecognitionLanguage = "en-US";
             else if (SelectedLanguage == "العربية")
                 speechConfig.SpeechRecognitionLanguage = "ar-EG";
-
-#if IOS
-                if (recorder != null)
-                {
-                    await recorder.Stop();
-                    recorder = null;
-                }
-#else
-            recorder = null;
-            //if (recorder != null)
-            //{
-            //    await recorder.StopAsync();
-            //    recorder = null;
-            //}
-#endif
         }
 
         private void SaveElapsedTime()
@@ -930,49 +922,72 @@ namespace Cardrly.ViewModels.MeetingsAi
 #if IOS
         private async Task StartRecordingIOSAsync(string filePath)
         {
+            // ✅ Configure and activate the audio session
+            var audioSession = AVFoundation.AVAudioSession.SharedInstance();
+
+            audioSession.SetCategory(
+                AVFoundation.AVAudioSessionCategory.PlayAndRecord,
+                AVFoundation.AVAudioSessionCategoryOptions.DefaultToSpeaker |
+                AVFoundation.AVAudioSessionCategoryOptions.AllowBluetooth |
+                AVFoundation.AVAudioSessionCategoryOptions.AllowBluetoothA2DP
+            );
+
+            audioSession.SetMode(AVFoundation.AVAudioSession.ModeDefault, out _);
+            audioSession.SetActive(true);
+
+            // ✅ Create recorder instance
             recorder = new Cardrly.Services.NativeAudioRecorder.iOSAudioRecorder();
 
-            recorder.OnInterruptionBegan += async () =>
-            {
-                try
-                {
-                    if (recorder?.IsRecording == true)
-                        await recorder.Stop();
 
-                    await StopRecognitionOrTranscriptionAsync();
-                    SaveElapsedTime();
-                    StopDurationTimer();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"OnInterruptionBegan Error: {ex.Message}");
-                }
-            };
+            // later, when cleaning up (before recorder = null)
+            recorder.OnInterruptionBegan -= HandleInterruptionBegan;
+            recorder.OnInterruptionEnded -= HandleInterruptionEnded;
 
-            recorder.OnInterruptionEnded += async () =>
-            {
-                try
-                {
-                    var newFilePath = Path.Combine(FileSystem.AppDataDirectory,
-                        $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
-
-                    recorder = new iOSAudioRecorder();
-                    await recorder.Start(newFilePath);
-
-                    recordedParts.Add(newFilePath);
-
-                    await StartRecognitionOrTranscriptionAsync();
-
-                    _recordStartTime = DateTime.UtcNow;
-                    StartDurationTimer();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"OnInterruptionEnded Error: {ex.Message}");
-                }
-            };
+            // subscribe
+            recorder.OnInterruptionBegan += HandleInterruptionBegan;
+            recorder.OnInterruptionEnded += HandleInterruptionEnded;
 
             await recorder.Start(filePath);
+        }
+
+        private async void HandleInterruptionBegan()
+        {
+            try
+            {
+                if (recorder?.IsRecording == true)
+                    await recorder.Stop();
+
+                await StopRecognitionOrTranscriptionAsync();
+                SaveElapsedTime();
+                StopDurationTimer();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"OnInterruptionBegan Error: {ex.Message}");
+            }
+        }
+
+        private async void HandleInterruptionEnded()
+        {
+            try
+            {
+                var newFilePath = Path.Combine(FileSystem.AppDataDirectory,
+                    $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
+
+                // re-create recorder instance or call appropriate resume logic
+                recorder = new iOSAudioRecorder();
+                await recorder.Start(newFilePath);
+                recordedParts.Add(newFilePath);
+
+                await StartRecognitionOrTranscriptionAsync();
+
+                _recordStartTime = DateTime.UtcNow;
+                StartDurationTimer();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"OnInterruptionEnded Error: {ex.Message}");
+            }
         }
 #endif
 
@@ -982,11 +997,23 @@ namespace Cardrly.ViewModels.MeetingsAi
             StartForegroundRecordingService();
 
             var audioManager = (Android.Media.AudioManager)Platform.AppContext.GetSystemService(Context.AudioService);
-            var focusListener = new Cardrly.Platforms.Android.Receivers.AudioFocusChangeListener();
 
-            audioManager.RequestAudioFocus(focusListener, Android.Media.Stream.Music, Android.Media.AudioFocus.Gain);
+            // 🔹 Create focus listener once (if not exists)
+            _focusListener ??= new Cardrly.Platforms.Android.Receivers.AudioFocusChangeListener();
 
-            Cardrly.Platforms.Android.Receivers.AudioFocusChangeListener.OnAudioFocusChanged = async (focus) =>
+            // 🔹 Release any old focus tied to this same listener
+            audioManager.AbandonAudioFocus(_focusListener);
+
+            var result = audioManager.RequestAudioFocus(_focusListener, Android.Media.Stream.Music, Android.Media.AudioFocus.Gain);
+
+
+            if (result != Android.Media.AudioFocusRequest.Granted)
+            {
+                Console.WriteLine("⚠️ Failed to gain audio focus. Trying again later.");
+                return;
+            }
+
+            _focusListener.OnAudioFocusChanged = async (focus) =>
             {
                 try
                 {
@@ -1041,6 +1068,15 @@ namespace Cardrly.ViewModels.MeetingsAi
             {
                 var context = Platform.AppContext;
                 var intent = new Intent(context, typeof(Cardrly.Platforms.Android.ForegroundAudioService));
+
+                var audioManager = (Android.Media.AudioManager)Platform.AppContext.GetSystemService(Context.AudioService);
+
+                if (_focusListener != null)
+                {
+                    audioManager.AbandonAudioFocus(_focusListener);
+                    _focusListener = null;
+                }
+
                 context.StopService(intent);
             }
             catch (Exception ex)
