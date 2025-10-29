@@ -18,6 +18,10 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.ComponentModel;
 using Cardrly.Pages.MeetingsScript;
+using FFMpegCore;
+using FFMpegCore.Enums;
+
+
 
 
 #if IOS
@@ -345,6 +349,7 @@ namespace Cardrly.ViewModels.MeetingsAi
 
                     // ✅ Safe merging directly to file (not MemoryStream)
                     var mergedFilePath = Path.Combine(FileSystem.AppDataDirectory, $"merged_{DateTime.Now:yyyyMMddHHmmss}.wav");
+
 #if ANDROID
                     using (var output = File.Create(mergedFilePath))
                     {
@@ -405,51 +410,59 @@ namespace Cardrly.ViewModels.MeetingsAi
                     //    Extension = ".wav"
                     //};
 
-                    // 🔹 Reset state
-                    _recordStartTime = null;
-                    _accumulatedDuration = TimeSpan.Zero;
-                    DurationDisplay = string.Empty;
-                    StopDurationTimer();
+
+                    // ✅ Step 3: now the WAV file actually exists, so compress it
+                    string compressedPath;
+                    try
+                    {
+                        compressedPath = await CompressToMp3CrossPlatformAsync(mergedFilePath); // 👈 add await
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Compression failed: {ex.Message}. Using original WAV file.");
+                        compressedPath = mergedFilePath; // fallback if compression fails
+                    }
 
                     // 🔹 Upload
                     string userToken = await _service.UserToken();
                     if (!string.IsNullOrEmpty(userToken))
                     {
-                        var progressValue = 0;
-                        var progressCts = new CancellationTokenSource();
+                        //var progressValue = 0;
+                        //var progressCts = new CancellationTokenSource();
 
-                        var progressTask = Task.Run(async () =>
-                        {
-                            while (progressValue < 90 && !progressCts.Token.IsCancellationRequested)
-                            {
-                                progressValue += 5;
-                                UserDialogs.Instance.Loading($"Uploading... {progressValue}%", null, true, MaskType.Clear, null);
-                                await Task.Delay(300, progressCts.Token); // smooth animation
-                            }
-                        });
-                        var progress = new Progress<double>(percent =>
-                        {
-                            UserDialogs.Instance.Loading($"Uploading... {percent:F1}%", null, true, MaskType.Clear, null);
-                        });
+                        //var progressTask = Task.Run(async () =>
+                        //{
+                        //    while (progressValue < 90 && !progressCts.Token.IsCancellationRequested)
+                        //    {
+                        //        progressValue += 5;
+                        //        UserDialogs.Instance.Loading($"Uploading... {progressValue}%", null, true, MaskType.Clear, null);
+                        //        await Task.Delay(300, progressCts.Token); // smooth animation
+                        //    }
+                        //});
+                        //var progress = new Progress<double>(percent =>
+                        //{
+                        //    UserDialogs.Instance.Loading($"Uploading... {percent:F1}%", null, true, MaskType.Clear, null);
+                        //});
+
+                        //var progress = new Progress<double>();
 
                         var json = await Rep.PostFileWithFormAsync<MeetingAiActionRecordResponse>(
                         $"{ApiConstants.AddMeetingAiActionRecordApi}{MeetingInfoModel.Id}",
-                        mergedFilePath,
+                        compressedPath,
                         DurationDisplay,
                         NoteScript,
-                        Messages.Select(f => new MeetingMessage { Speaker = f.Speaker, Text = f.Text }).ToList(),
-                        ".wav",
-                        userToken,
-                        progress);
+                        Messages.Select(f => new MeetingMessage { Speaker = f.Speaker + "  " + f.SpeakerDuration, Text = f.Text }).ToList(),
+                        ".mp3",
+                        userToken);
 
                         // 🔹 Stop fake progress
                         //progressCts.Cancel();
-                        UserDialogs.Instance.HideHud();
+                        //UserDialogs.Instance.HideHud();
 
                         // 🔹 Show final completion (100%)
-                        UserDialogs.Instance.Loading("Uploading... 100%", null, true, MaskType.Clear, null);
-                        await Task.Delay(500);
-                        UserDialogs.Instance.HideHud();
+                        //UserDialogs.Instance.Loading("Uploading... 100%", null, true, MaskType.Clear, null);
+                        //await Task.Delay(500);
+                        //UserDialogs.Instance.HideHud();
 
                         if (json.Item1 != null)
                         {
@@ -466,12 +479,17 @@ namespace Cardrly.ViewModels.MeetingsAi
                                 CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
                         }
-
                     }
 
                     // 🧹 Cleanup temporary files
                     try
                     {
+                        // 🔹 Reset state
+                        _recordStartTime = null;
+                        _accumulatedDuration = TimeSpan.Zero;
+                        DurationDisplay = string.Empty;
+                        StopDurationTimer();
+
                         foreach (var path in recordedParts)
                         {
                             if (File.Exists(path))
@@ -562,6 +580,22 @@ namespace Cardrly.ViewModels.MeetingsAi
             await output.WriteAsync(headerStream.ToArray());
 
             await output.FlushAsync();
+        }
+
+        public static async Task<string> CompressToMp3CrossPlatformAsync(string wavPath)
+        {
+            await FfmpegInitializer.EnsureInitializedAsync();// ✅ initialize only when needed
+
+            var mp3Path = Path.ChangeExtension(wavPath, ".mp3");
+
+            await FFMpegArguments
+                .FromFileInput(wavPath)
+                .OutputToFile(mp3Path, true, options => options
+                    .WithAudioCodec(AudioCodec.LibMp3Lame)
+                    .WithAudioBitrate(64))
+                .ProcessAsynchronously();
+
+            return mp3Path;
         }
 
         //public void StartDurationTimer()

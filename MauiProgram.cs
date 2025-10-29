@@ -3,6 +3,7 @@ using Cardrly.Services;
 using Cardrly.Services.Data;
 using CommunityToolkit.Maui;
 using Controls.UserDialogs.Maui;
+using FFMpegCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.LifecycleEvents;

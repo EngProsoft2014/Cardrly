@@ -2,6 +2,7 @@
 using Cardrly.Mode_s.ApplicationUser;
 using Cardrly.Models.MeetingAiAction;
 using Cardrly.Models.MeetingAiActionRecord;
+using Controls.UserDialogs.Maui;
 using GoogleApi.Entities.Translate.Common.Enums;
 using Newtonsoft.Json;
 using Plugin.Maui.Audio;
@@ -41,8 +42,7 @@ namespace Cardrly.Helpers
             string? audioScript,
             List<MeetingMessage>? lstMeetingMessage,
             string extension,
-            string authToken = "",
-            IProgress<double>? progress = null);
+            string authToken = "");
     }
 
 
@@ -1070,7 +1070,6 @@ namespace Cardrly.Helpers
             }
         }
 
-
         public async Task<(TR, ErrorResult?)> PostFileWithFormAsync<TR>(
             string uri,
             string filePath,
@@ -1078,22 +1077,38 @@ namespace Cardrly.Helpers
             string? audioScript,
             List<MeetingMessage>? lstMeetingMessage,
             string extension,
-            string authToken = "",
-            IProgress<double>? progress = null)
+            string authToken = "")
         {
             try
             {
-                using var httpClient = new HttpClient();
+                // 🧩 Determine timeout dynamically based on file size
+                var fileInfo = new FileInfo(filePath);
+                var timeout = fileInfo.Length switch
+                {
+                    > 2L * 1024 * 1024 * 1024 => TimeSpan.FromHours(2),  // > 2GB → 2h
+                    > 500L * 1024 * 1024 => TimeSpan.FromMinutes(60),    // > 500MB → 1h
+                    _ => TimeSpan.FromMinutes(15)
+                };
+
+                using var httpClient = new HttpClient { Timeout = timeout };
 
                 if (!string.IsNullOrEmpty(authToken))
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
 
                 using var form = new MultipartFormDataContent();
 
-                // 🗂 Add the file stream
-                var fileStream = File.OpenRead(filePath);
+                // 🗂 Add the audio file
+                await using var fileStream = File.OpenRead(filePath);
                 var fileContent = new StreamContent(fileStream);
-                fileContent.Headers.ContentType = new MediaTypeHeaderValue("audio/wav");
+                var mimeType = extension.ToLower() switch
+                {
+                    ".mp3" => "audio/mpeg",
+                    ".wav" => "audio/wav",
+                    ".aac" => "audio/aac",
+                    ".ogg" => "audio/ogg",
+                    _ => "application/octet-stream"
+                };
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(mimeType);
                 form.Add(fileContent, "AudioFile", Path.GetFileName(filePath));
 
                 // 🕒 Add other fields
@@ -1101,17 +1116,59 @@ namespace Cardrly.Helpers
                 form.Add(new StringContent(extension), "Extension");
                 if (!string.IsNullOrEmpty(audioScript))
                     form.Add(new StringContent(audioScript), "AudioScript");
-
                 if (lstMeetingMessage != null && lstMeetingMessage.Count > 0)
-                {
                     form.Add(new StringContent(JsonConvert.SerializeObject(lstMeetingMessage)), "LstMeetingMessage");
-                }
 
-                // 📤 Upload with progress
-                var progressContent = new ProgressableStreamContent(form, progress);
+                // 📈 Progress tracking setup
+                double lastReported = 0;
+                double displayedProgress = 0;
+
+                long totalBytes = fileInfo.Length;
+                var startTime = DateTime.UtcNow;
+
+                var uiProgress = new Progress<double>(p =>
+                {
+                    // 🪄 Smooth interpolation for visual stability
+                    displayedProgress = Math.Min(100, displayedProgress + (p - displayedProgress) * 0.25);
+
+                    // 🧮 Calculate speed & ETA
+                    var elapsed = DateTime.UtcNow - startTime;
+                    double uploadedBytes = totalBytes * (displayedProgress / 100.0);
+                    double bytesPerSecond = uploadedBytes / Math.Max(1, elapsed.TotalSeconds);
+                    double remainingSeconds = (totalBytes - uploadedBytes) / Math.Max(1, bytesPerSecond);
+
+                    string speedText = $"{bytesPerSecond / (1024 * 1024):F1} MB/s";
+                    string etaText = TimeSpan.FromSeconds(remainingSeconds).ToString(@"m\:ss");
+
+                    if (displayedProgress - lastReported >= 0.5)
+                    {
+                        lastReported = displayedProgress;
+
+                        // 🔹 Update UserDialogs loading text
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            UserDialogs.Instance.Loading(
+                                $"Uploading... {displayedProgress:F1}% ({speedText}, {etaText} left)",
+                                maskType: MaskType.Clear);
+                        });
+
+                        //progress?.Report(displayedProgress);
+                    }
+                });
+
+                // 📤 Upload file
+                var progressContent = new ProgressableStreamContent(form, uiProgress);
+                var stopwatch = Stopwatch.StartNew();
+
                 var response = await httpClient.PostAsync(Utility.ServerUrl + uri, progressContent);
+                stopwatch.Stop();
+
+                Console.WriteLine($"✅ Upload completed in {stopwatch.Elapsed.TotalSeconds:F1} seconds.");
 
                 var jsonResult = await response.Content.ReadAsStringAsync();
+
+                // ✅ Cleanup loading
+                MainThread.BeginInvokeOnMainThread(() => UserDialogs.Instance.HideHud());
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -1120,12 +1177,24 @@ namespace Cardrly.Helpers
                 }
                 else
                 {
-                    var error = JsonConvert.DeserializeObject<ErrorResult>(jsonResult);
+                    ErrorResult? error = null;
+                    try { error = JsonConvert.DeserializeObject<ErrorResult>(jsonResult); }
+                    catch
+                    {
+                        error = new ErrorResult
+                        {
+                            title = "Server Error",
+                            errors = new Dictionary<string, object> { { "RawResponse", jsonResult } }
+                        };
+                    }
+
                     return (default!, error);
                 }
             }
             catch (Exception ex)
             {
+                MainThread.BeginInvokeOnMainThread(() => UserDialogs.Instance.HideHud());
+
                 return (default!, new ErrorResult
                 {
                     title = "Upload failed",
@@ -1133,8 +1202,6 @@ namespace Cardrly.Helpers
                 });
             }
         }
-
-
 
 
 
