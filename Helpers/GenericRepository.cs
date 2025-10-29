@@ -1167,6 +1167,9 @@ namespace Cardrly.Helpers
 
                 var jsonResult = await response.Content.ReadAsStringAsync();
 
+                UserDialogs.Instance.Loading("Uploading... 100%", null, true, MaskType.Clear, null);
+                await Task.Delay(500); // Brief pause to show 100%
+
                 // ✅ Cleanup loading
                 MainThread.BeginInvokeOnMainThread(() => UserDialogs.Instance.HideHud());
 
