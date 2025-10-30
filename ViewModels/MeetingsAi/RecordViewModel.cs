@@ -119,6 +119,8 @@ namespace Cardrly.ViewModels.MeetingsAi
 
         private bool _isRecognizerRunning = false;
 
+        private DateTime _lastRestartTime = DateTime.UtcNow;
+
         string speechKey;
         string speechRegion;
 
@@ -162,6 +164,8 @@ namespace Cardrly.ViewModels.MeetingsAi
                 speechConfig.SetProperty("ConversationTranscriptionInRealTime", "true");
                 speechConfig.SetProperty("SpeechServiceResponse_EnablePartialResultStabilization", "true");
                 speechConfig.SetProperty("SpeechServiceResponse_StablePartialResultThreshold", "2");
+                speechConfig.SetProperty("SPEECH-AudioInputStreamKeepAlive", "true");
+                speechConfig.SetProperty("SPEECH-AudioBufferSizeInSeconds", "20"); // default is 10
 
                 speechConfig.SpeechRecognitionLanguage = "ar-EG";//Default Language
             }
@@ -677,8 +681,45 @@ namespace Cardrly.ViewModels.MeetingsAi
                         });
                     };
 
-                    _speechRecognizer.Canceled += (s, e) => { };
-                    _speechRecognizer.SessionStopped += (s, e) => { };
+                    _speechRecognizer.Canceled += async (s, e) =>
+                    {
+                        if (e.Reason == CancellationReason.Error)
+                        {
+                            string details = e.ErrorDetails ?? "Unknown error";
+                            Console.WriteLine($"[Recognizer] Canceled: {details}");
+
+                            if (details.Contains("Quota exceeded", StringComparison.OrdinalIgnoreCase))
+                            {
+                                // ✅ Log silently for developers
+                                Console.WriteLine("[Speech Service] Quota exceeded. Please check Azure billing/usage.");
+
+                                // Optionally, you can show a generic friendly message instead:
+                                await MainThread.InvokeOnMainThreadAsync(() =>
+                                {
+                                    Toast.Make("Speech service temporarily unavailable. Please try again later.",
+                                        CommunityToolkit.Maui.Core.ToastDuration.Short, 15).Show();
+                                });
+
+                                return;
+                            }
+
+                            // Otherwise, auto-restart recognition after brief delay
+                            await _speechRecognizer.StopContinuousRecognitionAsync();
+                            await Task.Delay(2000);
+                            await _speechRecognizer.StartContinuousRecognitionAsync();
+                        }
+                    };
+
+                    _speechRecognizer.SessionStopped += async (s, e) =>
+                    {
+                        Console.WriteLine("[Recognizer] Session stopped, restarting...");
+                        if (_isRecognizerRunning)
+                        {
+                            await _speechRecognizer.StopContinuousRecognitionAsync();
+                            await Task.Delay(1000);
+                            await _speechRecognizer.StartContinuousRecognitionAsync();
+                        }
+                    };
                 }
 
                 if (_isRecognizerRunning)
@@ -690,6 +731,9 @@ namespace Cardrly.ViewModels.MeetingsAi
 
                 await _speechRecognizer.StartContinuousRecognitionAsync();
                 _isRecognizerRunning = true;
+
+                // Optional: monitor session to auto-reset every ~20 minutes
+                _ = MonitorRecognizerAsync();
             }
             catch (Exception ex)
             {
@@ -768,13 +812,45 @@ namespace Cardrly.ViewModels.MeetingsAi
                         }
                     };
 
-                    _conversationTranscriber.Canceled += (s, e) =>
+                    _conversationTranscriber.Canceled +=async (s, e) =>
                     {
                         //MainThread.BeginInvokeOnMainThread(async () =>
                         //{
                         //    await App.Current!.MainPage!.DisplayAlert("Error",
                         //        $"Recognition failed. Reason: {e.Reason}\nDetails: {e.ErrorDetails}", "OK");
                         //});
+
+                        if (e.Reason == CancellationReason.Error)
+                        {
+                            if (e.ErrorDetails.Contains("Quota exceeded", StringComparison.OrdinalIgnoreCase))
+                            {
+                                Console.WriteLine("[Transcriber] Quota limit hit — stopping gracefully.");
+                                await _conversationTranscriber.StopTranscribingAsync();
+                                await MainThread.InvokeOnMainThreadAsync(() =>
+                                {
+                                    Toast.Make("Speech service temporarily unavailable. Please try again later.",
+                                        CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+                                });
+                                return;
+                            }
+
+                            // ✅ For other transient network or buffer errors
+                            if (_isTranscribing)
+                            {
+                                Console.WriteLine($"[Transcriber] Reset due to transient error: {e.ErrorDetails}");
+                                try
+                                {
+                                    await _conversationTranscriber.StopTranscribingAsync();
+                                    await Task.Delay(1000);
+                                    await _conversationTranscriber.StartTranscribingAsync();
+                                    _lastRestartTime = DateTime.UtcNow;
+                                }
+                                catch (Exception restartEx)
+                                {
+                                    Console.WriteLine($"[Transcriber Restart Error] {restartEx.Message}");
+                                }
+                            }
+                        }
                     };
 
                     _conversationTranscriber.SessionStopped += (s, e) => { };
@@ -789,6 +865,12 @@ namespace Cardrly.ViewModels.MeetingsAi
 
                 await _conversationTranscriber.StartTranscribingAsync();
                 _isTranscribing = true;
+
+                // ✅ Reset last restart time when session begins
+                _lastRestartTime = DateTime.UtcNow;
+
+                // ✅ Start background monitor to restart every ~20 mins
+                _ = MonitorTranscriberAsync();
             }
             catch (Exception ex)
             {
@@ -925,6 +1007,56 @@ namespace Cardrly.ViewModels.MeetingsAi
             {
                 _accumulatedDuration += DateTime.UtcNow - _recordStartTime.Value;
                 _recordStartTime = null;
+            }
+        }
+
+        private async Task MonitorTranscriberAsync()
+        {
+            while (_isTranscribing)
+            {
+                try
+                {
+                    // Restart every 20 minutes to avoid buffer overflow
+                    if ((DateTime.UtcNow - _lastRestartTime).TotalMinutes > 20)
+                    {
+                        Console.WriteLine("[Transcriber] Restarting to clear buffer...");
+
+                        await _conversationTranscriber.StopTranscribingAsync();
+                        await Task.Delay(1000);
+                        await _conversationTranscriber.StartTranscribingAsync();
+
+                        _lastRestartTime = DateTime.UtcNow;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[MonitorTranscriberAsync] {ex.Message}");
+                }
+
+                await Task.Delay(10000); // Check every 10 seconds
+            }
+        }
+
+        private async Task MonitorRecognizerAsync()
+        {
+            try
+            {
+                while (_isRecognizerRunning)
+                {
+                    await Task.Delay(TimeSpan.FromMinutes(20));
+
+                    if (_speechRecognizer != null && _isRecognizerRunning)
+                    {
+                        Console.WriteLine("[Recognizer] Auto-reset after 20 minutes.");
+                        await _speechRecognizer.StopContinuousRecognitionAsync();
+                        await Task.Delay(1000);
+                        await _speechRecognizer.StartContinuousRecognitionAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Recognizer Monitor] Error: {ex.Message}");
             }
         }
 
