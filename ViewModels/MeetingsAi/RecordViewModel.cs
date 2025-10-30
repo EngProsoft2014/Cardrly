@@ -308,12 +308,9 @@ namespace Cardrly.ViewModels.MeetingsAi
             await App.Current!.MainPage!.Navigation.PopAsync();
         }
 
-
-        [RelayCommand]
-        public async Task StopRecording()
+        public async Task ResetRecord()
         {
-            try
-            {
+            StopDurationTimer();
 #if IOS
                 if (recorder != null)
                 {
@@ -321,16 +318,37 @@ namespace Cardrly.ViewModels.MeetingsAi
                     recorder = null;
                 }
 #else
-                if (recorder != null)
-                {
-                    await recorder.StopAsync();
-                    recorder = null;
-                }
-                // 🔹 Stop background recording service
+            if (recorder != null)
+            {
+                await recorder.StopAsync();
+                recorder = null;
+            }
+            // 🔹 Stop background recording service
 #if ANDROID
-                StopForegroundRecordingService();
+            StopForegroundRecordingService();
 #endif
 #endif
+            if (SelectedScriptType?.Id == 1) //Simple Script
+            {
+                await _speechRecognizer.StopContinuousRecognitionAsync();
+            }
+            else if (SelectedScriptType?.Id == 2) //Meeting Script
+            {
+                if (_conversationTranscriber != null && _isTranscribing)
+                {
+                    await _conversationTranscriber.StopTranscribingAsync();
+                    _isTranscribing = false;
+                }
+            }
+
+        }
+
+        [RelayCommand]
+        public async Task StopRecording()
+        {
+            try
+            {
+                await ResetRecord();
 
                 // 🔹 Show Uploading dialog (spinner with progress text)
                 UserDialogs.Instance.Loading("Uploading... 0%", maskType: MaskType.Clear);
@@ -417,9 +435,8 @@ namespace Cardrly.ViewModels.MeetingsAi
                     {
                         compressedPath = await CompressToMp3CrossPlatformAsync(mergedFilePath); // 👈 add await
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        Console.WriteLine($"Compression failed: {ex.Message}. Using original WAV file.");
                         compressedPath = mergedFilePath; // fallback if compression fails
                     }
 
@@ -446,14 +463,27 @@ namespace Cardrly.ViewModels.MeetingsAi
 
                         //var progress = new Progress<double>();
 
+                        AudioUploadRequest audioRequest = new AudioUploadRequest
+                        {
+                            AudioTime = DurationDisplay,
+                            AudioPath = compressedPath,
+                            AudioScript = NoteScript,
+                            LstMeetingMessage = Messages.Select(f => new MeetingMessage
+                            {
+                                Speaker = f.Speaker + "  " + f.SpeakerDuration,
+                                Text = f.Text,
+                            }).ToList(),
+                            Extension = ".mp3"
+                        };
+
+                        // 🔹 Reset state
+                        _recordStartTime = null;
+                        _accumulatedDuration = TimeSpan.Zero;
+                        DurationDisplay = string.Empty;
+                        
                         var json = await Rep.PostFileWithFormAsync<MeetingAiActionRecordResponse>(
                         $"{ApiConstants.AddMeetingAiActionRecordApi}{MeetingInfoModel.Id}",
-                        compressedPath,
-                        DurationDisplay,
-                        NoteScript,
-                        Messages.Select(f => new MeetingMessage { Speaker = f.Speaker + "  " + f.SpeakerDuration, Text = f.Text }).ToList(),
-                        ".mp3",
-                        userToken);
+                        audioRequest, userToken);
 
                         // 🔹 Stop fake progress
                         //progressCts.Cancel();
@@ -484,12 +514,6 @@ namespace Cardrly.ViewModels.MeetingsAi
                     // 🧹 Cleanup temporary files
                     try
                     {
-                        // 🔹 Reset state
-                        _recordStartTime = null;
-                        _accumulatedDuration = TimeSpan.Zero;
-                        DurationDisplay = string.Empty;
-                        StopDurationTimer();
-
                         foreach (var path in recordedParts)
                         {
                             if (File.Exists(path))
@@ -597,33 +621,6 @@ namespace Cardrly.ViewModels.MeetingsAi
 
             return mp3Path;
         }
-
-        //public void StartDurationTimer()
-        //{
-        //    _timerCts?.Cancel();
-        //    _timerCts = new CancellationTokenSource();
-
-        //    Task.Run(async () =>
-        //    {
-        //        while (!_timerCts.Token.IsCancellationRequested && _recordStartTime != null)
-        //        {
-        //            var elapsed = _accumulatedDuration + (DateTime.UtcNow - _recordStartTime.Value);
-        //            // ✅ Update UI property on main thread
-        //            MainThread.BeginInvokeOnMainThread(() =>
-        //            {
-        //                DurationDisplay = elapsed.ToString(@"hh\:mm\:ss");
-        //            });
-
-        //            await Task.Delay(500);
-        //        }
-        //    });
-        //}
-
-        //public async void StopDurationTimer()
-        //{
-        //    _timerCts?.Cancel();
-        //}
-
 
         public void StartDurationTimer()
         {
@@ -773,11 +770,11 @@ namespace Cardrly.ViewModels.MeetingsAi
 
                     _conversationTranscriber.Canceled += (s, e) =>
                     {
-                        MainThread.BeginInvokeOnMainThread(async () =>
-                        {
-                            await App.Current!.MainPage!.DisplayAlert("Error",
-                                $"Recognition failed. Reason: {e.Reason}\nDetails: {e.ErrorDetails}", "OK");
-                        });
+                        //MainThread.BeginInvokeOnMainThread(async () =>
+                        //{
+                        //    await App.Current!.MainPage!.DisplayAlert("Error",
+                        //        $"Recognition failed. Reason: {e.Reason}\nDetails: {e.ErrorDetails}", "OK");
+                        //});
                     };
 
                     _conversationTranscriber.SessionStopped += (s, e) => { };

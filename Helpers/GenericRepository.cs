@@ -37,11 +37,7 @@ namespace Cardrly.Helpers
         Task<R> PostAsync<T, R>(string uri, T data, string authToken = "");
         Task<(TR, ErrorResult?)> PostFileWithFormAsync<TR>(
             string uri,
-            string filePath,
-            string audioTime,
-            string? audioScript,
-            List<MeetingMessage>? lstMeetingMessage,
-            string extension,
+            AudioUploadRequest request,
             string authToken = "");
     }
 
@@ -1072,17 +1068,13 @@ namespace Cardrly.Helpers
 
         public async Task<(TR, ErrorResult?)> PostFileWithFormAsync<TR>(
             string uri,
-            string filePath,
-            string audioTime,
-            string? audioScript,
-            List<MeetingMessage>? lstMeetingMessage,
-            string extension,
+            AudioUploadRequest request,
             string authToken = "")
         {
             try
             {
                 // 🧩 Determine timeout dynamically based on file size
-                var fileInfo = new FileInfo(filePath);
+                var fileInfo = new FileInfo(request.AudioPath);
                 var timeout = fileInfo.Length switch
                 {
                     > 2L * 1024 * 1024 * 1024 => TimeSpan.FromHours(2),  // > 2GB → 2h
@@ -1098,9 +1090,9 @@ namespace Cardrly.Helpers
                 using var form = new MultipartFormDataContent();
 
                 // 🗂 Add the audio file
-                await using var fileStream = File.OpenRead(filePath);
+                await using var fileStream = File.OpenRead(request.AudioPath);
                 var fileContent = new StreamContent(fileStream);
-                var mimeType = extension.ToLower() switch
+                var mimeType = request.Extension.ToLower() switch
                 {
                     ".mp3" => "audio/mpeg",
                     ".wav" => "audio/wav",
@@ -1109,15 +1101,15 @@ namespace Cardrly.Helpers
                     _ => "application/octet-stream"
                 };
                 fileContent.Headers.ContentType = new MediaTypeHeaderValue(mimeType);
-                form.Add(fileContent, "AudioFile", Path.GetFileName(filePath));
+                form.Add(fileContent, "AudioFile", Path.GetFileName(request.AudioPath));
 
                 // 🕒 Add other fields
-                form.Add(new StringContent(audioTime), "AudioTime");
-                form.Add(new StringContent(extension), "Extension");
-                if (!string.IsNullOrEmpty(audioScript))
-                    form.Add(new StringContent(audioScript), "AudioScript");
-                if (lstMeetingMessage != null && lstMeetingMessage.Count > 0)
-                    form.Add(new StringContent(JsonConvert.SerializeObject(lstMeetingMessage)), "LstMeetingMessage");
+                form.Add(new StringContent(request.AudioTime), "AudioTime");
+                form.Add(new StringContent(request.Extension), "Extension");
+                if (!string.IsNullOrEmpty(request.AudioScript))
+                    form.Add(new StringContent(request.AudioScript), "AudioScript");
+                if (request.LstMeetingMessage != null && request.LstMeetingMessage.Count > 0)
+                    form.Add(new StringContent(JsonConvert.SerializeObject(request.LstMeetingMessage)), "LstMeetingMessage");
 
                 // 📈 Progress tracking setup
                 double lastReported = 0;
