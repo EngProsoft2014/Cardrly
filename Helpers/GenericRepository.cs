@@ -1139,6 +1139,7 @@ namespace Cardrly.Helpers
                         // 🔹 Update UserDialogs loading text
                         MainThread.BeginInvokeOnMainThread(() =>
                         {
+                            DeviceDisplay.KeepScreenOn = true;
                             UserDialogs.Instance.Loading(
                                 $"Uploading... {displayedProgress:F1}% ({speedText}, {etaText} left)",
                                 maskType: MaskType.Clear);
@@ -1163,7 +1164,11 @@ namespace Cardrly.Helpers
                 await Task.Delay(500); // Brief pause to show 100%
 
                 // ✅ Cleanup loading
-                MainThread.BeginInvokeOnMainThread(() => UserDialogs.Instance.HideHud());
+                MainThread.BeginInvokeOnMainThread(() => 
+                {
+                    DeviceDisplay.KeepScreenOn = false;
+                    UserDialogs.Instance.HideHud();
+                });
 
                 if (response.IsSuccessStatusCode)
                 {

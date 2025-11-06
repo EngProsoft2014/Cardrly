@@ -37,7 +37,7 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <!--MeetingsScript-->
-                <StackLayout IsEnabled="{Binding IsShowMeetingSCript}" Spacing="5">
+                <StackLayout Spacing="5">
                     <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="30" Stroke="OrangeRed" HeightRequest="{OnPlatform Android=110,iOS=120}">
                         <Image>
                             <Image.Source>
@@ -49,6 +49,11 @@
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding MeetingsScriptClickCommand}"></TapGestureRecognizer>
                     </StackLayout.GestureRecognizers>
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout" Binding="{Binding IsShowMeetingSCript}" Value="False">
+                            <Setter Property="Opacity" Value=".6"></Setter>
+                        </DataTrigger>
+                    </StackLayout.Triggers>
                 </StackLayout>
 
                 <!--TimeSheet-->

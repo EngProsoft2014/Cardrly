@@ -25,7 +25,7 @@ using FFMpegCore.Enums;
 
 
 #if IOS
-using Cardrly.Services.NativeAudioRecorder;
+using Cardrly.Services.NativeAudioRecorder; 
 #elif ANDROID
 using Android.Content;
 #endif
@@ -710,16 +710,7 @@ namespace Cardrly.ViewModels.MeetingsAi
                         }
                     };
 
-                    _speechRecognizer.SessionStopped += async (s, e) =>
-                    {
-                        Console.WriteLine("[Recognizer] Session stopped, restarting...");
-                        if (_isRecognizerRunning)
-                        {
-                            await _speechRecognizer.StopContinuousRecognitionAsync();
-                            await Task.Delay(1000);
-                            await _speechRecognizer.StartContinuousRecognitionAsync();
-                        }
-                    };
+                    _speechRecognizer.SessionStopped += async (s, e) => { };
                 }
 
                 if (_isRecognizerRunning)
