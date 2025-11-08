@@ -1,4 +1,5 @@
-﻿using Cardrly.Helpers;
+﻿
+using Cardrly.Helpers;
 using Cardrly.Mode_s.ApplicationUser;
 using Cardrly.Models.MeetingAiAction;
 using Cardrly.Models.MeetingAiActionRecord;
@@ -381,7 +382,7 @@ namespace Cardrly.Helpers
 
                 jsonResult = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
                 if (responseMessage.IsSuccessStatusCode)
-                { 
+                {
                     var json = JsonConvert.DeserializeObject<TR>(jsonResult);
                     return (json!, null);
                 }
@@ -401,7 +402,7 @@ namespace Cardrly.Helpers
 
                     var model = JsonConvert.DeserializeObject<TR>("");
                     var json = JsonConvert.DeserializeObject<ErrorResult>(jsonResult);
-                    if (json != null) 
+                    if (json != null)
                     {
                         return (model!, json);
                     }
@@ -410,13 +411,13 @@ namespace Cardrly.Helpers
                         await Controls.StaticMember.ClearAllData(this);
                         return (model!, null);
                     }
-                }  
+                }
             }
             catch (Exception e)
-            {         
+            {
                 var model = JsonConvert.DeserializeObject<TR>("");
                 await Controls.StaticMember.ClearAllData(this);
-                return (model!, null); 
+                return (model!, null);
             }
         }
 
@@ -477,7 +478,7 @@ namespace Cardrly.Helpers
                 return (null, null);
             }
         }
-        
+
 
         public async Task<string> PostStrAsync<T>(string uri, T data, string authToken = "")
         {
@@ -1073,23 +1074,40 @@ namespace Cardrly.Helpers
         {
             try
             {
-                // 🧩 Determine timeout dynamically based on file size
+                // 1️⃣ If app is already in background → start native upload
+
+                if (App.IsInBackground)
+                {
+                    UserDialogs.Instance.HideHud();
+#if ANDROID
+                    var context = Android.App.Application.Context;
+                    var intent = new Android.Content.Intent(context, typeof(Platforms.Android.UploadForegroundService));
+                    intent.PutExtra("filePath", request.AudioPath);
+                    intent.PutExtra("apiUrl", Utility.ServerUrl + uri);
+                    intent.PutExtra("token", authToken);
+                    context.StartForegroundService(intent);
+#elif IOS
+                    var uploader = new Platforms.iOS.BackgroundUploader();
+                    await uploader.UploadFileAsync(request.AudioPath, Utility.ServerUrl + uri, authToken);
+#endif
+                    return (default!, null);
+                }
+
+                // 2️⃣ Otherwise — continue with normal upload
                 var fileInfo = new FileInfo(request.AudioPath);
                 var timeout = fileInfo.Length switch
                 {
-                    > 2L * 1024 * 1024 * 1024 => TimeSpan.FromHours(2),  // > 2GB → 2h
-                    > 500L * 1024 * 1024 => TimeSpan.FromMinutes(60),    // > 500MB → 1h
+                    > 2L * 1024 * 1024 * 1024 => TimeSpan.FromHours(2),
+                    > 500L * 1024 * 1024 => TimeSpan.FromMinutes(60),
                     _ => TimeSpan.FromMinutes(15)
                 };
 
                 using var httpClient = new HttpClient { Timeout = timeout };
-
                 if (!string.IsNullOrEmpty(authToken))
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
 
                 using var form = new MultipartFormDataContent();
 
-                // 🗂 Add the audio file
                 await using var fileStream = File.OpenRead(request.AudioPath);
                 var fileContent = new StreamContent(fileStream);
                 var mimeType = request.Extension.ToLower() switch
@@ -1103,7 +1121,6 @@ namespace Cardrly.Helpers
                 fileContent.Headers.ContentType = new MediaTypeHeaderValue(mimeType);
                 form.Add(fileContent, "AudioFile", Path.GetFileName(request.AudioPath));
 
-                // 🕒 Add other fields
                 form.Add(new StringContent(request.AudioTime), "AudioTime");
                 form.Add(new StringContent(request.Extension), "Extension");
                 if (!string.IsNullOrEmpty(request.AudioScript))
@@ -1111,60 +1128,77 @@ namespace Cardrly.Helpers
                 if (request.LstMeetingMessage != null && request.LstMeetingMessage.Count > 0)
                     form.Add(new StringContent(JsonConvert.SerializeObject(request.LstMeetingMessage)), "LstMeetingMessage");
 
-                // 📈 Progress tracking setup
+                // 3️⃣ Monitor background switch mid-upload
+                bool movedToBackground = false;
+
+                MessagingCenter.Subscribe<App>(this, "AppBackgrounded", sender => movedToBackground = true);
+
                 double lastReported = 0;
                 double displayedProgress = 0;
-
                 long totalBytes = fileInfo.Length;
                 var startTime = DateTime.UtcNow;
 
-                var uiProgress = new Progress<double>(p =>
+                var uiProgress = new Progress<double>(async p =>
                 {
-                    // 🪄 Smooth interpolation for visual stability
+                    // 🔄 Smooth interpolation
                     displayedProgress = Math.Min(100, displayedProgress + (p - displayedProgress) * 0.25);
 
-                    // 🧮 Calculate speed & ETA
+                    // ⏳ If app moved to background → cancel and hand off
+                    if (movedToBackground)
+                    {
+                        UserDialogs.Instance.HideHud();
+                        httpClient.CancelPendingRequests();
+
+#if ANDROID
+                        var context = Android.App.Application.Context;
+                        var intent = new Android.Content.Intent(context, typeof(Platforms.Android.UploadForegroundService));
+                        intent.PutExtra("filePath", request.AudioPath);
+                        intent.PutExtra("apiUrl", Utility.ServerUrl + uri);
+                        intent.PutExtra("token", authToken);
+                        context.StartForegroundService(intent);
+#elif IOS
+                        var uploader = new Platforms.iOS.BackgroundUploader();
+                        await uploader.UploadFileAsync(request.AudioPath, Utility.ServerUrl + uri, authToken);
+#endif
+                    }
+
+                    // 🔹 Normal progress UI
                     var elapsed = DateTime.UtcNow - startTime;
                     double uploadedBytes = totalBytes * (displayedProgress / 100.0);
                     double bytesPerSecond = uploadedBytes / Math.Max(1, elapsed.TotalSeconds);
                     double remainingSeconds = (totalBytes - uploadedBytes) / Math.Max(1, bytesPerSecond);
-
                     string speedText = $"{bytesPerSecond / (1024 * 1024):F1} MB/s";
                     string etaText = TimeSpan.FromSeconds(remainingSeconds).ToString(@"m\:ss");
 
                     if (displayedProgress - lastReported >= 0.5)
                     {
                         lastReported = displayedProgress;
-
-                        // 🔹 Update UserDialogs loading text
                         MainThread.BeginInvokeOnMainThread(() =>
                         {
+                            App.UploadInProgress = true;
                             DeviceDisplay.KeepScreenOn = true;
                             UserDialogs.Instance.Loading(
                                 $"Uploading... {displayedProgress:F1}% ({speedText}, {etaText} left)",
                                 maskType: MaskType.Clear);
                         });
-
-                        //progress?.Report(displayedProgress);
                     }
                 });
 
-                // 📤 Upload file
                 var progressContent = new ProgressableStreamContent(form, uiProgress);
                 var stopwatch = Stopwatch.StartNew();
-
                 var response = await httpClient.PostAsync(Utility.ServerUrl + uri, progressContent);
                 stopwatch.Stop();
+
+                MessagingCenter.Unsubscribe<App>(this, "AppBackgrounded");
 
                 Console.WriteLine($"✅ Upload completed in {stopwatch.Elapsed.TotalSeconds:F1} seconds.");
 
                 var jsonResult = await response.Content.ReadAsStringAsync();
 
                 UserDialogs.Instance.Loading("Uploading... 100%", null, true, MaskType.Clear, null);
-                await Task.Delay(500); // Brief pause to show 100%
+                await Task.Delay(500);
 
-                // ✅ Cleanup loading
-                MainThread.BeginInvokeOnMainThread(() => 
+                MainThread.BeginInvokeOnMainThread(() =>
                 {
                     DeviceDisplay.KeepScreenOn = false;
                     UserDialogs.Instance.HideHud();
@@ -1175,26 +1209,23 @@ namespace Cardrly.Helpers
                     var result = JsonConvert.DeserializeObject<TR>(jsonResult);
                     return (result!, null);
                 }
-                else
-                {
-                    ErrorResult? error = null;
-                    try { error = JsonConvert.DeserializeObject<ErrorResult>(jsonResult); }
-                    catch
-                    {
-                        error = new ErrorResult
-                        {
-                            title = "Server Error",
-                            errors = new Dictionary<string, object> { { "RawResponse", jsonResult } }
-                        };
-                    }
 
-                    return (default!, error);
+                ErrorResult? errorResult = null;
+                try { errorResult = JsonConvert.DeserializeObject<ErrorResult>(jsonResult); }
+                catch
+                {
+                    errorResult = new ErrorResult
+                    {
+                        title = "Server Error",
+                        errors = new Dictionary<string, object> { { "RawResponse", jsonResult } }
+                    };
                 }
+
+                return (default!, errorResult);
             }
             catch (Exception ex)
             {
                 MainThread.BeginInvokeOnMainThread(() => UserDialogs.Instance.HideHud());
-
                 return (default!, new ErrorResult
                 {
                     title = "Upload failed",
@@ -1202,8 +1233,6 @@ namespace Cardrly.Helpers
                 });
             }
         }
-
-
 
 
         public class ProgressableStreamContent : HttpContent

@@ -683,31 +683,31 @@ namespace Cardrly.ViewModels.MeetingsAi
 
                     _speechRecognizer.Canceled += async (s, e) =>
                     {
-                        if (e.Reason == CancellationReason.Error)
-                        {
-                            string details = e.ErrorDetails ?? "Unknown error";
-                            Console.WriteLine($"[Recognizer] Canceled: {details}");
+                        //if (e.Reason == CancellationReason.Error)
+                        //{
+                        //    string details = e.ErrorDetails ?? "Unknown error";
+                        //    Console.WriteLine($"[Recognizer] Canceled: {details}");
 
-                            if (details.Contains("Quota exceeded", StringComparison.OrdinalIgnoreCase))
-                            {
-                                // ✅ Log silently for developers
-                                Console.WriteLine("[Speech Service] Quota exceeded. Please check Azure billing/usage.");
+                        //    if (details.Contains("Quota exceeded", StringComparison.OrdinalIgnoreCase))
+                        //    {
+                        //        // ✅ Log silently for developers
+                        //        Console.WriteLine("[Speech Service] Quota exceeded. Please check Azure billing/usage.");
 
-                                // Optionally, you can show a generic friendly message instead:
-                                await MainThread.InvokeOnMainThreadAsync(() =>
-                                {
-                                    Toast.Make("Speech service temporarily unavailable. Please try again later.",
-                                        CommunityToolkit.Maui.Core.ToastDuration.Short, 15).Show();
-                                });
+                        //        // Optionally, you can show a generic friendly message instead:
+                        //        await MainThread.InvokeOnMainThreadAsync(() =>
+                        //        {
+                        //            Toast.Make("Speech service temporarily unavailable. Please try again later.",
+                        //                CommunityToolkit.Maui.Core.ToastDuration.Short, 15).Show();
+                        //        });
 
-                                return;
-                            }
+                        //        return;
+                        //    }
 
-                            // Otherwise, auto-restart recognition after brief delay
-                            await _speechRecognizer.StopContinuousRecognitionAsync();
-                            await Task.Delay(2000);
-                            await _speechRecognizer.StartContinuousRecognitionAsync();
-                        }
+                        //    // Otherwise, auto-restart recognition after brief delay
+                        //    await _speechRecognizer.StopContinuousRecognitionAsync();
+                        //    await Task.Delay(2000);
+                        //    await _speechRecognizer.StartContinuousRecognitionAsync();
+                        //}
                     };
 
                     _speechRecognizer.SessionStopped += async (s, e) => { };
@@ -723,8 +723,8 @@ namespace Cardrly.ViewModels.MeetingsAi
                 await _speechRecognizer.StartContinuousRecognitionAsync();
                 _isRecognizerRunning = true;
 
-                // Optional: monitor session to auto-reset every ~20 minutes
-                _ = MonitorRecognizerAsync();
+                //// Optional: monitor session to auto-reset every ~20 minutes
+                //_ = MonitorRecognizerAsync();
             }
             catch (Exception ex)
             {
@@ -805,43 +805,43 @@ namespace Cardrly.ViewModels.MeetingsAi
 
                     _conversationTranscriber.Canceled +=async (s, e) =>
                     {
-                        //MainThread.BeginInvokeOnMainThread(async () =>
+                        ////MainThread.BeginInvokeOnMainThread(async () =>
+                        ////{
+                        ////    await App.Current!.MainPage!.DisplayAlert("Error",
+                        ////        $"Recognition failed. Reason: {e.Reason}\nDetails: {e.ErrorDetails}", "OK");
+                        ////});
+
+                        //if (e.Reason == CancellationReason.Error)
                         //{
-                        //    await App.Current!.MainPage!.DisplayAlert("Error",
-                        //        $"Recognition failed. Reason: {e.Reason}\nDetails: {e.ErrorDetails}", "OK");
-                        //});
+                        //    if (e.ErrorDetails.Contains("Quota exceeded", StringComparison.OrdinalIgnoreCase))
+                        //    {
+                        //        Console.WriteLine("[Transcriber] Quota limit hit — stopping gracefully.");
+                        //        await _conversationTranscriber.StopTranscribingAsync();
+                        //        await MainThread.InvokeOnMainThreadAsync(() =>
+                        //        {
+                        //            Toast.Make("Speech service temporarily unavailable. Please try again later.",
+                        //                CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+                        //        });
+                        //        return;
+                        //    }
 
-                        if (e.Reason == CancellationReason.Error)
-                        {
-                            if (e.ErrorDetails.Contains("Quota exceeded", StringComparison.OrdinalIgnoreCase))
-                            {
-                                Console.WriteLine("[Transcriber] Quota limit hit — stopping gracefully.");
-                                await _conversationTranscriber.StopTranscribingAsync();
-                                await MainThread.InvokeOnMainThreadAsync(() =>
-                                {
-                                    Toast.Make("Speech service temporarily unavailable. Please try again later.",
-                                        CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
-                                });
-                                return;
-                            }
-
-                            // ✅ For other transient network or buffer errors
-                            if (_isTranscribing)
-                            {
-                                Console.WriteLine($"[Transcriber] Reset due to transient error: {e.ErrorDetails}");
-                                try
-                                {
-                                    await _conversationTranscriber.StopTranscribingAsync();
-                                    await Task.Delay(1000);
-                                    await _conversationTranscriber.StartTranscribingAsync();
-                                    _lastRestartTime = DateTime.UtcNow;
-                                }
-                                catch (Exception restartEx)
-                                {
-                                    Console.WriteLine($"[Transcriber Restart Error] {restartEx.Message}");
-                                }
-                            }
-                        }
+                        //    // ✅ For other transient network or buffer errors
+                        //    if (_isTranscribing)
+                        //    {
+                        //        Console.WriteLine($"[Transcriber] Reset due to transient error: {e.ErrorDetails}");
+                        //        try
+                        //        {
+                        //            await _conversationTranscriber.StopTranscribingAsync();
+                        //            await Task.Delay(1000);
+                        //            await _conversationTranscriber.StartTranscribingAsync();
+                        //            _lastRestartTime = DateTime.UtcNow;
+                        //        }
+                        //        catch (Exception restartEx)
+                        //        {
+                        //            Console.WriteLine($"[Transcriber Restart Error] {restartEx.Message}");
+                        //        }
+                        //    }
+                        //}
                     };
 
                     _conversationTranscriber.SessionStopped += (s, e) => { };
@@ -857,11 +857,11 @@ namespace Cardrly.ViewModels.MeetingsAi
                 await _conversationTranscriber.StartTranscribingAsync();
                 _isTranscribing = true;
 
-                // ✅ Reset last restart time when session begins
-                _lastRestartTime = DateTime.UtcNow;
+                //// ✅ Reset last restart time when session begins
+                //_lastRestartTime = DateTime.UtcNow;
 
-                // ✅ Start background monitor to restart every ~20 mins
-                _ = MonitorTranscriberAsync();
+                //// ✅ Start background monitor to restart every ~20 mins
+                //_ = MonitorTranscriberAsync();
             }
             catch (Exception ex)
             {

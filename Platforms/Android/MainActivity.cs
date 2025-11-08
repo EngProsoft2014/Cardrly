@@ -126,6 +126,13 @@ namespace Cardrly
             }
         }
 
-
+        public void StartUploadInForegroundService(string filePath, string apiUrl, string token)
+        {
+            var intent = new Intent(this, typeof(UploadForegroundService));
+            intent.PutExtra("filePath", filePath);
+            intent.PutExtra("apiUrl", apiUrl);
+            intent.PutExtra("token", token);
+            StartForegroundService(intent);
+        }
     }
 }

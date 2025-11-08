@@ -49,13 +49,14 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.5</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.0.5</string>
+	<string>1.0.0.16</string>
 	<key>NSUserNotificationUsageDescription</key>
 	<string>We need notification permissions to send you updates.</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>background-fetch</string>
 		<string>fetch</string>
 		<string>remote-notification</string>
 		<string>audio</string>

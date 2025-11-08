@@ -15,6 +15,8 @@ using System.Reactive.Linq;
 using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using Cardrly.Services.AudioStream;
+using Controls.UserDialogs.Maui;
+
 
 
 
@@ -34,13 +36,16 @@ namespace Cardrly
         public static IServiceProvider Services { get; private set; }
         private readonly IAudioStreamService _audioService;
         #endregion
+
+        public static bool UploadInProgress { get; set; } = false;
+        public static bool IsInBackground { get; private set; }
         int NavToSecurePage = 0;
         public App(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioStreamService audioService, IServiceProvider serviceProvider,
             INotificationManagerService notificationManagerService)
         {
             try
             {
-                
+
                 Rep = GenericRep;
                 _service = service;
                 Services = serviceProvider;
@@ -77,6 +82,24 @@ namespace Cardrly
                     {
                         MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service), Rep, _service, _audioService));
                     }
+
+                    // Subscribe only for this upload
+                    MessagingCenter.Subscribe<object>(this, "AppForegrounded", sender =>
+                    {
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            UserDialogs.Instance.Loading("Resuming upload...", maskType: MaskType.Clear);
+                        });
+                    });
+
+                    MessagingCenter.Subscribe<object>(this, "AppBackgrounded", sender =>
+                    {
+                        // Optionally hide the HUD when app goes background
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            UserDialogs.Instance.HideHud();
+                        });
+                    });
                 }
 
             }
@@ -119,6 +142,7 @@ namespace Cardrly
         protected async override void OnStart()
         {
             base.OnStart();
+            IsInBackground = false;
             //if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             //{
             //    // Connection to internet is Not available
@@ -130,6 +154,12 @@ namespace Cardrly
         protected async override void OnResume()
         {
             base.OnResume();
+            IsInBackground = false;
+            if (UploadInProgress)
+            {
+                MessagingCenter.Send<object>(this, "AppForegrounded");
+                UploadInProgress = false;
+            }
 
             string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
             if (!string.IsNullOrEmpty(Stringdate))
@@ -152,6 +182,8 @@ namespace Cardrly
         protected async override void OnSleep()
         {
             base.OnSleep();
+            IsInBackground = true;
+            MessagingCenter.Send<object>(this, "AppBackgrounded");
         }
 
         void LoadSetting()

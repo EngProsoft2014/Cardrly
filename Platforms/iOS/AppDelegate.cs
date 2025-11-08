@@ -7,6 +7,8 @@ namespace Cardrly
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate
     {
+        public static Action? BackgroundSessionCompletionHandler { get; set; }
+
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
 
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
@@ -50,7 +52,45 @@ namespace Cardrly
                     }
                 });
 
+            // 📡 Listen for background session completion
+            NSNotificationCenter.DefaultCenter.AddObserver(
+                new NSString("NSURLSessionDidFinishEventsForBackgroundURLSessionNotification"),
+                notification =>
+                {
+                    Console.WriteLine("📱 Background session finished events received.");
+
+                    if (BackgroundSessionCompletionHandler != null)
+                    {
+                        BackgroundSessionCompletionHandler.Invoke();
+                        BackgroundSessionCompletionHandler = null;
+                    }
+
+                    // Optional: show local notification when upload completes
+                    var content = new UNMutableNotificationContent
+                    {
+                        Title = "Upload Complete",
+                        Body = "Your meeting recording has been successfully uploaded.",
+                        Sound = UNNotificationSound.Default
+                    };
+
+                    var request = UNNotificationRequest.FromIdentifier(
+                        Guid.NewGuid().ToString(),
+                        content,
+                        null
+                    );
+
+                    UNUserNotificationCenter.Current.AddNotificationRequest(request, null);
+                });
+
             return result;
+        }
+
+        // ✅ This is the correct override in .NET 8 MAUI
+        [Export("application:handleEventsForBackgroundURLSession:completionHandler:")]
+        public void HandleEventsForBackgroundUrlSession(UIApplication application, string sessionIdentifier, Action completionHandler)
+        {
+            Console.WriteLine($"📡 Background upload session reconnected: {sessionIdentifier}");
+            BackgroundSessionCompletionHandler = completionHandler;
         }
     }
 }
