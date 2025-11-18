@@ -12,6 +12,7 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Threading;
 
 
 
@@ -1093,24 +1094,79 @@ namespace Cardrly.Helpers
                     return (default!, null);
                 }
 
-                // 2️⃣ Otherwise — continue with normal upload
-                var fileInfo = new FileInfo(request.AudioPath);
-                var timeout = fileInfo.Length switch
-                {
-                    > 2L * 1024 * 1024 * 1024 => TimeSpan.FromHours(2),
-                    > 500L * 1024 * 1024 => TimeSpan.FromMinutes(60),
-                    _ => TimeSpan.FromMinutes(15)
-                };
+                //// 2️⃣ Otherwise — continue with normal upload
+                //var fileInfo = new FileInfo(request.AudioPath);
+                //var timeout = fileInfo.Length switch
+                //{
+                //    > 2L * 1024 * 1024 * 1024 => TimeSpan.FromHours(2),
+                //    > 500L * 1024 * 1024 => TimeSpan.FromMinutes(60),
+                //    _ => TimeSpan.FromMinutes(30)
+                //};
 
-                using var httpClient = new HttpClient { Timeout = timeout };
-                if (!string.IsNullOrEmpty(authToken))
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+                //using var httpClient = new HttpClient { Timeout = timeout };
+                //if (!string.IsNullOrEmpty(authToken))
+                //    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+
+                //using var form = new MultipartFormDataContent();
+
+                //await using var fileStream = File.OpenRead(request.AudioPath);
+                //var fileContent = new StreamContent(fileStream);
+                //var mimeType = request.Extension.ToLower() switch
+                //{
+                //    ".mp3" => "audio/mpeg",
+                //    ".wav" => "audio/wav",
+                //    ".aac" => "audio/aac",
+                //    ".ogg" => "audio/ogg",
+                //    _ => "application/octet-stream"
+                //};
+                //fileContent.Headers.ContentType = new MediaTypeHeaderValue(mimeType);
+                //form.Add(fileContent, "AudioFile", Path.GetFileName(request.AudioPath));
+
+                Stream fileStream;
+                long totalBytes;
+
+                var httpClient = new HttpClient();
+
+                if (!string.IsNullOrEmpty(request.AudioPath) && File.Exists(request.AudioPath))
+                {
+                    var fileInfo = new FileInfo(request.AudioPath);
+
+                    totalBytes = fileInfo.Length;
+
+                    var timeout = totalBytes switch
+                    {
+                        > 2L * 1024 * 1024 * 1024 => TimeSpan.FromHours(2),
+                        > 500L * 1024 * 1024 => TimeSpan.FromMinutes(60),
+                        _ => TimeSpan.FromMinutes(30)
+                    };
+
+                    httpClient = new HttpClient { Timeout = timeout };
+                    if (!string.IsNullOrEmpty(authToken))
+                        httpClient.DefaultRequestHeaders.Authorization =
+                            new AuthenticationHeaderValue("Bearer", authToken);
+
+                    fileStream = File.OpenRead(request.AudioPath);
+                }
+                // CASE B: Upload from memory (Akavache restore)
+                else if (request.AudioBytes != null && request.AudioBytes.Length > 0)
+                {
+                    totalBytes = request.AudioBytes.Length;
+
+                    httpClient = new HttpClient { Timeout = TimeSpan.FromMinutes(60) };
+
+                    fileStream = new MemoryStream(request.AudioBytes);
+                }
+                else
+                {
+                    throw new Exception("No valid audio source: both AudioPath and AudioBytes are missing.");
+                }
 
                 using var form = new MultipartFormDataContent();
 
-                await using var fileStream = File.OpenRead(request.AudioPath);
                 var fileContent = new StreamContent(fileStream);
-                var mimeType = request.Extension.ToLower() switch
+
+                // Detect MIME
+                var mimeType = request.Extension?.ToLower() switch
                 {
                     ".mp3" => "audio/mpeg",
                     ".wav" => "audio/wav",
@@ -1118,8 +1174,15 @@ namespace Cardrly.Helpers
                     ".ogg" => "audio/ogg",
                     _ => "application/octet-stream"
                 };
+
                 fileContent.Headers.ContentType = new MediaTypeHeaderValue(mimeType);
-                form.Add(fileContent, "AudioFile", Path.GetFileName(request.AudioPath));
+
+                // File name
+                var filename = !string.IsNullOrEmpty(request.AudioPath)
+                    ? Path.GetFileName(request.AudioPath)
+                    : $"audio_{DateTime.UtcNow:yyyyMMddHHmmss}{request.Extension}";
+
+                form.Add(fileContent, "AudioFile", filename);
 
                 form.Add(new StringContent(request.AudioTime), "AudioTime");
                 form.Add(new StringContent(request.Extension), "Extension");
@@ -1135,7 +1198,7 @@ namespace Cardrly.Helpers
 
                 double lastReported = 0;
                 double displayedProgress = 0;
-                long totalBytes = fileInfo.Length;
+                //long totalBytes = fileInfo.Length;
                 var startTime = DateTime.UtcNow;
 
                 var uiProgress = new Progress<double>(async p =>
@@ -1207,6 +1270,7 @@ namespace Cardrly.Helpers
                 if (response.IsSuccessStatusCode)
                 {
                     var result = JsonConvert.DeserializeObject<TR>(jsonResult);
+                    App.UploadInProgress = false;
                     return (result!, null);
                 }
 
@@ -1233,6 +1297,7 @@ namespace Cardrly.Helpers
                 });
             }
         }
+
 
 
         public class ProgressableStreamContent : HttpContent

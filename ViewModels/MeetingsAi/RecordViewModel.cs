@@ -18,15 +18,14 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.ComponentModel;
 using Cardrly.Pages.MeetingsScript;
-using FFMpegCore;
-using FFMpegCore.Enums;
+using Akavache;
+using System.Reactive.Linq;
+using GoogleApi.Entities.Maps.StaticMaps.Request;
+using Cardrly.Services.NativeAudioRecorder;
 
 
 
-
-#if IOS
-using Cardrly.Services.NativeAudioRecorder; 
-#elif ANDROID
+#if ANDROID
 using Android.Content;
 #endif
 
@@ -87,10 +86,10 @@ namespace Cardrly.ViewModels.MeetingsAi
 
         private StringBuilder _transcriptBuilder = new();
 
+        byte[]? uploadBytes;
+
 #if IOS
         private Cardrly.Services.NativeAudioRecorder.INativeAudioRecorder recorder;
-#else
-        private Plugin.Maui.Audio.IAudioRecorder recorder;
 #endif
 
 #if ANDROID
@@ -123,6 +122,11 @@ namespace Cardrly.ViewModels.MeetingsAi
 
         string speechKey;
         string speechRegion;
+
+        private readonly TimeSpan MaxRecordingDuration = TimeSpan.FromHours(1);
+        private bool _alert10MinShown = false;
+        private bool _alert1MinShown = false;
+        private bool _recordingStoppedByTime = false;
 
         public RecordViewModel(MeetingAiActionInfoResponse model, ScriptTypeModel scriptType, string selecteLang, IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioStreamService audioService)
         {
@@ -262,6 +266,10 @@ namespace Cardrly.ViewModels.MeetingsAi
             StopDurationTimer();
             IsRecording = false;
 
+            _alert10MinShown = false;
+            _alert1MinShown = false;
+            _recordingStoppedByTime = false;
+
             if (string.IsNullOrEmpty(DurationDisplay))
                 DurationDisplay = "00:00:00";
 
@@ -279,18 +287,10 @@ namespace Cardrly.ViewModels.MeetingsAi
                 await Task.Delay(300); // ✅ Let iOS finalize the file
                 recorder = null;
             }
-#else
-            if (recorder != null)
-            {
-                await recorder.StopAsync();
-                recorder = null;
-            }
-            // 🔹 Stop background recording service
-#if ANDROID
+#elif ANDROID
+            await AndroidAudioRecorder.StopAsync();
             StopForegroundRecordingService();
 #endif
-#endif
-
 
             if (SelectedScriptType?.Id == 1) //Simple Script
             {
@@ -315,23 +315,21 @@ namespace Cardrly.ViewModels.MeetingsAi
         public async Task ResetRecord()
         {
             StopDurationTimer();
+
+            _alert10MinShown = false;
+            _alert1MinShown = false;
+            _recordingStoppedByTime = false;
 #if IOS
-                if (recorder != null)
-                {
-                    await recorder.Stop();
-                    recorder = null;
-                }
-#else
             if (recorder != null)
             {
-                await recorder.StopAsync();
+                await recorder.Stop();
                 recorder = null;
-            }
-            // 🔹 Stop background recording service
-#if ANDROID
+            }        
+#elif ANDROID
+            await AndroidAudioRecorder.StopAsync();
             StopForegroundRecordingService();
 #endif
-#endif
+
             if (SelectedScriptType?.Id == 1) //Simple Script
             {
                 await _speechRecognizer.StopContinuousRecognitionAsync();
@@ -346,6 +344,8 @@ namespace Cardrly.ViewModels.MeetingsAi
             }
 
         }
+
+        
 
         [RelayCommand]
         public async Task StopRecording()
@@ -376,35 +376,29 @@ namespace Cardrly.ViewModels.MeetingsAi
                     using (var output = File.Create(mergedFilePath))
                     {
                         bool isFirst = true;
-                        long totalDataLength = 0;
 
                         foreach (var partPath in recordedParts)
                         {
                             if (!File.Exists(partPath))
                                 continue;
 
-                            var bytes = await File.ReadAllBytesAsync(partPath);
-                            if (bytes.Length < 100) // skip empty/invalid
-                                continue;
-
-                            if (isFirst)
+                            using (var input = File.OpenRead(partPath))
                             {
-                                await output.WriteAsync(bytes, 0, bytes.Length);
-                                totalDataLength += bytes.Length - 44;
-                                isFirst = false;
+                                if (isFirst)
+                                {
+                                    await input.CopyToAsync(output); // include header
+                                    isFirst = false;
+                                }
+                                else
+                                {
+                                    input.Seek(44, SeekOrigin.Begin); // skip header
+                                    await input.CopyToAsync(output);
+                                }
                             }
-                            else
-                            {
-                                await output.WriteAsync(bytes, 44, bytes.Length - 44);
-                                totalDataLength += bytes.Length - 44;
-                            }
-
-                            // 🛑 optional limit safeguard
-                            if (output.Length > 3_500_000_000)
-                                break;
                         }
 
-                        // ✅ Fix header after full merge
+                        // ✅ Fix WAV header
+                        var totalDataLength = output.Length - 44;
                         output.Seek(4, SeekOrigin.Begin);
                         await output.WriteAsync(BitConverter.GetBytes((int)(totalDataLength + 36)));
                         output.Seek(40, SeekOrigin.Begin);
@@ -413,85 +407,43 @@ namespace Cardrly.ViewModels.MeetingsAi
 #elif IOS
                     await MergeWavFilesFixedAsync(mergedFilePath, recordedParts);
 #endif
+                    //must be before this line File.Delete(mergedFilePath)
+                    // Step 1: Read WAV bytes for backup
+                    var backupBytes = File.ReadAllBytes(mergedFilePath);
 
-                    //// 🔹 Convert merged file to bytes
-                    //var mergedBytes = await File.ReadAllBytesAsync(mergedFilePath);
-
-                    //// Prepare upload request
-                    //AudioUploadRequest audioRequest = new AudioUploadRequest
-                    //{
-                    //    AudioTime = DurationDisplay,
-                    //    AudioData = mergedBytes,
-                    //    AudioScript = NoteScript,
-                    //    LstMeetingMessage = Messages.Select(f => new MeetingMessage
-                    //    {
-                    //        Speaker = f.Speaker + "  " + f.SpeakerDuration,
-                    //        Text = f.Text,
-                    //        TextColor = f.TextColor
-                    //    }).ToList(),
-                    //    Extension = ".wav"
-                    //};
-
-
-                    // ✅ Step 3: now the WAV file actually exists, so compress it
-                    string compressedPath;
-                    try
-                    {
-                        compressedPath = await CompressToMp3CrossPlatformAsync(mergedFilePath); // 👈 add await
-                    }
-                    catch (Exception)
-                    {
-                        compressedPath = mergedFilePath; // fallback if compression fails
-                    }
 
                     // 🔹 Upload
                     string userToken = await _service.UserToken();
                     if (!string.IsNullOrEmpty(userToken))
                     {
-                        //var progressValue = 0;
-                        //var progressCts = new CancellationTokenSource();
-
-                        //var progressTask = Task.Run(async () =>
-                        //{
-                        //    while (progressValue < 90 && !progressCts.Token.IsCancellationRequested)
-                        //    {
-                        //        progressValue += 5;
-                        //        UserDialogs.Instance.Loading($"Uploading... {progressValue}%", null, true, MaskType.Clear, null);
-                        //        await Task.Delay(300, progressCts.Token); // smooth animation
-                        //    }
-                        //});
-                        //var progress = new Progress<double>(percent =>
-                        //{
-                        //    UserDialogs.Instance.Loading($"Uploading... {percent:F1}%", null, true, MaskType.Clear, null);
-                        //});
-
-                        //var progress = new Progress<double>();
-
+                        //var parts = await SplitLargeFileAsync(mergedFilePath, 25 * 1024 * 1024); // split by 25 MB
+                        
                         AudioUploadRequest audioRequest = new AudioUploadRequest
                         {
+                            AudioUploadId = Guid.NewGuid().ToString(),
                             AudioTime = DurationDisplay,
-                            AudioPath = compressedPath,
+                            AudioPath = mergedFilePath,
                             AudioScript = NoteScript,
                             LstMeetingMessage = Messages.Select(f => new MeetingMessage
                             {
                                 Speaker = f.Speaker + "  " + f.SpeakerDuration,
                                 Text = f.Text,
                             }).ToList(),
-                            Extension = ".mp3"
+                            Extension = ".mp3",
+                            AudioBytes = backupBytes,
                         };
+
+                        // Save to Akavache
+                        await BlobCache.LocalMachine.InsertObject($"upload_{MeetingInfoModel.Id}_{audioRequest.AudioUploadId}", audioRequest);
 
                         // 🔹 Reset state
                         _recordStartTime = null;
                         _accumulatedDuration = TimeSpan.Zero;
                         DurationDisplay = string.Empty;
-                        
-                        var json = await Rep.PostFileWithFormAsync<MeetingAiActionRecordResponse>(
-                        $"{ApiConstants.AddMeetingAiActionRecordApi}{MeetingInfoModel.Id}",
-                        audioRequest, userToken);
 
-                        // 🔹 Stop fake progress
-                        //progressCts.Cancel();
-                        //UserDialogs.Instance.HideHud();
+                        var json = await Rep.PostFileWithFormAsync<MeetingAiActionRecordResponse>(
+                        $"{ApiConstants.AddMeetingAiActionRecordApi}{MeetingInfoModel?.Id}",
+                        audioRequest, userToken);
 
                         // 🔹 Show final completion (100%)
                         //UserDialogs.Instance.Loading("Uploading... 100%", null, true, MaskType.Clear, null);
@@ -505,6 +457,8 @@ namespace Cardrly.ViewModels.MeetingsAi
 
                             MeetingInfoModel.MeetingAiActionRecords.Add(json.Item1);
                             MessagingCenter.Send(this, "AddOrDeleteRecord", json.Item1.MeetingAiActionId);
+
+                            await BlobCache.LocalMachine.InvalidateObject<AudioUploadRequest>($"upload_{MeetingInfoModel.Id}_{audioRequest.AudioUploadId}");
                             await App.Current!.MainPage!.Navigation.PopAsync();
                         }
                         else
@@ -513,6 +467,7 @@ namespace Cardrly.ViewModels.MeetingsAi
                                 CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                             await toast.Show();
                         }
+      
                     }
 
                     // 🧹 Cleanup temporary files
@@ -561,18 +516,29 @@ namespace Cardrly.ViewModels.MeetingsAi
             await output.WriteAsync(emptyHeader);
 
             long totalDataLength = 0;
+            bool isFirst = true;
 
             foreach (var path in inputPaths)
             {
                 if (!File.Exists(path))
                     continue;
 
-                var bytes = await File.ReadAllBytesAsync(path);
-                if (bytes.Length <= 44)
+                using var input = File.OpenRead(path);
+                if (input.Length <= 44)
                     continue;
 
-                await output.WriteAsync(bytes, 44, bytes.Length - 44);
-                totalDataLength += (bytes.Length - 44);
+                if (isFirst)
+                {
+                    await input.CopyToAsync(output);
+                    totalDataLength += (input.Length - 44);
+                    isFirst = false;
+                }
+                else
+                {
+                    input.Seek(44, SeekOrigin.Begin);
+                    await input.CopyToAsync(output);
+                    totalDataLength += (input.Length - 44);
+                }
             }
 
             // Build correct WAV header
@@ -605,25 +571,9 @@ namespace Cardrly.ViewModels.MeetingsAi
             // Write header to file start
             headerStream.Seek(0, SeekOrigin.Begin);
             output.Seek(0, SeekOrigin.Begin);
-            await output.WriteAsync(headerStream.ToArray());
+            await headerStream.CopyToAsync(output);
 
             await output.FlushAsync();
-        }
-
-        public static async Task<string> CompressToMp3CrossPlatformAsync(string wavPath)
-        {
-            await FfmpegInitializer.EnsureInitializedAsync();// ✅ initialize only when needed
-
-            var mp3Path = Path.ChangeExtension(wavPath, ".mp3");
-
-            await FFMpegArguments
-                .FromFileInput(wavPath)
-                .OutputToFile(mp3Path, true, options => options
-                    .WithAudioCodec(AudioCodec.LibMp3Lame)
-                    .WithAudioBitrate(64))
-                .ProcessAsynchronously();
-
-            return mp3Path;
         }
 
         public void StartDurationTimer()
@@ -632,11 +582,45 @@ namespace Cardrly.ViewModels.MeetingsAi
 
             _timer = Application.Current!.Dispatcher.CreateTimer();
             _timer.Interval = TimeSpan.FromMilliseconds(500);
-            _timer.Tick += (s, e) =>
+            _timer.Tick += async (s, e) =>
             {
                 if (_recordStartTime == null) return;
                 var elapsed = _accumulatedDuration + (DateTime.UtcNow - _recordStartTime.Value);
                 DurationDisplay = elapsed.ToString(@"hh\:mm\:ss");
+
+                var remaining = MaxRecordingDuration - elapsed;
+
+                // 10 minutes left
+                if (remaining <= TimeSpan.FromMinutes(10) && !_alert10MinShown)
+                {
+                    _alert10MinShown = true;
+                    await MainThread.InvokeOnMainThreadAsync(() =>
+                    {
+                        PlaySystemSound.PlaySound();
+                    });
+                }
+
+                // 1 minute left
+                if (remaining <= TimeSpan.FromMinutes(1) && !_alert1MinShown)
+                {
+                    _alert1MinShown = true;
+                    await MainThread.InvokeOnMainThreadAsync(() =>
+                    {
+                        PlaySystemSound.PlaySound();
+                    });
+                }
+
+                // Auto-stop at 1 hour
+                if (elapsed >= MaxRecordingDuration && !_recordingStoppedByTime)
+                {
+                    _recordingStoppedByTime = true;
+
+                    await MainThread.InvokeOnMainThreadAsync(async () =>
+                    {
+                        await StopRecordingAsync();
+                        await Toast.Make("Recording stopped — maximum 1 hour reached. Please start a new record.", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                    });
+                }
             };
             _timer.Start();
         }
@@ -803,7 +787,7 @@ namespace Cardrly.ViewModels.MeetingsAi
                         }
                     };
 
-                    _conversationTranscriber.Canceled +=async (s, e) =>
+                    _conversationTranscriber.Canceled += async (s, e) =>
                     {
                         ////MainThread.BeginInvokeOnMainThread(async () =>
                         ////{
@@ -876,7 +860,15 @@ namespace Cardrly.ViewModels.MeetingsAi
         {
             if (!IsRecording)
             {
-                await StartRecordingAsync();
+                if (_accumulatedDuration >= MaxRecordingDuration)
+                {
+                    await Toast.Make("Maximum recording time reached. Please create a new record.", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                    return;
+                }
+                else
+                {
+                    await StartRecordingAsync();
+                }
             }
             else
             {
@@ -904,13 +896,11 @@ namespace Cardrly.ViewModels.MeetingsAi
 
 #if IOS
                 await StartRecordingIOSAsync(filePath);
-#else
-                recorder = AudioManager.Current.CreateRecorder();
-                await recorder.StartAsync(filePath);
-#if ANDROID
-                await StartRecordingAndroidAsync(filePath);
-#endif
 
+#elif ANDROID
+                await AndroidAudioRecorder.StartAsync(filePath);
+
+                await StartRecordingAndroidAsync(filePath);
 #endif
 
                 recordedParts.Add(filePath);
@@ -953,12 +943,9 @@ namespace Cardrly.ViewModels.MeetingsAi
                 var audioSession = AVFoundation.AVAudioSession.SharedInstance();
                 audioSession.SetActive(false);
                 audioSession.SetCategory(AVFoundation.AVAudioSessionCategory.Ambient);
-#else
-                if (recorder != null)
-                {
-                    await recorder.StopAsync();
-                    recorder = null;
-                }
+#elif ANDROID
+
+                await AndroidAudioRecorder.StopAsync();
 #endif
 
                 SaveElapsedTime();
@@ -1001,56 +988,6 @@ namespace Cardrly.ViewModels.MeetingsAi
             }
         }
 
-        private async Task MonitorTranscriberAsync()
-        {
-            while (_isTranscribing)
-            {
-                try
-                {
-                    // Restart every 20 minutes to avoid buffer overflow
-                    if ((DateTime.UtcNow - _lastRestartTime).TotalMinutes > 20)
-                    {
-                        Console.WriteLine("[Transcriber] Restarting to clear buffer...");
-
-                        await _conversationTranscriber.StopTranscribingAsync();
-                        await Task.Delay(1000);
-                        await _conversationTranscriber.StartTranscribingAsync();
-
-                        _lastRestartTime = DateTime.UtcNow;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[MonitorTranscriberAsync] {ex.Message}");
-                }
-
-                await Task.Delay(10000); // Check every 10 seconds
-            }
-        }
-
-        private async Task MonitorRecognizerAsync()
-        {
-            try
-            {
-                while (_isRecognizerRunning)
-                {
-                    await Task.Delay(TimeSpan.FromMinutes(20));
-
-                    if (_speechRecognizer != null && _isRecognizerRunning)
-                    {
-                        Console.WriteLine("[Recognizer] Auto-reset after 20 minutes.");
-                        await _speechRecognizer.StopContinuousRecognitionAsync();
-                        await Task.Delay(1000);
-                        await _speechRecognizer.StartContinuousRecognitionAsync();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[Recognizer Monitor] Error: {ex.Message}");
-            }
-        }
-
         private async Task StartRecognitionOrTranscriptionAsync()
         {
             if (SelectedScriptType.Id == 1)
@@ -1072,6 +1009,40 @@ namespace Cardrly.ViewModels.MeetingsAi
                 _isTranscribing = false;
             }
         }
+
+        private static async Task<List<string>> SplitLargeFileAsync(string filePath, long maxPartSizeBytes = 25 * 1024 * 1024)
+        {
+            var parts = new List<string>();
+            var buffer = new byte[81920]; // 80 KB buffer
+
+            using var input = File.OpenRead(filePath);
+            int partIndex = 0;
+
+            while (input.Position < input.Length)
+            {
+                var partPath = Path.Combine(
+                    Path.GetDirectoryName(filePath)!,
+                    $"{Path.GetFileNameWithoutExtension(filePath)}_part{partIndex:D3}{Path.GetExtension(filePath)}"
+                );
+
+                using var output = File.Create(partPath);
+                long bytesWritten = 0;
+                int bytesRead;
+
+                while (bytesWritten < maxPartSizeBytes &&
+                       (bytesRead = await input.ReadAsync(buffer.AsMemory(0, (int)Math.Min(buffer.Length, maxPartSizeBytes - bytesWritten)))) > 0)
+                {
+                    await output.WriteAsync(buffer.AsMemory(0, bytesRead));
+                    bytesWritten += bytesRead;
+                }
+
+                parts.Add(partPath);
+                partIndex++;
+            }
+
+            return parts;
+        }
+
 
 #if IOS
         private async Task StartRecordingIOSAsync(string filePath)
@@ -1173,8 +1144,10 @@ namespace Cardrly.ViewModels.MeetingsAi
                 {
                     if (focus == "LOST")
                     {
-                        if (recorder != null)
-                            await recorder.StopAsync();
+                        //if (recorder != null)
+                        //    await recorder.StopAsync();
+
+                        await AndroidAudioRecorder.StopAsync();
 
                         await StopRecognitionOrTranscriptionAsync();
                         SaveElapsedTime();
@@ -1185,8 +1158,9 @@ namespace Cardrly.ViewModels.MeetingsAi
                         var newFilePath = Path.Combine(FileSystem.AppDataDirectory,
                             $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
 
-                        recorder = AudioManager.Current.CreateRecorder();
-                        await recorder.StartAsync(newFilePath);
+                        //recorder = AudioManager.Current.CreateRecorder();
+                        //await recorder.StartAsync(newFilePath);
+                        await AndroidAudioRecorder.StartAsync(newFilePath);
                         recordedParts.Add(newFilePath);
 
                         await StartRecognitionOrTranscriptionAsync();
@@ -1239,6 +1213,77 @@ namespace Cardrly.ViewModels.MeetingsAi
             }
         }
 #endif
+
+
+
+
+
+
+        private async Task MonitorTranscriberAsync()
+        {
+            while (_isTranscribing)
+            {
+                try
+                {
+                    // Restart every 20 minutes to avoid buffer overflow
+                    if ((DateTime.UtcNow - _lastRestartTime).TotalMinutes > 20)
+                    {
+                        Console.WriteLine("[Transcriber] Restarting to clear buffer...");
+
+                        await _conversationTranscriber.StopTranscribingAsync();
+                        await Task.Delay(1000);
+                        await _conversationTranscriber.StartTranscribingAsync();
+
+                        _lastRestartTime = DateTime.UtcNow;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[MonitorTranscriberAsync] {ex.Message}");
+                }
+
+                await Task.Delay(10000); // Check every 10 seconds
+            }
+        }
+
+        private async Task MonitorRecognizerAsync()
+        {
+            try
+            {
+                while (_isRecognizerRunning)
+                {
+                    await Task.Delay(TimeSpan.FromMinutes(20));
+
+                    if (_speechRecognizer != null && _isRecognizerRunning)
+                    {
+                        Console.WriteLine("[Recognizer] Auto-reset after 20 minutes.");
+                        await _speechRecognizer.StopContinuousRecognitionAsync();
+                        await Task.Delay(1000);
+                        await _speechRecognizer.StartContinuousRecognitionAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Recognizer Monitor] Error: {ex.Message}");
+            }
+        }
+
+        //public static async Task<string> CompressToMp3CrossPlatformAsync(string wavPath)
+        //{
+        //    await FfmpegInitializer.EnsureInitializedAsync();// ✅ initialize only when needed
+
+        //    var mp3Path = Path.ChangeExtension(wavPath, ".mp3");
+
+        //    await FFMpegArguments
+        //        .FromFileInput(wavPath)
+        //        .OutputToFile(mp3Path, true, options => options
+        //            .WithAudioCodec(AudioCodec.LibMp3Lame)
+        //            .WithAudioBitrate(64))
+        //        .ProcessAsynchronously();
+
+        //    return mp3Path;
+        //}
 
     }
 }

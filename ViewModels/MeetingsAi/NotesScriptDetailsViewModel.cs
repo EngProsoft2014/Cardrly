@@ -1,4 +1,5 @@
 ﻿
+using Akavache;
 using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models.MeetingAiAction;
@@ -18,6 +19,7 @@ using Microsoft.CognitiveServices.Speech.Transcription;
 using Mopups.Services;
 using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
+using System.Reactive.Linq;
 using System.Text;
 
 
@@ -124,7 +126,6 @@ namespace Cardrly.ViewModels.MeetingsAi
             await App.Current!.MainPage!.Navigation.PopAsync();
         }
 
-
         [RelayCommand]
         async Task PlayClicked(MeetingAiActionRecordResponse audio)
         {
@@ -151,7 +152,6 @@ namespace Cardrly.ViewModels.MeetingsAi
             }
 
         }
-
 
         [RelayCommand]
         public async Task DeleteRecord(MeetingAiActionRecordResponse model)
@@ -258,9 +258,6 @@ namespace Cardrly.ViewModels.MeetingsAi
             IsEnable = true;
         }
 
-       
-
-
         [RelayCommand]
         public async Task GetPDF(string scriptText)
         {
@@ -313,6 +310,8 @@ namespace Cardrly.ViewModels.MeetingsAi
                 File = new ReadOnlyFile(filePath)
             });
         }
+
+
 
 
         //private async Task<string> ConvertSpeechToTextAsync()

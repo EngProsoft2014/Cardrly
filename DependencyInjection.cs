@@ -13,16 +13,11 @@ using Cardrly.Services.AudioStream;
 
 #if IOS
 using Cardrly.Services.NativeAudioRecorder;
-#endif
-
-
-
-
-#if ANDROID
-using Cardrly.Platforms.Android;
-#elif IOS
 using Cardrly.Platforms.iOS;
+#elif ANDROID
+using Cardrly.Platforms.Android;
 #endif
+
 namespace Cardrly
 {
     public static class DependencyInjection

@@ -1,9 +1,11 @@
 ﻿
+using Akavache;
 using Azure.AI.TextAnalytics;
 using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models;
 using Cardrly.Models.MeetingAiAction;
+using Cardrly.Models.MeetingAiActionRecord;
 using Cardrly.Pages;
 using Cardrly.Pages.MeetingsScript;
 using Cardrly.Resources.Lan;
@@ -19,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -65,10 +68,10 @@ namespace Cardrly.ViewModels.MeetingsAi
         }
 
 
-        void Init()
+        async Task Init()
         {
             LstMeetingModel = new ObservableCollection<MeetingAiActionResponse>();
-            Task.WhenAll(GetAllMeetings());
+            await GetAllMeetings();
 
             //AddMeeting
             MessagingCenter.Subscribe<NotesScriptViewModel, bool>(this, "AddMeeting", async (sender, message) =>
@@ -78,6 +81,8 @@ namespace Cardrly.ViewModels.MeetingsAi
                     await GetAllMeetings();
                 }
             });
+
+            await CheckFindUploding();
         }
 
         async Task GetAllMeetings()
@@ -99,12 +104,71 @@ namespace Cardrly.ViewModels.MeetingsAi
             IsEnable = true;
         }
 
+        async Task CheckFindUploding()
+        {
+            
+            var allKeys = await BlobCache.LocalMachine.GetAllKeys();
+            if (allKeys != null)
+            {
+                foreach (var key in allKeys.Where(k => k.StartsWith("upload_")))
+                {
+                    var pending = await BlobCache.LocalMachine.GetObject<AudioUploadRequest>(key);
+                    if (pending != null)
+                    {
+                        List<string> strings = key.Split('_').ToList();
+                        string meetingAiActionInfoId = strings[1];
+
+                        string MeetingName = LstMeetingModel.FirstOrDefault(x => x.Id == meetingAiActionInfoId)!.title;
+
+                        //await BlobCache.LocalMachine.InvalidateObject<AudioUploadRequest>($"upload_{meetingAiActionInfoId}_{pending.AudioUploadId}");
+
+                        string msg = Lang == "ar" ? $"لديك تسجيل من اجتماع: {{MeetingName}} لم يُحمَّل بالكامل. هل ترغب في إعادة تحميله؟ إذا تركته، ستفقده قريبًا. انقر على \"موافق\"، وسيتم تحميله الآن. يُرجى الانتظار حتى اكتمال التحميل." :
+                                    $"You have a recording from a meeting: {MeetingName} that hasn't been fully uploaded. Do you want to re-upload it? If you leave it, you'll lose it soon. Click ok, and it will be uploaded now. Please wait until the upload is complete.";
+
+                        bool Pass = await App.Current!.MainPage!.DisplayAlert(AppResources.Info, msg, AppResources.msgOk, AppResources.btnCancel);
+
+                        if (Pass)
+                        {
+                            pending.AudioPath = "";
+                            await ReturnUploadingAudio(pending, meetingAiActionInfoId);
+                        }
+                    }
+                }
+            }
+        }
+
+        public async Task ReturnUploadingAudio(AudioUploadRequest audioRequest, string meetingAiActionInfoId)
+        {
+            string userToken = await _service.UserToken();
+            if (!string.IsNullOrEmpty(userToken))
+            {
+                var json = await Rep.PostFileWithFormAsync<MeetingAiActionRecordResponse>(
+                        $"{ApiConstants.AddMeetingAiActionRecordApi}{meetingAiActionInfoId}",
+                        audioRequest, userToken);
+
+                if (json.Item1 != null)
+                {
+                    await BlobCache.LocalMachine.InvalidateObject<AudioUploadRequest>($"upload_{meetingAiActionInfoId}_{audioRequest.AudioUploadId}");
+
+                    var toast = Toast.Make(AppResources.msgSuccessfullyforaddRecord, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
+                else
+                {
+                    var toast = Toast.Make($"{json.Item2?.errors?.FirstOrDefault().Key} {json.Item2?.errors?.FirstOrDefault().Value}",
+                        CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+                }
+            }
+
+        }
+
         [RelayCommand]
         public async Task CreateNewMeeting()
         {
             string Pass = await App.Current!.MainPage!.DisplayPromptAsync(AppResources.Info, AppResources.msgEnterTitleofMeeting, AppResources.msgOk, AppResources.btnCancel);
 
-            if (string.IsNullOrEmpty(Pass)) 
+            if (string.IsNullOrEmpty(Pass))
             {
                 return;
             }
