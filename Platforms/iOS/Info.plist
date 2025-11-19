@@ -39,7 +39,7 @@
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Cardrly requires location access to function properly, even when running in the background.</string>
 	<key>CFBundleName</key>
-	<string>com.companyname.cardrly</string>
+	<string>Cardrly</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need access to your microphone to recognize your speech.</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -66,7 +66,7 @@
 		<true/>
 	</dict>
 	<key>CFBundleIdentifier</key>
-	<string></string>
+	<string>com.companyname.cardrly</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
