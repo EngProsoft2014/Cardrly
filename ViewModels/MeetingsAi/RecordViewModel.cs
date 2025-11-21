@@ -1,27 +1,29 @@
-﻿using Cardrly.Constants;
+﻿using Akavache;
+using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models;
 using Cardrly.Models.MeetingAiAction;
 using Cardrly.Models.MeetingAiActionRecord;
+using Cardrly.Pages.MeetingsScript;
 using Cardrly.Resources.Lan;
 using Cardrly.Services.AudioStream;
+using Cardrly.Services.NativeAudioRecorder;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Concentus.Enums;
+using Concentus.Structs;
 using Controls.UserDialogs.Maui;
+using GoogleApi.Entities.Maps.StaticMaps.Request;
 using Microsoft.CognitiveServices.Speech;
 using Microsoft.CognitiveServices.Speech.Audio;
 using Microsoft.CognitiveServices.Speech.Transcription;
 using Newtonsoft.Json;
 using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.ComponentModel;
-using Cardrly.Pages.MeetingsScript;
-using Akavache;
 using System.Reactive.Linq;
-using GoogleApi.Entities.Maps.StaticMaps.Request;
-using Cardrly.Services.NativeAudioRecorder;
+using System.Text;
 
 
 
@@ -370,7 +372,7 @@ namespace Cardrly.ViewModels.MeetingsAi
                     audio.RecordTime = DateTime.Now.ToString("hh:mm tt");
 
                     // ✅ Safe merging directly to file (not MemoryStream)
-                    var mergedFilePath = Path.Combine(FileSystem.AppDataDirectory, $"merged_{DateTime.Now:yyyyMMddHHmmss}.m4a");
+                    var mergedFilePath = Path.Combine(FileSystem.AppDataDirectory, $"merged_{DateTime.Now:yyyyMMddHHmmss}.wav");
 
 #if ANDROID
                     using (var output = File.Create(mergedFilePath))
@@ -406,6 +408,9 @@ namespace Cardrly.ViewModels.MeetingsAi
                     }
 #elif IOS
                     await MergeWavFilesFixedAsync(mergedFilePath, recordedParts);
+                    // 🔹 Now compress the merged PCM file into Opus
+                    var opusFilePath = Path.ChangeExtension(mergedFilePath, ".opus");
+                    CompressToOpus(mergedFilePath, opusFilePath);
 #endif
                     //must be before this line File.Delete(mergedFilePath)
                     // Step 1: Read WAV bytes for backup
@@ -429,7 +434,7 @@ namespace Cardrly.ViewModels.MeetingsAi
                                 Speaker = f.Speaker + "  " + f.SpeakerDuration,
                                 Text = f.Text,
                             }).ToList(),
-                            Extension = ".mp3",
+                            Extension = ".wav",
                             AudioBytes = backupBytes,
                         };
 
@@ -1097,10 +1102,10 @@ namespace Cardrly.ViewModels.MeetingsAi
             try
             {
                 var newFilePath = Path.Combine(FileSystem.AppDataDirectory,
-                    $"resume_{DateTime.Now:yyyyMMddHHmmss}.m4a");
+                    $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
 
                 // re-create recorder instance or call appropriate resume logic
-                recorder = new iOSAudioRecorder();
+                //recorder = new iOSAudioRecorder();
                 await recorder.Start(newFilePath);
                 recordedParts.Add(newFilePath);
 
@@ -1215,6 +1220,26 @@ namespace Cardrly.ViewModels.MeetingsAi
 #endif
 
 
+        public static void CompressToOpus(string pcmFilePath, string opusFilePath)
+        {
+            var encoder = new OpusEncoder(48000, 1, OpusApplication.OPUS_APPLICATION_AUDIO);
+            encoder.Bitrate = 16000; // 16 kbps for speech
+
+            using var input = File.OpenRead(pcmFilePath);
+            using var output = File.Create(opusFilePath);
+
+            byte[] pcmBuffer = new byte[960 * 2]; // 20ms frame at 48kHz mono
+            short[] shortBuffer = new short[960];
+            byte[] opusBuffer = new byte[4000];
+
+            int bytesRead;
+            while ((bytesRead = input.Read(pcmBuffer, 0, pcmBuffer.Length)) > 0)
+            {
+                Buffer.BlockCopy(pcmBuffer, 0, shortBuffer, 0, bytesRead);
+                int encoded = encoder.Encode(shortBuffer, 0, 960, opusBuffer, 0, opusBuffer.Length);
+                output.Write(opusBuffer, 0, encoded);
+            }
+        }
 
 
 
