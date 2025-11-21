@@ -370,7 +370,7 @@ namespace Cardrly.ViewModels.MeetingsAi
                     audio.RecordTime = DateTime.Now.ToString("hh:mm tt");
 
                     // ✅ Safe merging directly to file (not MemoryStream)
-                    var mergedFilePath = Path.Combine(FileSystem.AppDataDirectory, $"merged_{DateTime.Now:yyyyMMddHHmmss}.wav");
+                    var mergedFilePath = Path.Combine(FileSystem.AppDataDirectory, $"merged_{DateTime.Now:yyyyMMddHHmmss}.m4a");
 
 #if ANDROID
                     using (var output = File.Create(mergedFilePath))
@@ -892,7 +892,7 @@ namespace Cardrly.ViewModels.MeetingsAi
                 PrepareForRecording();
 
                 var filePath = Path.Combine(FileSystem.AppDataDirectory,
-                    $"recording_{DateTime.Now:yyyyMMddHHmmss}.wav");
+                    $"recording_{DateTime.Now:yyyyMMddHHmmss}.m4a");
 
 #if IOS
                 await StartRecordingIOSAsync(filePath);
@@ -1156,7 +1156,7 @@ namespace Cardrly.ViewModels.MeetingsAi
                     else if (focus == "GAIN")
                     {
                         var newFilePath = Path.Combine(FileSystem.AppDataDirectory,
-                            $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
+                            $"resume_{DateTime.Now:yyyyMMddHHmmss}.m4a");
 
                         //recorder = AudioManager.Current.CreateRecorder();
                         //await recorder.StartAsync(newFilePath);
