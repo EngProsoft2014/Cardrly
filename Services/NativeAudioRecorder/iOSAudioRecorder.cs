@@ -1,138 +1,285 @@
 ﻿#if IOS
+using AVFoundation;
+using Concentus.Enums;
+using Concentus.Structs;
+using Foundation;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using AVFoundation;
-using Foundation;
-using AudioToolbox;
-using Microsoft.Maui.Storage;
 
 namespace Cardrly.Services.NativeAudioRecorder
 {
-    public class iOSAudioRecorder : INativeAudioRecorder
+    public class iOSAudioRecorder : INativeAudioRecorder, IDisposable
     {
-        private AVAudioRecorder recorder;
-        private string currentFilePath;
+        // Audio
+        private AVAudioEngine engine;
+        private AVAudioInputNode inputNode;
+        private AVAudioFormat tapFormat;
+
+        // Session / interruptions
         private NSObject interruptionObserver;
+
+        // Opus
+        private OpusEncoder encoder;
+        private FileStream opusStream;
+        private string currentFilePath;
+
+        // Frame accumulation (20ms @ 48kHz mono = 960 samples)
+        private const int OpusSampleRate = 48000;
+        private const int OpusChannels = 1;
+        private const int FrameSamples = 960;
+        private short[] frameBuffer = new short[FrameSamples];
+        private int frameFill = 0;
 
         public event Action OnInterruptionBegan;
         public event Action OnInterruptionEnded;
         public event Action<string> OnRecordingResumed;
 
-        public bool IsRecording => recorder?.Recording ?? false;
+        public bool IsRecording { get; private set; }
 
         public async Task<bool> Start(string filePath)
         {
             try
             {
-                currentFilePath = filePath;
+                currentFilePath = Path.ChangeExtension(filePath, ".opus");
 
                 var permissionGranted = await RequestPermission();
-                if (!permissionGranted)
-                    return false;
+                if (!permissionGranted) return false;
 
-                var audioSession = AVAudioSession.SharedInstance();
-                NSError error = null;
-
-                audioSession.SetCategory(
-                    AVAudioSessionCategory.PlayAndRecord,
+                // Configure session
+                var session = AVAudioSession.SharedInstance();
+                session.SetCategory(AVAudioSessionCategory.PlayAndRecord,
                     AVAudioSessionCategoryOptions.DefaultToSpeaker |
-                    AVAudioSessionCategoryOptions.AllowBluetoothA2DP |
-                    AVAudioSessionCategoryOptions.AllowBluetooth,
-                    out error);
+                    AVAudioSessionCategoryOptions.AllowBluetooth |
+                    AVAudioSessionCategoryOptions.AllowBluetoothA2DP, out _);
+                session.SetMode(AVAudioSession.ModeDefault, out _);
+                session.SetActive(true, AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation, out _);
 
-                audioSession.SetMode(AVAudioSession.ModeDefault, out error);
-                audioSession.SetActive(true, AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation, out error);
-
-                // 🎧 Subscribe to interruptions (calls, WhatsApp, etc.)
                 RegisterForInterruptionNotifications();
 
-                var settings = new AudioSettings
+                // Init Opus encoder and output stream
+                encoder = new OpusEncoder(OpusSampleRate, OpusChannels, OpusApplication.OPUS_APPLICATION_AUDIO)
                 {
-                    SampleRate = 16000f,
-                    NumberChannels = 1,
-                    AudioQuality = AVAudioQuality.Medium,
-                    Format = AudioFormatType.LinearPCM,
-                    LinearPcmBitDepth = 16,
-                    LinearPcmBigEndian = false,
-                    LinearPcmFloat = false
+                    Bitrate = 16000 // 16 kbps: great for speech, tiny files
                 };
+                opusStream = File.Create(currentFilePath);
 
-                recorder = AVAudioRecorder.Create(NSUrl.FromFilename(filePath), settings, out error);
-                recorder.PrepareToRecord();
+                // Setup engine & tap
+                engine = new AVAudioEngine();
+                inputNode = engine.InputNode;
 
-                return recorder.Record();
+                // Ask input node to deliver mono float 32 at 48kHz (engine often uses float format)
+                tapFormat = new AVAudioFormat(OpusSampleRate, OpusChannels); // non-interleaved float by default
+
+                // Install tap: bufferSize in frames; e.g., 1024 is fine, we’ll re‑chunk to 960
+                inputNode.InstallTapOnBus(0, 1024, tapFormat, (buffer, when) =>
+                {
+                    int frameCount = (int)buffer.FrameLength;
+                    int channels = (int)buffer.Format.ChannelCount;
+
+                    // FloatChannelData is IntPtr (pointer to float samples)
+                    var floatPtr = buffer.FloatChannelData;
+                    if (floatPtr == IntPtr.Zero) return;
+
+                    // Copy unmanaged floats into managed array
+                    float[] samples = new float[frameCount];
+                    Marshal.Copy(floatPtr, samples, 0, frameCount);
+
+                    for (int i = 0; i < frameCount; i++)
+                    {
+                        // Convert float [-1,1] → 16-bit PCM
+                        int s = (int)(samples[i] * short.MaxValue);
+                        if (s > short.MaxValue) s = short.MaxValue;
+                        if (s < short.MinValue) s = short.MinValue;
+                        short pcm = (short)s;
+
+                        frameBuffer[frameFill++] = pcm;
+
+                        if (frameFill == FrameSamples)
+                        {
+                            byte[] opusBuf = new byte[4000];
+                            int encoded = encoder.Encode(frameBuffer, 0, FrameSamples, opusBuf, 0, opusBuf.Length);
+                            opusStream.Write(opusBuf, 0, encoded);
+                            frameFill = 0;
+                        }
+                    }
+                });
+
+                engine.Prepare();
+                NSError startErr = null;
+                engine.StartAndReturnError(out startErr);
+                if (startErr != null) throw new Exception(startErr.LocalizedDescription);
+
+                IsRecording = true;
+                return true;
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"LiveOpusRecorder.Start error: {ex.Message}");
+                Dispose();
                 return false;
             }
         }
 
-        private void RegisterForInterruptionNotifications()
+        private void EncodeAndWriteFrame(short[] samples, int count)
         {
-            if (interruptionObserver != null)
+            // Encode a 20ms frame
+            byte[] opusBuf = new byte[4000];
+            int encoded = encoder.Encode(samples, 0, count, opusBuf, 0, opusBuf.Length);
+            if (encoded > 0)
             {
-                NSNotificationCenter.DefaultCenter.RemoveObserver(interruptionObserver);
-                interruptionObserver = null;
+                opusStream.Write(opusBuf, 0, encoded);
+            }
+        }
+
+        public void Pause()
+        {
+            if (!IsRecording) return;
+            engine?.Pause();
+            IsRecording = false;
+        }
+
+        public bool Resume()
+        {
+            if (engine == null || IsRecording) return false;
+
+            NSError err = null;
+            engine.StartAndReturnError(out err);
+            if (err != null) return false;
+
+            IsRecording = true;
+            return true;
+        }
+
+        public async Task<string> Stop()
+        {
+            try
+            {
+                if (IsRecording)
+                {
+                    // Flush partial frame if any: pad with zeros (optional)
+                    if (frameFill > 0)
+                    {
+                        for (int i = frameFill; i < FrameSamples; i++) frameBuffer[i] = 0;
+                        EncodeAndWriteFrame(frameBuffer, FrameSamples);
+                        frameFill = 0;
+                    }
+                }
+
+                inputNode?.RemoveTapOnBus(0);
+                engine?.Stop();
+
+                opusStream?.Flush();
+                opusStream?.Dispose();
+                opusStream = null;
+
+                encoder = null;
+                IsRecording = false;
+
+                var session = AVAudioSession.SharedInstance();
+                session.SetActive(false, out _);
+                session.SetCategory(AVAudioSessionCategory.Ambient);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Stop error: {ex.Message}");
             }
 
+            return currentFilePath ?? string.Empty;
+        }
+
+        private void RegisterForInterruptionNotifications()
+        {
+            interruptionObserver?.Dispose();
             interruptionObserver = NSNotificationCenter.DefaultCenter.AddObserver(
                 AVAudioSession.InterruptionNotification,
-                async notification =>
+                notification =>
                 {
-                    var userInfo = notification.UserInfo;
-                    var typeValue = userInfo?["AVAudioSessionInterruptionTypeKey"] as NSNumber;
-                    if (typeValue == null)
-                        return;
+                    var typeValue = notification.UserInfo?["AVAudioSessionInterruptionTypeKey"] as NSNumber;
+                    if (typeValue == null) return;
 
                     var type = (AVAudioSessionInterruptionType)typeValue.Int32Value;
 
                     if (type == AVAudioSessionInterruptionType.Began)
                     {
-                        if (recorder?.Recording == true)
-                            recorder.Stop();
+                        // Stop engine and close current opus stream cleanly
+                        try
+                        {
+                            Pause();
+                            inputNode?.RemoveTapOnBus(0);
+                            opusStream?.Flush();
+                            opusStream?.Dispose();
+                            opusStream = null;
+                        }
+                        catch { }
 
                         OnInterruptionBegan?.Invoke();
                     }
                     else if (type == AVAudioSessionInterruptionType.Ended)
                     {
-                        NSError error;
+                        // Reactivate session and resume with a new opus file
                         var session = AVAudioSession.SharedInstance();
-                        session.SetActive(true, AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation, out error);
+                        session.SetActive(true, AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation, out var err);
+                        if (err != null) return;
 
-                        if (error != null)
+                        var newPath = Path.Combine(FileSystem.AppDataDirectory, $"resume_{DateTime.Now:yyyyMMddHHmmss}.opus");
+
+                        // Recreate encoder & stream
+                        encoder = new OpusEncoder(OpusSampleRate, OpusChannels, OpusApplication.OPUS_APPLICATION_AUDIO)
                         {
-                            return;
-                        }
-
-                        // Create new file for resumed recording
-                        var newPath = Path.Combine(FileSystem.AppDataDirectory, $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
-
-                        var settings = new AudioSettings
-                        {
-                            SampleRate = 16000f,
-                            NumberChannels = 1,
-                            AudioQuality = AVAudioQuality.Medium,
-                            Format = AudioFormatType.LinearPCM,
-                            LinearPcmBitDepth = 16,
-                            LinearPcmBigEndian = false,
-                            LinearPcmFloat = false
+                            Bitrate = 16000
                         };
+                        opusStream = File.Create(newPath);
 
-                        var newRecorder = AVAudioRecorder.Create(NSUrl.FromFilename(newPath), settings, out error);
-                        newRecorder.PrepareToRecord();
-                        newRecorder.Record();
+                        // Reinstall tap
+                        tapFormat = new AVAudioFormat(OpusSampleRate, OpusChannels);
+                        inputNode.InstallTapOnBus(0, 1024, tapFormat, (buffer, when) =>
+                        {
+                            int frameCount = (int)buffer.FrameLength;
+                            int channels = (int)buffer.Format.ChannelCount;
 
-                        recorder = newRecorder; // replace old instance
+                            // FloatChannelData is IntPtr (pointer to float samples)
+                            var floatPtr = buffer.FloatChannelData;
+                            if (floatPtr == IntPtr.Zero) return;
+
+                            // Copy unmanaged floats into managed array
+                            float[] samples = new float[frameCount];
+                            Marshal.Copy(floatPtr, samples, 0, frameCount);
+
+                            for (int i = 0; i < frameCount; i++)
+                            {
+                                // Convert float [-1,1] → 16-bit PCM
+                                int s = (int)(samples[i] * short.MaxValue);
+                                if (s > short.MaxValue) s = short.MaxValue;
+                                if (s < short.MinValue) s = short.MinValue;
+                                short pcm = (short)s;
+
+                                frameBuffer[frameFill++] = pcm;
+
+                                if (frameFill == FrameSamples)
+                                {
+                                    byte[] opusBuf = new byte[4000];
+                                    int encoded = encoder.Encode(frameBuffer, 0, FrameSamples, opusBuf, 0, opusBuf.Length);
+                                    opusStream.Write(opusBuf, 0, encoded);
+                                    frameFill = 0;
+                                }
+                            }
+                        });
+
+
+
+                        engine?.Prepare();
+                        engine?.StartAndReturnError(out _);
+
                         currentFilePath = newPath;
+                        IsRecording = true;
 
                         OnInterruptionEnded?.Invoke();
                         OnRecordingResumed?.Invoke(newPath);
                     }
                 });
         }
-
 
         private static async Task<bool> RequestPermission()
         {
@@ -141,62 +288,18 @@ namespace Cardrly.Services.NativeAudioRecorder
             return await tcs.Task;
         }
 
-        public void Pause()
-        {
-            if (recorder?.Recording == true)
-                recorder.Pause();
-        }
-
-        public bool Resume()
-        {
-            return recorder?.Record() ?? false;
-        }
-
-        public async Task<string> Stop()
-        {
-            try
-            {
-                if (recorder?.Recording == true)
-                    recorder.Stop();
-
-                recorder?.Dispose();
-                recorder = null;
-
-                if (interruptionObserver != null)
-                {
-                    NSNotificationCenter.DefaultCenter.RemoveObserver(interruptionObserver);
-                    interruptionObserver.Dispose();
-                    interruptionObserver = null;
-                }
-
-                var audioSession = AVAudioSession.SharedInstance();
-                audioSession.SetActive(false, out _);
-                audioSession.SetCategory(AVAudioSessionCategory.Ambient); // releases focus cleanly
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"❌ Error in Stop(): {ex.Message}");
-            }
-
-            return currentFilePath ?? string.Empty;
-        }
-
         public void Dispose()
         {
             try
             {
-                recorder?.Dispose();
-                recorder = null;
-
-                if (interruptionObserver != null)
-                {
-                    NSNotificationCenter.DefaultCenter.RemoveObserver(interruptionObserver);
-                    interruptionObserver.Dispose();
-                    interruptionObserver = null;
-                }
+                inputNode?.RemoveTapOnBus(0);
+                engine?.Stop();
+                opusStream?.Dispose();
+                interruptionObserver?.Dispose();
             }
             catch { }
         }
     }
 }
 #endif
+
