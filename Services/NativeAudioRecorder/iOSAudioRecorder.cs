@@ -52,8 +52,10 @@ namespace Cardrly.Services.NativeAudioRecorder
                     SampleRate = 16000f,
                     NumberChannels = 1,
                     AudioQuality = AVAudioQuality.Medium,
-                    Format = AudioFormatType.MPEG4AAC,
-                    EncoderBitRate = 64000                        // 64kbps
+                    Format = AudioFormatType.LinearPCM,
+                    LinearPcmBitDepth = 16,
+                    LinearPcmBigEndian = false,
+                    LinearPcmFloat = false
                 };
 
                 recorder = AVAudioRecorder.Create(NSUrl.FromFilename(filePath), settings, out error);
@@ -112,8 +114,10 @@ namespace Cardrly.Services.NativeAudioRecorder
                             SampleRate = 16000f,
                             NumberChannels = 1,
                             AudioQuality = AVAudioQuality.Medium,
-                            Format = AudioFormatType.Opus,
-                            EncoderBitRate = 64000                        // 64kbps
+                            Format = AudioFormatType.LinearPCM,
+                            LinearPcmBitDepth = 16,
+                            LinearPcmBigEndian = false,
+                            LinearPcmFloat = false
                         };
 
                         var newRecorder = AVAudioRecorder.Create(NSUrl.FromFilename(newPath), settings, out error);
