@@ -1097,7 +1097,7 @@ namespace Cardrly.ViewModels.MeetingsAi
             try
             {
                 var newFilePath = Path.Combine(FileSystem.AppDataDirectory,
-                    $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
+                    $"resume_{DateTime.Now:yyyyMMddHHmmss}.m4a");
 
                 // re-create recorder instance or call appropriate resume logic
                 recorder = new iOSAudioRecorder();

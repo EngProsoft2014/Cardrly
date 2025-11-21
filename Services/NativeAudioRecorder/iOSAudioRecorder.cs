@@ -104,7 +104,7 @@ namespace Cardrly.Services.NativeAudioRecorder
                         }
 
                         // Create new file for resumed recording
-                        var newPath = Path.Combine(FileSystem.AppDataDirectory, $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
+                        var newPath = Path.Combine(FileSystem.AppDataDirectory, $"resume_{DateTime.Now:yyyyMMddHHmmss}.m4a");
 
                         var settings = new AudioSettings
                         {
