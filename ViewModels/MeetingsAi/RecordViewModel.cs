@@ -589,8 +589,6 @@ namespace Cardrly.ViewModels.MeetingsAi
                 var elapsed = _accumulatedDuration + (DateTime.UtcNow - _recordStartTime.Value);
                 DurationDisplay = elapsed.ToString(@"hh\:mm\:ss");
 
-                MaxRecordingDuration = DeviceInfo.Platform == DevicePlatform.iOS ? TimeSpan.FromMinutes(40) : TimeSpan.FromHours(1);
-
                 var remaining = MaxRecordingDuration - elapsed;
 
                 // 10 minutes left
@@ -863,6 +861,8 @@ namespace Cardrly.ViewModels.MeetingsAi
         {
             if (!IsRecording)
             {
+                MaxRecordingDuration = DeviceInfo.Platform == DevicePlatform.iOS ? TimeSpan.FromMinutes(40) : TimeSpan.FromHours(1);
+
                 if (_accumulatedDuration >= MaxRecordingDuration)
                 {
                     await Toast.Make("Maximum recording time reached. Please create a new record.", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
