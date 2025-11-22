@@ -51,7 +51,7 @@ namespace Cardrly.Services.NativeAudioRecorder
                 {
                     SampleRate = 16000f,
                     NumberChannels = 1,
-                    AudioQuality = AVAudioQuality.Low,
+                    AudioQuality = AVAudioQuality.High,
                     Format = AudioFormatType.LinearPCM,
                     LinearPcmBitDepth = 16,
                     LinearPcmBigEndian = false,
@@ -113,7 +113,7 @@ namespace Cardrly.Services.NativeAudioRecorder
                         {
                             SampleRate = 16000f,
                             NumberChannels = 1,
-                            AudioQuality = AVAudioQuality.Low,
+                            AudioQuality = AVAudioQuality.High,
                             Format = AudioFormatType.LinearPCM,
                             LinearPcmBitDepth = 16,
                             LinearPcmBigEndian = false,
