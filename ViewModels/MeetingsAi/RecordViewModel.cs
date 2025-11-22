@@ -11,8 +11,6 @@ using Cardrly.Services.NativeAudioRecorder;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Concentus.Enums;
-using Concentus.Structs;
 using Controls.UserDialogs.Maui;
 using GoogleApi.Entities.Maps.StaticMaps.Request;
 using Microsoft.CognitiveServices.Speech;
@@ -408,9 +406,6 @@ namespace Cardrly.ViewModels.MeetingsAi
                     }
 #elif IOS
                     await MergeWavFilesFixedAsync(mergedFilePath, recordedParts);
-                    // 🔹 Now compress the merged PCM file into Opus
-                    var opusFilePath = Path.ChangeExtension(mergedFilePath, ".opus");
-                    CompressToOpus(mergedFilePath, opusFilePath);
 #endif
                     //must be before this line File.Delete(mergedFilePath)
                     // Step 1: Read WAV bytes for backup
@@ -1220,29 +1215,7 @@ namespace Cardrly.ViewModels.MeetingsAi
 #endif
 
 
-        public static void CompressToOpus(string pcmFilePath, string opusFilePath)
-        {
-            var encoder = new OpusEncoder(48000, 1, OpusApplication.OPUS_APPLICATION_AUDIO);
-            encoder.Bitrate = 16000; // 16 kbps for speech
-
-            using var input = File.OpenRead(pcmFilePath);
-            using var output = File.Create(opusFilePath);
-
-            byte[] pcmBuffer = new byte[960 * 2]; // 20ms frame at 48kHz mono
-            short[] shortBuffer = new short[960];
-            byte[] opusBuffer = new byte[4000];
-
-            int bytesRead;
-            while ((bytesRead = input.Read(pcmBuffer, 0, pcmBuffer.Length)) > 0)
-            {
-                Buffer.BlockCopy(pcmBuffer, 0, shortBuffer, 0, bytesRead);
-                int encoded = encoder.Encode(shortBuffer, 0, 960, opusBuffer, 0, opusBuffer.Length);
-                output.Write(opusBuffer, 0, encoded);
-            }
-        }
-
-
-
+ 
 
         private async Task MonitorTranscriberAsync()
         {

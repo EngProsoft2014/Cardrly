@@ -142,7 +142,6 @@
 		<PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
 		<PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="4.1.2" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="Concentus" Version="2.2.2" />
 		<PackageReference Include="Controls.UserDialogs.Maui" Version="1.7.0" />
 		<PackageReference Include="GoogleApi" Version="5.8.11" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.2" />
