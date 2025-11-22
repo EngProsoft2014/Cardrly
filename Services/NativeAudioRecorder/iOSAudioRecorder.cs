@@ -31,12 +31,17 @@ namespace Cardrly.Services.NativeAudioRecorder
                 if (!permissionGranted)
                     return false;
 
+                var audioSession = AVAudioSession.SharedInstance();
                 NSError error = null;
 
-                var audioSession = AVAudioSession.SharedInstance();
-                audioSession.SetCategory(AVAudioSessionCategory.PlayAndRecord,
-                    AVAudioSessionCategoryOptions.DefaultToSpeaker, out _);
-                audioSession.SetActive(true, out _);
+                audioSession.SetCategory(
+                    AVAudioSessionCategory.PlayAndRecord,
+                    AVAudioSessionCategoryOptions.DefaultToSpeaker |
+                    AVAudioSessionCategoryOptions.AllowBluetoothA2DP |
+                    AVAudioSessionCategoryOptions.AllowBluetooth,
+                    out error);
+
+                audioSession.SetMode(AVAudioSession.ModeDefault, out error);
                 audioSession.SetActive(true, AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation, out error);
 
                 // 🎧 Subscribe to interruptions (calls, WhatsApp, etc.)
@@ -44,11 +49,13 @@ namespace Cardrly.Services.NativeAudioRecorder
 
                 var settings = new AudioSettings
                 {
-                    SampleRate = 44100f, // or 48000f
+                    SampleRate = 16000f,
                     NumberChannels = 1,
-                    AudioQuality = AVAudioQuality.High,
-                    Format = AudioFormatType.MPEG4AAC,
-                    EncoderBitRate = 64000 // ✅ required for AAC
+                    AudioQuality = AVAudioQuality.Low,
+                    Format = AudioFormatType.LinearPCM,
+                    LinearPcmBitDepth = 16,
+                    LinearPcmBigEndian = false,
+                    LinearPcmFloat = false
                 };
 
                 recorder = AVAudioRecorder.Create(NSUrl.FromFilename(filePath), settings, out error);
@@ -104,11 +111,13 @@ namespace Cardrly.Services.NativeAudioRecorder
 
                         var settings = new AudioSettings
                         {
-                            SampleRate = 44100f, // or 48000f
+                            SampleRate = 16000f,
                             NumberChannels = 1,
-                            AudioQuality = AVAudioQuality.High,
-                            Format = AudioFormatType.MPEG4AAC,
-                            EncoderBitRate = 64000 // ✅ required for AAC
+                            AudioQuality = AVAudioQuality.Low,
+                            Format = AudioFormatType.LinearPCM,
+                            LinearPcmBitDepth = 16,
+                            LinearPcmBigEndian = false,
+                            LinearPcmFloat = false
                         };
 
                         var newRecorder = AVAudioRecorder.Create(NSUrl.FromFilename(newPath), settings, out error);

@@ -122,8 +122,11 @@ namespace Cardrly.ViewModels.MeetingsAi
 
         string speechKey;
         string speechRegion;
-
+#if ANDROID
         private readonly TimeSpan MaxRecordingDuration = TimeSpan.FromHours(1);
+#elif IOS
+        private readonly TimeSpan MaxRecordingDuration = TimeSpan.FromMinutes(40);
+#endif
         private bool _alert10MinShown = false;
         private bool _alert1MinShown = false;
         private bool _recordingStoppedByTime = false;
