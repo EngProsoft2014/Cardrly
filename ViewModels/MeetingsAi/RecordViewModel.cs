@@ -124,7 +124,7 @@ namespace Cardrly.ViewModels.MeetingsAi
         string speechKey;
         string speechRegion;
 
-        private TimeSpan MaxRecordingDuration;
+        private TimeSpan MaxRecordingDuration = TimeSpan.FromHours(1);
 
         private bool _alert10MinShown = false;
         private bool _alert1MinShown = false;
@@ -785,7 +785,7 @@ namespace Cardrly.ViewModels.MeetingsAi
         {
             if (!IsRecording)
             {
-                MaxRecordingDuration = DeviceInfo.Platform == DevicePlatform.iOS ? TimeSpan.FromMinutes(40) : TimeSpan.FromHours(1);
+                //MaxRecordingDuration = DeviceInfo.Platform == DevicePlatform.iOS ? TimeSpan.FromMinutes(40) : TimeSpan.FromHours(1);
 
                 if (_accumulatedDuration >= MaxRecordingDuration)
                 {
