@@ -49,13 +49,11 @@ namespace Cardrly.Services.NativeAudioRecorder
 
                 var settings = new AudioSettings
                 {
-                    SampleRate = 16000f,
+                    SampleRate = 16000,
                     NumberChannels = 1,
-                    AudioQuality = AVAudioQuality.High,
-                    Format = AudioFormatType.LinearPCM,
-                    LinearPcmBitDepth = 16,
-                    LinearPcmBigEndian = false,
-                    LinearPcmFloat = false
+                    AudioQuality = AVAudioQuality.Medium,
+                    Format = AudioFormatType.MPEG4AAC,
+                    EncoderBitRate = 48000
                 };
 
                 recorder = AVAudioRecorder.Create(NSUrl.FromFilename(filePath), settings, out error);
@@ -107,17 +105,15 @@ namespace Cardrly.Services.NativeAudioRecorder
                         }
 
                         // Create new file for resumed recording
-                        var newPath = Path.Combine(FileSystem.AppDataDirectory, $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
+                        var newPath = Path.Combine(FileSystem.AppDataDirectory, $"resume_{DateTime.Now:yyyyMMddHHmmss}.m4a");
 
                         var settings = new AudioSettings
                         {
-                            SampleRate = 16000f,
+                            SampleRate = 16000,
                             NumberChannels = 1,
-                            AudioQuality = AVAudioQuality.High,
-                            Format = AudioFormatType.LinearPCM,
-                            LinearPcmBitDepth = 16,
-                            LinearPcmBigEndian = false,
-                            LinearPcmFloat = false
+                            AudioQuality = AVAudioQuality.Medium,
+                            Format = AudioFormatType.MPEG4AAC,
+                            EncoderBitRate = 48000
                         };
 
                         var newRecorder = AVAudioRecorder.Create(NSUrl.FromFilename(newPath), settings, out error);

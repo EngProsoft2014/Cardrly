@@ -13,7 +13,7 @@
     <StackLayout x:Name="TimeSheetsView" Margin="0,20,0,10" Spacing="5">
 
         <!--Header-->
-        <StackLayout Orientation="Horizontal" Margin="20,0,20,15">
+        <StackLayout Orientation="Horizontal" Margin="20,0,20,10">
             <Image VerticalOptions="CenterAndExpand">
                 <Image.Source>
                     <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
@@ -29,10 +29,20 @@
             </Image>
             <Label Text="{x:Static res:AppResources.lblTimeSheet}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
             </Label>
+
+            <!--Tracking-->
+            <Image>
+                <Image.Source>
+                    <FontImageSource FontFamily="FontIconSolid" Color="#e36322" Glyph="" Size="22"></FontImageSource>
+                </Image.Source>
+                <!--<Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackDayCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>-->
+            </Image>
         </StackLayout>
         
         <!--Date-->
-        <Border StrokeShape="RoundRectangle 20" Margin="20,0,20,0" BackgroundColor="White" HeightRequest="60" HorizontalOptions="FillAndExpand">
+        <Border StrokeShape="RoundRectangle 5" Margin="20,0,20,0" BackgroundColor="White" HeightRequest="50" HorizontalOptions="FillAndExpand">
             <StackLayout Orientation="Horizontal" Padding="20,0,20,0" Spacing="0">
 
                 <!--Back Date-->
@@ -77,7 +87,7 @@
             </StackLayout>
         </Border>
         <!--Search Bar-->
-        <Border BackgroundColor="White" Margin="20,10,20,10" HeightRequest="{OnPlatform Android=42, iOS=55}" HorizontalOptions="FillAndExpand">
+        <Border BackgroundColor="White" Margin="20,5,20,0" HeightRequest="{OnPlatform Android=42, iOS=55}" HorizontalOptions="FillAndExpand">
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                 <SearchBar x:Name="srcBarEmployee"
                            Placeholder="Search" TextColor="#333"
@@ -182,12 +192,11 @@
                                                 <Grid HorizontalOptions="FillAndExpand">
 
                                                     <ScrollView Orientation="Horizontal" VerticalOptions="CenterAndExpand" HorizontalScrollBarVisibility="Never">
-                                                        <!--<Label Text="{Binding BranchName}" TextColor="#333" FontAttributes="Italic" FontSize="14"></Label>-->
-                                                        <Label Text="Kevin L. Dilliard, Texas Branch" TextColor="#333" FontAttributes="Italic" FontSize="14"></Label>
+                                                        <Label Text="{Binding BranchName}" TextColor="#333" FontAttributes="Italic" FontSize="14"></Label>
                                                     </ScrollView>
                                                 </Grid>
                                                 <Grid>
-                                                    <StackLayout x:Name="stkBaseButton" IsVisible="True" Orientation="Horizontal" Spacing="5" HorizontalOptions="EndAndExpand">
+                                                    <StackLayout x:Name="stkBaseButton" IsVisible="False" Orientation="Horizontal" Spacing="5" HorizontalOptions="EndAndExpand">
                                                         <Button Text="{x:Static res:AppResources.btnCheckIn}" 
                                                                  FontSize="11" 
                                                                  WidthRequest="{OnPlatform iOS=70}"
@@ -201,12 +210,12 @@
                                                                  BackgroundColor="#f26d29" 
                                                                  HorizontalOptions="Start"
                                                                  Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedTimeInCommand}" CommandParameter="{Binding}">
-                                                            <!--<Button.Triggers>
+                                                            <Button.Triggers>
                                                                  <DataTrigger TargetType="Button" Binding="{Binding MytimeSheet}" Value="2">
                                                                      <Setter Property="BackgroundColor" Value="#a80724"></Setter>
                                                                      <Setter Property="BorderColor" Value="#a80724"></Setter>
                                                                  </DataTrigger>
-                                                             </Button.Triggers>-->
+                                                             </Button.Triggers>
                                                         </Button>
 
                                                         <Button Text="{x:Static res:AppResources.btnCheckout}"
@@ -365,18 +374,12 @@
                                                                 FontAttributes="Bold"
                                                                 HorizontalTextAlignment="Center"
                                                                 VerticalTextAlignment="Center"></Label>
-                                                        <!--<Label Text="{Binding HoursFrom,StringFormat='{0:HH:mm}'}" 
+                                                        <Label Text="{Binding HoursFrom,StringFormat='{0:HH:mm}'}" 
                                                                     FontSize="12" 
                                                                     TextColor="#65a88c"
                                                                     FontAttributes="Bold"
                                                                     HorizontalTextAlignment="Center"
-                                                                    VerticalTextAlignment="Center"></Label>-->
-                                                        <Label Text="08:00" 
-                                                                FontSize="12" 
-                                                                TextColor="#65a88c"
-                                                                FontAttributes="Bold"
-                                                                HorizontalTextAlignment="Center"
-                                                                VerticalTextAlignment="Center"></Label>
+                                                                    VerticalTextAlignment="Center"></Label>
                                                     </StackLayout>
 
                                                     <StackLayout Spacing="0">
@@ -386,13 +389,7 @@
                                                                 FontAttributes="Bold"
                                                                 HorizontalTextAlignment="Center"
                                                                 VerticalTextAlignment="Center"></Label>
-                                                        <!--<Label Text="{Binding HoursTo,StringFormat='{0:HH:mm}'}" 
-                                                                FontSize="12" 
-                                                                TextColor="Red"
-                                                                FontAttributes="Bold"
-                                                                HorizontalTextAlignment="Center"
-                                                                VerticalTextAlignment="Center"></Label>-->
-                                                        <Label Text="15:00" 
+                                                        <Label Text="{Binding HoursTo,StringFormat='{0:HH:mm}'}" 
                                                                 FontSize="12" 
                                                                 TextColor="Red"
                                                                 FontAttributes="Bold"
@@ -410,11 +407,10 @@
                                                         <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="18"></FontImageSource>
                                                     </Image.Source>
                                                 </Image>
-                                                <!--<Label Text="{Binding BranchName}" TextColor="#333" FontAttributes="Italic" VerticalTextAlignment="Center" FontSize="14"></Label>-->
 
                                                 <Grid HorizontalOptions="FillAndExpand">
                                                     <ScrollView Orientation="Horizontal" VerticalOptions="CenterAndExpand" HorizontalScrollBarVisibility="Never">
-                                                        <Label Text="Kevin L. Dilliard, Texas Branch" TextColor="#333" FontAttributes="Italic" FontSize="14"></Label>
+                                                        <Label Text="{Binding BranchName}" TextColor="#333" FontAttributes="Italic" VerticalTextAlignment="Center" FontSize="14"></Label>
                                                     </ScrollView>
                                                 </Grid>
                                             </StackLayout>

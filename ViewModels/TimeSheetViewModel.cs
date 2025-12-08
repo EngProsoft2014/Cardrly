@@ -87,31 +87,31 @@ namespace Cardrly.ViewModels
             }
 
 
-            if(LstEmployeesIn.Count == 0)
-            {
-                CheckInOutModel oCheckInOutModel = new CheckInOutModel
-                {
-                    Id = 1,
-                    EmployeeName = Preferences.Default.Get(ApiConstants.username, ""),
-                    EmployeeId = int.TryParse(Preferences.Default.Get(ApiConstants.userid, "0"), out var empId) ? empId : 0,
-                    AccountId = Preferences.Default.Get(ApiConstants.AccountId, ""),
-                    Date = dateDF.ToString("yyyy-MM-dd"),
-                    CreateDate = DateTime.Now,
-                    CreateUser = int.TryParse(Preferences.Default.Get(ApiConstants.userid, "0"), out var createUser) ? createUser : 0,
-                    SheetColor = "#26cc8a",
-                    Active = true,
-                    HoursFrom = "",
-                    HoursTo = "",
-                    DurationHours = "",
-                    DurationMinutes = "",
-                    Notes = "",
-                };
+            //if(LstEmployeesIn.Count == 0)
+            //{
+            //    CheckInOutModel oCheckInOutModel = new CheckInOutModel
+            //    {
+            //        Id = 1,
+            //        EmployeeName = Preferences.Default.Get(ApiConstants.username, ""),
+            //        EmployeeId = int.TryParse(Preferences.Default.Get(ApiConstants.userid, "0"), out var empId) ? empId : 0,
+            //        AccountId = Preferences.Default.Get(ApiConstants.AccountId, ""),
+            //        Date = dateDF.ToString("yyyy-MM-dd"),
+            //        CreateDate = DateTime.Now,
+            //        CreateUser = int.TryParse(Preferences.Default.Get(ApiConstants.userid, "0"), out var createUser) ? createUser : 0,
+            //        SheetColor = "#26cc8a",
+            //        Active = true,
+            //        HoursFrom = "",
+            //        HoursTo = "",
+            //        DurationHours = "",
+            //        DurationMinutes = "",
+            //        Notes = "",
+            //    };
 
-                LstEmployeesIn.Add(oCheckInOutModel);
-                LstEmployeesOut.Add(oCheckInOutModel);
-                NumIn = LstEmployeesIn.Count.ToString();
-                NumOut = LstEmployeesOut.Count.ToString();
-            }
+            //    LstEmployeesIn.Add(oCheckInOutModel);
+            //    LstEmployeesOut.Add(oCheckInOutModel);
+            //    NumIn = LstEmployeesIn.Count.ToString();
+            //    NumOut = LstEmployeesOut.Count.ToString();
+            //}
 
             GetCheckInOutEmployees(dateDF.ToString("MM-dd-yyyy"));
 

@@ -22,6 +22,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Text;
+using YourApp.iOS;
 
 
 
@@ -371,7 +372,7 @@ namespace Cardrly.ViewModels.MeetingsAi
                     audio.RecordTime = DateTime.Now.ToString("hh:mm tt");
 
                     // ✅ Safe merging directly to file (not MemoryStream)
-                    var mergedFilePath = Path.Combine(FileSystem.AppDataDirectory, $"merged_{DateTime.Now:yyyyMMddHHmmss}.wav");
+                    var mergedFilePath = Path.Combine(FileSystem.AppDataDirectory, $"merged_{DateTime.Now:yyyyMMddHHmmss}.m4a");
 
 #if ANDROID
                     using (var output = File.Create(mergedFilePath))
@@ -406,7 +407,7 @@ namespace Cardrly.ViewModels.MeetingsAi
                         await output.WriteAsync(BitConverter.GetBytes((int)totalDataLength));
                     }
 #elif IOS
-                    await MergeWavFilesFixedAsync(mergedFilePath, recordedParts);
+                    await AacMerger.MergeAsync(mergedFilePath, recordedParts);
 #endif
                     //must be before this line File.Delete(mergedFilePath)
                     // Step 1: Read WAV bytes for backup
@@ -430,7 +431,7 @@ namespace Cardrly.ViewModels.MeetingsAi
                                 Speaker = f.Speaker + "  " + f.SpeakerDuration,
                                 Text = f.Text,
                             }).ToList(),
-                            Extension = ".wav",
+                            Extension = ".m4a",
                             AudioBytes = backupBytes,
                         };
 
@@ -499,83 +500,6 @@ namespace Cardrly.ViewModels.MeetingsAi
             }
         }
 
-        public static async Task MergeWavFilesFixedAsync(string outputPath, List<string> inputPaths)
-        {
-            if (inputPaths == null || inputPaths.Count == 0)
-                throw new InvalidOperationException("No input files to merge.");
-
-            const int sampleRate = 16000;
-            const short bitsPerSample = 16;
-            const short channels = 1;
-            const short blockAlign = (short)(channels * (bitsPerSample / 8));
-            const int byteRate = sampleRate * blockAlign;
-
-            using var output = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
-
-            // Reserve header space (44 bytes)
-            byte[] emptyHeader = new byte[44];
-            await output.WriteAsync(emptyHeader);
-
-            long totalDataLength = 0;
-            bool isFirst = true;
-
-            foreach (var path in inputPaths)
-            {
-                if (!File.Exists(path))
-                    continue;
-
-                using var input = File.OpenRead(path);
-                if (input.Length <= 44)
-                    continue;
-
-                if (isFirst)
-                {
-                    await input.CopyToAsync(output);
-                    totalDataLength += (input.Length - 44);
-                    isFirst = false;
-                }
-                else
-                {
-                    input.Seek(44, SeekOrigin.Begin);
-                    await input.CopyToAsync(output);
-                    totalDataLength += (input.Length - 44);
-                }
-            }
-
-            // Build correct WAV header
-            int fileSize = (int)(totalDataLength + 44 - 8);
-
-            using var headerStream = new MemoryStream();
-            using var writer = new BinaryWriter(headerStream);
-
-            // RIFF header
-            writer.Write(System.Text.Encoding.ASCII.GetBytes("RIFF"));
-            writer.Write(fileSize);
-            writer.Write(System.Text.Encoding.ASCII.GetBytes("WAVE"));
-
-            // fmt  sub-chunk
-            writer.Write(System.Text.Encoding.ASCII.GetBytes("fmt "));
-            writer.Write(16);                  // Subchunk1Size (PCM)
-            writer.Write((short)1);            // AudioFormat = PCM
-            writer.Write(channels);
-            writer.Write(sampleRate);
-            writer.Write(byteRate);
-            writer.Write(blockAlign);
-            writer.Write(bitsPerSample);
-
-            // data sub-chunk
-            writer.Write(System.Text.Encoding.ASCII.GetBytes("data"));
-            writer.Write((int)totalDataLength);
-
-            writer.Flush();
-
-            // Write header to file start
-            headerStream.Seek(0, SeekOrigin.Begin);
-            output.Seek(0, SeekOrigin.Begin);
-            await headerStream.CopyToAsync(output);
-
-            await output.FlushAsync();
-        }
 
         public void StartDurationTimer()
         {
@@ -1013,39 +937,6 @@ namespace Cardrly.ViewModels.MeetingsAi
             }
         }
 
-        private static async Task<List<string>> SplitLargeFileAsync(string filePath, long maxPartSizeBytes = 25 * 1024 * 1024)
-        {
-            var parts = new List<string>();
-            var buffer = new byte[81920]; // 80 KB buffer
-
-            using var input = File.OpenRead(filePath);
-            int partIndex = 0;
-
-            while (input.Position < input.Length)
-            {
-                var partPath = Path.Combine(
-                    Path.GetDirectoryName(filePath)!,
-                    $"{Path.GetFileNameWithoutExtension(filePath)}_part{partIndex:D3}{Path.GetExtension(filePath)}"
-                );
-
-                using var output = File.Create(partPath);
-                long bytesWritten = 0;
-                int bytesRead;
-
-                while (bytesWritten < maxPartSizeBytes &&
-                       (bytesRead = await input.ReadAsync(buffer.AsMemory(0, (int)Math.Min(buffer.Length, maxPartSizeBytes - bytesWritten)))) > 0)
-                {
-                    await output.WriteAsync(buffer.AsMemory(0, bytesRead));
-                    bytesWritten += bytesRead;
-                }
-
-                parts.Add(partPath);
-                partIndex++;
-            }
-
-            return parts;
-        }
-
 
 #if IOS
         private async Task StartRecordingIOSAsync(string filePath)
@@ -1100,7 +991,7 @@ namespace Cardrly.ViewModels.MeetingsAi
             try
             {
                 var newFilePath = Path.Combine(FileSystem.AppDataDirectory,
-                    $"resume_{DateTime.Now:yyyyMMddHHmmss}.wav");
+                    $"resume_{DateTime.Now:yyyyMMddHHmmss}.m4a");
 
                 // re-create recorder instance or call appropriate resume logic
                 //recorder = new iOSAudioRecorder();
@@ -1218,57 +1109,56 @@ namespace Cardrly.ViewModels.MeetingsAi
 #endif
 
 
- 
 
-        private async Task MonitorTranscriberAsync()
-        {
-            while (_isTranscribing)
-            {
-                try
-                {
-                    // Restart every 20 minutes to avoid buffer overflow
-                    if ((DateTime.UtcNow - _lastRestartTime).TotalMinutes > 20)
-                    {
-                        Console.WriteLine("[Transcriber] Restarting to clear buffer...");
+        //private async Task MonitorTranscriberAsync()
+        //{
+        //    while (_isTranscribing)
+        //    {
+        //        try
+        //        {
+        //            // Restart every 20 minutes to avoid buffer overflow
+        //            if ((DateTime.UtcNow - _lastRestartTime).TotalMinutes > 20)
+        //            {
+        //                Console.WriteLine("[Transcriber] Restarting to clear buffer...");
 
-                        await _conversationTranscriber.StopTranscribingAsync();
-                        await Task.Delay(1000);
-                        await _conversationTranscriber.StartTranscribingAsync();
+        //                await _conversationTranscriber.StopTranscribingAsync();
+        //                await Task.Delay(1000);
+        //                await _conversationTranscriber.StartTranscribingAsync();
 
-                        _lastRestartTime = DateTime.UtcNow;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[MonitorTranscriberAsync] {ex.Message}");
-                }
+        //                _lastRestartTime = DateTime.UtcNow;
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine($"[MonitorTranscriberAsync] {ex.Message}");
+        //        }
 
-                await Task.Delay(10000); // Check every 10 seconds
-            }
-        }
+        //        await Task.Delay(10000); // Check every 10 seconds
+        //    }
+        //}
 
-        private async Task MonitorRecognizerAsync()
-        {
-            try
-            {
-                while (_isRecognizerRunning)
-                {
-                    await Task.Delay(TimeSpan.FromMinutes(20));
+        //private async Task MonitorRecognizerAsync()
+        //{
+        //    try
+        //    {
+        //        while (_isRecognizerRunning)
+        //        {
+        //            await Task.Delay(TimeSpan.FromMinutes(20));
 
-                    if (_speechRecognizer != null && _isRecognizerRunning)
-                    {
-                        Console.WriteLine("[Recognizer] Auto-reset after 20 minutes.");
-                        await _speechRecognizer.StopContinuousRecognitionAsync();
-                        await Task.Delay(1000);
-                        await _speechRecognizer.StartContinuousRecognitionAsync();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[Recognizer Monitor] Error: {ex.Message}");
-            }
-        }
+        //            if (_speechRecognizer != null && _isRecognizerRunning)
+        //            {
+        //                Console.WriteLine("[Recognizer] Auto-reset after 20 minutes.");
+        //                await _speechRecognizer.StopContinuousRecognitionAsync();
+        //                await Task.Delay(1000);
+        //                await _speechRecognizer.StartContinuousRecognitionAsync();
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"[Recognizer Monitor] Error: {ex.Message}");
+        //    }
+        //}
 
         //public static async Task<string> CompressToMp3CrossPlatformAsync(string wavPath)
         //{
@@ -1285,6 +1175,119 @@ namespace Cardrly.ViewModels.MeetingsAi
 
         //    return mp3Path;
         //}
+
+
+        //public static async Task MergeWavFilesFixedAsync(string outputPath, List<string> inputPaths)
+        //{
+        //    if (inputPaths == null || inputPaths.Count == 0)
+        //        throw new InvalidOperationException("No input files to merge.");
+
+        //    const int sampleRate = 16000;
+        //    const short bitsPerSample = 16;
+        //    const short channels = 1;
+        //    const short blockAlign = (short)(channels * (bitsPerSample / 8));
+        //    const int byteRate = sampleRate * blockAlign;
+
+        //    using var output = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
+
+        //    // Reserve header space (44 bytes)
+        //    byte[] emptyHeader = new byte[44];
+        //    await output.WriteAsync(emptyHeader);
+
+        //    long totalDataLength = 0;
+        //    bool isFirst = true;
+
+        //    foreach (var path in inputPaths)
+        //    {
+        //        if (!File.Exists(path))
+        //            continue;
+
+        //        using var input = File.OpenRead(path);
+        //        if (input.Length <= 44)
+        //            continue;
+
+        //        if (isFirst)
+        //        {
+        //            await input.CopyToAsync(output);
+        //            totalDataLength += (input.Length - 44);
+        //            isFirst = false;
+        //        }
+        //        else
+        //        {
+        //            input.Seek(44, SeekOrigin.Begin);
+        //            await input.CopyToAsync(output);
+        //            totalDataLength += (input.Length - 44);
+        //        }
+        //    }
+
+        //    // Build correct WAV header
+        //    int fileSize = (int)(totalDataLength + 44 - 8);
+
+        //    using var headerStream = new MemoryStream();
+        //    using var writer = new BinaryWriter(headerStream);
+
+        //    // RIFF header
+        //    writer.Write(System.Text.Encoding.ASCII.GetBytes("RIFF"));
+        //    writer.Write(fileSize);
+        //    writer.Write(System.Text.Encoding.ASCII.GetBytes("WAVE"));
+
+        //    // fmt  sub-chunk
+        //    writer.Write(System.Text.Encoding.ASCII.GetBytes("fmt "));
+        //    writer.Write(16);                  // Subchunk1Size (PCM)
+        //    writer.Write((short)1);            // AudioFormat = PCM
+        //    writer.Write(channels);
+        //    writer.Write(sampleRate);
+        //    writer.Write(byteRate);
+        //    writer.Write(blockAlign);
+        //    writer.Write(bitsPerSample);
+
+        //    // data sub-chunk
+        //    writer.Write(System.Text.Encoding.ASCII.GetBytes("data"));
+        //    writer.Write((int)totalDataLength);
+
+        //    writer.Flush();
+
+        //    // Write header to file start
+        //    headerStream.Seek(0, SeekOrigin.Begin);
+        //    output.Seek(0, SeekOrigin.Begin);
+        //    await headerStream.CopyToAsync(output);
+
+        //    await output.FlushAsync();
+        //}
+
+        //private static async Task<List<string>> SplitLargeFileAsync(string filePath, long maxPartSizeBytes = 25 * 1024 * 1024)
+        //{
+        //    var parts = new List<string>();
+        //    var buffer = new byte[81920]; // 80 KB buffer
+
+        //    using var input = File.OpenRead(filePath);
+        //    int partIndex = 0;
+
+        //    while (input.Position < input.Length)
+        //    {
+        //        var partPath = Path.Combine(
+        //            Path.GetDirectoryName(filePath)!,
+        //            $"{Path.GetFileNameWithoutExtension(filePath)}_part{partIndex:D3}{Path.GetExtension(filePath)}"
+        //        );
+
+        //        using var output = File.Create(partPath);
+        //        long bytesWritten = 0;
+        //        int bytesRead;
+
+        //        while (bytesWritten < maxPartSizeBytes &&
+        //               (bytesRead = await input.ReadAsync(buffer.AsMemory(0, (int)Math.Min(buffer.Length, maxPartSizeBytes - bytesWritten)))) > 0)
+        //        {
+        //            await output.WriteAsync(buffer.AsMemory(0, bytesRead));
+        //            bytesWritten += bytesRead;
+        //        }
+
+        //        parts.Add(partPath);
+        //        partIndex++;
+        //    }
+
+        //    return parts;
+        //}
+
 
     }
 }
