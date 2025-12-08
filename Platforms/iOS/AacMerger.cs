@@ -7,7 +7,7 @@ using AVFoundation;
 using CoreMedia;
 using Foundation;
 
-namespace YourApp.iOS
+namespace Cardrly.Platforms.iOS
 {
     public static class AacMerger
     {

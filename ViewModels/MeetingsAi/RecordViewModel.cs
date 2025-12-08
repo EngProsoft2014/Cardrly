@@ -406,7 +406,7 @@ namespace Cardrly.ViewModels.MeetingsAi
                         await output.WriteAsync(BitConverter.GetBytes((int)totalDataLength));
                     }
 #elif IOS
-                    await AacMerger.MergeAsync(mergedFilePath, recordedParts);
+                    await Platforms.iOS.AacMerger.MergeAsync(mergedFilePath, recordedParts);
 #endif
                     //must be before this line File.Delete(mergedFilePath)
                     // Step 1: Read WAV bytes for backup
