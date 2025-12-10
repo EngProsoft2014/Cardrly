@@ -559,74 +559,81 @@ namespace Cardrly.ViewModels.MeetingsAi
             }
         }
 
+
         private async Task StartSpeechRecognitionAsync()
         {
             try
             {
-                if (_speechRecognizer == null)
+                // Always dispose old instance if it exists
+                if (_speechRecognizer != null)
                 {
-                    _speechRecognizer = new SpeechRecognizer(speechConfig, autoLangConfig, AudioConfig.FromDefaultMicrophoneInput());
-
-                    _speechRecognizer.Recognizing += (s, e) =>
+                    try
                     {
-                        MainThread.BeginInvokeOnMainThread(() =>
-                        {
-                            _partialText = e.Result.Text?.Trim() ?? string.Empty;
-                            NoteScript = $"{_transcriptBuilder}{(_partialText.Length > 0 ? " " + _partialText : string.Empty)}";
-                        });
-                    };
+                        await _speechRecognizer.StopContinuousRecognitionAsync();
+                    }
+                    catch { /* swallow if already stopped */ }
 
-                    _speechRecognizer.Recognized += (s, e) =>
-                    {
-                        MainThread.BeginInvokeOnMainThread(() =>
-                        {
-                            if (e.Result.Reason == ResultReason.RecognizedSpeech && !string.IsNullOrWhiteSpace(e.Result.Text))
-                            {
-                                _transcriptBuilder.AppendLine(e.Result.Text.Trim());
-                                _partialText = string.Empty;
-                                NoteScript = _transcriptBuilder.ToString();
-                            }
-                        });
-                    };
-
-                    _speechRecognizer.Canceled += async (s, e) =>
-                    {
-                        //if (e.Reason == CancellationReason.Error)
-                        //{
-                        //    string details = e.ErrorDetails ?? "Unknown error";
-                        //    Console.WriteLine($"[Recognizer] Canceled: {details}");
-
-                        //    if (details.Contains("Quota exceeded", StringComparison.OrdinalIgnoreCase))
-                        //    {
-                        //        // ✅ Log silently for developers
-                        //        Console.WriteLine("[Speech Service] Quota exceeded. Please check Azure billing/usage.");
-
-                        //        // Optionally, you can show a generic friendly message instead:
-                        //        await MainThread.InvokeOnMainThreadAsync(() =>
-                        //        {
-                        //            Toast.Make("Speech service temporarily unavailable. Please try again later.",
-                        //                CommunityToolkit.Maui.Core.ToastDuration.Short, 15).Show();
-                        //        });
-
-                        //        return;
-                        //    }
-
-                        //    // Otherwise, auto-restart recognition after brief delay
-                        //    await _speechRecognizer.StopContinuousRecognitionAsync();
-                        //    await Task.Delay(2000);
-                        //    await _speechRecognizer.StartContinuousRecognitionAsync();
-                        //}
-                    };
-
-                    _speechRecognizer.SessionStopped += async (s, e) => { };
-                }
-
-                if (_isRecognizerRunning)
-                {
-                    await _speechRecognizer.StopContinuousRecognitionAsync();
+                    _speechRecognizer.Dispose();
+                    _speechRecognizer = null;
                     _isRecognizerRunning = false;
-                    await Task.Delay(300);
+                    await Task.Delay(300); // small delay helps iOS settle
                 }
+
+                _speechRecognizer = new SpeechRecognizer(speechConfig, autoLangConfig, AudioConfig.FromDefaultMicrophoneInput());
+
+                _speechRecognizer.Recognizing += (s, e) =>
+                {
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        _partialText = e.Result.Text?.Trim() ?? string.Empty;
+                        NoteScript = $"{_transcriptBuilder}{(_partialText.Length > 0 ? " " + _partialText : string.Empty)}";
+                    });
+                };
+
+                _speechRecognizer.Recognized += (s, e) =>
+                {
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        if (e.Result.Reason == ResultReason.RecognizedSpeech && !string.IsNullOrWhiteSpace(e.Result.Text))
+                        {
+                            _transcriptBuilder.AppendLine(e.Result.Text.Trim());
+                            _partialText = string.Empty;
+                            NoteScript = _transcriptBuilder.ToString();
+                        }
+                    });
+                };
+
+                _speechRecognizer.Canceled += async (s, e) =>
+                {
+                    //if (e.Reason == CancellationReason.Error)
+                    //{
+                    //    string details = e.ErrorDetails ?? "Unknown error";
+                    //    Console.WriteLine($"[Recognizer] Canceled: {details}");
+
+                    //    if (details.Contains("Quota exceeded", StringComparison.OrdinalIgnoreCase))
+                    //    {
+                    //        // ✅ Log silently for developers
+                    //        Console.WriteLine("[Speech Service] Quota exceeded. Please check Azure billing/usage.");
+
+                    //        // Optionally, you can show a generic friendly message instead:
+                    //        await MainThread.InvokeOnMainThreadAsync(() =>
+                    //        {
+                    //            Toast.Make("Speech service temporarily unavailable. Please try again later.",
+                    //                CommunityToolkit.Maui.Core.ToastDuration.Short, 15).Show();
+                    //        });
+
+                    //        return;
+                    //    }
+
+                    //    // Otherwise, auto-restart recognition after brief delay
+                    //    await _speechRecognizer.StopContinuousRecognitionAsync();
+                    //    await Task.Delay(2000);
+                    //    await _speechRecognizer.StartContinuousRecognitionAsync();
+                    //}
+                };
+
+                _speechRecognizer.SessionStopped += async (s, e) => { };
+
 
                 await _speechRecognizer.StartContinuousRecognitionAsync();
                 _isRecognizerRunning = true;
@@ -645,122 +652,129 @@ namespace Cardrly.ViewModels.MeetingsAi
         {
             try
             {
-                if (_conversationTranscriber == null)
+                // Always dispose old instance if it exists
+                if (_conversationTranscriber != null)
                 {
-                    _conversationTranscriber = new ConversationTranscriber(speechConfig, AudioConfig.FromDefaultMicrophoneInput());
-
-                    _conversationTranscriber.Transcribing += (s, e) =>
+                    try
                     {
-                        e.Result.Duration.ToString();
-                        var speaker = (string.IsNullOrEmpty(e.Result.SpeakerId) || e.Result.SpeakerId == "Unknown")
-                            ? AppResources.lblScript : e.Result.SpeakerId;
+                        await _conversationTranscriber.StopTranscribingAsync();
+                    }
+                    catch { /* swallow if already stopped */ }
 
-                        var partial = e.Result.Text?.Trim();
-                        if (string.IsNullOrEmpty(partial)) return;
+                    _conversationTranscriber.Dispose();
+                    _conversationTranscriber = null;
+                    _isTranscribing = false;
+                    await Task.Delay(300); // small delay helps iOS settle
+                }
 
-                        MainThread.BeginInvokeOnMainThread(() =>
+                _conversationTranscriber = new ConversationTranscriber(speechConfig, AudioConfig.FromDefaultMicrophoneInput());
+
+                _conversationTranscriber.Transcribing += (s, e) =>
+                {
+                    e.Result.Duration.ToString();
+                    var speaker = (string.IsNullOrEmpty(e.Result.SpeakerId) || e.Result.SpeakerId == "Unknown")
+                        ? AppResources.lblScript : e.Result.SpeakerId;
+
+                    var partial = e.Result.Text?.Trim();
+                    if (string.IsNullOrEmpty(partial)) return;
+
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        if (!_liveMessages.ContainsKey(speaker))
                         {
-                            if (!_liveMessages.ContainsKey(speaker))
+                            var msg = new MeetingMessage
                             {
-                                var msg = new MeetingMessage
-                                {
-                                    Speaker = speaker,
-                                    Text = partial + "...",
-                                    TextColor = _speakerColors.TryGetValue(speaker, out var color)
-                                        ? color : Colors.Red,
-                                };
+                                Speaker = speaker,
+                                Text = partial + "...",
+                                TextColor = _speakerColors.TryGetValue(speaker, out var color)
+                                    ? color : Colors.Red,
+                            };
 
-                                _liveMessages[speaker] = msg;
-                                Messages.Add(msg);
+                            _liveMessages[speaker] = msg;
+                            Messages.Add(msg);
+                        }
+                        else
+                        {
+                            _liveMessages[speaker].Text = partial + "...";
+                        }
+                    });
+                };
+
+                _conversationTranscriber.Transcribed += (s, e) =>
+                {
+                    if (e.Result.Reason == ResultReason.RecognizedSpeech && !string.IsNullOrWhiteSpace(e.Result.Text))
+                    {
+                        var speaker = (string.IsNullOrEmpty(e.Result.SpeakerId) || e.Result.SpeakerId == "Unknown")
+                            ? AppResources.lblScript : e.Result.SpeakerId.Replace("Guest", "Speaker");
+
+                        var text = e.Result.Text.Trim();
+
+                        MainThread.BeginInvokeOnMainThread(async () =>
+                        {
+                            if (!IsTextValidLanguage(text))
+                            {
+                                var toast = Toast.Make(AppResources.msgUnsupportLang,
+                                    CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                                await toast.Show();
+                            }
+
+                            if (_liveMessages.ContainsKey(speaker))
+                            {
+                                _liveMessages[speaker].Text = text;
+                                _liveMessages.Remove(speaker);
                             }
                             else
                             {
-                                _liveMessages[speaker].Text = partial + "...";
+                                AddTranscript(speaker, text);
                             }
                         });
-                    };
+                    }
+                };
 
-                    _conversationTranscriber.Transcribed += (s, e) =>
-                    {
-                        if (e.Result.Reason == ResultReason.RecognizedSpeech && !string.IsNullOrWhiteSpace(e.Result.Text))
-                        {
-                            var speaker = (string.IsNullOrEmpty(e.Result.SpeakerId) || e.Result.SpeakerId == "Unknown")
-                                ? AppResources.lblScript : e.Result.SpeakerId.Replace("Guest", "Speaker");
-
-                            var text = e.Result.Text.Trim();
-
-                            MainThread.BeginInvokeOnMainThread(async () =>
-                            {
-                                if (!IsTextValidLanguage(text))
-                                {
-                                    var toast = Toast.Make(AppResources.msgUnsupportLang,
-                                        CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                                    await toast.Show();
-                                }
-
-                                if (_liveMessages.ContainsKey(speaker))
-                                {
-                                    _liveMessages[speaker].Text = text;
-                                    _liveMessages.Remove(speaker);
-                                }
-                                else
-                                {
-                                    AddTranscript(speaker, text);
-                                }
-                            });
-                        }
-                    };
-
-                    _conversationTranscriber.Canceled += async (s, e) =>
-                    {
-                        ////MainThread.BeginInvokeOnMainThread(async () =>
-                        ////{
-                        ////    await App.Current!.MainPage!.DisplayAlert("Error",
-                        ////        $"Recognition failed. Reason: {e.Reason}\nDetails: {e.ErrorDetails}", "OK");
-                        ////});
-
-                        //if (e.Reason == CancellationReason.Error)
-                        //{
-                        //    if (e.ErrorDetails.Contains("Quota exceeded", StringComparison.OrdinalIgnoreCase))
-                        //    {
-                        //        Console.WriteLine("[Transcriber] Quota limit hit — stopping gracefully.");
-                        //        await _conversationTranscriber.StopTranscribingAsync();
-                        //        await MainThread.InvokeOnMainThreadAsync(() =>
-                        //        {
-                        //            Toast.Make("Speech service temporarily unavailable. Please try again later.",
-                        //                CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
-                        //        });
-                        //        return;
-                        //    }
-
-                        //    // ✅ For other transient network or buffer errors
-                        //    if (_isTranscribing)
-                        //    {
-                        //        Console.WriteLine($"[Transcriber] Reset due to transient error: {e.ErrorDetails}");
-                        //        try
-                        //        {
-                        //            await _conversationTranscriber.StopTranscribingAsync();
-                        //            await Task.Delay(1000);
-                        //            await _conversationTranscriber.StartTranscribingAsync();
-                        //            _lastRestartTime = DateTime.UtcNow;
-                        //        }
-                        //        catch (Exception restartEx)
-                        //        {
-                        //            Console.WriteLine($"[Transcriber Restart Error] {restartEx.Message}");
-                        //        }
-                        //    }
-                        //}
-                    };
-
-                    _conversationTranscriber.SessionStopped += (s, e) => { };
-                }
-
-                if (_isTranscribing)
+                _conversationTranscriber.Canceled += async (s, e) =>
                 {
-                    await _conversationTranscriber.StopTranscribingAsync();
-                    _isTranscribing = false;
-                    await Task.Delay(300);
-                }
+                    ////MainThread.BeginInvokeOnMainThread(async () =>
+                    ////{
+                    ////    await App.Current!.MainPage!.DisplayAlert("Error",
+                    ////        $"Recognition failed. Reason: {e.Reason}\nDetails: {e.ErrorDetails}", "OK");
+                    ////});
+
+                    //if (e.Reason == CancellationReason.Error)
+                    //{
+                    //    if (e.ErrorDetails.Contains("Quota exceeded", StringComparison.OrdinalIgnoreCase))
+                    //    {
+                    //        Console.WriteLine("[Transcriber] Quota limit hit — stopping gracefully.");
+                    //        await _conversationTranscriber.StopTranscribingAsync();
+                    //        await MainThread.InvokeOnMainThreadAsync(() =>
+                    //        {
+                    //            Toast.Make("Speech service temporarily unavailable. Please try again later.",
+                    //                CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+                    //        });
+                    //        return;
+                    //    }
+
+                    //    // ✅ For other transient network or buffer errors
+                    //    if (_isTranscribing)
+                    //    {
+                    //        Console.WriteLine($"[Transcriber] Reset due to transient error: {e.ErrorDetails}");
+                    //        try
+                    //        {
+                    //            await _conversationTranscriber.StopTranscribingAsync();
+                    //            await Task.Delay(1000);
+                    //            await _conversationTranscriber.StartTranscribingAsync();
+                    //            _lastRestartTime = DateTime.UtcNow;
+                    //        }
+                    //        catch (Exception restartEx)
+                    //        {
+                    //            Console.WriteLine($"[Transcriber Restart Error] {restartEx.Message}");
+                    //        }
+                    //    }
+                    //}
+                };
+
+                _conversationTranscriber.SessionStopped += (s, e) => { };
+
+
 
                 await _conversationTranscriber.StartTranscribingAsync();
                 _isTranscribing = true;
@@ -778,6 +792,224 @@ namespace Cardrly.ViewModels.MeetingsAi
             }
         }
 
+        //private async Task StartSpeechRecognitionAsync()
+        //{
+        //    try
+        //    {
+        //        if (_speechRecognizer == null)
+        //        {
+        //            _speechRecognizer = new SpeechRecognizer(speechConfig, autoLangConfig, AudioConfig.FromDefaultMicrophoneInput());
+
+        //            _speechRecognizer.Recognizing += (s, e) =>
+        //            {
+        //                MainThread.BeginInvokeOnMainThread(() =>
+        //                {
+        //                    _partialText = e.Result.Text?.Trim() ?? string.Empty;
+        //                    NoteScript = $"{_transcriptBuilder}{(_partialText.Length > 0 ? " " + _partialText : string.Empty)}";
+        //                });
+        //            };
+
+        //            _speechRecognizer.Recognized += (s, e) =>
+        //            {
+        //                MainThread.BeginInvokeOnMainThread(() =>
+        //                {
+        //                    if (e.Result.Reason == ResultReason.RecognizedSpeech && !string.IsNullOrWhiteSpace(e.Result.Text))
+        //                    {
+        //                        _transcriptBuilder.AppendLine(e.Result.Text.Trim());
+        //                        _partialText = string.Empty;
+        //                        NoteScript = _transcriptBuilder.ToString();
+        //                    }
+        //                });
+        //            };
+
+        //            _speechRecognizer.Canceled += async (s, e) =>
+        //            {
+        //                //if (e.Reason == CancellationReason.Error)
+        //                //{
+        //                //    string details = e.ErrorDetails ?? "Unknown error";
+        //                //    Console.WriteLine($"[Recognizer] Canceled: {details}");
+
+        //                //    if (details.Contains("Quota exceeded", StringComparison.OrdinalIgnoreCase))
+        //                //    {
+        //                //        // ✅ Log silently for developers
+        //                //        Console.WriteLine("[Speech Service] Quota exceeded. Please check Azure billing/usage.");
+
+        //                //        // Optionally, you can show a generic friendly message instead:
+        //                //        await MainThread.InvokeOnMainThreadAsync(() =>
+        //                //        {
+        //                //            Toast.Make("Speech service temporarily unavailable. Please try again later.",
+        //                //                CommunityToolkit.Maui.Core.ToastDuration.Short, 15).Show();
+        //                //        });
+
+        //                //        return;
+        //                //    }
+
+        //                //    // Otherwise, auto-restart recognition after brief delay
+        //                //    await _speechRecognizer.StopContinuousRecognitionAsync();
+        //                //    await Task.Delay(2000);
+        //                //    await _speechRecognizer.StartContinuousRecognitionAsync();
+        //                //}
+        //            };
+
+        //            _speechRecognizer.SessionStopped += async (s, e) => { };
+        //        }
+
+        //        if (_isRecognizerRunning)
+        //        {
+        //            await _speechRecognizer.StopContinuousRecognitionAsync();
+        //            _isRecognizerRunning = false;
+        //            await Task.Delay(300);
+        //        }
+
+        //        await _speechRecognizer.StartContinuousRecognitionAsync();
+        //        _isRecognizerRunning = true;
+
+        //        //// Optional: monitor session to auto-reset every ~20 minutes
+        //        //_ = MonitorRecognizerAsync();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await App.Current!.MainPage!.DisplayAlert("Speech Error",
+        //            "Could not start recognition: " + ex.Message, "OK");
+        //    }
+        //}
+
+        //private async Task StartTranscriptionAsync()
+        //{
+        //    try
+        //    {
+        //        if (_conversationTranscriber == null)
+        //        {
+        //            _conversationTranscriber = new ConversationTranscriber(speechConfig, AudioConfig.FromDefaultMicrophoneInput());
+
+        //            _conversationTranscriber.Transcribing += (s, e) =>
+        //            {
+        //                e.Result.Duration.ToString();
+        //                var speaker = (string.IsNullOrEmpty(e.Result.SpeakerId) || e.Result.SpeakerId == "Unknown")
+        //                    ? AppResources.lblScript : e.Result.SpeakerId;
+
+        //                var partial = e.Result.Text?.Trim();
+        //                if (string.IsNullOrEmpty(partial)) return;
+
+        //                MainThread.BeginInvokeOnMainThread(() =>
+        //                {
+        //                    if (!_liveMessages.ContainsKey(speaker))
+        //                    {
+        //                        var msg = new MeetingMessage
+        //                        {
+        //                            Speaker = speaker,
+        //                            Text = partial + "...",
+        //                            TextColor = _speakerColors.TryGetValue(speaker, out var color)
+        //                                ? color : Colors.Red,
+        //                        };
+
+        //                        _liveMessages[speaker] = msg;
+        //                        Messages.Add(msg);
+        //                    }
+        //                    else
+        //                    {
+        //                        _liveMessages[speaker].Text = partial + "...";
+        //                    }
+        //                });
+        //            };
+
+        //            _conversationTranscriber.Transcribed += (s, e) =>
+        //            {
+        //                if (e.Result.Reason == ResultReason.RecognizedSpeech && !string.IsNullOrWhiteSpace(e.Result.Text))
+        //                {
+        //                    var speaker = (string.IsNullOrEmpty(e.Result.SpeakerId) || e.Result.SpeakerId == "Unknown")
+        //                        ? AppResources.lblScript : e.Result.SpeakerId.Replace("Guest", "Speaker");
+
+        //                    var text = e.Result.Text.Trim();
+
+        //                    MainThread.BeginInvokeOnMainThread(async () =>
+        //                    {
+        //                        if (!IsTextValidLanguage(text))
+        //                        {
+        //                            var toast = Toast.Make(AppResources.msgUnsupportLang,
+        //                                CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+        //                            await toast.Show();
+        //                        }
+
+        //                        if (_liveMessages.ContainsKey(speaker))
+        //                        {
+        //                            _liveMessages[speaker].Text = text;
+        //                            _liveMessages.Remove(speaker);
+        //                        }
+        //                        else
+        //                        {
+        //                            AddTranscript(speaker, text);
+        //                        }
+        //                    });
+        //                }
+        //            };
+
+        //            _conversationTranscriber.Canceled += async (s, e) =>
+        //            {
+        //                ////MainThread.BeginInvokeOnMainThread(async () =>
+        //                ////{
+        //                ////    await App.Current!.MainPage!.DisplayAlert("Error",
+        //                ////        $"Recognition failed. Reason: {e.Reason}\nDetails: {e.ErrorDetails}", "OK");
+        //                ////});
+
+        //                //if (e.Reason == CancellationReason.Error)
+        //                //{
+        //                //    if (e.ErrorDetails.Contains("Quota exceeded", StringComparison.OrdinalIgnoreCase))
+        //                //    {
+        //                //        Console.WriteLine("[Transcriber] Quota limit hit — stopping gracefully.");
+        //                //        await _conversationTranscriber.StopTranscribingAsync();
+        //                //        await MainThread.InvokeOnMainThreadAsync(() =>
+        //                //        {
+        //                //            Toast.Make("Speech service temporarily unavailable. Please try again later.",
+        //                //                CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+        //                //        });
+        //                //        return;
+        //                //    }
+
+        //                //    // ✅ For other transient network or buffer errors
+        //                //    if (_isTranscribing)
+        //                //    {
+        //                //        Console.WriteLine($"[Transcriber] Reset due to transient error: {e.ErrorDetails}");
+        //                //        try
+        //                //        {
+        //                //            await _conversationTranscriber.StopTranscribingAsync();
+        //                //            await Task.Delay(1000);
+        //                //            await _conversationTranscriber.StartTranscribingAsync();
+        //                //            _lastRestartTime = DateTime.UtcNow;
+        //                //        }
+        //                //        catch (Exception restartEx)
+        //                //        {
+        //                //            Console.WriteLine($"[Transcriber Restart Error] {restartEx.Message}");
+        //                //        }
+        //                //    }
+        //                //}
+        //            };
+
+        //            _conversationTranscriber.SessionStopped += (s, e) => { };
+        //        }
+
+        //        if (_isTranscribing)
+        //        {
+        //            await _conversationTranscriber.StopTranscribingAsync();
+        //            _isTranscribing = false;
+        //            await Task.Delay(300);
+        //        }
+
+        //        await _conversationTranscriber.StartTranscribingAsync();
+        //        _isTranscribing = true;
+
+        //        //// ✅ Reset last restart time when session begins
+        //        //_lastRestartTime = DateTime.UtcNow;
+
+        //        //// ✅ Start background monitor to restart every ~20 mins
+        //        //_ = MonitorTranscriberAsync();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await App.Current!.MainPage!.DisplayAlert("Transcriber Error",
+        //            "Could not start transcribing: " + ex.Message, "OK");
+        //    }
+        //}
 
         [RelayCommand]
         public async Task ToggleRecording()
@@ -937,6 +1169,108 @@ namespace Cardrly.ViewModels.MeetingsAi
         }
 
 
+
+        //#if IOS
+        //        private async Task StartRecordingIOSAsync(string filePath)
+        //        {
+        //            // ✅ Configure and activate the audio session
+        //            var audioSession = AVFoundation.AVAudioSession.SharedInstance();
+
+        //            audioSession.SetCategory(
+        //                AVFoundation.AVAudioSessionCategory.PlayAndRecord,
+        //                AVFoundation.AVAudioSessionCategoryOptions.DefaultToSpeaker |
+        //                AVFoundation.AVAudioSessionCategoryOptions.AllowBluetooth |
+        //                AVFoundation.AVAudioSessionCategoryOptions.AllowBluetoothA2DP |
+        //                AVFoundation.AVAudioSessionCategoryOptions.MixWithOthers |
+        //                AVFoundation.AVAudioSessionCategoryOptions.AllowAirPlay |
+        //                AVFoundation.AVAudioSessionCategoryOptions.InterruptSpokenAudioAndMixWithOthers
+        //            );
+
+        //            audioSession.SetMode(AVFoundation.AVAudioSession.ModeDefault, out _);
+        //            audioSession.SetActive(true);
+
+        //            // ✅ Create recorder instance
+        //            recorder = new iOSAudioRecorder();
+
+        //            // Dispose previous instance cleanly
+        //            if (recorder != null)
+        //            {
+        //                // later, when cleaning up (before recorder = null)
+        //                recorder.OnInterruptionBegan -= HandleInterruptionBegan;
+        //                recorder.OnRecordingResumed -= Recorder_OnRecordingResumed;
+
+        //                recorder.Dispose();   // IMPORTANT FIX
+        //                recorder = null;
+        //            }
+
+        //            // Now safely create the new recorder
+        //            recorder = new iOSAudioRecorder();
+
+        //            // subscribe
+        //            recorder.OnInterruptionBegan += HandleInterruptionBegan;
+        //            recorder.OnRecordingResumed += Recorder_OnRecordingResumed;
+
+        //            await recorder.Start(filePath);
+        //        }
+
+        //        private async void HandleInterruptionBegan()
+        //        {
+        //            try
+        //            {
+        //                if (recorder?.IsRecording == true)
+        //                    await recorder.Stop();
+
+        //                await StopRecognitionOrTranscriptionAsync();
+        //                SaveElapsedTime();
+        //                StopDurationTimer();
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Console.WriteLine($"OnInterruptionBegan Error: {ex.Message}");
+        //            }
+        //        }
+
+        //        private async void Recorder_OnRecordingResumed(string newFilePath)
+        //        {
+        //            try
+        //            {
+        //                recordedParts.Add(newFilePath);
+
+        //                await StartRecognitionOrTranscriptionAsync();
+
+        //                _recordStartTime = DateTime.UtcNow;
+        //                StartDurationTimer();
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Console.WriteLine($"OnInterruptionEnded Error: {ex.Message}");
+        //            }
+        //        }
+
+        //        private async void HandleInterruptionEnded()
+        //        {
+        //            try
+        //            {
+        //                var newFilePath = Path.Combine(FileSystem.AppDataDirectory,
+        //                    $"resume_{DateTime.Now:yyyyMMddHHmmss}.m4a");
+
+        //                // re-create recorder instance or call appropriate resume logic
+        //                //recorder = new iOSAudioRecorder();
+        //                await recorder.Start(newFilePath);
+        //                recordedParts.Add(newFilePath);
+
+        //                await StartRecognitionOrTranscriptionAsync();
+
+        //                _recordStartTime = DateTime.UtcNow;
+        //                StartDurationTimer();
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Console.WriteLine($"OnInterruptionEnded Error: {ex.Message}");
+        //            }
+        //        }
+        //#endif
+
 #if IOS
         private async Task StartRecordingIOSAsync(string filePath)
         {
@@ -964,6 +1298,7 @@ namespace Cardrly.ViewModels.MeetingsAi
             {
                 // later, when cleaning up (before recorder = null)
                 recorder.OnInterruptionBegan -= HandleInterruptionBegan;
+                recorder.OnInterruptionEnded -= HandleInterruptionEnded;
                 recorder.OnRecordingResumed -= Recorder_OnRecordingResumed;
 
                 recorder.Dispose();   // IMPORTANT FIX
@@ -975,6 +1310,7 @@ namespace Cardrly.ViewModels.MeetingsAi
 
             // subscribe
             recorder.OnInterruptionBegan += HandleInterruptionBegan;
+            recorder.OnInterruptionEnded += HandleInterruptionEnded;
             recorder.OnRecordingResumed += Recorder_OnRecordingResumed;
 
             await recorder.Start(filePath);
@@ -984,12 +1320,14 @@ namespace Cardrly.ViewModels.MeetingsAi
         {
             try
             {
-                if (recorder?.IsRecording == true)
-                    await recorder.Stop();
 
                 await StopRecognitionOrTranscriptionAsync();
                 SaveElapsedTime();
                 StopDurationTimer();
+
+                if (recorder?.IsRecording == true)
+                    await recorder.Stop();
+
             }
             catch (Exception ex)
             {
@@ -1001,12 +1339,13 @@ namespace Cardrly.ViewModels.MeetingsAi
         {
             try
             {
+
                 recordedParts.Add(newFilePath);
 
-                await StartRecognitionOrTranscriptionAsync();
+                //await StartRecognitionOrTranscriptionAsync();
 
-                _recordStartTime = DateTime.UtcNow;
-                StartDurationTimer();
+                //_recordStartTime = DateTime.UtcNow;
+                //StartDurationTimer();
             }
             catch (Exception ex)
             {
@@ -1018,13 +1357,17 @@ namespace Cardrly.ViewModels.MeetingsAi
         {
             try
             {
-                var newFilePath = Path.Combine(FileSystem.AppDataDirectory,
-                    $"resume_{DateTime.Now:yyyyMMddHHmmss}.m4a");
+                //var newFilePath = Path.Combine(FileSystem.AppDataDirectory,
+                //$"resume_{DateTime.Now:yyyyMMddHHmmss}.m4a");
 
                 // re-create recorder instance or call appropriate resume logic
                 //recorder = new iOSAudioRecorder();
-                await recorder.Start(newFilePath);
-                recordedParts.Add(newFilePath);
+
+                //await recorder.Start(newFilePath);
+                //recordedParts.Add(newFilePath);
+
+                var session = AVFoundation.AVAudioSession.SharedInstance();
+                session.SetActive(true, out _);
 
                 await StartRecognitionOrTranscriptionAsync();
 
