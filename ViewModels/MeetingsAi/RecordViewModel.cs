@@ -1,5 +1,4 @@
 ﻿using Akavache;
-using AVFoundation;
 using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models;
@@ -942,16 +941,16 @@ namespace Cardrly.ViewModels.MeetingsAi
         private async Task StartRecordingIOSAsync(string filePath)
         {
             // ✅ Configure and activate the audio session
-            var audioSession = AVAudioSession.SharedInstance();
+            var audioSession = AVFoundation.AVAudioSession.SharedInstance();
 
             audioSession.SetCategory(
-                AVAudioSessionCategory.PlayAndRecord,
-                AVAudioSessionCategoryOptions.DefaultToSpeaker |
-                AVAudioSessionCategoryOptions.AllowBluetooth |
-                AVAudioSessionCategoryOptions.AllowBluetoothA2DP |
-                AVAudioSessionCategoryOptions.MixWithOthers |
-                AVAudioSessionCategoryOptions.AllowAirPlay |
-                AVAudioSessionCategoryOptions.InterruptSpokenAudioAndMixWithOthers
+                AVFoundation.AVAudioSessionCategory.PlayAndRecord,
+                AVFoundation.AVAudioSessionCategoryOptions.DefaultToSpeaker |
+                AVFoundation.AVAudioSessionCategoryOptions.AllowBluetooth |
+                AVFoundation.AVAudioSessionCategoryOptions.AllowBluetoothA2DP |
+                AVFoundation.AVAudioSessionCategoryOptions.MixWithOthers |
+                AVFoundation.AVAudioSessionCategoryOptions.AllowAirPlay |
+                AVFoundation.AVAudioSessionCategoryOptions.InterruptSpokenAudioAndMixWithOthers
             );
 
             audioSession.SetMode(AVFoundation.AVAudioSession.ModeDefault, out _);
