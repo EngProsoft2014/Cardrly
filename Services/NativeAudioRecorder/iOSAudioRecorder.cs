@@ -126,7 +126,7 @@ namespace Cardrly.Services.NativeAudioRecorder
                         recorder = newRecorder; // replace old instance
                         currentFilePath = newPath;
 
-                        //OnInterruptionEnded?.Invoke();
+                        OnInterruptionEnded?.Invoke();
                         OnRecordingResumed?.Invoke(newPath);
                     }
                 });
