@@ -1,4 +1,5 @@
 ﻿using Akavache;
+using AVFoundation;
 using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models;
@@ -941,29 +942,41 @@ namespace Cardrly.ViewModels.MeetingsAi
         private async Task StartRecordingIOSAsync(string filePath)
         {
             // ✅ Configure and activate the audio session
-            var audioSession = AVFoundation.AVAudioSession.SharedInstance();
+            var audioSession = AVAudioSession.SharedInstance();
 
             audioSession.SetCategory(
-                AVFoundation.AVAudioSessionCategory.PlayAndRecord,
-                AVFoundation.AVAudioSessionCategoryOptions.DefaultToSpeaker |
-                AVFoundation.AVAudioSessionCategoryOptions.AllowBluetooth |
-                AVFoundation.AVAudioSessionCategoryOptions.AllowBluetoothA2DP
+                AVAudioSessionCategory.PlayAndRecord,
+                AVAudioSessionCategoryOptions.DefaultToSpeaker |
+                AVAudioSessionCategoryOptions.AllowBluetooth |
+                AVAudioSessionCategoryOptions.AllowBluetoothA2DP |
+                AVAudioSessionCategoryOptions.MixWithOthers |
+                AVAudioSessionCategoryOptions.AllowAirPlay |
+                AVAudioSessionCategoryOptions.InterruptSpokenAudioAndMixWithOthers
             );
 
             audioSession.SetMode(AVFoundation.AVAudioSession.ModeDefault, out _);
             audioSession.SetActive(true);
 
             // ✅ Create recorder instance
-            recorder = new Cardrly.Services.NativeAudioRecorder.iOSAudioRecorder();
+            recorder = new iOSAudioRecorder();
 
+            // Dispose previous instance cleanly
+            if (recorder != null)
+            {
+                // later, when cleaning up (before recorder = null)
+                recorder.OnInterruptionBegan -= HandleInterruptionBegan;
+                recorder.OnRecordingResumed -= Recorder_OnRecordingResumed;
 
-            // later, when cleaning up (before recorder = null)
-            recorder.OnInterruptionBegan -= HandleInterruptionBegan;
-            recorder.OnInterruptionEnded -= HandleInterruptionEnded;
+                recorder.Dispose();   // IMPORTANT FIX
+                recorder = null;
+            }
+
+            // Now safely create the new recorder
+            recorder = new iOSAudioRecorder();
 
             // subscribe
             recorder.OnInterruptionBegan += HandleInterruptionBegan;
-            recorder.OnInterruptionEnded += HandleInterruptionEnded;
+            recorder.OnRecordingResumed += Recorder_OnRecordingResumed;
 
             await recorder.Start(filePath);
         }
@@ -982,6 +995,23 @@ namespace Cardrly.ViewModels.MeetingsAi
             catch (Exception ex)
             {
                 Console.WriteLine($"OnInterruptionBegan Error: {ex.Message}");
+            }
+        }
+
+        private async void Recorder_OnRecordingResumed(string newFilePath)
+        {
+            try
+            {
+                recordedParts.Add(newFilePath);
+
+                await StartRecognitionOrTranscriptionAsync();
+
+                _recordStartTime = DateTime.UtcNow;
+                StartDurationTimer();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"OnInterruptionEnded Error: {ex.Message}");
             }
         }
 

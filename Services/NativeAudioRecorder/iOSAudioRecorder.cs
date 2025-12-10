@@ -38,7 +38,10 @@ namespace Cardrly.Services.NativeAudioRecorder
                     AVAudioSessionCategory.PlayAndRecord,
                     AVAudioSessionCategoryOptions.DefaultToSpeaker |
                     AVAudioSessionCategoryOptions.AllowBluetoothA2DP |
-                    AVAudioSessionCategoryOptions.AllowBluetooth,
+                    AVAudioSessionCategoryOptions.AllowBluetooth |
+                    AVAudioSessionCategoryOptions.MixWithOthers |
+                    AVAudioSessionCategoryOptions.AllowAirPlay |
+                    AVAudioSessionCategoryOptions.InterruptSpokenAudioAndMixWithOthers,
                     out error);
 
                 audioSession.SetMode(AVAudioSession.ModeDefault, out error);
@@ -123,7 +126,7 @@ namespace Cardrly.Services.NativeAudioRecorder
                         recorder = newRecorder; // replace old instance
                         currentFilePath = newPath;
 
-                        OnInterruptionEnded?.Invoke();
+                        //OnInterruptionEnded?.Invoke();
                         OnRecordingResumed?.Invoke(newPath);
                     }
                 });
