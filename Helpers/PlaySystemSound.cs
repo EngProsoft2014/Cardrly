@@ -4,6 +4,7 @@ using Android.Content;
 using Android.App;
 #elif IOS || MACCATALYST
 using AudioToolbox;
+using Foundation;
 #endif
 
 namespace Cardrly.Helpers
@@ -20,7 +21,12 @@ namespace Cardrly.Helpers
             ringtone.Play();
 
 #elif IOS || MACCATALYST
-            SystemSound.Vibrate.PlaySystemSound(); // or any predefined SystemSound
+            //SystemSound.Vibrate.PlaySystemSound(); // or any predefined SystemSound
+
+            // Load bundled sound file
+            var soundUrl = NSUrl.FromFilename("ringtone.mp3"); // your sound file
+            SystemSound sound = new SystemSound(soundUrl);
+            sound.PlaySystemSound();
 #endif
         }
     }
