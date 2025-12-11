@@ -90,6 +90,8 @@ namespace Cardrly
                         {
                             UserDialogs.Instance.Loading("Resuming upload...", maskType: MaskType.Clear);
                         });
+
+                        UploadInProgress = false;
                     });
 
                     MessagingCenter.Subscribe<object>(this, "AppBackgrounded", sender =>
@@ -157,8 +159,7 @@ namespace Cardrly
             IsInBackground = false;
             if (UploadInProgress)
             {
-                MessagingCenter.Send<object>(this, "AppForegrounded");
-                UploadInProgress = false;
+                MessagingCenter.Send<object>(this, "AppForegrounded");      
             }
 
             string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");

@@ -1089,7 +1089,7 @@ namespace Cardrly.Helpers
                     context.StartForegroundService(intent);
 #elif IOS
                     var uploader = new Platforms.iOS.BackgroundUploader();
-                    await uploader.UploadFileAsync(request.AudioPath, Utility.ServerUrl + uri, authToken);
+                    await uploader.UploadFileAsync(request, Utility.ServerUrl + uri, authToken);
 #endif
                     return (default!, null);
                 }
@@ -1222,7 +1222,7 @@ namespace Cardrly.Helpers
                         context.StartForegroundService(intent);
 #elif IOS
                         var uploader = new Platforms.iOS.BackgroundUploader();
-                        await uploader.UploadFileAsync(request.AudioPath, Utility.ServerUrl + uri, authToken);
+                        await uploader.UploadFileAsync(request, Utility.ServerUrl + uri, authToken);
 #endif
                     }
 
@@ -1253,7 +1253,7 @@ namespace Cardrly.Helpers
                 var response = await httpClient.PostAsync(Utility.ServerUrl + uri, progressContent);
                 stopwatch.Stop();
 
-                MessagingCenter.Unsubscribe<App>(this, "AppBackgrounded");
+                //MessagingCenter.Unsubscribe<App>(this, "AppBackgrounded");
 
                 Console.WriteLine($"✅ Upload completed in {stopwatch.Elapsed.TotalSeconds:F1} seconds.");
 
