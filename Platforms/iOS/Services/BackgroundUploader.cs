@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.Maui.Dispatching;
 
 namespace Cardrly.Platforms.iOS
 {
@@ -71,7 +72,6 @@ namespace Cardrly.Platforms.iOS
             return await tcs.Task;
         }
 
-        // Called when upload completes (success or failure)
         [Export("URLSession:task:didCompleteWithError:")]
         public void DidCompleteWithError(NSUrlSession session, NSUrlSessionTask task, NSError error)
         {
@@ -83,31 +83,40 @@ namespace Cardrly.Platforms.iOS
                 {
                     tcs.TrySetResult(true);
                     UploadCompleted?.Invoke(uploadId, true);
-                    //Console.WriteLine($"✅ Upload completed: {uploadId}");
-                    UserDialogs.Instance.Loading("Uploading... 100%", null, true, MaskType.Clear, null);
+
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.Loading("Uploading... 100%", null, true, MaskType.Clear, null);
+                    });
                 }
                 else
                 {
                     tcs.TrySetResult(false);
                     UploadCompleted?.Invoke(uploadId, false);
-                    //Console.WriteLine($"❌ Upload failed: {uploadId}, {error.LocalizedDescription}");
-                    UserDialogs.Instance.Loading("❌ Upload failed !!", null, true, MaskType.Clear, null);
+
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.Loading("❌ Upload failed !!", null, true, MaskType.Clear, null);
+                    });
                 }
 
                 _tasks.Remove(uploadId);
             }
         }
 
-        // Upload progress reporting
         [Export("URLSession:task:didSendBodyData:totalBytesSent:totalBytesExpectedToSend:")]
         public void DidSendBodyData(NSUrlSession session, NSUrlSessionTask task, long bytesSent, long totalBytesSent, long totalBytesExpectedToSend)
         {
             double progress = (double)totalBytesSent / totalBytesExpectedToSend;
-            //Console.WriteLine($"📤 Upload progress ({task.TaskDescription}): {progress:P1}");
-            UserDialogs.Instance.Loading(
-                                $"📤 Upload progress... ({task.TaskDescription}): {progress:P1}",
-                                maskType: MaskType.Clear);
+
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                UserDialogs.Instance.Loading(
+                    $"📤 Upload progress... ({task.TaskDescription}): {progress:P1}",
+                    maskType: MaskType.Clear);
+            });
         }
+
 
         // Called when all background session events are delivered (iOS resumes app to finish uploads)
         [Export("URLSessionDidFinishEventsForBackgroundURLSession:")]
