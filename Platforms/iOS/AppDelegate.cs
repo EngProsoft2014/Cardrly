@@ -93,6 +93,9 @@ namespace Cardrly
             Console.WriteLine($"📡 Background upload session reconnected: {sessionIdentifier}");
             BackgroundSessionCompletionHandler = completionHandler;
 
+            // Recreate session with same ID
+            BackgroundUploader.Instance.RecreateSession();
+
             BackgroundUploader.Instance.SetCompletionHandler(completionHandler);
         }
 

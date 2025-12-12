@@ -146,5 +146,15 @@ namespace Cardrly.Platforms.iOS
         {
             _completionHandler = handler;
         }
+
+
+        public void RecreateSession()
+        {
+            var config = NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration("com.cardrly.upload");
+            config.AllowsCellularAccess = true;
+            config.WaitsForConnectivity = true;
+
+            session = NSUrlSession.FromConfiguration(config, this, new NSOperationQueue());
+        }
     }
 }
