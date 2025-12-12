@@ -22,6 +22,8 @@ namespace Cardrly.Platforms.iOS
         private static readonly Lazy<BackgroundUploader> _instance = new(() => new BackgroundUploader());
         public static BackgroundUploader Instance => _instance.Value;
 
+        private Action? _completionHandler;
+
         public BackgroundUploader() { }
 
         /// <summary>
@@ -123,8 +125,14 @@ namespace Cardrly.Platforms.iOS
         public void DidFinishEventsForBackgroundUrlSession(NSUrlSession session)
         {
             Console.WriteLine("🔔 iOS delivered background upload events.");
+
+            _completionHandler?.Invoke();
+            _completionHandler = null;
         }
 
-
+        public void SetCompletionHandler(Action handler)
+        {
+            _completionHandler = handler;
+        }
     }
 }

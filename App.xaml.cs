@@ -83,25 +83,25 @@ namespace Cardrly
                         MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service), Rep, _service, _audioService));
                     }
 
-                    // Subscribe only for this upload
-                    MessagingCenter.Subscribe<object>(this, "AppForegrounded", sender =>
-                    {
-                        MainThread.BeginInvokeOnMainThread(() =>
-                        {
-                            UserDialogs.Instance.Loading("Resuming upload...", maskType: MaskType.Clear);
-                        });
+                    //// Subscribe only for this upload
+                    //MessagingCenter.Subscribe<object>(this, "AppForegrounded", sender =>
+                    //{
+                    //    MainThread.BeginInvokeOnMainThread(() =>
+                    //    {
+                    //        UserDialogs.Instance.Loading("Resuming upload...", maskType: MaskType.Clear);
+                    //    });
 
-                        UploadInProgress = false;
-                    });
+                    //    UploadInProgress = false;
+                    //});
 
-                    MessagingCenter.Subscribe<object>(this, "AppBackgrounded", sender =>
-                    {
-                        // Optionally hide the HUD when app goes background
-                        MainThread.BeginInvokeOnMainThread(() =>
-                        {
-                            UserDialogs.Instance.HideHud();
-                        });
-                    });
+                    //MessagingCenter.Subscribe<object>(this, "AppBackgrounded", sender =>
+                    //{
+                    //    // Optionally hide the HUD when app goes background
+                    //    MainThread.BeginInvokeOnMainThread(() =>
+                    //    {
+                    //        UserDialogs.Instance.HideHud();
+                    //    });
+                    //});
                 }
 
             }
@@ -145,6 +145,32 @@ namespace Cardrly
         {
             base.OnStart();
             IsInBackground = false;
+
+            MessagingCenter.Subscribe<object>(this, "AppForegrounded", async sender =>
+            {
+                await MainThread.InvokeOnMainThreadAsync(async () =>
+                {
+                    if (UserDialogs.Instance != null && App.Current?.MainPage != null)
+                    {
+                        await Task.Delay(100); // wait for UI to be ready
+                        UserDialogs.Instance.Loading("Resuming upload...", maskType: MaskType.Clear);
+                    }
+                });
+
+                UploadInProgress = false;
+            });
+
+            MessagingCenter.Subscribe<object>(this, "AppBackgrounded", async sender =>
+            {
+                await MainThread.InvokeOnMainThreadAsync(async () =>
+                {
+                    if (UserDialogs.Instance != null && App.Current?.MainPage != null)
+                    {
+                        await Task.Delay(50);
+                        UserDialogs.Instance.HideHud();
+                    }
+                });
+            });
             //if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             //{
             //    // Connection to internet is Not available

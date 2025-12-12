@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using Cardrly.Platforms.iOS;
+using Foundation;
 using UIKit;
 using UserNotifications;
 
@@ -91,6 +92,9 @@ namespace Cardrly
         {
             Console.WriteLine($"📡 Background upload session reconnected: {sessionIdentifier}");
             BackgroundSessionCompletionHandler = completionHandler;
+
+            BackgroundUploader.Instance.SetCompletionHandler(completionHandler);
         }
+
     }
 }
