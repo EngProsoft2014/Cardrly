@@ -24,7 +24,16 @@ namespace Cardrly.Platforms.iOS
 
         private Action? _completionHandler;
 
-        public BackgroundUploader() { }
+        private NSUrlSession? session;
+
+        public BackgroundUploader() 
+        {
+            var config = NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration("com.cardrly.upload");
+            config.AllowsCellularAccess = true;
+            config.WaitsForConnectivity = true;
+
+            session = NSUrlSession.FromConfiguration(config, this, new NSOperationQueue());
+        }
 
         /// <summary>
         /// Upload audio file in background using NSURLSession.
@@ -35,12 +44,15 @@ namespace Cardrly.Platforms.iOS
                 throw new FileNotFoundException("Audio file does not exist.", req.AudioPath);
 
             // Use a fixed session identifier per upload to allow resume if app terminates
-            var sessionId = $"com.cardrly.upload.{req.AudioUploadId}";
-            var config = NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration(sessionId);
-            config.AllowsCellularAccess = true;
-            config.WaitsForConnectivity = true;
+            //var sessionId = $"com.cardrly.upload.{req.AudioUploadId}";
+            //var config = NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration(sessionId);
 
-            var session = NSUrlSession.FromConfiguration(config, this, new NSOperationQueue());
+            //var config = NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration("com.cardrly.upload");
+
+            //config.AllowsCellularAccess = true;
+            //config.WaitsForConnectivity = true;
+
+            //var session = NSUrlSession.FromConfiguration(config, this, new NSOperationQueue());
 
             var request = new NSMutableUrlRequest(new NSUrl(apiUrl))
             {
