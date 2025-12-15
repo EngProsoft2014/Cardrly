@@ -40,8 +40,8 @@ namespace Cardrly.Platforms.iOS
         /// </summary>
         public async Task<bool> UploadFileAsync(AudioUploadRequest req, string apiUrl, string token)
         {
-            if (!File.Exists(req.AudioPath))
-                throw new FileNotFoundException("Audio file does not exist.", req.AudioPath);
+            //if (!File.Exists(req.AudioPath))
+            //throw new FileNotFoundException("Audio file does not exist.", req.AudioPath);
 
             // Use a fixed session identifier per upload to allow resume if app terminates
             //var sessionId = $"com.cardrly.upload.{req.AudioUploadId}";
@@ -53,6 +53,23 @@ namespace Cardrly.Platforms.iOS
             //config.WaitsForConnectivity = true;
 
             //var session = NSUrlSession.FromConfiguration(config, this, new NSOperationQueue());
+
+            // Ensure we have a file path
+            string filePath = req.AudioPath;
+
+            if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+            {
+                if (req.AudioBytes != null && req.AudioBytes.Length > 0)
+                {
+                    // Write bytes to temp file
+                    filePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}{req.Extension}");
+                    File.WriteAllBytes(filePath, req.AudioBytes);
+                }
+                else
+                {
+                    throw new FileNotFoundException("No valid audio source for upload.", req.AudioPath);
+                }
+            }
 
             var request = new NSMutableUrlRequest(new NSUrl(apiUrl))
             {
@@ -77,8 +94,11 @@ namespace Cardrly.Platforms.iOS
             _tasks[req.AudioUploadId] = tcs;
 
             // Create upload task
-            var uploadTask = session.CreateUploadTask(request, NSUrl.FromFilename(req.AudioPath));
-            uploadTask.TaskDescription = req.AudioUploadId; // Important for tracking in DidCompleteWithError
+            //var uploadTask = session.CreateUploadTask(request, NSUrl.FromFilename(req.AudioPath));
+            var fileUrl = NSUrl.FromFilename(filePath);
+            var uploadTask = session!.CreateUploadTask(request, fileUrl);
+            uploadTask.TaskDescription = req.AudioUploadId ?? Guid.NewGuid().ToString();
+            //uploadTask.TaskDescription = req.AudioUploadId; // Important for tracking in DidCompleteWithError
             uploadTask.Resume();
 
             Console.WriteLine($"🚀 Started background upload: {req.AudioUploadId}");

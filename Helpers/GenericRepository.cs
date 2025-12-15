@@ -1088,8 +1088,11 @@ namespace Cardrly.Helpers
                     intent.PutExtra("token", authToken);
                     context.StartForegroundService(intent);
 #elif IOS
-                    var uploader = new Platforms.iOS.BackgroundUploader();
-                    await uploader.UploadFileAsync(request, Utility.ServerUrl + uri, authToken);
+                    //var uploader = new Platforms.iOS.BackgroundUploader();
+                    //await uploader.UploadFileAsync(request, Utility.ServerUrl + uri, authToken);
+
+                    // Use the singleton, not a new instance
+                    await Platforms.iOS.BackgroundUploader.Instance.UploadFileAsync(request, Utility.ServerUrl + uri, authToken);
 #endif
                     return (default!, null);
                 }
@@ -1221,8 +1224,10 @@ namespace Cardrly.Helpers
                         intent.PutExtra("token", authToken);
                         context.StartForegroundService(intent);
 #elif IOS
-                        var uploader = new Platforms.iOS.BackgroundUploader();
-                        await uploader.UploadFileAsync(request, Utility.ServerUrl + uri, authToken);
+                        //var uploader = new Platforms.iOS.BackgroundUploader();
+                        //await uploader.UploadFileAsync(request, Utility.ServerUrl + uri, authToken);
+                        // Use the singleton, not a new instance
+                        await Platforms.iOS.BackgroundUploader.Instance.UploadFileAsync(request, Utility.ServerUrl + uri, authToken);
 #endif
                     }
 
@@ -1288,6 +1293,14 @@ namespace Cardrly.Helpers
 
                 return (default!, errorResult);
             }
+#if IOS
+            catch (HttpRequestException hre) when (hre.InnerException is Foundation.NSErrorException nserr && nserr.Error.Code == -1005)
+            {
+                Console.WriteLine("⚠️ iOS connection lost, retrying with BackgroundUploader...");
+                await Platforms.iOS.BackgroundUploader.Instance.UploadFileAsync(request, Utility.ServerUrl + uri, authToken);
+                return (default!, null);
+            }
+#endif
             catch (Exception ex)
             {
                 MainThread.BeginInvokeOnMainThread(() => UserDialogs.Instance.HideHud());
