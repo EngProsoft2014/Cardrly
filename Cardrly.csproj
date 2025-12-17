@@ -83,7 +83,7 @@
 		<CodesignProvision>Cardrly Development Provisioning</CodesignProvision>
 		<CodesignKey>Apple Development: TAREK GABER (9RKU8MRSBH)</CodesignKey>
 		<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
-		<ApplicationVersion>9</ApplicationVersion>
+		<ApplicationVersion>12</ApplicationVersion>
 		<ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 	</PropertyGroup>
 
@@ -92,43 +92,43 @@
 		<CodesignProvision>Cardrly Provisioning</CodesignProvision>
 		<CodesignKey>Apple Distribution: ENG PRO SOFT, LLC (YZWTVALFLW)</CodesignKey>
 		<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
-		<ApplicationVersion>9</ApplicationVersion>
+		<ApplicationVersion>12</ApplicationVersion>
 		<ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
-	  <AndroidPackageFormat>apk</AndroidPackageFormat>
-	  <ApplicationVersion>9</ApplicationVersion>
+	  <AndroidPackageFormat>aab</AndroidPackageFormat>
+	  <ApplicationVersion>12</ApplicationVersion>
 	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 	  <AndroidUseAapt2>True</AndroidUseAapt2>
 	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
-	  <ApplicationVersion>9</ApplicationVersion>
+	  <ApplicationVersion>12</ApplicationVersion>
 	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 	  <AndroidUseAapt2>True</AndroidUseAapt2>
 	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
-	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	  <AndroidPackageFormat>aab</AndroidPackageFormat>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-maccatalyst|AnyCPU'">
-	  <ApplicationVersion>9</ApplicationVersion>
+	  <ApplicationVersion>12</ApplicationVersion>
 	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-windows10.0.19041.0|AnyCPU'">
-	  <ApplicationVersion>9</ApplicationVersion>
+	  <ApplicationVersion>12</ApplicationVersion>
 	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-maccatalyst|AnyCPU'">
-	  <ApplicationVersion>9</ApplicationVersion>
+	  <ApplicationVersion>12</ApplicationVersion>
 	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-windows10.0.19041.0|AnyCPU'">
-	  <ApplicationVersion>9</ApplicationVersion>
+	  <ApplicationVersion>12</ApplicationVersion>
 	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-ios'">
@@ -150,6 +150,7 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Controls.UserDialogs.Maui" Version="1.7.0" />
 		<PackageReference Include="GoogleApi" Version="5.8.11" />
+		<PackageReference Include="HarfBuzzSharp" Version="8.3.1.2" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.2" />
 		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.42.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />
@@ -163,8 +164,10 @@
 		<PackageReference Include="Plugin.NFC" Version="0.1.26" />
 		<PackageReference Include="Polly" Version="8.5.0" />
 		<PackageReference Include="Sentry.Maui" Version="5.2.0" />
+		<PackageReference Include="SkiaSharp" Version="3.119.1" />
 		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0" />
-		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="3.119.0" />
+		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="3.119.1" />
+		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.9" />
 		<PackageReference Include="Syncfusion.Maui.Calendar" Version="27.2.5" />
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="27.2.5" />
 		<PackageReference Include="Syncfusion.Maui.ProgressBar" Version="27.2.5" />
@@ -172,7 +175,7 @@
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.7.1" />
 		<PackageReference Include="ZXing.Net.Maui.Controls" Version="0.4.0" />
 	</ItemGroup>
-	
+
 
 	<ItemGroup>
 	  <Resource Include="Platforms\iOS\Resources\ringtone.wav" />

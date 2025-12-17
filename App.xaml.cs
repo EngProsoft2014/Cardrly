@@ -16,7 +16,7 @@ using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
 using Cardrly.Services.AudioStream;
 using Controls.UserDialogs.Maui;
-
+using System.Reactive.Concurrency;
 
 
 
@@ -53,6 +53,7 @@ namespace Cardrly
                 StaticMember.notificationManager = notificationManagerService;
                 LoadSetting();
                 _audioService = audioService;
+
                 BlobCache.ApplicationName = "CardrlyDB";
                 BlobCache.EnsureInitialized();
                 // Register global exception handling
