@@ -1366,6 +1366,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remember me.
+        /// </summary>
+        internal static string lblRememberme {
+            get {
+                return ResourceManager.GetString("lblRememberme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reminder.
         /// </summary>
         internal static string lblReminder {

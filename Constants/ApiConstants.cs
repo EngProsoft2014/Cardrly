@@ -22,6 +22,10 @@
         public static string AccountName = "AccountName";
         public static string ExpireDate = "ExpireDate";
         public static string GuidKey = "GuidKey";
+
+        public static string rememberMe = "rememberMe";
+        public static string rememberMeUserName = "rememberMeUserName";
+        public static string rememberMePassword = "rememberMePassword";
         //End Preferences Key 
         #endregion
 

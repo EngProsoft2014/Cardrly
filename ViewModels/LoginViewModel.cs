@@ -30,6 +30,8 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         public ApplicationUserResponse userResponse = new ApplicationUserResponse();
         private readonly IAudioStreamService _audioService;
+        [ObservableProperty]
+        bool isRememberMe = false;
         #endregion
 
         #region Service
@@ -43,7 +45,21 @@ namespace Cardrly.ViewModels
             Rep = GenericRep;
             _service = service;
             _audioService = audioService;
+
+            Init();
         }
+        #endregion
+
+        #region Methods
+        void Init()
+        {
+            if (Preferences.Default.Get<bool>(ApiConstants.rememberMe, false))
+            {
+                IsRememberMe = true;
+                LoginRequest.UserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
+                LoginRequest.Password = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
+            }
+        } 
         #endregion
 
         #region RelayCommand
@@ -64,6 +80,20 @@ namespace Cardrly.ViewModels
             else
             {
                 UserDialogs.Instance.ShowLoading();
+
+                if(IsRememberMe)
+                {
+                    Preferences.Default.Set(ApiConstants.rememberMe, true);
+                    Preferences.Default.Set(ApiConstants.rememberMeUserName, model.UserName);
+                    Preferences.Default.Set(ApiConstants.rememberMePassword, model.Password);
+                }
+                else
+                {
+                    Preferences.Default.Set(ApiConstants.rememberMe, false);
+                    Preferences.Default.Remove(ApiConstants.rememberMeUserName);
+                    Preferences.Default.Remove(ApiConstants.rememberMePassword);
+                }
+
                 var json = await Rep.PostTRAsync<ApplicationUserLoginRequest, ApplicationUserResponse>(ApiConstants.LoginApi, model);
                 
                 if (json.Item1 != null)

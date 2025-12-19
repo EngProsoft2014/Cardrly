@@ -45,7 +45,17 @@
                         </Image>
                     </Grid>
                 </Border>
-                <Label Text="{x:Static res:AppResources.lblForgotPassword}" TextColor="#327cdb" FontSize="14" VerticalOptions="CenterAndExpand"
+
+                <StackLayout Orientation="Horizontal">
+                    <CheckBox Color="#327cdb" IsChecked="{Binding IsRememberMe}">
+                    </CheckBox>
+
+                    <Label Text="{x:Static res:AppResources.lblRememberme}" TextColor="#333" FontSize="14" VerticalTextAlignment="Center" FontAttributes="Bold">
+                    </Label>
+                </StackLayout>
+                
+                
+                <Label Text="{x:Static res:AppResources.lblForgotPassword}" TextColor="#327cdb" FontSize="14" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"
                        FontAttributes="Bold">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ForgotPasswordClickCommand}"></TapGestureRecognizer>
