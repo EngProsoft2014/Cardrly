@@ -304,6 +304,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Card Name.
+        /// </summary>
+        internal static string hdrCardName {
+            get {
+                return ResourceManager.GetString("hdrCardName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cards.
         /// </summary>
         internal static string hdrCards {
@@ -358,11 +367,29 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Image.
+        /// </summary>
+        internal static string hdrImage {
+            get {
+                return ResourceManager.GetString("hdrImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Leads.
         /// </summary>
         internal static string hdrLeads {
             get {
                 return ResourceManager.GetString("hdrLeads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link.
+        /// </summary>
+        internal static string hdrLink {
+            get {
+                return ResourceManager.GetString("hdrLink", resourceCulture);
             }
         }
         
@@ -399,6 +426,15 @@ namespace Cardrly.Resources.Lan {
         internal static string hdrSelectLanguage {
             get {
                 return ResourceManager.GetString("hdrSelectLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taps.
+        /// </summary>
+        internal static string hdrTaps {
+            get {
+                return ResourceManager.GetString("hdrTaps", resourceCulture);
             }
         }
         

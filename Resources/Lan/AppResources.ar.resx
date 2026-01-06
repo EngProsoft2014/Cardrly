@@ -1107,4 +1107,16 @@
   <data name="btnClose" xml:space="preserve">
     <value>غلق</value>
   </data>
+  <data name="hdrImage" xml:space="preserve">
+    <value>صورة</value>
+  </data>
+  <data name="hdrLink" xml:space="preserve">
+    <value>رابط</value>
+  </data>
+  <data name="hdrCardName" xml:space="preserve">
+    <value>اسم البطاقة</value>
+  </data>
+  <data name="hdrTaps" xml:space="preserve">
+    <value>نقرات</value>
+  </data>
 </root>
