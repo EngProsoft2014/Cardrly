@@ -35,7 +35,7 @@
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">23.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
@@ -77,14 +77,15 @@
 	<PropertyGroup Condition="'$(TargetFramework)'=='net8.0-android'">
 		<AndroidEnable16kPageSupport>true</AndroidEnable16kPageSupport>
 	</PropertyGroup>
-	
+
+
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
 		<CreatePackage>false</CreatePackage>
 		<CodesignProvision>Cardrly Development Provisioning</CodesignProvision>
 		<CodesignKey>Apple Development: TAREK GABER (9RKU8MRSBH)</CodesignKey>
 		<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
-		<ApplicationVersion>12</ApplicationVersion>
-		<ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+		<ApplicationVersion>18</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'">
@@ -92,44 +93,48 @@
 		<CodesignProvision>Cardrly Provisioning</CodesignProvision>
 		<CodesignKey>Apple Distribution: ENG PRO SOFT, LLC (YZWTVALFLW)</CodesignKey>
 		<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
-		<ApplicationVersion>12</ApplicationVersion>
-		<ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+		<ApplicationVersion>18</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
-	  <AndroidPackageFormat>apk</AndroidPackageFormat>
-	  <ApplicationVersion>12</ApplicationVersion>
-	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
-	  <AndroidUseAapt2>True</AndroidUseAapt2>
-	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+		<AndroidSupportedAbis>arm64-v8a</AndroidSupportedAbis>
+		<AndroidEnable16kPageSupport>true</AndroidEnable16kPageSupport>
+		<RunAOTCompilation>false</RunAOTCompilation>
+		<AndroidUseLLVM>false</AndroidUseLLVM>
+		<AndroidLinkMode>None</AndroidLinkMode>
+		<AndroidPackageFormat>aab</AndroidPackageFormat>
+		<ApplicationVersion>18</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
-	  <ApplicationVersion>12</ApplicationVersion>
-	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+		<AndroidSupportedAbis>arm64-v8a;x86_64</AndroidSupportedAbis>
+	  <ApplicationVersion>18</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	  <AndroidUseAapt2>True</AndroidUseAapt2>
 	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
 	  <AndroidPackageFormat>apk</AndroidPackageFormat>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-maccatalyst|AnyCPU'">
-	  <ApplicationVersion>12</ApplicationVersion>
-	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+	  <ApplicationVersion>18</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-windows10.0.19041.0|AnyCPU'">
-	  <ApplicationVersion>12</ApplicationVersion>
-	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+	  <ApplicationVersion>18</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-maccatalyst|AnyCPU'">
-	  <ApplicationVersion>12</ApplicationVersion>
-	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+	  <ApplicationVersion>18</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-windows10.0.19041.0|AnyCPU'">
-	  <ApplicationVersion>12</ApplicationVersion>
-	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+	  <ApplicationVersion>18</ApplicationVersion>
+	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-ios'">
 		<BundleResource Include="Platforms/iOS/GoogleService-Info.plist">
@@ -150,8 +155,8 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Controls.UserDialogs.Maui" Version="1.7.0" />
 		<PackageReference Include="GoogleApi" Version="5.8.11" />
-		<PackageReference Include="HarfBuzzSharp" Version="8.3.1.2" />
-		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.2" />
+		<!--<PackageReference Include="HarfBuzzSharp" Version="8.3.1.2" />-->
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.22" />
 		<PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.42.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
@@ -159,15 +164,17 @@
 		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.93" />
 		<PackageReference Include="Mopups" Version="1.3.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="nor0x.Maui.ColorPicker" Version="2.0.4" />
+		<!--<PackageReference Include="nor0x.Maui.ColorPicker" Version="2.0.4" />-->
 		<PackageReference Include="Plugin.Maui.Audio" Version="3.0.1" />
 		<PackageReference Include="Plugin.NFC" Version="0.1.26" />
 		<PackageReference Include="Polly" Version="8.5.0" />
 		<PackageReference Include="Sentry.Maui" Version="5.2.0" />
 		<PackageReference Include="SkiaSharp" Version="3.119.1" />
-		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0" />
-		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="3.119.1" />
-		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.9" />
+		<!--<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0" />-->
+		<!--<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="3.119.1" />-->
+		<!--<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.9" />-->
+		<!--<PackageReference Include="SQLitePCLRaw.core" Version="2.1.9" />-->
+		<!--<PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.9" />-->
 		<PackageReference Include="Syncfusion.Maui.Calendar" Version="27.2.5" />
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="27.2.5" />
 		<PackageReference Include="Syncfusion.Maui.ProgressBar" Version="27.2.5" />

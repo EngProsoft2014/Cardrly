@@ -76,6 +76,16 @@ public partial class HomePage : Controls.CustomControl
         base.OnAppearing();
 
         await SignalRservice();
+
+        string UserId = Preferences.Default.Get(ApiConstants.userid, "");
+        await _signalRService.StartLocationTrackingAsync(UserId);
+    }
+
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        _signalRService.StopLocationTracking();
     }
 
 
@@ -85,18 +95,17 @@ public partial class HomePage : Controls.CustomControl
     {
         if (_signalRService == null)
         {
-            _signalRService = new SignalRService(_service);
+            //_signalRService = new SignalRService(_service);
+            _signalRService = DependencyService.Resolve<SignalRService>();
         }
+        await _signalRService.StartAsync();
 
         // Logout
-        _signalRService.OnMessageReceivedLogout -= _signalRService_OnMessageReceivedLogout;
         _signalRService.OnMessageReceivedLogout += _signalRService_OnMessageReceivedLogout;
 
         // UpdateVersion
-        _signalRService.OnMessageReceivedUpdateVersion -= _signalRService_OnMessageReceivedUpdateVersion;
         _signalRService.OnMessageReceivedUpdateVersion += _signalRService_OnMessageReceivedUpdateVersion;
-
-        await _signalRService.StartAsync();
+      
     }
 
 
@@ -106,13 +115,21 @@ public partial class HomePage : Controls.CustomControl
         Device.BeginInvokeOnMainThread(async () =>
         {
             string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+            bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
+            string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
+            string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
+
             Preferences.Default.Clear();
             await BlobCache.LocalMachine.InvalidateAll();
             await BlobCache.LocalMachine.Vacuum();
 
+            Preferences.Default.Set("Lan", LangValueToKeep);
+            Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
+            Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
+            Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
+
             await _signalRService.InvokeNotifyDisconnectyAsync(GuidKey);
 
-            Preferences.Default.Set("Lan", LangValueToKeep);
             await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _audioService)));
             await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.MsgloggedOut, AppResources.msgOk);
         });
@@ -138,11 +155,19 @@ public partial class HomePage : Controls.CustomControl
             await StaticMember.DeleteUserSession(Rep, _service);
 
             string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+            bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
+            string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
+            string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
+
             Preferences.Default.Clear();
             await BlobCache.LocalMachine.InvalidateAll();
             await BlobCache.LocalMachine.Vacuum();
 
             Preferences.Default.Set("Lan", LangValueToKeep);
+            Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
+            Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
+            Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
+
             await MopupService.Instance.PushAsync(new UpdateVersionPopup(oUpdateVersionModel));
         });
 

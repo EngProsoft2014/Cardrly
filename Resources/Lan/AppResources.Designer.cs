@@ -97,6 +97,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        internal static string btnClose {
+            get {
+                return ResourceManager.GetString("btnClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         internal static string btnConfirm {
@@ -165,6 +174,15 @@ namespace Cardrly.Resources.Lan {
         internal static string btnPassed {
             get {
                 return ResourceManager.GetString("btnPassed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play.
+        /// </summary>
+        internal static string btnPlay {
+            get {
+                return ResourceManager.GetString("btnPlay", resourceCulture);
             }
         }
         
@@ -1627,6 +1645,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time Picker:.
+        /// </summary>
+        internal static string lblTimePicker {
+            get {
+                return ResourceManager.GetString("lblTimePicker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time Sheet.
         /// </summary>
         internal static string lblTimeSheet {
@@ -1686,6 +1713,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblUpdatenow {
             get {
                 return ResourceManager.GetString("lblUpdatenow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Range.
+        /// </summary>
+        internal static string lblUseRange {
+            get {
+                return ResourceManager.GetString("lblUseRange", resourceCulture);
             }
         }
         

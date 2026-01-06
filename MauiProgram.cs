@@ -1,4 +1,5 @@
-﻿using Cardrly.Helpers;
+﻿
+using Cardrly.Helpers;
 using Cardrly.Services;
 using Cardrly.Services.Data;
 using CommunityToolkit.Maui;
@@ -8,7 +9,7 @@ using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.LifecycleEvents;
 using Mopups.Hosting;
 using Plugin.Maui.Audio;
-using SkiaSharp.Views.Maui.Controls.Hosting;
+//using SkiaSharp.Views.Maui.Controls.Hosting;
 using Syncfusion.Maui.Core.Hosting;
 using ZXing.Net.Maui.Controls;
 //using Plugin.Firebase.CloudMessaging;
@@ -17,6 +18,7 @@ using ZXing.Net.Maui.Controls;
 //#elif ANDROID
 //using Plugin.Firebase.Core.Platforms.Android;
 //#endif
+
 namespace Cardrly
 {
     public static class MauiProgram
@@ -48,7 +50,7 @@ namespace Cardrly
                 .UseUserDialogs()
                 .ConfigureMopups()
                 .ConfigureSyncfusionCore()
-                .UseSkiaSharp()
+                //.UseSkiaSharp()
                 .UseBarcodeReader()
                 .UseMauiMaps()
                 .ConfigureFonts(fonts =>

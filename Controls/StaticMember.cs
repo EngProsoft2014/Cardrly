@@ -4,7 +4,6 @@ using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models.Card;
 using Cardrly.Models;
-using Cardrly.Models.Card;
 using Cardrly.Models.Permision;
 using Cardrly.Pages;
 using Cardrly.Resources.Lan;
@@ -19,6 +18,7 @@ using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reactive.Linq;
+using CommunityToolkit.Maui.Alerts;
 
 
 namespace Cardrly.Controls
@@ -34,7 +34,7 @@ namespace Cardrly.Controls
         public static int EmployeesPages { get; set; }
         static Helpers.GenericRepository ORep = new Helpers.GenericRepository();
         static readonly ServicesService _service = new ServicesService(ORep);
-        public static ObservableCollection<CardResponse> LstWorkingEmployeesStatic { get; set; }
+        
         public static DateTime SelectedDate { get; set; } = DateTime.Now;
         public static string SnackBarColor = "#FF7F3E";
         public static string SnackBarTextColor = "#FFFFFF";
@@ -102,10 +102,18 @@ namespace Cardrly.Controls
             await App.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgServicedown}", $"{AppResources.msgOk}");
 
             string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+            bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
+            string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
+            string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
+
             Preferences.Default.Clear();
             await BlobCache.LocalMachine.InvalidateAll();
             await BlobCache.LocalMachine.Vacuum();
+
             Preferences.Default.Set("Lan", LangValueToKeep);
+            Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
+            Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
+            Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
             await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(generic, _service, _audioService)));
         }
 
@@ -163,7 +171,6 @@ namespace Cardrly.Controls
             }
         }
 
-
         public static async Task DeleteUserSession(IGenericRepository GenericRep, Services.Data.ServicesService service)
         {
             try
@@ -180,29 +187,6 @@ namespace Cardrly.Controls
             }
         }
 
-        //Get Working Employees
-        public async static Task GetWorkingEmployees(string AccountId, string ScheduleDate)
-        {
-            UserDialogs.Instance.ShowLoading();
 
-            //string json = await Helpers.Utility.CallWebApi("api/Employee/GetEmpWorking?" + "AccountId=" + AccountId + "&" + "ScheduleDate=" + ScheduleDate);
-
-            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
-            {
-                string UserToken = await _service.UserToken();
-
-                var json = await ORep.GetAsync<ObservableCollection<CardResponse>>("api/Employee/GetEmpWorking?" + "AccountId=" + AccountId + "&" + "ScheduleDate=" + ScheduleDate, UserToken);
-
-                if (json != null)
-                {
-                    //List<EmployeeModel> Employee = JsonConvert.DeserializeObject<List<EmployeeModel>>(json);
-
-                    //LstWorkingEmployeesStatic = new ObservableCollection<EmployeeModel>(Employee);
-                    LstWorkingEmployeesStatic = json;
-                }
-            }
-
-            UserDialogs.Instance.HideHud();
-        }
     }
 }

@@ -1,23 +1,23 @@
 ﻿using Akavache;
+using Cardrly.Constants;
+using Cardrly.Controls;
+using Cardrly.Helpers;
+using Cardrly.Mode_s.ApplicationUser;
+using Cardrly.Models;
+using Cardrly.Pages;
+using Cardrly.Pages.MainPopups;
+using Cardrly.Resources.Lan;
+using Cardrly.Services.AudioStream;
+using Cardrly.Services.Data;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
-using Cardrly.Helpers;
-using Cardrly.Mode_s.ApplicationUser;
-using Cardrly.Pages;
-using Cardrly.Services.Data;
-using System.Reactive.Linq;
-using Cardrly.Constants;
-using Plugin.Maui.Audio;
-using Cardrly.Resources.Lan;
-using Newtonsoft.Json;
-using Cardrly.Controls;
-using Cardrly.Pages.MainPopups;
 using Mopups.Services;
-using SkiaSharp;
-using Cardrly.Models;
-using Cardrly.Services.AudioStream;
+using Newtonsoft.Json;
+using Plugin.Maui.Audio;
+using System.IdentityModel.Tokens.Jwt;
+using System.Reactive.Linq;
 
 
 namespace Cardrly.ViewModels
@@ -59,7 +59,7 @@ namespace Cardrly.ViewModels
                 LoginRequest.UserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
                 LoginRequest.Password = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
             }
-        } 
+        }
         #endregion
 
         #region RelayCommand
@@ -81,7 +81,7 @@ namespace Cardrly.ViewModels
             {
                 UserDialogs.Instance.ShowLoading();
 
-                if(IsRememberMe)
+                if (IsRememberMe)
                 {
                     Preferences.Default.Set(ApiConstants.rememberMe, true);
                     Preferences.Default.Set(ApiConstants.rememberMeUserName, model.UserName);
@@ -95,11 +95,11 @@ namespace Cardrly.ViewModels
                 }
 
                 var json = await Rep.PostTRAsync<ApplicationUserLoginRequest, ApplicationUserResponse>(ApiConstants.LoginApi, model);
-                
+
                 if (json.Item1 != null)
                 {
                     UserResponse = json.Item1;
-                    if(UserResponse.Account != null)
+                    if (UserResponse.Account != null)
                     {
                         if (UserResponse.Account.ExpireDateAcc >= DateOnly.FromDateTime(DateTime.UtcNow))
                         {
@@ -115,7 +115,7 @@ namespace Cardrly.ViewModels
                                     {
                                         var version = UserResponse.VersionAppMobile.Find(f => f.Name.ToLower() == "android");
 
-                                        if(version != null)
+                                        if (version != null)
                                         {
                                             int VersionNumberParse = int.Parse(version!.VersionNumber.Trim().Replace(".", ""));
                                             int VersionBuildParse = int.Parse(version!.VersionBuild.Trim().Replace(".", ""));
@@ -162,7 +162,7 @@ namespace Cardrly.ViewModels
                                             await MopupService.Instance.PushAsync(new UpdateVersionPopup(new UpdateVersionModel()));
                                         }
                                     }
-                                }                    
+                                }
                             }
                         }
                         else
@@ -190,7 +190,7 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task ForgotPasswordClick()
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new ResetPasswordPage(new ResetPasswordViewModel(Rep,_service)));
+            await App.Current!.MainPage!.Navigation.PushAsync(new ResetPasswordPage(new ResetPasswordViewModel(Rep, _service)));
         }
 
         public async Task SetData(ApplicationUserResponse userResponse)
@@ -206,10 +206,18 @@ namespace Cardrly.ViewModels
             Preferences.Default.Set(ApiConstants.AccountName, userResponse.Account!.Name);
             Preferences.Default.Set(ApiConstants.ExpireDate, Convert.ToString(userResponse.Account!.ExpireDateAcc));
 
+            var handler = new JwtSecurityTokenHandler();
+            var jwt = handler.ReadJwtToken(userResponse.Token);
+
+            var ownerIdClaim = jwt.Claims.FirstOrDefault(c => c.Type == "OwnerId")?.Value;
+            if (!string.IsNullOrEmpty(ownerIdClaim))
+                Preferences.Default.Set(ApiConstants.ownerId, ownerIdClaim);
+
             await BlobCache.LocalMachine.InsertObject(ServicesService.UserTokenServiceKey, userResponse?.Token, DateTimeOffset.Now.AddMinutes(43200));
 
-            Preferences.Default.Set(ApiConstants.GuidKey, Controls.StaticMember.GuidKeyFromToken(userResponse?.Token)); 
+            Preferences.Default.Set(ApiConstants.GuidKey, Controls.StaticMember.GuidKeyFromToken(userResponse?.Token!));
         }
+
 
         [RelayCommand]
         async Task SignUpClick()

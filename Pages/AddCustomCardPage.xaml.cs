@@ -11,19 +11,19 @@ public partial class AddCustomCardPage : Controls.CustomControl
         this.BindingContext = Model = model;
 	}
 
-    private void LinkColor_PickedColorChanged(object sender, Maui.ColorPicker.PickedColorChangedEventArgs e)
-    {
-        if (e.NewPickedColorValue != null)
-        {
-            Model.Request.LinkColor = e.NewPickedColorValue.ToHex();
-        }
-    }
+    //private void LinkColor_PickedColorChanged(object sender, Maui.ColorPicker.PickedColorChangedEventArgs e)
+    //{
+    //    if (e.NewPickedColorValue != null)
+    //    {
+    //        Model.Request.LinkColor = e.NewPickedColorValue.ToHex();
+    //    }
+    //}
 
-    private void CardName_PickedColorChanged(object sender, Maui.ColorPicker.PickedColorChangedEventArgs e)
-    {
-        if (e.NewPickedColorValue != null)
-        {
-            Model.Request.CardTheme = e.NewPickedColorValue.ToHex();
-        }
-    }
+    //private void CardName_PickedColorChanged(object sender, Maui.ColorPicker.PickedColorChangedEventArgs e)
+    //{
+    //    if (e.NewPickedColorValue != null)
+    //    {
+    //        Model.Request.CardTheme = e.NewPickedColorValue.ToHex();
+    //    }
+    //}
 }

@@ -64,13 +64,5 @@ namespace Cardrly.ViewModels
             await App.Current!.MainPage!.Navigation.PushAsync(new TimeSheetPage(new TimeSheetViewModel(Rep, _service)));
             UserDialogs.Instance.HideHud();
         }
-
-        [RelayCommand]
-        async Task TrackingClick()
-        {
-            UserDialogs.Instance.ShowLoading();
-            await App.Current!.MainPage!.Navigation.PushAsync(new EmployeesWorkingPage(new EmployeesViewModel(Rep, _service), Rep, _service));
-            UserDialogs.Instance.HideHud();
-        }
     }
 }

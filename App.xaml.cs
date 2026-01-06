@@ -61,6 +61,9 @@ namespace Cardrly
                 InitializeComponent();
                 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(ApiConstants.syncFusionLicence);
 
+                var signalRService = new SignalRService(service); 
+                DependencyService.RegisterSingleton(signalRService);
+
                 if (Connectivity.NetworkAccess != NetworkAccess.Internet)
                 {
                     // Connection to internet is Not available

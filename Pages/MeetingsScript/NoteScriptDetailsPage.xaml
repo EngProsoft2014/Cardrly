@@ -113,7 +113,7 @@
 
                                             <Border StrokeShape="RoundRectangle 5" Stroke="Transparent" Padding="0" HeightRequest="40">
 
-                                                <Button Text="Play" 
+                                                <Button Text="{x:Static res:AppResources.btnPlay}" 
                                                         FontAttributes="Bold"
                                                         BackgroundColor="#333" 
                                                         TextColor="White" 

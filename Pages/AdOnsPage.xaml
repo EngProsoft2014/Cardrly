@@ -57,7 +57,7 @@
                 </StackLayout>
 
                 <!--TimeSheet-->
-                <StackLayout Grid.Column="1" Spacing="5" IsEnabled="False">
+                <StackLayout Grid.Column="1" Spacing="5">
                     <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="30" Stroke="OrangeRed" HeightRequest="{OnPlatform Android=110,iOS=120}">
                         <Image>
                             <Image.Source>
@@ -66,10 +66,10 @@
                         </Image>
                     </Border>
                     <Label Text="{x:Static res:AppResources.lblTimeSheet}" FontSize="16" TextColor="Black" HorizontalOptions="Center"></Label>
-                    <Label Text="( soon )" TranslationY="-10" FontSize="14" TextColor="Black" HorizontalOptions="Center"></Label>
-                    <!--<StackLayout.GestureRecognizers>
+                    <!--<Label Text="( soon )" TranslationY="-10" FontSize="14" TextColor="Black" HorizontalOptions="Center"></Label>-->
+                    <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding TimeSheetClickCommand}"></TapGestureRecognizer>
-                    </StackLayout.GestureRecognizers>-->
+                    </StackLayout.GestureRecognizers>
                 </StackLayout>
 
                 <!--Tracking-->

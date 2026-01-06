@@ -21,7 +21,7 @@ public partial class EmployeesWorkingPage : Controls.CustomControl
 
     private void srcBarEmployee_TextChanged(object sender, TextChangedEventArgs e)
     {
-        lstEmployees.ItemsSource = employeesViewModel.LstWorkingEmployees.Where(x => (x.PersonName!).Contains(srcBarEmployee.Text.ToLower()));
+        lstEmployees.ItemsSource = employeesViewModel.LstWorkingEmployees.Where(x => (x.CardName!).Contains(srcBarEmployee.Text.ToLower()));
     }
 
 }

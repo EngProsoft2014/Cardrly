@@ -52,62 +52,60 @@
 
         <Line  X1="400" HorizontalOptions="CenterAndExpand" BackgroundColor="LightGray"></Line>
 
-        <StackLayout Padding="0,0,0,30">
+        <StackLayout Padding="0,0,0,30" VerticalOptions="FillAndExpand">
 
             <StackLayout>
-                <ListView x:Name="lstEmployees" 
+                <CollectionView x:Name="lstEmployees" 
                       ItemsSource="{Binding LstWorkingEmployees}"
-                      HasUnevenRows="True" BackgroundColor="White"
+                      BackgroundColor="White"
                       SelectionMode="None"
                       VerticalScrollBarVisibility="Never">
-                    <ListView.ItemTemplate>
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Margin="20,10,20,10" Spacing="10">
-                                    <Border x:Name="yumEmployee" BackgroundColor="#f26d29" HorizontalOptions="FillAndExpand">
-                                        <Label 
+                            <StackLayout Margin="20,10,20,10" Spacing="10">
+                                <Border x:Name="yumEmployee" BackgroundColor="#f26d29" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{Binding CardName}"
                                           FontAttributes="Bold"
                                           TextColor="White" 
                                           HorizontalTextAlignment="Start"
                                           VerticalTextAlignment="Center"
                                           Padding="20,7,20,7">
-                                            <Label.Text>
-                                                <MultiBinding StringFormat="{}{0} {1}">
-                                                    <Binding Path="FirstName" />
-                                                    <Binding Path="LastName" />
-                                                </MultiBinding>
-                                            </Label.Text>
-                                        </Label>
+                                        <!--<Label.Text>
+                                            <MultiBinding StringFormat="{}{0} {1}">
+                                                <Binding Path="FirstName" />
+                                                <Binding Path="LastName" />
+                                            </MultiBinding>
+                                        </Label.Text>-->
+                                    </Label>
 
-                                        <Border.StrokeShape>
-                                            <RoundRectangle CornerRadius="10"></RoundRectangle>
-                                        </Border.StrokeShape>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="10"></RoundRectangle>
+                                    </Border.StrokeShape>
 
-                                    </Border>
+                                </Border>
 
-                                    <StackLayout Orientation="Horizontal" Spacing="10" Padding="10,0,0,0">
-                                        <Image>
-                                            <Image.Source>
-                                                <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="18"></FontImageSource>
-                                            </Image.Source>
-                                        </Image>
-                                        <Label Text="{Binding BranchName}" FontAttributes="Italic" TextColor="#333" VerticalTextAlignment="Center" FontSize="14"></Label>
-                                        <Label Text="{Binding TotalBranches,StringFormat='+{0}'}" TextColor="#333" FontAttributes="Italic" VerticalTextAlignment="Center" FontSize="14">
-                                            <Label.Triggers>
-                                                <DataTrigger TargetType="Label" Binding="{Binding TotalBranches}" Value="0">
-                                                    <Setter Property="IsVisible" Value="False"></Setter>
-                                                </DataTrigger>
-                                            </Label.Triggers>
-                                        </Label>
-                                    </StackLayout>
-                                    <StackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:EmployeesViewModel}}, Path=SelectedEmployeeInMapCommand}" CommandParameter="{Binding}"></TapGestureRecognizer>
-                                    </StackLayout.GestureRecognizers>
+                                <StackLayout Orientation="Horizontal" Spacing="10" Padding="10,0,0,0">
+                                    <Image>
+                                        <Image.Source>
+                                            <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="18"></FontImageSource>
+                                        </Image.Source>
+                                    </Image>
+                                    <Label Text="{Binding BranchName}" FontAttributes="Italic" TextColor="#333" VerticalTextAlignment="Center" FontSize="14"></Label>
+                                    <Label Text="{Binding TotalBranches,StringFormat='+{0}'}" TextColor="#333" FontAttributes="Italic" VerticalTextAlignment="Center" FontSize="14">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding TotalBranches}" Value="0">
+                                                <Setter Property="IsVisible" Value="False"></Setter>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
                                 </StackLayout>
-                            </ViewCell>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:EmployeesViewModel}}, Path=SelectedEmployeeInMapCommand}" CommandParameter="{Binding}"></TapGestureRecognizer>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
                 <StackLayout.Triggers>
                     <DataTrigger TargetType="StackLayout" Binding="{Binding Source={x:Reference stkNoData2}, Path=IsVisible}" Value="True">

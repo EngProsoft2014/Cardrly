@@ -2,6 +2,7 @@ using CommunityToolkit.Maui.Alerts;
 using Cardrly.Helpers;
 using Cardrly.ViewModels;
 using Mopups.Services;
+using Cardrly.Resources.Lan;
 
 namespace Cardrly.Pages.MainPopups;
 
@@ -24,14 +25,14 @@ public partial class CheckoutPopup : Mopups.Pages.PopupPage
         this.BindingContext = timeSheetViewModel = model;
     }
 
-    public CheckoutPopup(int id, string time, TimeSheetViewModel model, IGenericRepository GenericRep, Services.Data.ServicesService service)
+    public CheckoutPopup(string id, string time, TimeSheetViewModel model, IGenericRepository GenericRep, Services.Data.ServicesService service)
     {
         InitializeComponent();
         ORep = GenericRep;
         _service = service;
         this.BindingContext = timeSheetViewModel = model;
 
-        btnCheck.Text = "Check In";
+        btnCheck.Text = AppResources.btnCheckIn;
 
         if (time != null && time != "")
         {
@@ -46,7 +47,7 @@ public partial class CheckoutPopup : Mopups.Pages.PopupPage
         _service = service;
         this.BindingContext = timeSheetViewModel = model;
 
-        btnCheck.Text = "Check Out";
+        btnCheck.Text = AppResources.btnCheckout;
 
         if (time != null && time != "")
         {

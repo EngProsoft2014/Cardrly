@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Cardrly.Pages.MainPopups.CheckoutPopup"
                   xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+                  xmlns:res="clr-namespace:Cardrly.Resources.Lan"
                   xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
                   xmlns:vm="clr-namespace:Cardrly.ViewModels"
                   BackgroundColor="#80000000"
@@ -12,7 +13,7 @@
     <Grid Padding="0" Margin="40,200,40,150">
         <Border TranslationY="0" HeightRequest="220" VerticalOptions="CenterAndExpand" BackgroundColor="White">
             <StackLayout Padding="20,20,20,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                <Label Text="Time Picker:" FontSize="14" TextColor="#333" FontAttributes="Bold" HorizontalOptions="Start" VerticalTextAlignment="Center"></Label>
+                <Label Text="{x:Static res:AppResources.lblTimePicker}" FontSize="14" TextColor="#333" FontAttributes="Bold" HorizontalOptions="Start" VerticalTextAlignment="Center"></Label>
 
                 <Border BackgroundColor="White" Padding="0" Margin="0,20,0,0" HorizontalOptions="FillAndExpand">
                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" HeightRequest="45">
@@ -28,7 +29,7 @@
                             </Border.StrokeShape>
                         </Border>
 
-                        <TimePicker x:Name="timeCheckOut" HorizontalOptions="FillAndExpand" Margin="15,3,5,3" FontSize="14"></TimePicker>
+                        <TimePicker x:Name="timeCheckOut" TextColor="Gray" HorizontalOptions="FillAndExpand" Margin="15,3,5,3" FontSize="14"></TimePicker>
 
                         <Border BackgroundColor="#f5b493" HorizontalOptions="End">
                             <Image HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="15,10,15,10">
@@ -44,7 +45,7 @@
                     </StackLayout>
 
                     <Border.Shadow>
-                        <Shadow Brush="{OnPlatform Android=Gray, iOS=Gray}" Radius="{OnPlatform Android=15,iOS=15}"></Shadow>
+                        <Shadow Brush="{OnPlatform Android=LightGray, iOS=LightGray}" Radius="{OnPlatform Android=15,iOS=15}"></Shadow>
                     </Border.Shadow>
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="25" Stroke="LightGray" StrokeThickness="1"></RoundRectangle>
@@ -60,7 +61,7 @@
                                 CornerRadius="20"
                                 BackgroundColor="#f26d29"
                         Clicked="Button_Clicked_1"></Button>
-                    <Button Text="Close" 
+                    <Button Text="{x:Static res:AppResources.btnClose}" 
                                 FontSize="12" 
                                 TextColor="#f26d29"
                                 BorderColor="#f26d29"

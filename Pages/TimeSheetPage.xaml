@@ -35,9 +35,9 @@
                 <Image.Source>
                     <FontImageSource FontFamily="FontIconSolid" Color="#e36322" Glyph="" Size="22"></FontImageSource>
                 </Image.Source>
-                <!--<Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding BackDayCommand}"></TapGestureRecognizer>
-                </Image.GestureRecognizers>-->
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoTrackingCommand}" CommandParameter="{Binding LstEmployeesIn}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
             </Image>
         </StackLayout>
         
@@ -50,6 +50,11 @@
                     <Image.Source>
                         <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="20"></FontImageSource>
                     </Image.Source>
+                    <Image.Triggers>
+                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                            <Setter Property="Rotation" Value="180"></Setter>
+                        </DataTrigger>
+                    </Image.Triggers>
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding BackDayCommand}"></TapGestureRecognizer>
                     </Image.GestureRecognizers>
@@ -80,6 +85,11 @@
                     <Image.Source>
                         <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="20"></FontImageSource>
                     </Image.Source>
+                    <Image.Triggers>
+                        <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                            <Setter Property="Rotation" Value="180"></Setter>
+                        </DataTrigger>
+                    </Image.Triggers>
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding NextDayCommand}"></TapGestureRecognizer>
                     </Image.GestureRecognizers>
@@ -134,27 +144,19 @@
                                     <DataTemplate>
                                         <StackLayout Spacing="10">
                                             <StackLayout Orientation="Horizontal">
-                                                <Border StrokeThickness=".5" BackgroundColor="#f58245" HorizontalOptions="FillAndExpand">
-                                                    <Label Text="{Binding EmployeeName}"
+                                                <Border Stroke="#f26d29" StrokeThickness=".5" BackgroundColor="White" HorizontalOptions="FillAndExpand">
+                                                    <Label Text="{Binding CardName}"
                                                                 FontAttributes="Bold"
                                                                 TextColor="#333" 
                                                                 HorizontalTextAlignment="Start"
                                                                 VerticalTextAlignment="Center"
                                                                 Padding="20,7,20,7"></Label>
                                                     <Border.Shadow>
-                                                        <Shadow Brush="{OnPlatform Android=Gray, iOS=LightGray}" Radius="{OnPlatform Android=5,iOS=3}"></Shadow>
+                                                        <Shadow Brush="{OnPlatform Android=Gray, iOS=LightGray}" Radius="{OnPlatform Android=3,iOS=3}"></Shadow>
                                                     </Border.Shadow>
                                                     <Border.StrokeShape>
                                                         <RoundRectangle CornerRadius="10"></RoundRectangle>
                                                     </Border.StrokeShape>
-                                                    <Border.Triggers>
-                                                        <DataTrigger TargetType="Border" Binding="{Binding MytimeSheet}" Value="1">
-                                                            <Setter Property="BackgroundColor" Value="#f26d29"></Setter>
-                                                        </DataTrigger>
-                                                        <DataTrigger TargetType="Border" Binding="{Binding MytimeSheet}" Value="2">
-                                                            <Setter Property="BackgroundColor" Value="#f26d29"></Setter>
-                                                        </DataTrigger>
-                                                    </Border.Triggers>
                                                 </Border>
 
                                                 <Label Text="{Binding HoursFrom}" 
@@ -172,76 +174,87 @@
                                                     <Image.Source>
                                                         <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="18"></FontImageSource>
                                                     </Image.Source>
-                                                    <Image.Triggers>
-                                                        <DataTrigger TargetType="Image" Binding="{Binding MytimeSheet}" Value="1">
-                                                            <Setter Property="Source">
-                                                                <Setter.Value>
-                                                                    <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="18"></FontImageSource>
-                                                                </Setter.Value>
-                                                            </Setter>
-                                                        </DataTrigger>
-                                                        <DataTrigger TargetType="Image" Binding="{Binding MytimeSheet}" Value="2">
-                                                            <Setter Property="Source">
-                                                                <Setter.Value>
-                                                                    <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="18"></FontImageSource>
-                                                                </Setter.Value>
-                                                            </Setter>
-                                                        </DataTrigger>
-                                                    </Image.Triggers>
                                                 </Image>
                                                 <Grid HorizontalOptions="FillAndExpand">
 
                                                     <ScrollView Orientation="Horizontal" VerticalOptions="CenterAndExpand" HorizontalScrollBarVisibility="Never">
-                                                        <Label Text="{Binding BranchName}" TextColor="#333" FontAttributes="Italic" FontSize="14"></Label>
+                                                        <Label Text="Branch Name" TextColor="#333" FontAttributes="Italic" FontSize="14"></Label>
                                                     </ScrollView>
                                                 </Grid>
                                                 <Grid>
-                                                    <StackLayout x:Name="stkBaseButton" IsVisible="False" Orientation="Horizontal" Spacing="5" HorizontalOptions="EndAndExpand">
+                                                    <StackLayout x:Name="stkBaseButton" Orientation="Horizontal" Spacing="5" HorizontalOptions="EndAndExpand">
+                                                        <!--Base Check In-->
                                                         <Button Text="{x:Static res:AppResources.btnCheckIn}" 
-                                                                 FontSize="11" 
+                                                                FontSize="11" 
+                                                                IsVisible="{Binding IsShowBaseCheckIn}"
                                                                  WidthRequest="{OnPlatform iOS=70}"
                                                                  TextTransform="None"
                                                                  FontAttributes="Bold"
-                                                                 CornerRadius="{OnPlatform Android=25,iOS=18}"                  
+                                                                 CornerRadius="{OnPlatform Android=10,iOS=10}"                  
                                                                  HeightRequest="35" 
                                                                  TextColor="White"
                                                                  BorderColor="#f26d29"
                                                                  BorderWidth="1"
                                                                  BackgroundColor="#f26d29" 
                                                                  HorizontalOptions="Start"
-                                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedTimeInCommand}" CommandParameter="{Binding}">
-                                                            <Button.Triggers>
-                                                                 <DataTrigger TargetType="Button" Binding="{Binding MytimeSheet}" Value="2">
-                                                                     <Setter Property="BackgroundColor" Value="#a80724"></Setter>
-                                                                     <Setter Property="BorderColor" Value="#a80724"></Setter>
-                                                                 </DataTrigger>
-                                                             </Button.Triggers>
+                                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedCheckInCommand}" CommandParameter="{Binding}">
                                                         </Button>
 
-                                                        <Button Text="{x:Static res:AppResources.btnCheckout}"
+                                                        <!--Base Break In-->
+                                                        <Button x:Name="btnBaseBreakIn" Text="Break In"
                                                                  FontSize="11" 
+                                                                IsVisible="{Binding IsShowBaseBreakIn}"
                                                                  WidthRequest="{OnPlatform iOS=70}"
                                                                  TextTransform="None"
                                                                  FontAttributes="Bold"
-                                                                 CornerRadius="{OnPlatform Android=25,iOS=18}" 
+                                                                 CornerRadius="{OnPlatform Android=10,iOS=10}"                  
+                                                                 HeightRequest="35" 
+                                                                 TextColor="White"
+                                                                 BorderColor="#f26d29"
+                                                                 BorderWidth="1"
+                                                                 BackgroundColor="#f26d29" 
+                                                                 HorizontalOptions="Start"
+                                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedBaseBreakInCommand}" CommandParameter="{Binding}">
+                                                        </Button>
+
+                                                        <!--Base Check out-->
+                                                        <Button Text="{x:Static res:AppResources.btnCheckout}"
+                                                                 FontSize="11" 
+                                                                IsVisible="{Binding IsShowBaseCheckOut}"
+                                                                 WidthRequest="{OnPlatform iOS=70}"
+                                                                 TextTransform="None"
+                                                                 FontAttributes="Bold"
+                                                                 CornerRadius="{OnPlatform Android=10,iOS=10}" 
                                                                  HeightRequest="35" 
                                                                  TextColor="Black"
                                                                  BorderColor="#f26d29"
                                                                  BorderWidth="1"
-                                                                 BackgroundColor="#eedeff" 
+                                                                 BackgroundColor="#ffebde" 
                                                                  HorizontalOptions="EndAndExpand"
                                                                  Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedTimeOutCommand}" CommandParameter="{Binding}">
-                                                            <Button.Triggers>
-                                                                <DataTrigger TargetType="Button" Binding="{Binding Id}" Value="0">
-                                                                    <Setter Property="IsVisible" Value="False"></Setter>
-                                                                </DataTrigger>
-                                                            </Button.Triggers>
                                                         </Button>
-                                                        <StackLayout.Triggers>
+
+                                                        <!--Base Break out-->
+                                                        <Button  x:Name="btnBaseBreakOut" Text="Break out" 
+                                                                 FontSize="11" 
+                                                                 IsVisible="{Binding IsShowBaseBreakOut}"
+                                                                 WidthRequest="{OnPlatform iOS=70}"
+                                                                 TextTransform="None"
+                                                                 FontAttributes="Bold"
+                                                                 CornerRadius="{OnPlatform Android=10,iOS=10}" 
+                                                                 HeightRequest="35" 
+                                                                 TextColor="Black"
+                                                                 BorderColor="#f26d29"
+                                                                 BorderWidth="1"
+                                                                 BackgroundColor="#ffebde" 
+                                                                 HorizontalOptions="EndAndExpand"
+                                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedBaseBreakOutCommand}" CommandParameter="{Binding}">
+                                                        </Button>
+                                                        <!--<StackLayout.Triggers>
                                                             <DataTrigger TargetType="StackLayout" Binding="{Binding MytimeSheet}" Value="0">
                                                                 <Setter Property="IsVisible" Value="True"></Setter>
                                                             </DataTrigger>
-                                                        </StackLayout.Triggers>
+                                                        </StackLayout.Triggers>-->
                                                         <!--<StackLayout.Triggers>
                                                              <DataTrigger TargetType="StackLayout" Binding="{Binding Source={x:Reference stkMyButton},Path=IsVisible}" Value="True">
                                                                  <Setter Property="IsVisible" Value="False"></Setter>
@@ -250,7 +263,8 @@
                                                     </StackLayout>
                                                 </Grid>
 
-                                                <StackLayout x:Name="stkMyButton" IsVisible="False" Orientation="Horizontal" Spacing="5" HorizontalOptions="EndAndExpand">
+                                                <!--<StackLayout x:Name="stkMyButton" IsVisible="False" Orientation="Horizontal" Spacing="5" HorizontalOptions="EndAndExpand">
+                                                    --><!--My Check In--><!--
                                                     <Button Text="{x:Static res:AppResources.btnCheckIn}" 
                                                              FontSize="11" IsVisible="False"
                                                              WidthRequest="{OnPlatform iOS=70}"
@@ -271,6 +285,29 @@
                                                         </Button.Triggers>
                                                     </Button>
 
+                                                    --><!--My Break In--><!--
+                                                    <Button x:Name="btnMyBreakIn" Text="Break In"
+                                                            IsVisible="False"
+                                                              FontSize="11" 
+                                                              WidthRequest="{OnPlatform iOS=70}"
+                                                              TextTransform="None"
+                                                              FontAttributes="Bold"
+                                                              CornerRadius="{OnPlatform Android=25,iOS=18}"                  
+                                                              HeightRequest="35" 
+                                                              TextColor="White"
+                                                              BorderColor="#f26d29"
+                                                              BorderWidth="1"
+                                                              BackgroundColor="#f26d29" 
+                                                              HorizontalOptions="Start"
+                                                              Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedMyBrackInCommand}" CommandParameter="{Binding}">
+                                                        <Button.Triggers>
+                                                            <DataTrigger TargetType="Button" Binding="{Binding ShowEndTimeBtn}" Value="0">
+                                                                <Setter Property="IsVisible" Value="True"></Setter>
+                                                            </DataTrigger>
+                                                        </Button.Triggers>
+                                                    </Button>
+
+                                                    --><!--My Cheak out--><!--
                                                     <Button Text="{x:Static res:AppResources.btnCheckout}" 
                                                              FontSize="11" IsVisible="False"
                                                              WidthRequest="{OnPlatform iOS=70}"
@@ -290,12 +327,33 @@
                                                         </Button.Triggers>
                                                     </Button>
 
+                                                    --><!--My Break out--><!--
+                                                    <Button x:Name="btnMyBreakOut" Text="Break out" 
+                                                             IsVisible="False"
+                                                             FontSize="11"
+                                                             WidthRequest="{OnPlatform iOS=70}"
+                                                             TextTransform="None"
+                                                             FontAttributes="Bold"
+                                                             CornerRadius="{OnPlatform Android=25,iOS=18}"                  
+                                                             HeightRequest="35" 
+                                                             TextColor="White"
+                                                             BorderColor="#f26d29"
+                                                             BorderWidth="1"
+                                                             BackgroundColor="#f26d29" 
+                                                             Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedMyBreakOutCommand}" CommandParameter="{Binding}">
+                                                        <Button.Triggers>
+                                                            <DataTrigger TargetType="Button" Binding="{Binding ShowEndTimeBtn}" Value="1">
+                                                                <Setter Property="IsVisible" Value="True"></Setter>
+                                                            </DataTrigger>
+                                                        </Button.Triggers>
+                                                    </Button>
+
                                                     <StackLayout.Triggers>
                                                         <DataTrigger TargetType="StackLayout" Binding="{Binding MytimeSheet}" Value="1">
                                                             <Setter Property="IsVisible" Value="True"></Setter>
                                                         </DataTrigger>
                                                     </StackLayout.Triggers>
-                                                </StackLayout>
+                                                </StackLayout>-->
 
                                             </StackLayout>
 
@@ -351,8 +409,8 @@
                                     <DataTemplate>
                                         <StackLayout Spacing="10">
                                             <StackLayout Orientation="Horizontal">
-                                                <Border BackgroundColor="#fae1d4" HorizontalOptions="FillAndExpand">
-                                                    <Label Text="{Binding EmployeeName}"
+                                                <Border Stroke="#f26d29" StrokeThickness=".5" BackgroundColor="#fae1d4" HorizontalOptions="FillAndExpand">
+                                                    <Label Text="{Binding CardName}"
                                                             FontAttributes="Bold"
                                                             TextColor="Gray" 
                                                             HorizontalTextAlignment="Start"
@@ -360,7 +418,7 @@
                                                             Padding="20,7,20,7"></Label>
 
                                                     <Border.Shadow>
-                                                        <Shadow Brush="{OnPlatform Android=Gray, iOS=LightGray}" Radius="{OnPlatform Android=5,iOS=3}"></Shadow>
+                                                        <Shadow Brush="{OnPlatform Android=Gray, iOS=LightGray}" Radius="{OnPlatform Android=3,iOS=3}"></Shadow>
                                                     </Border.Shadow>
                                                     <Border.StrokeShape>
                                                         <RoundRectangle CornerRadius="10" Stroke="#f26d29" StrokeThickness="2"></RoundRectangle>
@@ -410,7 +468,7 @@
 
                                                 <Grid HorizontalOptions="FillAndExpand">
                                                     <ScrollView Orientation="Horizontal" VerticalOptions="CenterAndExpand" HorizontalScrollBarVisibility="Never">
-                                                        <Label Text="{Binding BranchName}" TextColor="#333" FontAttributes="Italic" VerticalTextAlignment="Center" FontSize="14"></Label>
+                                                        <Label Text="Branch Name" TextColor="#333" FontAttributes="Italic" VerticalTextAlignment="Center" FontSize="14"></Label>
                                                     </ScrollView>
                                                 </Grid>
                                             </StackLayout>

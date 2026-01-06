@@ -1095,4 +1095,16 @@
   <data name="lblRememberme" xml:space="preserve">
     <value>Remember me</value>
   </data>
+  <data name="btnPlay" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="lblUseRange" xml:space="preserve">
+    <value>Use Range</value>
+  </data>
+  <data name="lblTimePicker" xml:space="preserve">
+    <value>Time Picker:</value>
+  </data>
+  <data name="btnClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
 </root>

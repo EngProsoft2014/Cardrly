@@ -26,7 +26,7 @@ namespace Cardrly
         {
             #region ServiceServices
             Services.AddSingleton<ServicesService>();
-            
+
             #endregion
 
             #region GenericRepository

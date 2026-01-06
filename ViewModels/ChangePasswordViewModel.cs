@@ -76,11 +76,18 @@ namespace Cardrly.ViewModels
                         await StaticMember.DeleteUserSession(Rep, _service);
 
                         string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+                        bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
+                        string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
+                        string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
+
                         Preferences.Default.Clear();
                         await BlobCache.LocalMachine.InvalidateAll();
                         await BlobCache.LocalMachine.Vacuum();
 
                         Preferences.Default.Set("Lan", LangValueToKeep);
+                        Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
+                        Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
+                        Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
                         await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _audioService)));
                     }
                     else

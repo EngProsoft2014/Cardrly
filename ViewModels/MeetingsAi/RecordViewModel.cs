@@ -435,7 +435,7 @@ namespace Cardrly.ViewModels.MeetingsAi
                         };
 
                         // Save to Akavache
-                        await BlobCache.LocalMachine.InsertObject($"upload_{MeetingInfoModel.Id}_{audioRequest.AudioUploadId}", audioRequest);
+                        await BlobCache.LocalMachine.InsertObject($"upload_{MeetingInfoModel.Id}_{audioRequest.AudioUploadId}", audioRequest, DateTimeOffset.Now.AddDays(3));
 
                         // 🔹 Reset state
                         _recordStartTime = null;

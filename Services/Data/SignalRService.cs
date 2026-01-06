@@ -1,6 +1,8 @@
 ﻿
 using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Models;
+using CommunityToolkit.Maui.Alerts;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.CognitiveServices.Speech;
@@ -173,6 +175,93 @@ namespace Cardrly.Services.Data
                 Console.WriteLine($"SendMessage failed: {ex.Message}");
             }
         }
+
+        public async Task SendEmployeeLocation(DataMapsModel locationData)
+        {
+            try
+            {
+                await _hubConnection.InvokeAsync("SendEmployeeLocation", locationData);
+                Console.WriteLine($"📡 Sent location for employee {locationData.EmployeeId}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Failed to send employee location: {ex.Message}");
+            }
+        }
+
+        // 👇 New method: start listening for geolocation updates
+        public async Task StartLocationTrackingAsync(string employeeId)
+        {
+            var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+            if (status != PermissionStatus.Granted)
+                status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+            if (status != PermissionStatus.Granted)
+                await Toast.Make("Location permission not granted", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+
+            var request = new GeolocationListeningRequest(
+                GeolocationAccuracy.High,
+                TimeSpan.FromSeconds(3) // update interval
+            );
+
+            if (await Geolocation.StartListeningForegroundAsync(request))
+            {
+                Geolocation.LocationChanged += async (s, e) =>
+                {
+                    var loc = e.Location;
+                    if (loc != null)
+                    {
+                        var data = new DataMapsModel
+                        {
+                            EmployeeId = employeeId,
+                            Lat = loc.Latitude.ToString(),
+                            Long = loc.Longitude.ToString(),
+                            CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
+                            Time = DateTime.UtcNow.ToString("HH:mm:ss")
+                        };
+
+                        await SendEmployeeLocation(data);
+                    }
+                };
+
+                Geolocation.ListeningFailed += (s, e) =>
+                {
+                    Console.WriteLine($"⚠️ Location listening failed: {e.Error}");
+                };
+            }
+        }
+
+
+        //public async Task StartLocationTrackingAsync(string employeeId)
+        //    {
+        //        // Simulate 100 updates
+        //        for (int i = 0; i < 100; i++)
+        //        {
+        //            var fakeLat = 30.0444 + (i * 0.0002); // Cairo base + small offset
+        //            var fakeLong = 31.2357 + (i * 0.0003);
+
+        //            var data = new DataMapsModel
+        //            {
+        //                EmployeeId = employeeId,
+        //                Lat = fakeLat.ToString("F6"),
+        //                Long = fakeLong.ToString("F6"),
+        //                CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
+        //                Time = DateTime.UtcNow.ToString("HH:mm:ss")
+        //            };
+
+        //            await SendEmployeeLocation(data);
+
+        //            Console.WriteLine($"📡 Fake location {i}: {data.Lat}, {data.Long}");
+
+        //            await Task.Delay(3000); // wait 3 seconds before next update
+        //        }
+        //    }
+
+
+        public void StopLocationTracking()
+        {
+            Geolocation.StopListeningForeground();
+        }
+
     }
 
 }

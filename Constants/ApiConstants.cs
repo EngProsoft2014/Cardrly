@@ -13,6 +13,7 @@
         #region Preferences Keys
         // Preferences Key
         public static string userid = "userid";
+        public static string ownerId = "ownerid";
         public static string email = "email";
         public static string username = "username";
         public static string password = "password";
@@ -221,5 +222,15 @@
 
 
         #endregion
+
+        #region TimeSheetApi
+        public static string GetByDateTimeSheetApi = "api/TimeSheet/GetByDate/";
+        public static string AddTimeSheetApi = "api/TimeSheet/AddTimeSheet/";
+        public static string GetEmpWorkingTimeSheetApi = "api/TimeSheet/GetEmpWorking/";
+        
+        #endregion
+
+
+        
     }
 }

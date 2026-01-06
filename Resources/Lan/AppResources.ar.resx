@@ -1000,10 +1000,10 @@
     <value>لا توجد بيانات متاحة</value>
   </data>
   <data name="btnCheckIn" xml:space="preserve">
-    <value>سجل فى</value>
+    <value>سجل الآن</value>
   </data>
   <data name="btnCheckout" xml:space="preserve">
-    <value>خروج فى</value>
+    <value>خروج الآن</value>
   </data>
   <data name="lblIn" xml:space="preserve">
     <value>فى</value>
@@ -1094,5 +1094,17 @@
   </data>
   <data name="lblRememberme" xml:space="preserve">
     <value>تذكرنى</value>
+  </data>
+  <data name="btnPlay" xml:space="preserve">
+    <value>تشغيل</value>
+  </data>
+  <data name="lblUseRange" xml:space="preserve">
+    <value>نطاق الاستخدام</value>
+  </data>
+  <data name="lblTimePicker" xml:space="preserve">
+    <value>منتقي الوقت:</value>
+  </data>
+  <data name="btnClose" xml:space="preserve">
+    <value>غلق</value>
   </data>
 </root>

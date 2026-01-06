@@ -5,6 +5,7 @@
                   xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
                   xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
                   xmlns:vm="clr-namespace:Cardrly.ViewModels"
+                  xmlns:res="clr-namespace:Cardrly.Resources.Lan"
                   xmlns:calendar="clr-namespace:Syncfusion.Maui.Calendar;assembly=Syncfusion.Maui.Calendar"
                   BackgroundColor="#80000000"
                   IsEnabled="{Binding IsEnable}">
@@ -23,7 +24,7 @@
     <Grid Padding="0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" HeightRequest="500" WidthRequest="300">
         <Border TranslationY="0" HeightRequest="120" VerticalOptions="Start" BackgroundColor="White">
             <StackLayout Padding="20,20,20,20" VerticalOptions="StartAndExpand" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                <Label Text="Use Range" FontSize="16" TextColor="#333" HorizontalOptions="Start" VerticalTextAlignment="Center"></Label>
+                <Label Text="{x:Static res:AppResources.lblUseRange}" FontSize="16" TextColor="#333" HorizontalOptions="Start" VerticalTextAlignment="Center"></Label>
 
                 <Switch x:Name="switchRangeDate" HorizontalOptions="EndAndExpand">
                     <Switch.Triggers>
@@ -46,12 +47,12 @@
             <StackLayout>
                 <calendar:SfCalendar  x:Name="calendar" 
                                     EnablePastDates="True"
-                                    View="Month" TodayHighlightBrush="#f26d29" SelectionBackground="#f26d29" 
+                                    TodayHighlightBrush="#f26d29" SelectionBackground="#f26d29" 
                                     SelectionMode="Single"
-                                    HeightRequest="300" 
+                                    HeightRequest="300"
                                     Margin="0,0,0,0">
                     <calendar:SfCalendar.HeaderView>
-                        <calendar:CalendarHeaderView Height="70" TextStyle="{StaticResource HeaderTextKey}"
+                        <calendar:CalendarHeaderView Height="70" TextStyle="{DynamicResource HeaderTextKey}"
                                                      Background="#f26d29">
                             
                         </calendar:CalendarHeaderView>
@@ -65,8 +66,8 @@
                 </calendar:SfCalendar>
 
                 <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Padding="10" Spacing="20">
-                    <Button Text="Cancel" TextTransform="None" BackgroundColor="Transparent" FontAttributes="Bold" FontSize="16" TextColor="#f26d29" Clicked="Button_Clicked"></Button>
-                    <Button Text="OK" BackgroundColor="Transparent" FontAttributes="Bold" FontSize="16" TextColor="#f26d29" x:Name="btnOk" Clicked="btnOk_Clicked"></Button>
+                    <Button Text="{x:Static res:AppResources.btnCancel}" TextTransform="None" BackgroundColor="Transparent" FontAttributes="Bold" FontSize="16" TextColor="#f26d29" Clicked="Button_Clicked"></Button>
+                    <Button Text="{x:Static res:AppResources.msgOk}" BackgroundColor="Transparent" FontAttributes="Bold" FontSize="16" TextColor="#f26d29" x:Name="btnOk" Clicked="btnOk_Clicked"></Button>
                 </StackLayout>
             </StackLayout>
 
