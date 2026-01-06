@@ -100,7 +100,7 @@
         <Border BackgroundColor="White" Margin="20,5,20,0" HeightRequest="{OnPlatform Android=42, iOS=55}" HorizontalOptions="FillAndExpand">
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                 <SearchBar x:Name="srcBarEmployee"
-                           Placeholder="Search" TextColor="#333"
+                           Placeholder="{x:Static res:AppResources.plcSearch}" TextColor="#333"
                            HorizontalOptions="FillAndExpand" 
                            BackgroundColor="White"
                            FontSize="14"></SearchBar>
@@ -117,7 +117,7 @@
                            TabBarHeight="50" VerticalOptions="FillAndExpand" TabBarPlacement="Top"
                            SelectionChanged="TimeSheet_SelectionChanged">
             <!--Check In-->
-            <tabView:SfTabItem Header="Check In" TextColor="Black" BadgeText="{Binding NumIn}" FontSize="15" FontFamily="Almarai-Regular" 
+            <tabView:SfTabItem Header="{x:Static res:AppResources.btnCheckIn}" TextColor="Black" BadgeText="{Binding NumIn}" FontSize="15" FontFamily="Almarai-Regular" 
                                BackgroundColor="Transparent" FontAttributes="Bold">
 
                 <tabView:SfTabItem.BadgeSettings>
@@ -384,7 +384,7 @@
                 </tabView:SfTabItem.Content>
             </tabView:SfTabItem>
             <!--Check Out-->
-            <tabView:SfTabItem Header="Check Out" BadgeText="{Binding NumOut}" TextColor="Black" FontSize="15" FontFamily="Almarai-Regular" 
+            <tabView:SfTabItem Header="{x:Static res:AppResources.btnCheckout}" BadgeText="{Binding NumOut}" TextColor="Black" FontSize="15" FontFamily="Almarai-Regular" 
                                BackgroundColor="Transparent" FontAttributes="Bold">
                 <tabView:SfTabItem.BadgeSettings >
                     <core:BadgeSettings FontSize="12" 

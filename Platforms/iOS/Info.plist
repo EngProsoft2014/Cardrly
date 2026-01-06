@@ -47,9 +47,9 @@
 		<string>mailto</string>
 	</array>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.5</string>
+	<string>1.0.6</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.0.19</string>
+	<string>1.0.0.1</string>
 	<key>NSUserNotificationUsageDescription</key>
 	<string>We need notification permissions to send you updates.</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
