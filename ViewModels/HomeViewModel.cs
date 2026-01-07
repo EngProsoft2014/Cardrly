@@ -5,9 +5,14 @@ using Cardrly.Mode_s.Account;
 using Cardrly.Models.Card;
 using Cardrly.Models.Home;
 using Cardrly.Models.Permision;
+using Cardrly.Pages;
 using Cardrly.Pages.MainPopups;
+using Cardrly.Pages.MeetingsScript;
 using Cardrly.Resources.Lan;
+using Cardrly.Services.AudioStream;
+using Cardrly.ViewModels.MeetingsAi;
 using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
@@ -22,6 +27,11 @@ namespace Cardrly.ViewModels
     public partial class HomeViewModel : BaseViewModel
     {
         #region Prop
+        public ObservableCollection<ShortcutItem> Shortcuts { get; } = new();
+
+        [ObservableProperty]
+        ObservableCollection<ShortcutItem> checkedShortcuts;
+
         [ObservableProperty]
         CardDashBoardResponse boardResponse = new CardDashBoardResponse();
         [ObservableProperty]
@@ -45,16 +55,17 @@ namespace Cardrly.ViewModels
         #region Service
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
+        readonly IAudioStreamService _audioService;
         #endregion
 
         #region Cons
-        public HomeViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service)
+        public HomeViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioStreamService audioService)
         {
             LoadPermissions();
             Rep = GenericRep;
             _service = service;
+            _audioService = audioService;
             Init();
-            
         }
         #endregion
 
@@ -62,7 +73,7 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task GetClick()
         {
-            if (FromDate.Date >ToDate.Date)
+            if (FromDate.Date > ToDate.Date)
             {
                 var toast = Toast.Make($"{AppResources.msgDate_HomePage}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 await toast.Show();
@@ -89,7 +100,28 @@ namespace Cardrly.ViewModels
         #region Methodes
         public async void Init()
         {
-            SelectedCard = new CardResponse() { CardName = "NoCard"};
+            if(StaticMember.CheckPermission(ApiConstants.GetMeetingAi) == true)
+            {
+                Shortcuts.Add(new ShortcutItem { Id = 1, PageName = AppResources.lblMeetingsAiPage, IconGlyph = "\uf130" });   // NotesScript
+            }       
+            Shortcuts.Add(new ShortcutItem { Id = 2, PageName = AppResources.lblTimeSheetPage, IconGlyph = "\uf017" });  // TimeSheet
+            Shortcuts.Add(new ShortcutItem { Id = 3, PageName = AppResources.lblLanguagePopup, IconGlyph = "\uf1ab" }); // Language
+            Shortcuts.Add(new ShortcutItem { Id = 4, PageName = AppResources.lblActiveDevicesPage, IconGlyph = "\uf6ff" }); // ActiveDevice
+
+            SelectedCard = new CardResponse() { CardName = "NoCard" };
+
+            var shortcutIconsSaved = Preferences.Get(ApiConstants.shortcutIcons, null);
+            if (shortcutIconsSaved != null)
+            {
+                CheckedShortcuts = JsonConvert.DeserializeObject<ObservableCollection<ShortcutItem>>(shortcutIconsSaved)!;
+                Shortcuts.ToList().ForEach(item =>
+                {
+                    var isChecked = CheckedShortcuts.Any(s => s.Id == item.Id);
+                    item.IsChecked = isChecked;
+                });
+            }
+               
+
             await GetAllCards();
             if (CardLst.Count > 0)
             {
@@ -97,7 +129,7 @@ namespace Cardrly.ViewModels
                 IsFoundCards = true;
             }
             UserDialogs.Instance.ShowLoading();
-            await Task.WhenAll(GetAllStatistics(),GetAccData());
+            await Task.WhenAll(GetAllStatistics(), GetAccData());
             UserDialogs.Instance.HideHud();
         }
 
@@ -194,6 +226,39 @@ namespace Cardrly.ViewModels
                 StaticMember.LstPermissions = JsonConvert.DeserializeObject<List<PermissionsValues>>(List)!;
             }
         }
+
+        [RelayCommand]
+        private async Task NavigateAsync(ShortcutItem item)
+        {
+            if (item.Id == 1) //NotesScript Page
+                await App.Current!.MainPage!.Navigation.PushAsync(new NotesScriptPage(new NotesScriptViewModel(Rep, _service, _audioService)));
+            else if (item.Id == 2) //TimeSheet Page
+                await App.Current!.MainPage!.Navigation.PushAsync(new TimeSheetPage(new TimeSheetViewModel(Rep, _service)));
+            else if (item.Id == 3) //Language Popup
+                await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service, _audioService));
+            else if (item.Id == 4) //ActiveDevice Page
+                await App.Current!.MainPage!.Navigation.PushAsync(new ActiveDevicePage(new ActiveDeviceViewModel(Rep, _service)));
+        }
+
+        [RelayCommand]
+        async Task OpenShorcutPopup()
+        {
+            var popupView = new ShortcutPopup(this);
+
+            // 🔹 Memory-safe async event handler
+            async void OnPopupShortcutClosed(ObservableCollection<ShortcutItem> listShourtcuts)
+            {
+                popupView.ShortcutClose -= OnPopupShortcutClosed; // detach to prevent memory leaks
+                CheckedShortcuts = new ObservableCollection<ShortcutItem>(listShourtcuts);
+                OnPropertyChanged(nameof(CheckedShortcuts));
+                Preferences.Set(ApiConstants.shortcutIcons, JsonConvert.SerializeObject(CheckedShortcuts));
+            }
+
+            popupView.ShortcutClose += OnPopupShortcutClosed;
+
+            await MopupService.Instance.PushAsync(popupView);
+        }
+
         #endregion
     }
 }

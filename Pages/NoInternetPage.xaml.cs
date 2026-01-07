@@ -77,7 +77,7 @@ public partial class NoInternetPage : Controls.CustomControl
         }
         else
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service), Rep, _service, _audioService));
+            await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _audioService), Rep, _service, _audioService));
         }
 
         //App.Current.MainPage.Navigation.RemovePage(App.Current.MainPage.Navigation.NavigationStack[App.Current.MainPage.Navigation.NavigationStack.Count - 2]);

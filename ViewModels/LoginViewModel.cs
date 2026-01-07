@@ -127,7 +127,7 @@ namespace Cardrly.ViewModels
                                             else
                                             {
                                                 await SetData(UserResponse);
-                                                var page = new HomePage(new HomeViewModel(Rep, _service), Rep, _service, _audioService);
+                                                var page = new HomePage(new HomeViewModel(Rep, _service, _audioService), Rep, _service, _audioService);
                                                 await App.Current!.MainPage!.Navigation.PushAsync(page);
                                             }
                                         }
@@ -153,7 +153,7 @@ namespace Cardrly.ViewModels
                                             else
                                             {
                                                 await SetData(UserResponse);
-                                                var page = new HomePage(new HomeViewModel(Rep, _service), Rep, _service, _audioService);
+                                                var page = new HomePage(new HomeViewModel(Rep, _service, _audioService), Rep, _service, _audioService);
                                                 await App.Current!.MainPage!.Navigation.PushAsync(page);
                                             }
                                         }

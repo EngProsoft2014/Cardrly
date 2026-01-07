@@ -547,6 +547,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active devices page.
+        /// </summary>
+        internal static string lblActiveDevicesPage {
+            get {
+                return ResourceManager.GetString("lblActiveDevicesPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add/Remove.
         /// </summary>
         internal static string lblAdd_Remove {
@@ -1177,6 +1186,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Language Popup.
+        /// </summary>
+        internal static string lblLanguagePopup {
+            get {
+                return ResourceManager.GetString("lblLanguagePopup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lead Capture Mode.
         /// </summary>
         internal static string lblLeadCaptureMode {
@@ -1281,6 +1299,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblMeetings {
             get {
                 return ResourceManager.GetString("lblMeetings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Meetings Ai Page.
+        /// </summary>
+        internal static string lblMeetingsAiPage {
+            get {
+                return ResourceManager.GetString("lblMeetingsAiPage", resourceCulture);
             }
         }
         
@@ -1695,6 +1722,15 @@ namespace Cardrly.Resources.Lan {
         internal static string lblTimeSheet {
             get {
                 return ResourceManager.GetString("lblTimeSheet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TimeSheet Page.
+        /// </summary>
+        internal static string lblTimeSheetPage {
+            get {
+                return ResourceManager.GetString("lblTimeSheetPage", resourceCulture);
             }
         }
         

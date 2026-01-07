@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                   x:Class="Cardrly.Pages.MainPopups.ShortcutPopup"
+                   xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+                   xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+                   xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+                   xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                   CloseWhenBackgroundIsClicked="True"
+                   NavigationPage.HasNavigationBar="False" 
+                   BackgroundColor="#90000000">
+
+    <mopups:PopupPage.Animation>
+        <mopupsanim:MoveAnimation
+               DurationIn="700"
+               EasingIn="BounceOut"
+               PositionIn="Bottom"
+               PositionOut="Center" />
+    </mopups:PopupPage.Animation>
+
+    <!-- Outer container with corner radius + margin -->
+    <Border Stroke="Gray" 
+            HeightRequest="400"
+            VerticalOptions="FillAndExpand"
+            StrokeThickness="1"
+            BackgroundColor="White"
+            Margin="40" Padding="10"
+            StrokeShape="RoundRectangle 30">
+        <!-- 20px corner radius -->
+
+        <StackLayout Padding="0,20" VerticalOptions="FillAndExpand">
+            <CollectionView x:Name="colShortcuts" ItemsSource="{Binding Shortcuts}" VerticalOptions="StartAndExpand">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <HorizontalStackLayout Spacing="10">
+                            <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" Color="#FF7F3E" />
+                            <Image>
+                                <Image.Source>
+                                    <FontImageSource Glyph="{Binding IconGlyph}"
+                                                     FontFamily="FontIconSolid"
+                                                     Size="20" Color="#333"/>
+                                </Image.Source>
+                            </Image>
+                            <Label Text="{Binding PageName}"
+                                   TextColor="Black"
+                                   FontSize="14"
+                                   VerticalTextAlignment="Center"/>
+                        </HorizontalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="{x:Static res:AppResources.btnSave}"
+                    VerticalOptions="End"
+                    FontSize="15" 
+                    Margin="20,0"
+                    BackgroundColor="#FF7F3E"
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    Clicked="DoneButton_Clicked" />
+        </StackLayout>
+    </Border>
+</mopups:PopupPage>

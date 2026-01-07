@@ -76,8 +76,10 @@ public partial class CommentPopup : Mopups.Pages.PopupPage
                     }
                     else
                     {
-                        var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
+                        if (json.Item2 != null)
+                        {
+                            await Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+                        }     
                         //await MopupService.Instance.PopAsync();
                     }
                 }

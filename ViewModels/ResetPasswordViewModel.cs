@@ -60,8 +60,10 @@ namespace Cardrly.ViewModels
                         }
                         else
                         {
-                            var toast = Toast.Make($"{Postjson.Item2!.errors!.Values.FirstOrDefault()}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                            await toast.Show();
+                            if (Postjson.Item2 != null)
+                            {
+                                await Toast.Make($"{Postjson.Item2!.errors!.Values.FirstOrDefault()}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+                            }
                         }
                     }
                     else

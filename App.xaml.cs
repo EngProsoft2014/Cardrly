@@ -84,7 +84,7 @@ namespace Cardrly
                     }
                     else
                     {
-                        MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service), Rep, _service, _audioService));
+                        MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _audioService), Rep, _service, _audioService));
                     }
 
                     //// Subscribe only for this upload
@@ -242,7 +242,7 @@ namespace Cardrly
                 {
                     //Controls.StaticMember.TabIndex = message;
 
-                    await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service), Rep, _service, _audioService));
+                    await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _audioService), Rep, _service, _audioService));
 
                 }
             });

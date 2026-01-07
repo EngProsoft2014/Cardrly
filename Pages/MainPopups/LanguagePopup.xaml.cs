@@ -79,7 +79,7 @@ public partial class LanguagePopup : Mopups.Pages.PopupPage
     {
         (Application.Current as App).MainPage.Dispatcher.Dispatch(() =>
         {
-            App.Current!.MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service), Rep, _service, _audioService));
+            App.Current!.MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _audioService), Rep, _service, _audioService));
         });
     }
 

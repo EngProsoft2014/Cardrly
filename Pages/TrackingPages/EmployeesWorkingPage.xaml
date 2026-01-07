@@ -90,14 +90,17 @@
                                             <FontImageSource FontFamily="FontIconSolid" Color="Gray" Glyph="" Size="18"></FontImageSource>
                                         </Image.Source>
                                     </Image>
-                                    <Label Text="{Binding BranchName}" FontAttributes="Italic" TextColor="#333" VerticalTextAlignment="Center" FontSize="14"></Label>
-                                    <Label Text="{Binding TotalBranches,StringFormat='+{0}'}" TextColor="#333" FontAttributes="Italic" VerticalTextAlignment="Center" FontSize="14">
+                                    <Label Text="{Binding TimeSheetBranchName}" FontAttributes="Italic" TextColor="#333" VerticalTextAlignment="Center" FontSize="14"></Label>
+
+                                    <Label Text="{Binding WorkDate}" FontAttributes="Italic" TextColor="#333" VerticalTextAlignment="Center" FontSize="14"></Label>
+
+                                    <!--<Label Text="{Binding TotalBranches,StringFormat='+{0}'}" TextColor="#333" FontAttributes="Italic" VerticalTextAlignment="Center" FontSize="14">
                                         <Label.Triggers>
                                             <DataTrigger TargetType="Label" Binding="{Binding TotalBranches}" Value="0">
                                                 <Setter Property="IsVisible" Value="False"></Setter>
                                             </DataTrigger>
                                         </Label.Triggers>
-                                    </Label>
+                                    </Label>-->
                                 </StackLayout>
                                 <StackLayout.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:EmployeesViewModel}}, Path=SelectedEmployeeInMapCommand}" CommandParameter="{Binding}"></TapGestureRecognizer>

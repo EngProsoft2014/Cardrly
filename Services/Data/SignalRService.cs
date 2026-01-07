@@ -196,37 +196,57 @@ namespace Cardrly.Services.Data
             if (status != PermissionStatus.Granted)
                 status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
             if (status != PermissionStatus.Granted)
+            {
                 await Toast.Make("Location permission not granted", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+                return;
+            }
 
             var request = new GeolocationListeningRequest(
                 GeolocationAccuracy.High,
                 TimeSpan.FromSeconds(3) // update interval
             );
 
-            if (await Geolocation.StartListeningForegroundAsync(request))
+            try
             {
-                Geolocation.LocationChanged += async (s, e) =>
+                if (await Geolocation.StartListeningForegroundAsync(request))
                 {
-                    var loc = e.Location;
-                    if (loc != null)
+                    Geolocation.LocationChanged += async (s, e) =>
                     {
-                        var data = new DataMapsModel
+                        var loc = e.Location;
+                        if (loc != null)
                         {
-                            EmployeeId = employeeId,
-                            Lat = loc.Latitude.ToString(),
-                            Long = loc.Longitude.ToString(),
-                            CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
-                            Time = DateTime.UtcNow.ToString("HH:mm:ss")
-                        };
+                            var data = new DataMapsModel
+                            {
+                                EmployeeId = employeeId,
+                                Lat = loc.Latitude.ToString(),
+                                Long = loc.Longitude.ToString(),
+                                CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
+                                Time = DateTime.UtcNow.ToString("HH:mm:ss")
+                            };
 
-                        await SendEmployeeLocation(data);
-                    }
-                };
+                            await SendEmployeeLocation(data);
+                        }
+                    };
 
-                Geolocation.ListeningFailed += (s, e) =>
-                {
-                    Console.WriteLine($"⚠️ Location listening failed: {e.Error}");
-                };
+                    Geolocation.ListeningFailed += async (s, e) =>
+                    {
+                        await Toast.Make($"⚠️ Location listening failed: {e.Error}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+                    };
+                }
+            }
+            catch (FeatureNotEnabledException)
+            {
+                await App.Current!.MainPage!.DisplayAlert(
+                    "Alert",
+                    "Please enable location services (GPS) in your device settings.",
+                    "Ok");
+            }
+            catch (PermissionException)
+            {
+                await App.Current!.MainPage!.DisplayAlert(
+                    "Permissions",
+                    "GPS access was not granted",
+                    "Ok");
             }
         }
 

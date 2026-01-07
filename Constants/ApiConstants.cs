@@ -27,6 +27,7 @@
         public static string rememberMe = "rememberMe";
         public static string rememberMeUserName = "rememberMeUserName";
         public static string rememberMePassword = "rememberMePassword";
+        public static string shortcutIcons = "shortcuticons";
         //End Preferences Key 
         #endregion
 
@@ -226,6 +227,7 @@
         #region TimeSheetApi
         public static string GetByDateTimeSheetApi = "api/TimeSheet/GetByDate/";
         public static string AddTimeSheetApi = "api/TimeSheet/AddTimeSheet/";
+        public static string UpdateTimeSheetApi = "api/TimeSheet/UpdateTimeSheet/";
         public static string GetEmpWorkingTimeSheetApi = "api/TimeSheet/GetEmpWorking/";
         
         #endregion

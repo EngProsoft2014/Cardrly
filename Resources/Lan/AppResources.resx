@@ -1119,4 +1119,16 @@
   <data name="hdrTaps" xml:space="preserve">
     <value>Taps</value>
   </data>
+  <data name="lblMeetingsAiPage" xml:space="preserve">
+    <value>Meetings Ai Page</value>
+  </data>
+  <data name="lblTimeSheetPage" xml:space="preserve">
+    <value>TimeSheet Page</value>
+  </data>
+  <data name="lblLanguagePopup" xml:space="preserve">
+    <value>Language Popup</value>
+  </data>
+  <data name="lblActiveDevicesPage" xml:space="preserve">
+    <value>Active devices page</value>
+  </data>
 </root>

@@ -3,6 +3,7 @@ using Cardrly.Constants;
 using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Models;
+using Cardrly.Models.Home;
 using Cardrly.Pages.MainPopups;
 
 #if ANDROID
@@ -15,10 +16,12 @@ using Cardrly.Services.AudioStream;
 using Cardrly.Services.Data;
 using Cardrly.ViewModels;
 using Cardrly.ViewModels.Leads;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
 using Newtonsoft.Json;
+using Syncfusion.Maui.TabView;
 using System;
 using System.Reactive.Linq;
 using static Cardrly.Models.Calendar.CalendlyResponseModel;
@@ -35,6 +38,7 @@ public partial class HomePage : Controls.CustomControl
     CalendarViewModel CalendarViewModel;
     private SignalRService _signalRService;
     private readonly IAudioStreamService _audioService;
+    private bool isTabHandling = false;
     #endregion
 
     #region Service
@@ -173,65 +177,98 @@ public partial class HomePage : Controls.CustomControl
 
     }
 
-
-
-    private void SfTabView_SelectionChanged(object sender, Syncfusion.Maui.TabView.TabSelectionChangedEventArgs e)
+    private void SfTabView_SelectionChanged(object sender, TabSelectionChangedEventArgs e)
     {
-        //if (isHandlingSelectionChange)
-        //    return; // 🔹 Prevent re-entering the method when changing index manually
-        //isHandlingSelectionChange = true; // 🔹 Start handling selection
+        if (isTabHandling)
+            return;
+
+        isTabHandling = true;
 
         if (e.NewIndex == 0)
         {
             HomeView.BindingContext = homeViewModel;
         }
+        else if (homeViewModel.IsEnable == false)
+        {
+            tabHome.SelectedIndex = 0;
+        }
         else if (e.NewIndex == 1)
         {
-            if (homeViewModel.IsEnable == true)
-            {
-                CardsView.BindingContext = cardsViewModel = new CardsViewModel(Rep, _service);
-            }
-            else
-            {
-                tabHome.SelectedIndex = 0;
-            }
+            cardsViewModel ??= new CardsViewModel(Rep, _service);
+            CardsView.BindingContext = cardsViewModel;
         }
         else if (e.NewIndex == 2)
         {
-            if (homeViewModel.IsEnable == true)
-            {      
-                LeadView.BindingContext = LeadViewModel = new LeadViewModel(Rep, _service);
-                LeadSearc.Text = "";
-            }
-            else
-            {
-                tabHome.SelectedIndex = 0;
-            }
+            LeadViewModel ??= new LeadViewModel(Rep, _service);
+            LeadView.BindingContext = LeadViewModel;
+            LeadSearc.Text = "";
         }
         else if (e.NewIndex == 3)
         {
-            if (homeViewModel.IsEnable == true)
-            {
-                CalendarView.BindingContext = CalendarViewModel = new CalendarViewModel(Rep, _service);
-            }
-            else
-            {
-                tabHome.SelectedIndex = 0;
-            }
+            CalendarViewModel ??= new CalendarViewModel(Rep, _service);
+            CalendarView.BindingContext = CalendarViewModel;
         }
         else if (e.NewIndex == 4)
         {
-            if (homeViewModel.IsEnable == true)
-            {
-                MoreView.BindingContext = new MoreViewModel(Rep, _service, _audioService);
-            }
-            else
-            {
-                tabHome.SelectedIndex = 0;
-            }
+            MoreView.BindingContext ??= new MoreViewModel(Rep, _service, _audioService);
         }
 
+        isTabHandling = false;
     }
+
+
+    //private void SfTabView_SelectionChanged(object sender, Syncfusion.Maui.TabView.TabSelectionChangedEventArgs e)
+    //{
+    //    if (e.NewIndex == 0)
+    //    {
+    //        HomeView.BindingContext = homeViewModel;
+    //    }
+    //    else if (e.NewIndex == 1)
+    //    {
+    //        if (homeViewModel.IsEnable == true)
+    //        {
+    //            CardsView.BindingContext = cardsViewModel = new CardsViewModel(Rep, _service);
+    //        }
+    //        else
+    //        {
+    //            tabHome.SelectedIndex = 0;
+    //        }
+    //    }
+    //    else if (e.NewIndex == 2)
+    //    {
+    //        if (homeViewModel.IsEnable == true)
+    //        {      
+    //            LeadView.BindingContext = LeadViewModel = new LeadViewModel(Rep, _service);
+    //            LeadSearc.Text = "";
+    //        }
+    //        else
+    //        {
+    //            tabHome.SelectedIndex = 0;
+    //        }
+    //    }
+    //    else if (e.NewIndex == 3)
+    //    {
+    //        if (homeViewModel.IsEnable == true)
+    //        {
+    //            CalendarView.BindingContext = CalendarViewModel = new CalendarViewModel(Rep, _service);
+    //        }
+    //        else
+    //        {
+    //            tabHome.SelectedIndex = 0;
+    //        }
+    //    }
+    //    else if (e.NewIndex == 4)
+    //    {
+    //        if (homeViewModel.IsEnable == true)
+    //        {
+    //            MoreView.BindingContext = new MoreViewModel(Rep, _service, _audioService);
+    //        }
+    //        else
+    //        {
+    //            tabHome.SelectedIndex = 0;
+    //        }
+    //    }
+    //}
 
     protected override bool OnBackButtonPressed()
     {
@@ -333,4 +370,22 @@ public partial class HomePage : Controls.CustomControl
             });
         });
     }
+
+    private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    {
+        brdShortIcons.IsVisible = !brdShortIcons.IsVisible;
+    }
+
+    //private async void AddIcon_Tapped(object sender, TappedEventArgs e)
+    //{
+    //    var popup = new ShortcutPopup(homeViewModel);
+    //    var result = await this.ShowPopupAsync(popup);
+
+    //    if (result is List<ShortcutItem> selectedItems)
+    //    {
+    //        // Already updated via binding, but you can force refresh if needed
+    //        OnPropertyChanged(nameof(homeViewModel.CheckedShortcuts));
+    //    }
+    //}
+
 }

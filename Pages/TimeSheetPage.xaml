@@ -31,7 +31,7 @@
             </Label>
 
             <!--Tracking-->
-            <Image>
+            <Image IsVisible="{Binding IsShowTrackingBtn}">
                 <Image.Source>
                     <FontImageSource FontFamily="FontIconSolid" Color="#e36322" Glyph="" Size="22"></FontImageSource>
                 </Image.Source>
@@ -131,7 +131,7 @@
 
                 <tabView:SfTabItem.Content>
                     <ContentView Margin="10,20,10,0">
-                        <!--Clock IN-->
+                        <!--Check IN-->
                         <StackLayout x:Name="stkClockIN" VerticalOptions="FillAndExpand">
 
                             <CollectionView x:Name="lstEmployeesIn" SelectionMode="None" BackgroundColor="White"
@@ -159,7 +159,7 @@
                                                     </Border.StrokeShape>
                                                 </Border>
 
-                                                <Label Text="{Binding HoursFrom}" 
+                                                <Label Text="{Binding HoursFrom,StringFormat='{0:hh\\:mm}'}" 
                                                         FontSize="12" TextColor="#333" 
                                                         Margin="50,0,0,0"
                                                         FontAttributes="Bold"
@@ -178,7 +178,7 @@
                                                 <Grid HorizontalOptions="FillAndExpand">
 
                                                     <ScrollView Orientation="Horizontal" VerticalOptions="CenterAndExpand" HorizontalScrollBarVisibility="Never">
-                                                        <Label Text="Branch Name" TextColor="#333" FontAttributes="Italic" FontSize="14"></Label>
+                                                        <Label Text="{Binding TimeSheetBranchName}" TextColor="#333" FontAttributes="Italic" FontSize="14"></Label>
                                                     </ScrollView>
                                                 </Grid>
                                                 <Grid>
@@ -201,7 +201,7 @@
                                                         </Button>
 
                                                         <!--Base Break In-->
-                                                        <Button x:Name="btnBaseBreakIn" Text="Break In"
+                                                        <!--<Button x:Name="btnBaseBreakIn" Text="Break In"
                                                                  FontSize="11" 
                                                                 IsVisible="{Binding IsShowBaseBreakIn}"
                                                                  WidthRequest="{OnPlatform iOS=70}"
@@ -215,12 +215,12 @@
                                                                  BackgroundColor="#f26d29" 
                                                                  HorizontalOptions="Start"
                                                                  Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedBaseBreakInCommand}" CommandParameter="{Binding}">
-                                                        </Button>
+                                                        </Button>-->
 
                                                         <!--Base Check out-->
                                                         <Button Text="{x:Static res:AppResources.btnCheckout}"
                                                                  FontSize="11" 
-                                                                IsVisible="{Binding IsShowBaseCheckOut}"
+                                                                 IsVisible="{Binding IsShowBaseCheckOut}"
                                                                  WidthRequest="{OnPlatform iOS=70}"
                                                                  TextTransform="None"
                                                                  FontAttributes="Bold"
@@ -231,11 +231,11 @@
                                                                  BorderWidth="1"
                                                                  BackgroundColor="#ffebde" 
                                                                  HorizontalOptions="EndAndExpand"
-                                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedTimeOutCommand}" CommandParameter="{Binding}">
+                                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedCheckOutCommand}" CommandParameter="{Binding}">
                                                         </Button>
 
                                                         <!--Base Break out-->
-                                                        <Button  x:Name="btnBaseBreakOut" Text="Break out" 
+                                                        <!--<Button  x:Name="btnBaseBreakOut" Text="Break out" 
                                                                  FontSize="11" 
                                                                  IsVisible="{Binding IsShowBaseBreakOut}"
                                                                  WidthRequest="{OnPlatform iOS=70}"
@@ -249,7 +249,7 @@
                                                                  BackgroundColor="#ffebde" 
                                                                  HorizontalOptions="EndAndExpand"
                                                                  Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TimeSheetViewModel}}, Path=SelectedBaseBreakOutCommand}" CommandParameter="{Binding}">
-                                                        </Button>
+                                                        </Button>-->
                                                         <!--<StackLayout.Triggers>
                                                             <DataTrigger TargetType="StackLayout" Binding="{Binding MytimeSheet}" Value="0">
                                                                 <Setter Property="IsVisible" Value="True"></Setter>
@@ -263,9 +263,9 @@
                                                     </StackLayout>
                                                 </Grid>
 
-                                                <!--<StackLayout x:Name="stkMyButton" IsVisible="False" Orientation="Horizontal" Spacing="5" HorizontalOptions="EndAndExpand">
-                                                    --><!--My Check In--><!--
-                                                    <Button Text="{x:Static res:AppResources.btnCheckIn}" 
+                                                <!--<StackLayout x:Name="stkMyButton" IsVisible="False" Orientation="Horizontal" Spacing="5" HorizontalOptions="EndAndExpand">-->
+                                                <!--My Check In-->
+                                                <!--<Button Text="{x:Static res:AppResources.btnCheckIn}" 
                                                              FontSize="11" IsVisible="False"
                                                              WidthRequest="{OnPlatform iOS=70}"
                                                              TextTransform="None"
@@ -283,9 +283,10 @@
                                                                 <Setter Property="IsVisible" Value="True"></Setter>
                                                             </DataTrigger>
                                                         </Button.Triggers>
-                                                    </Button>
+                                                    </Button>-->
 
-                                                    --><!--My Break In--><!--
+                                                <!--My Break In-->
+                                                <!--
                                                     <Button x:Name="btnMyBreakIn" Text="Break In"
                                                             IsVisible="False"
                                                               FontSize="11" 
@@ -307,8 +308,9 @@
                                                         </Button.Triggers>
                                                     </Button>
 
-                                                    --><!--My Cheak out--><!--
-                                                    <Button Text="{x:Static res:AppResources.btnCheckout}" 
+                                                    -->
+                                                <!--My Cheak out-->
+                                                <!--<Button Text="{x:Static res:AppResources.btnCheckout}" 
                                                              FontSize="11" IsVisible="False"
                                                              WidthRequest="{OnPlatform iOS=70}"
                                                              TextTransform="None"
@@ -325,10 +327,10 @@
                                                                 <Setter Property="IsVisible" Value="True"></Setter>
                                                             </DataTrigger>
                                                         </Button.Triggers>
-                                                    </Button>
+                                                    </Button>-->
 
-                                                    --><!--My Break out--><!--
-                                                    <Button x:Name="btnMyBreakOut" Text="Break out" 
+                                                <!--My Break out-->
+                                                <!--<Button x:Name="btnMyBreakOut" Text="Break out" 
                                                              IsVisible="False"
                                                              FontSize="11"
                                                              WidthRequest="{OnPlatform iOS=70}"
@@ -346,9 +348,9 @@
                                                                 <Setter Property="IsVisible" Value="True"></Setter>
                                                             </DataTrigger>
                                                         </Button.Triggers>
-                                                    </Button>
+                                                    </Button>-->
 
-                                                    <StackLayout.Triggers>
+                                                <!--<StackLayout.Triggers>
                                                         <DataTrigger TargetType="StackLayout" Binding="{Binding MytimeSheet}" Value="1">
                                                             <Setter Property="IsVisible" Value="True"></Setter>
                                                         </DataTrigger>
@@ -356,9 +358,6 @@
                                                 </StackLayout>-->
 
                                             </StackLayout>
-
-
-
                                         </StackLayout>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
@@ -432,7 +431,7 @@
                                                                 FontAttributes="Bold"
                                                                 HorizontalTextAlignment="Center"
                                                                 VerticalTextAlignment="Center"></Label>
-                                                        <Label Text="{Binding HoursFrom,StringFormat='{0:HH:mm}'}" 
+                                                        <Label Text="{Binding HoursFrom,StringFormat='{0:hh\\:mm}'}" 
                                                                     FontSize="12" 
                                                                     TextColor="#65a88c"
                                                                     FontAttributes="Bold"
@@ -447,7 +446,7 @@
                                                                 FontAttributes="Bold"
                                                                 HorizontalTextAlignment="Center"
                                                                 VerticalTextAlignment="Center"></Label>
-                                                        <Label Text="{Binding HoursTo,StringFormat='{0:HH:mm}'}" 
+                                                        <Label Text="{Binding HoursTo,StringFormat='{0:hh\\:mm}'}" 
                                                                 FontSize="12" 
                                                                 TextColor="Red"
                                                                 FontAttributes="Bold"
@@ -468,7 +467,7 @@
 
                                                 <Grid HorizontalOptions="FillAndExpand">
                                                     <ScrollView Orientation="Horizontal" VerticalOptions="CenterAndExpand" HorizontalScrollBarVisibility="Never">
-                                                        <Label Text="Branch Name" TextColor="#333" FontAttributes="Italic" VerticalTextAlignment="Center" FontSize="14"></Label>
+                                                        <Label Text="{Binding TimeSheetBranchName}" TextColor="#333" FontAttributes="Italic" VerticalTextAlignment="Center" FontSize="14"></Label>
                                                     </ScrollView>
                                                 </Grid>
                                             </StackLayout>

@@ -28,6 +28,14 @@
                             <StackLayout Spacing="10">
                                 <!--Header-->
                                 <StackLayout Orientation="Horizontal" Margin="20,20,20,0">
+                                    <Image x:Name="MenuIcon">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="" FontFamily="FontIconSolid" Size="22" Color="#333"></FontImageSource>
+                                        </Image.Source>
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
+                                        </Image.GestureRecognizers>
+                                    </Image>
                                     <Label Text="{x:Static res:AppResources.hdrHome}" FontAutoScalingEnabled="False" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black"></Label>
                                     <Image x:Name="LoadIcon">
                                         <Image.Source>
@@ -47,6 +55,46 @@
                                         </Image.GestureRecognizers>
                                     </Image>
                                 </StackLayout>
+
+
+                                <Border x:Name="brdShortIcons" IsVisible="False" StrokeShape="RoundRectangle 10" Margin="20,0" StrokeThickness="1" BackgroundColor="White" Stroke="Gray" HeightRequest="50">
+                                    <StackLayout Orientation="Horizontal" Spacing="25" Padding="10,0" HorizontalOptions="FillAndExpand">
+
+                                        <!-- Plus Icon -->
+                                        <Image x:Name="AddIcon">
+                                            <Image.Source>
+                                                <FontImageSource Glyph="" FontFamily="FontIcon" Size="26" Color="#FF7F3E"></FontImageSource>
+                                            </Image.Source>
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding OpenShorcutPopupCommand}" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+
+                                        <!-- Dynamic Shortcuts -->
+                                        <CollectionView ItemsSource="{Binding CheckedShortcuts}">
+                                            <CollectionView.ItemsLayout>
+                                                <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="25"></GridItemsLayout>
+                                            </CollectionView.ItemsLayout>
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Image>
+                                                        <Image.Source>
+                                                            <FontImageSource Glyph="{Binding IconGlyph}" FontFamily="FontIconSolid" Size="25" Color="Gray"/>
+                                                        </Image.Source>
+                                                        <Image.GestureRecognizers>
+                                                            <TapGestureRecognizer 
+                                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=NavigateCommand}" 
+                                                                    CommandParameter="{Binding}" />
+                                                        </Image.GestureRecognizers>
+                                                    </Image>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+
+                                    </StackLayout>
+                                </Border>
+
+
 
                                 <!--Data Menu-->
                                 <StackLayout Orientation="Horizontal" Spacing="10" Margin="20,0,20,0" HorizontalOptions="FillAndExpand">
@@ -121,8 +169,8 @@
                                                     </VerticalStackLayout>
                                                 </VerticalStackLayout>
                                             </Border>
-                                            
-                                            
+
+
                                             <!--Statistics Data-->
                                             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" Margin="20,0,20,0">
                                                 <!--Leads Register-->
@@ -132,7 +180,7 @@
                                                             <!--Image-->
                                                             <Image Aspect="AspectFill" Margin="0,0,5,0">
                                                                 <Image.Source>
-                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="OrangeRed" Size="20"></FontImageSource>
+                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E" Size="20"></FontImageSource>
                                                                 </Image.Source>
                                                             </Image>
                                                             <!--Titel-->
@@ -149,7 +197,7 @@
                                                             <!--Image-->
                                                             <Image Aspect="AspectFill" Margin="0,0,5,0">
                                                                 <Image.Source>
-                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="OrangeRed" Size="20"></FontImageSource>
+                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E" Size="20"></FontImageSource>
                                                                 </Image.Source>
                                                             </Image>
                                                             <!--Titel-->
@@ -160,8 +208,8 @@
                                                     </ScrollView>
                                                 </Border>
                                             </StackLayout>
-                                            
-                                            
+
+
                                             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="20" Margin="20,0,20,0">
                                                 <!--Link Taps-->
                                                 <Border StrokeShape="RoundRectangle 10" Padding="10" HorizontalOptions="FillAndExpand" Stroke="Black" BackgroundColor="White">
@@ -170,7 +218,7 @@
                                                             <!--Image-->
                                                             <Image Aspect="AspectFill" Margin="0,0,5,0">
                                                                 <Image.Source>
-                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="OrangeRed" Size="20"></FontImageSource>
+                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E" Size="20"></FontImageSource>
                                                                 </Image.Source>
                                                             </Image>
                                                             <!--Titel-->
@@ -187,7 +235,7 @@
                                                             <!--Image-->
                                                             <Image Aspect="AspectFill" Margin="0,0,5,0">
                                                                 <Image.Source>
-                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="OrangeRed" Size="20"></FontImageSource>
+                                                                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E" Size="20"></FontImageSource>
                                                                 </Image.Source>
                                                             </Image>
                                                             <!--Titel-->
@@ -198,9 +246,9 @@
                                                     </ScrollView>
                                                 </Border>
                                             </StackLayout>
-                                            
-                                            
-                                            
+
+
+
                                             <!--Total Clicks Chart-->
                                             <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White" Margin="20,0,20,0">
                                                 <chart:SfCartesianChart HeightRequest="250">
@@ -359,17 +407,22 @@
                                                 </tabView:SfTabView.Items>
                                             </tabView:SfTabView>
 
-                                            <!--Second Tab--><!--
+                                            <!--Second Tab-->
+                                            <!--
                                             <tabView:SfTabView  IndicatorPlacement="Fill" TabBarPlacement="Top" IndicatorBackground="#fae6dc" TabBarHeight="40" VerticalOptions="FillAndExpand" FlowDirection="LeftToRight" Margin="0,0,0,0">
                                                 <tabView:SfTabView.Items>
-                                                    --><!--Tab 1--><!--
+                                                    -->
+                                            <!--Tab 1-->
+                                            <!--
                                                     <tabView:SfTabItem BackgroundColor="Transparent" Header="{x:Static res:AppResources.lblCardView}" FontSize="16" FontAttributes="Bold">
                                                         <tabView:SfTabItem.Content>
                                                             <ContentView VerticalOptions="FillAndExpand" Margin="20,10,20,0">
                                                                 <ScrollView VerticalOptions="FillAndExpand">
                                                                     <StackLayout Spacing="15" Margin="0,5,0,0">
 
-                                                                        --><!--DoughnutSeries--><!--
+                                                                        -->
+                                            <!--DoughnutSeries-->
+                                            <!--
                                                                         <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
                                                                             <chart:SfCircularChart>
                                                                                 <chart:DoughnutSeries ItemsSource="{Binding BoardResponse.clickCardSummariesCountry}" XBindingPath="name" YBindingPath="value"  ExplodeOnTouch="True" EnableAnimation="True" EnableTooltip="True"/>
@@ -390,14 +443,18 @@
                                                             </ContentView>
                                                         </tabView:SfTabItem.Content>
                                                     </tabView:SfTabItem>
-                                                    --><!--Tab 2--><!--
+                                                    -->
+                                            <!--Tab 2-->
+                                            <!--
                                                     <tabView:SfTabItem BackgroundColor="Transparent" Header="{x:Static res:AppResources.lblLinkClicks}" FontSize="16" FontAttributes="Bold">
                                                         <tabView:SfTabItem.Content>
                                                             <ContentView VerticalOptions="FillAndExpand" Margin="20,10,20,0">
                                                                 <ScrollView VerticalOptions="FillAndExpand">
                                                                     <StackLayout Spacing="15" Margin="0,5,0,0">
 
-                                                                        --><!--DoughnutSeries--><!--
+                                                                        -->
+                                            <!--DoughnutSeries-->
+                                            <!--
                                                                         <Border StrokeShape="RoundRectangle 20" Padding="15" Stroke="Black" BackgroundColor="White">
                                                                             <chart:SfCircularChart>
                                                                                 <chart:DoughnutSeries ItemsSource="{Binding BoardResponse.clickCardLinkSummariesCountry}" XBindingPath="name" YBindingPath="value"  ExplodeOnTouch="True" EnableAnimation="True" EnableTooltip="True"/>
@@ -650,10 +707,10 @@
                                                                 <Label Text="{Binding LeadCommentCount}" HorizontalTextAlignment="Center" FontSize="11" TextColor="Gray" FontAttributes="Bold"></Label>
                                                                 <Label Text="{x:Static res:AppResources.lblComments}" HorizontalTextAlignment="Center" FontSize="11" TextColor="Gray" FontAttributes="Bold"></Label>
                                                             </HorizontalStackLayout>
-                                                            
+
 
                                                         </VerticalStackLayout>
-                                                        
+
                                                     </StackLayout>
                                                     <Border.GestureRecognizers>
                                                         <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type Lvm:LeadViewModel}},Path=SelectClickCommand}"
@@ -925,7 +982,8 @@
 
 
 
-                                            <!--Tracking--><!--
+                                            <!--Tracking-->
+                                            <!--
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="{x:Static res:AppResources.lblTracking}" FontAutoScalingEnabled="False" TextColor="Black"
                                                        FontSize="14" VerticalTextAlignment="Start"></Label>
@@ -943,8 +1001,8 @@
                                                     <TapGestureRecognizer Command="{Binding TrackingClickCommand}"></TapGestureRecognizer>
                                                 </StackLayout.GestureRecognizers>
                                             </StackLayout>-->
-                                            
-                                            
+
+
                                             <!--Activate a Cardrly Device-->
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="{x:Static res:AppResources.lblACD}" FontAutoScalingEnabled="False" TextColor="Black"
@@ -981,8 +1039,8 @@
                                                     <TapGestureRecognizer Command="{Binding DeviceClickCommand}"></TapGestureRecognizer>
                                                 </StackLayout.GestureRecognizers>
                                             </StackLayout>
-                                            
-                                            
+
+
                                             <!--Meetings Script-->
                                             <!--<StackLayout Orientation="Horizontal" IsVisible="{Binding IsShowMeetingSCript}">
                                                 <Label Text="{x:Static res:AppResources.lblMeetingsScript}" FontAutoScalingEnabled="False" TextColor="Black"

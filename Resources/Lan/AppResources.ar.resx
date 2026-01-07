@@ -1119,4 +1119,16 @@
   <data name="hdrTaps" xml:space="preserve">
     <value>نقرات</value>
   </data>
+  <data name="lblMeetingsAiPage" xml:space="preserve">
+    <value>صفحة اجتماعات الذكاء الاصطناعي</value>
+  </data>
+  <data name="lblTimeSheetPage" xml:space="preserve">
+    <value>صفحة جدول الدوام</value>
+  </data>
+  <data name="lblLanguagePopup" xml:space="preserve">
+    <value>نافذة اللغة</value>
+  </data>
+  <data name="lblActiveDevicesPage" xml:space="preserve">
+    <value>صفحة الأجهزة النشطة</value>
+  </data>
 </root>

@@ -79,6 +79,9 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         bool isShowMyBreakOut;
 
+        [ObservableProperty]
+        bool isShowTrackingBtn;
+
         DateTime dateDF;
         #endregion
 
@@ -112,7 +115,7 @@ namespace Cardrly.ViewModels
                 Date = Controls.StaticMember.SelectedDate.ToString("MM-dd-yyyy");
             }
 
-
+            IsShowTrackingBtn = Preferences.Default.Get(ApiConstants.ownerId, "") == Preferences.Default.Get(ApiConstants.userid, "") ? true : false;
             //if(LstEmployeesIn.Count == 0)
             //{
             //    CheckInOutModel oCheckInOutModel = new CheckInOutModel
@@ -183,7 +186,7 @@ namespace Cardrly.ViewModels
         {
             UserDialogs.Instance.ShowLoading();
 
-            ObservableCollection<TimeSheetResponse> lstEmployeesTracking = new ObservableCollection<TimeSheetResponse>(lstEmployeesIn.Where(x => x.HoursFrom != null && x.HoursTo == null).ToList());
+            ObservableCollection<TimeSheetResponse> lstEmployeesTracking = new ObservableCollection<TimeSheetResponse>(lstEmployeesIn.Where(x => x.HoursFrom != null && x.HoursTo == null && x.UserId != Preferences.Default.Get(ApiConstants.ownerId, "")).ToList());
 
             await App.Current!.MainPage!.Navigation.PushAsync(new EmployeesWorkingPage(new EmployeesViewModel(lstEmployeesTracking, ORep, _service), ORep, _service));
             UserDialogs.Instance.HideHud();
@@ -283,113 +286,197 @@ namespace Cardrly.ViewModels
         {
             IsEnable = false;
 
-            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            try
             {
-                var popupView = new CheckoutPopup(model.Id, model.HoursFrom.ToString()!, this, ORep, _service);
-                popupView.TimeDidClose += async (time) =>
+                if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+                    return;
+
+                // 🔹 Get current context
+                string loggedUserId = Preferences.Default.Get(ApiConstants.userid, "");
+                string accountId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                string userToken = await _service.UserToken();
+
+                // 🔹 Determine roles
+                bool isOwnData = model.UserId == loggedUserId;  // row belongs to logged-in user
+
+                // 🔹 Local helper: perform check-in
+                async Task DoCheckInAsync(TimeSpan hoursFrom)
                 {
-                    string UserToken = await _service.UserToken();
-                    //model.HoursFrom = string.Format(time.ToString(@"hh\:mm"));
-                    //model.HoursFrom = time;
-                    //model.Active = true;
-
-                    string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
-
-                    CreateTimeSheet obj = new CreateTimeSheet
+                    var obj = new CreateTimeSheet
                     {
                         CardId = model.CardId,
-                        HoursFrom = time,
+                        HoursFrom = hoursFrom,
                         TimeSheetBranchId = model.TimeSheetBranchId,
-                        WorkDate = DateTime.Now,
-                        //CheckinAddress = model.CheckinAddress,
-                        CheckinAddress = "15 el salam st Alexandria, Egypt",
+                        WorkDate = dateDF,
+                        CheckinAddress = "15 el salam st Alexandria, Egypt"
                     };
 
-                    var json = await ORep.PostTRAsync<CreateTimeSheet, TimeSheetResponse>(ApiConstants.AddTimeSheetApi + AccountId, obj, UserToken);
+                    var json = await ORep.PostTRAsync<CreateTimeSheet, TimeSheetResponse>(
+                        ApiConstants.AddTimeSheetApi + accountId,
+                        obj,
+                        userToken);
 
                     if (json.Item1 != null)
                     {
+                        // 🔹 Update UI state
                         Init();
                         IsShowBaseCheckIn = false;
                         IsShowBaseCheckOut = true;
                         IsShowBaseBreakIn = true;
                         IsShowBaseBreakOut = false;
 
-                        var toast = Toast.Make(AppResources.msgSuccessfullyCheckInTime, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
+                        await Toast.Make(
+                            AppResources.msgSuccessfullyCheckInTime,
+                            CommunityToolkit.Maui.Core.ToastDuration.Long,
+                            15).Show();
                     }
-                    else
+                    else if (json.Item2?.errors != null)
                     {
-                        var toast = Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value.ToString()!.Replace('[',' ').Replace(']',' ')}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-                        await toast.Show();
+                        await Toast.Make(
+                            json.Item2.errors.First().Value.ToString()
+                                .Replace('[', ' ')
+                                .Replace(']', ' '),
+                            CommunityToolkit.Maui.Core.ToastDuration.Long,
+                            15).Show();
                     }
-                };
+                }
 
-                await MopupService.Instance.PushAsync(popupView);
+                // 🔹 Rule: Popup only for owner checking **employee data**
+                if (!isOwnData)
+                {
+                    var popupView = new CheckoutPopup(
+                        model.Id,
+                        model.HoursFrom?.ToString() ?? "",
+                        this,
+                        ORep,
+                        _service);
+
+                    // 🔹 Memory-safe async event handler
+                    async void OnPopupTimeClosed(TimeSpan time)
+                    {
+                        popupView.TimeDidClose -= OnPopupTimeClosed; // detach to prevent memory leaks
+                        await DoCheckInAsync(time);
+                    }
+
+                    popupView.TimeDidClose += OnPopupTimeClosed;
+
+                    await MopupService.Instance.PushAsync(popupView);
+                }
+                else
+                {
+                    // 🔹 Instant check-in for user or owner on their own data
+                    await DoCheckInAsync(DateTime.Now.TimeOfDay);
+                }
             }
-
-            IsEnable = true;
+            finally
+            {
+                IsEnable = true;
+            }
         }
 
-        [RelayCommand]
-        async Task SelectedTimeOut(TimeSheetResponse model)
-        {
-            IsEnable = false;
 
-            //if (Connectivity.NetworkAccess == NetworkAccess.Internet)
-            //{
-            //    var popupView = new CheckoutPopup(model.HoursFrom!,new TimeSheetViewModel(ORep,_service), ORep,_service);
-            //    popupView.TimeDidClose += async (time) =>
-            //    {
-            //        if (time > TimeSpan.Parse(model.HoursFrom!))
-            //        {
-            //            string UserToken = await _service.UserToken();
-            //            //model.HoursTo = string.Format("{0:hh:mm}", time.ToString());
-            //            model.HoursTo = string.Format(time.ToString(@"hh\:mm"));
-            //            model.DurationHours = (time - TimeSpan.Parse(model.HoursFrom!)).Hours.ToString();
-            //            model.DurationMinutes = (time - TimeSpan.Parse(model.HoursFrom!)).Minutes.ToString();
-
-            //            await ORep.PutAsync(string.Format("api/TimeSheet/PutCheckInOut/{0}", model.EmployeeId), model, UserToken);
-            //        }
-            //        else
-            //        {
-            //            var toast = Toast.Make(AppResources.msgPleaseChooseTimeAfterCheckInTime, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-            //            await toast.Show();
-            //        }
-            //    };
-
-            //    await MopupService.Instance.PushAsync(popupView);
-            //}
-
-            IsEnable = true;
-        }
 
         [RelayCommand]
-        void SelectedBaseBreakIn(TimeSheetResponse model)
-        {
-            IsShowBaseCheckIn = false;
-            IsShowBaseCheckOut = true;
-            IsShowBaseBreakIn = false;
-            IsShowBaseBreakOut = true;
-        }
-
-        [RelayCommand]
-        void SelectedBaseBreakOut(TimeSheetResponse model)
-        {
-            IsShowBaseCheckIn = true;
-            IsShowBaseCheckOut = true;
-            IsShowBaseBreakIn = false;
-            IsShowBaseBreakOut = false;
-        }
-
-        [RelayCommand]
-        async Task SelectedTimeMyStart(TimeSheetResponse model)
+        async Task SelectedCheckOut(TimeSheetResponse model)
         {
             IsEnable = false;
 
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                UserDialogs.Instance.ShowLoading();
+                try
+                {
+                    // 🔹 Get current context
+                    string loggedUserId = Preferences.Default.Get(ApiConstants.userid, "");
+                    string accountId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                    string userToken = await _service.UserToken();
+
+                    // 🔹 Determine roles
+                    bool isOwnData = model.UserId == loggedUserId;  // row belongs to logged-in user
+
+                    // 🔹 Local helper: perform check-out
+                    async Task DoCheckInAsync(TimeSpan hoursTo)
+                    {
+                        if (hoursTo > model.HoursFrom)
+                        {
+                            UpdateTimeSheet obj = new UpdateTimeSheet
+                            {
+                                TimeSheetBranchId = model.TimeSheetBranchId,
+                                Notes = model.Notes,
+                                WorkDate = model.WorkDate,
+                                HoursFrom = model.HoursFrom,
+                                HoursTo = hoursTo,
+                                CheckinAddress = model.CheckinAddress,
+                                CheckoutAddress = model.CheckoutAddress,
+                                TotalBreakHours = model.TotalBreakHours,
+                                TotalBreakMinutes = model.TotalBreakMinutes,
+                                DurationHours = DateTime.Now.TimeOfDay.Hours - model.HoursFrom.Value.Hours,
+                                DurationMinutes = DateTime.Now.TimeOfDay.Minutes - model.HoursFrom.Value.Minutes,
+                            };
+
+                            var json = await ORep.PostTRAsync<UpdateTimeSheet, TimeSheetResponse>($"{ApiConstants.UpdateTimeSheetApi}{model.AccountId}/{model.Id}", obj, userToken);
+                            if (json.Item1 != null)
+                            {
+                                Init();
+                                IsShowBaseCheckIn = false;
+                                IsShowBaseCheckOut = true;
+                                IsShowBaseBreakIn = true;
+                                IsShowBaseBreakOut = false;
+
+                                var toast = Toast.Make(AppResources.msgSuccessfullyCheckOutTime, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                                await toast.Show();
+                            }
+                            else
+                            {
+                                if (json.Item2 != null)
+                                {
+                                    await Toast.Make($"{json.Item2!.errors!.FirstOrDefault().Value.ToString()!.Replace('[', ' ').Replace(']', ' ')}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            await Toast.Make(AppResources.msgPleaseChooseTimeAfterCheckInTime, CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+                        }
+                            
+                    }
+
+                    // 🔹 Rule: Popup only for owner checking **employee data**
+                    if (!isOwnData)
+                    {
+                        var popupView = new CheckoutPopup(model.HoursFrom.Value.ToString("hh/mm tt"), new TimeSheetViewModel(ORep, _service), ORep, _service);
+
+                        // 🔹 Memory-safe async event handler
+                        async void OnPopupTimeClosed(TimeSpan time)
+                        {
+                            popupView.TimeDidClose -= OnPopupTimeClosed; // detach to prevent memory leaks
+                            await DoCheckInAsync(time);
+                        }
+
+                        popupView.TimeDidClose += OnPopupTimeClosed;
+
+                        await MopupService.Instance.PushAsync(popupView);
+                    }
+                    else
+                    {
+                        // 🔹 Instant check-in for user or owner on their own data
+                        await DoCheckInAsync(DateTime.Now.TimeOfDay);
+                    }
+                }
+                finally
+                {
+                    IsEnable = true;
+                }
+            }
+        }
+
+        [RelayCommand]
+        async Task SelectedTimeMyStart(TimeSheetResponse model)
+        {
+            //IsEnable = false;
+
+            //if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            //{
+            //    UserDialogs.Instance.ShowLoading();
 
             //    string UserToken = await _service.UserToken();
 
@@ -417,13 +504,14 @@ namespace Cardrly.ViewModels
             //    UserDialogs.Instance.HideHud();
             //}
 
-            IsEnable = true;
+            //IsEnable = true;
         }
+
 
         [RelayCommand]
         async Task SelectedTimeMyEnd(TimeSheetResponse model)
         {
-            IsEnable = false;
+            //IsEnable = false;
 
             //if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             //{
@@ -454,11 +542,31 @@ namespace Cardrly.ViewModels
             //        await toast.Show();
             //    }
 
-                UserDialogs.Instance.HideHud();
-            }
+            //UserDialogs.Instance.HideHud();
 
-            IsEnable = true;
+            //IsEnable = true;
         }
+
+
+        [RelayCommand]
+        void SelectedBaseBreakIn(TimeSheetResponse model)
+        {
+            IsShowBaseCheckIn = false;
+            IsShowBaseCheckOut = true;
+            IsShowBaseBreakIn = false;
+            IsShowBaseBreakOut = true;
+        }
+
+        [RelayCommand]
+        void SelectedBaseBreakOut(TimeSheetResponse model)
+        {
+            IsShowBaseCheckIn = true;
+            IsShowBaseCheckOut = true;
+            IsShowBaseBreakIn = false;
+            IsShowBaseBreakOut = false;
+        }
+
+
 
         [RelayCommand]
         void SelectedMyBrackIn(TimeSheetResponse model)

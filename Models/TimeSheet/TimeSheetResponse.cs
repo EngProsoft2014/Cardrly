@@ -12,6 +12,7 @@ namespace Cardrly.Models.TimeSheet
         public string Id { get; set; } = default!;
         // From Card
         public string CardId { get; set; } = default!;
+        public string UserId { get; set; } = default!;
         public string CardName { get; set; } = default!;
         public string AccountId { get; set; } = default!;
 
@@ -53,8 +54,8 @@ namespace Cardrly.Models.TimeSheet
         public string? NetworkName { get; set; }
         public string? NetworkIpAddress { get; set; }
 
-        public bool IsShowBaseCheckIn {  get{ return (HoursFrom == null || IsBreak == true) ? true : false; } set{ } } 
-        public bool IsShowBaseCheckOut { get { return (HoursFrom != null || IsBreak == false) ? true : false; } set { } }
+        public bool IsShowBaseCheckIn {  get{ return ((HoursFrom == null && UserId == Preferences.Default.Get(ApiConstants.userid, "")) || HoursFrom != null && UserId != Preferences.Default.Get(ApiConstants.userid, "")) ? true : false; } set{ } } 
+        public bool IsShowBaseCheckOut { get { return HoursFrom != null ? true : false; } set { } }
         public bool IsShowBaseBreakIn { get { return (HoursFrom != null && IsBreak == false) ? true : false; } set { } }
         public bool IsShowBaseBreakOut { get { return (HoursFrom != null && IsBreak == true) ? true : false; } set { } }
     }
