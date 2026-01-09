@@ -36,6 +36,8 @@
 	<string>We require access to your gallery to allow you to use photos for your profile For example, you can use a picture to upload as your profile image</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Cardrly uses your location to enable location-based features.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Cardrly requires location access to track employees even in background.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Cardrly requires location access to function properly, even when running in the background.</string>
 	<key>CFBundleName</key>

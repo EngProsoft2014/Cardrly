@@ -37,13 +37,15 @@ namespace Cardrly.ViewModels
         #region Service
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
+        readonly SignalRService _signalRService;
         #endregion
 
         #region Cons
-        public LoginViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioStreamService audioService)
+        public LoginViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService)
         {
             Rep = GenericRep;
             _service = service;
+            _signalRService = signalRService;
             _audioService = audioService;
 
             Init();
@@ -127,7 +129,7 @@ namespace Cardrly.ViewModels
                                             else
                                             {
                                                 await SetData(UserResponse);
-                                                var page = new HomePage(new HomeViewModel(Rep, _service, _audioService), Rep, _service, _audioService);
+                                                var page = new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService), Rep, _service, _signalRService, _audioService);
                                                 await App.Current!.MainPage!.Navigation.PushAsync(page);
                                             }
                                         }
@@ -153,7 +155,7 @@ namespace Cardrly.ViewModels
                                             else
                                             {
                                                 await SetData(UserResponse);
-                                                var page = new HomePage(new HomeViewModel(Rep, _service, _audioService), Rep, _service, _audioService);
+                                                var page = new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService), Rep, _service, _signalRService, _audioService);
                                                 await App.Current!.MainPage!.Navigation.PushAsync(page);
                                             }
                                         }

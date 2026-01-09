@@ -41,18 +41,14 @@
 	<uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
 	<!--For Get Locations-->
-	<uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-	<uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
-	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-	<uses-permission android:name="android.permission.CONTROL_LOCATION_UPDATES" />
-	<uses-permission android:name="android.permission.LOCATION_HARDWARE" />
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
 
 	<uses-feature android:name="android.hardware.location" android:required="false" />
-	<uses-feature android:name="android.hardware.location.gps" android:required="false" />
+	<uses-feature android:name="android.hardware.location.gps" android:required="true" />
 	<uses-feature android:name="android.hardware.location.network" android:required="false" />
 
 	<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="35" />

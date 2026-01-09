@@ -1,9 +1,10 @@
-using Controls.UserDialogs.Maui;
 using Cardrly.Controls;
 using Cardrly.Helpers;
-using Cardrly.ViewModels;
 using Cardrly.Resources.Lan;
 using Cardrly.Services.AudioStream;
+using Cardrly.Services.Data;
+using Cardrly.ViewModels;
+using Controls.UserDialogs.Maui;
 
 namespace Cardrly.Pages;
 
@@ -13,15 +14,17 @@ public partial class NoInternetPage : Controls.CustomControl
     #region Service
     readonly IGenericRepository Rep;
     readonly Services.Data.ServicesService _service;
+    readonly SignalRService _signalRService;
     private readonly IAudioStreamService _audioService;
     #endregion
 
-    public NoInternetPage(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioStreamService audioService)
+    public NoInternetPage(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService)
     {
         InitializeComponent();
 
         Rep = GenericRep;
         _service = service;
+        _signalRService = signalRService;
         _audioService = audioService;
     }
 
@@ -77,7 +80,7 @@ public partial class NoInternetPage : Controls.CustomControl
         }
         else
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _audioService), Rep, _service, _audioService));
+            await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService), Rep, _service, _signalRService, _audioService));
         }
 
         //App.Current.MainPage.Navigation.RemovePage(App.Current.MainPage.Navigation.NavigationStack[App.Current.MainPage.Navigation.NavigationStack.Count - 2]);

@@ -1,11 +1,15 @@
 ﻿
 using Cardrly.Constants;
 using Cardrly.Controls;
+using Cardrly.Helpers;
 using Cardrly.Models;
+using Cardrly.Pages;
+using Cardrly.Services.AudioStream;
 using CommunityToolkit.Maui.Alerts;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.CognitiveServices.Speech;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,19 +22,24 @@ namespace Cardrly.Services.Data
     {
 
         private readonly HubConnection _hubConnection;
-        readonly Services.Data.ServicesService _service;
+        readonly ServicesService _service;
+        readonly IGenericRepository Rep;
+        private readonly IAudioStreamService _audioService;
         private bool _isReconnecting = false;
+        private string _employeeId;
 
         public event Action<string> OnMessageReceivedLogout;
         public event Action<string, string, string, string, string, string, string> OnMessageReceivedUpdateVersion;
         public event Action<DataMapsModel> OnMessageReceivedLocation;
 
-        public SignalRService(ServicesService service)
+        public SignalRService(IGenericRepository GenericRep, ServicesService service, IAudioStreamService audioService)
         {
             _service = service;
+            Rep = GenericRep;
+            _audioService = audioService;
 
             _hubConnection = new HubConnectionBuilder()
-                .WithUrl(Helpers.Utility.ServerUrl + "authHub",options =>
+                .WithUrl(Helpers.Utility.ServerUrl + "authHub", options =>
                 {
                     options.AccessTokenProvider = async () => await _service.UserToken();
                     options.Transports = HttpTransportType.WebSockets; // You can choose WebSockets or other transports
@@ -59,11 +68,11 @@ namespace Cardrly.Services.Data
                     OnMessageReceivedLogout?.Invoke(GuidKey);
             });
 
-            _hubConnection.On<string,string, string, string, string, string, string>("UpdateVersion", (GuidKey, Name, VersionNumber, VersionBuild, DescriptionEN, DescriptionAR, ReleaseDate) =>
+            _hubConnection.On<string, string, string, string, string, string, string>("UpdateVersion", (GuidKey, Name, VersionNumber, VersionBuild, DescriptionEN, DescriptionAR, ReleaseDate) =>
             {
                 string Id = Preferences.Default.Get(ApiConstants.GuidKey, "");
 
-                if(!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(GuidKey) && !string.IsNullOrEmpty(Id) && GuidKey == Id)
+                if (!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(GuidKey) && !string.IsNullOrEmpty(Id) && GuidKey == Id)
                 {
                     int VersionNumberParse = int.Parse(VersionNumber.Trim().Replace(".", ""));
                     int VersionBuildParse = int.Parse(VersionBuild.Trim().Replace(".", ""));
@@ -75,7 +84,7 @@ namespace Cardrly.Services.Data
                     {
                         OnMessageReceivedUpdateVersion?.Invoke(GuidKey, Name, VersionNumber, VersionBuild, DescriptionEN, DescriptionAR, ReleaseDate);
                     }
-                    else if((Name.ToLower() == "ios" && DeviceInfo.Platform == DevicePlatform.iOS) && (currentVersionParse < VersionNumberParse))
+                    else if ((Name.ToLower() == "ios" && DeviceInfo.Platform == DevicePlatform.iOS) && (currentVersionParse < VersionNumberParse))
                     {
                         OnMessageReceivedUpdateVersion?.Invoke(GuidKey, Name, VersionNumber, VersionBuild, DescriptionEN, DescriptionAR, ReleaseDate);
                     }
@@ -104,6 +113,9 @@ namespace Cardrly.Services.Data
             {
                 await _hubConnection.StartAsync();
                 Console.WriteLine("✅ SignalR Connected.");
+
+                string UserId = Preferences.Default.Get(ApiConstants.userid, "");
+                await StartLocationTrackingAsync(UserId);
             }
             catch (Exception ex)
             {
@@ -192,9 +204,9 @@ namespace Cardrly.Services.Data
         // 👇 New method: start listening for geolocation updates
         public async Task StartLocationTrackingAsync(string employeeId)
         {
-            var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+            var status = await Permissions.CheckStatusAsync<Permissions.LocationAlways>();
             if (status != PermissionStatus.Granted)
-                status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                status = await Permissions.RequestAsync<Permissions.LocationAlways>();
             if (status != PermissionStatus.Granted)
             {
                 await Toast.Make("Location permission not granted", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
@@ -210,27 +222,14 @@ namespace Cardrly.Services.Data
             {
                 if (await Geolocation.StartListeningForegroundAsync(request))
                 {
-                    Geolocation.LocationChanged += async (s, e) =>
-                    {
-                        var loc = e.Location;
-                        if (loc != null)
-                        {
-                            var data = new DataMapsModel
-                            {
-                                EmployeeId = employeeId,
-                                Lat = loc.Latitude.ToString(),
-                                Long = loc.Longitude.ToString(),
-                                CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
-                                Time = DateTime.UtcNow.ToString("HH:mm:ss")
-                            };
-
-                            await SendEmployeeLocation(data);
-                        }
-                    };
+                    _employeeId = employeeId;
+                    Geolocation.LocationChanged -= OnLocationChanged;
+                    Geolocation.LocationChanged += OnLocationChanged;
 
                     Geolocation.ListeningFailed += async (s, e) =>
                     {
                         await Toast.Make($"⚠️ Location listening failed: {e.Error}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+                        await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, this, _audioService));
                     };
                 }
             }
@@ -251,30 +250,50 @@ namespace Cardrly.Services.Data
         }
 
 
+
+        private async void OnLocationChanged(object sender, GeolocationLocationChangedEventArgs e)
+        {
+            var loc = e.Location;
+            if (loc != null)
+            {
+                var data = new DataMapsModel
+                {
+                    EmployeeId = _employeeId,
+                    Lat = loc.Latitude.ToString(),
+                    Long = loc.Longitude.ToString(),
+                    CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
+                    Time = DateTime.UtcNow.ToString("HH:mm:ss")
+                };
+
+                await SendEmployeeLocation(data);
+            }
+        }
+
+
         //public async Task StartLocationTrackingAsync(string employeeId)
+        //{
+        //    // Simulate 100 updates
+        //    for (int i = 0; i < 100; i++)
         //    {
-        //        // Simulate 100 updates
-        //        for (int i = 0; i < 100; i++)
+        //        var fakeLat = 30.0444 + (i * 0.0002); // Cairo base + small offset
+        //        var fakeLong = 31.2357 + (i * 0.0003);
+
+        //        var data = new DataMapsModel
         //        {
-        //            var fakeLat = 30.0444 + (i * 0.0002); // Cairo base + small offset
-        //            var fakeLong = 31.2357 + (i * 0.0003);
+        //            EmployeeId = employeeId,
+        //            Lat = fakeLat.ToString("F6"),
+        //            Long = fakeLong.ToString("F6"),
+        //            CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
+        //            Time = DateTime.UtcNow.ToString("HH:mm:ss")
+        //        };
 
-        //            var data = new DataMapsModel
-        //            {
-        //                EmployeeId = employeeId,
-        //                Lat = fakeLat.ToString("F6"),
-        //                Long = fakeLong.ToString("F6"),
-        //                CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
-        //                Time = DateTime.UtcNow.ToString("HH:mm:ss")
-        //            };
+        //        await SendEmployeeLocation(data);
 
-        //            await SendEmployeeLocation(data);
+        //        Console.WriteLine($"📡 Fake location {i}: {data.Lat}, {data.Long}");
 
-        //            Console.WriteLine($"📡 Fake location {i}: {data.Lat}, {data.Long}");
-
-        //            await Task.Delay(3000); // wait 3 seconds before next update
-        //        }
+        //        await Task.Delay(3000); // wait 3 seconds before next update
         //    }
+        //}
 
 
         public void StopLocationTracking()

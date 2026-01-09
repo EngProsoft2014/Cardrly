@@ -12,34 +12,39 @@ public partial class TrckingMapPage : Controls.CustomControl
     #region Service
     readonly IGenericRepository ORep;
     readonly Services.Data.ServicesService _service;
+    readonly SignalRService _signalRService;
     #endregion
     EmployeesViewModel employeesViewModel;
 
-    public TrckingMapPage(EmployeesViewModel model, IGenericRepository GenericRep, Services.Data.ServicesService service)
+    public TrckingMapPage(EmployeesViewModel model, IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService)
 	{
 		InitializeComponent();
         ORep = GenericRep;
         _service = service;
+        _signalRService = signalRService;
         this.BindingContext = employeesViewModel = model;
-
-        model._signalRLocation = DependencyService.Resolve<SignalRService>();
-
-        model._signalRLocation.OnMessageReceivedLocation += (locationData) =>
-        {
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                UpdateLocationOnMap(locationData);
-            });
-        };
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        _signalRService.OnMessageReceivedLocation += HandleLocationUpdate;
+    }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-
-        employeesViewModel._signalRLocation.StopLocationTracking();
+        _signalRService.OnMessageReceivedLocation -= HandleLocationUpdate;
     }
+
+    private void HandleLocationUpdate(DataMapsModel locationData)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            UpdateLocationOnMap(locationData);
+        });
+    }
+
 
     private void myMap_MapClicked(object sender, MapClickedEventArgs e)
     {

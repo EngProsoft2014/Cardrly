@@ -27,6 +27,7 @@ namespace Cardrly.ViewModels
         #region Service
         readonly IGenericRepository ORep;
         readonly Services.Data.ServicesService _service;
+        readonly SignalRService _signalRService;
         #endregion
 
         #region Prop
@@ -44,8 +45,6 @@ namespace Cardrly.ViewModels
 
         public static DataMapsModel MapsModel { get; set; }
 
-        public SignalRService _signalRLocation;
-
         DataTable employeesTable;
 
         DataMapsModel CurrentTrack { get; set; }
@@ -56,32 +55,25 @@ namespace Cardrly.ViewModels
         #region Cons
 
         //Tracking Constructor
-        public EmployeesViewModel(TimeSheetResponse employee, IGenericRepository GenericRep, Services.Data.ServicesService service)
+        public EmployeesViewModel(TimeSheetResponse employee, IGenericRepository GenericRep, ServicesService service)
         {
             ORep = GenericRep;
             _service = service;
-            
+
             OneEmployee = employee;
             Listmap = new ObservableCollection<DataMapsModel>();
             LastListmap = new ObservableCollection<DataMapsModel>();
             CurrentTrack = new DataMapsModel();
 
-            // Start tracking local device location
-            //StartTrackingLocation();
-
             //new Timer((Object stateInfo) => { GetDataEmployee(); }, new AutoResetEvent(false), 0, 3000);
         }
 
         //Employees Working Today Constructor
-        public EmployeesViewModel(ObservableCollection<TimeSheetResponse> lstEmployeesTracking, IGenericRepository GenericRep, Services.Data.ServicesService service)
+        public EmployeesViewModel(ObservableCollection<TimeSheetResponse> lstEmployeesTracking, IGenericRepository GenericRep, ServicesService service, SignalRService signalRService)
         {
-            _signalRLocation = DependencyService.Resolve<SignalRService>();
-            // Subscribe to location updates from server
-            //_signalRLocation.OnMessageReceivedLocation += HandleLocationUpdate;
-
             ORep = GenericRep;
             _service = service;
-            //_signalRLocation = DependencyService.Resolve<SignalRService>();
+            _signalRService = signalRService;
             LstWorkingEmployees = lstEmployeesTracking;
             //InitTraking(lstEmployeesTracking);
         }
@@ -117,11 +109,11 @@ namespace Cardrly.ViewModels
         {
             //if (locationData.EmployeeId.ToString() == OneEmployee.Id)
             //{
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    MapsModel = locationData;
-                    // Update UI map pin here
-                });
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                MapsModel = locationData;
+                // Update UI map pin here
+            });
             //}
         }
 
@@ -192,9 +184,9 @@ namespace Cardrly.ViewModels
                 //await GetDataEmployee();
                 //if (MapsModel != null)
                 //{
-                    UserDialogs.Instance.ShowLoading();
-                    await App.Current!.MainPage!.Navigation.PushAsync(new Pages.TrackingPages.TrckingMapPage(new EmployeesViewModel(employee, ORep, _service), ORep, _service));
-                    UserDialogs.Instance.HideHud();
+                UserDialogs.Instance.ShowLoading();
+                await App.Current!.MainPage!.Navigation.PushAsync(new Pages.TrackingPages.TrckingMapPage(new EmployeesViewModel(employee, ORep, _service), ORep, _service, _signalRService));
+                UserDialogs.Instance.HideHud();
                 //}
                 //else
                 //{

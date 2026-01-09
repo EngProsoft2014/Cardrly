@@ -17,6 +17,11 @@ using CommunityToolkit.Maui.Alerts;
 using Cardrly.Services.AudioStream;
 using Controls.UserDialogs.Maui;
 using System.Reactive.Concurrency;
+using Cardrly.Pages.MainPopups;
+using Cardrly.Models;
+
+using Mopups.Services;
+
 
 
 
@@ -32,7 +37,8 @@ namespace Cardrly
     {
         #region Service
         readonly IGenericRepository Rep;
-        readonly Services.Data.ServicesService _service;
+        readonly ServicesService _service;
+        readonly SignalRService _signalRService;
         public static IServiceProvider Services { get; private set; }
         private readonly IAudioStreamService _audioService;
         #endregion
@@ -40,7 +46,7 @@ namespace Cardrly
         public static bool UploadInProgress { get; set; } = false;
         public static bool IsInBackground { get; private set; }
         int NavToSecurePage = 0;
-        public App(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioStreamService audioService, IServiceProvider serviceProvider,
+        public App(IGenericRepository GenericRep, ServicesService service, SignalRService signalRService, IAudioStreamService audioService, IServiceProvider serviceProvider,
             INotificationManagerService notificationManagerService)
         {
             try
@@ -49,6 +55,7 @@ namespace Cardrly
                 Rep = GenericRep;
                 _service = service;
                 Services = serviceProvider;
+                _signalRService = signalRService;
                 Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
                 StaticMember.notificationManager = notificationManagerService;
                 LoadSetting();
@@ -61,13 +68,10 @@ namespace Cardrly
                 InitializeComponent();
                 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(ApiConstants.syncFusionLicence);
 
-                var signalRService = new SignalRService(service); 
-                DependencyService.RegisterSingleton(signalRService);
-
                 if (Connectivity.NetworkAccess != NetworkAccess.Internet)
                 {
                     // Connection to internet is Not available
-                    MainPage = new NavigationPage(new NoInternetPage(Rep, _service, _audioService));
+                    MainPage = new NavigationPage(new NoInternetPage(Rep, _service, _signalRService, _audioService));
                     return;
                 }
                 else
@@ -80,11 +84,11 @@ namespace Cardrly
                     if (string.IsNullOrEmpty(AccountId) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow) || IsExpireDate == false)
                     {
                         Preferences.Default.Clear();
-                        MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, _audioService)));
+                        MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService)));
                     }
                     else
                     {
-                        MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _audioService), Rep, _service, _audioService));
+                        MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService), Rep, _service, _signalRService, _audioService));
                     }
 
                     //// Subscribe only for this upload
@@ -112,7 +116,7 @@ namespace Cardrly
             catch (Exception ex)
             {
                 Preferences.Default.Clear();
-                MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, _audioService)));
+                MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService)));
             }
         }
 
@@ -140,7 +144,7 @@ namespace Cardrly
             if (e.NetworkAccess != NetworkAccess.Internet)
             {
                 // Connection to internet is Not available
-                await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service, _audioService));
+                await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service, _signalRService, _audioService));
                 return;
             }
         }
@@ -148,7 +152,12 @@ namespace Cardrly
         protected async override void OnStart()
         {
             base.OnStart();
+
+            await SignalRservice();
+
             IsInBackground = false;
+
+            EnsureGpsEnabled();
 
             MessagingCenter.Subscribe<object>(this, "AppForegrounded", async sender =>
             {
@@ -186,7 +195,10 @@ namespace Cardrly
         protected async override void OnResume()
         {
             base.OnResume();
+            await SignalRservice();
+
             IsInBackground = false;
+
             if (UploadInProgress)
             {
                 MessagingCenter.Send<object>(this, "AppForegrounded");      
@@ -204,7 +216,7 @@ namespace Cardrly
                     await BlobCache.LocalMachine.Vacuum();
 
                     Preferences.Default.Set("Lan", LangValueToKeep);
-                    await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _audioService)));
+                    await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService)));
                 }
             }
 
@@ -232,6 +244,40 @@ namespace Cardrly
             }
         }
 
+        public async Task SignalRservice()
+        {
+            await _signalRService.StartAsync();
+
+            // Logout
+            _signalRService.OnMessageReceivedLogout += _signalRService_OnMessageReceivedLogout;
+
+            // UpdateVersion
+            _signalRService.OnMessageReceivedUpdateVersion += _signalRService_OnMessageReceivedUpdateVersion;
+
+        }
+
+        private async void EnsureGpsEnabled()
+        {
+            try
+            {
+                var request = new GeolocationRequest(GeolocationAccuracy.Default, TimeSpan.FromSeconds(1));
+                var location = await Geolocation.GetLocationAsync(request);
+
+                if (location == null)
+                {
+                    await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService));
+                }
+            }
+            catch (FeatureNotEnabledException)
+            {
+                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService));
+            }
+            catch (PermissionException)
+            {
+                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService));
+            }
+        }
+
 
         async Task HandleNotify()
         {
@@ -242,11 +288,75 @@ namespace Cardrly
                 {
                     //Controls.StaticMember.TabIndex = message;
 
-                    await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _audioService), Rep, _service, _audioService));
+                    await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService), Rep, _service, _signalRService, _audioService));
 
                 }
             });
 #endif
+        }
+
+
+        // Logout
+        private async void _signalRService_OnMessageReceivedLogout(string GuidKey)
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+                bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
+                string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
+                string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
+
+                Preferences.Default.Clear();
+                await BlobCache.LocalMachine.InvalidateAll();
+                await BlobCache.LocalMachine.Vacuum();
+
+                Preferences.Default.Set("Lan", LangValueToKeep);
+                Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
+                Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
+                Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
+
+                await _signalRService.InvokeNotifyDisconnectyAsync(GuidKey);
+
+                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService)));
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.MsgloggedOut, AppResources.msgOk);
+            });
+        }
+
+
+        // UpdateVersion
+        private async void _signalRService_OnMessageReceivedUpdateVersion(string GuidKey, string Name, string VersionNumber, string VersionBuild, string DescriptionEN, string DescriptionAR, string ReleaseDate)
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                UpdateVersionModel oUpdateVersionModel = new UpdateVersionModel
+                {
+                    Name = Name,
+                    VersionNumber = VersionNumber,
+                    VersionBuild = VersionBuild,
+                    Description = DescriptionEN,
+                    DescriptionAr = DescriptionAR,
+                    ReleaseDate = DateTime.Parse(ReleaseDate)
+                };
+
+                //await _signalRService.NotifyUpdatedVersionMobile(GuidKey);
+                await StaticMember.DeleteUserSession(Rep, _service);
+
+                string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+                bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
+                string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
+                string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
+
+                Preferences.Default.Clear();
+                await BlobCache.LocalMachine.InvalidateAll();
+                await BlobCache.LocalMachine.Vacuum();
+
+                Preferences.Default.Set("Lan", LangValueToKeep);
+                Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
+                Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
+                Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
+
+                await MopupService.Instance.PushAsync(new UpdateVersionPopup(oUpdateVersionModel));
+            });
 
         }
     }

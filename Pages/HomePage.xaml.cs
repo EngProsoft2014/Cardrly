@@ -36,7 +36,7 @@ public partial class HomePage : Controls.CustomControl
     HomeViewModel homeViewModel;
     LeadViewModel LeadViewModel;
     CalendarViewModel CalendarViewModel;
-    private SignalRService _signalRService;
+    readonly SignalRService _signalRService;
     private readonly IAudioStreamService _audioService;
     private bool isTabHandling = false;
     #endregion
@@ -46,13 +46,14 @@ public partial class HomePage : Controls.CustomControl
     readonly Services.Data.ServicesService _service;
     #endregion
 
-    public HomePage(HomeViewModel model, IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioStreamService audioService)
+    public HomePage(HomeViewModel model, IGenericRepository GenericRep, ServicesService service, SignalRService signalRService, IAudioStreamService audioService)
     {
         InitializeComponent();
         homeViewModel = model;
         //CardPicker.SelectedIndex = 0;
         Rep = GenericRep;
         _service = service;
+        _signalRService = signalRService;
         _audioService = audioService;
         HomeView.BindingContext = model;
         // Add Flow Direction For Content View 
@@ -79,103 +80,97 @@ public partial class HomePage : Controls.CustomControl
     {
         base.OnAppearing();
 
-        await SignalRservice();
+        //await SignalRservice();
 
-        string UserId = Preferences.Default.Get(ApiConstants.userid, "");
-        await _signalRService.StartLocationTrackingAsync(UserId);
+        //string UserId = Preferences.Default.Get(ApiConstants.userid, "");
+        //await _signalRService.StartLocationTrackingAsync(UserId);
     }
 
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        _signalRService.StopLocationTracking();
     }
 
 
     #region Methods
 
-    public async Task SignalRservice()
-    {
-        if (_signalRService == null)
-        {
-            //_signalRService = new SignalRService(_service);
-            _signalRService = DependencyService.Resolve<SignalRService>();
-        }
-        await _signalRService.StartAsync();
+    //public async Task SignalRservice()
+    //{
+    //    await _signalRService.StartAsync();
 
-        // Logout
-        _signalRService.OnMessageReceivedLogout += _signalRService_OnMessageReceivedLogout;
+    //    // Logout
+    //    _signalRService.OnMessageReceivedLogout += _signalRService_OnMessageReceivedLogout;
 
-        // UpdateVersion
-        _signalRService.OnMessageReceivedUpdateVersion += _signalRService_OnMessageReceivedUpdateVersion;
+    //    // UpdateVersion
+    //    _signalRService.OnMessageReceivedUpdateVersion += _signalRService_OnMessageReceivedUpdateVersion;
       
-    }
+    //}
 
 
-    // Logout
-    private async void _signalRService_OnMessageReceivedLogout(string GuidKey)
-    {
-        Device.BeginInvokeOnMainThread(async () =>
-        {
-            string LangValueToKeep = Preferences.Default.Get("Lan", "en");
-            bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
-            string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
-            string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
+    //// Logout
+    //private async void _signalRService_OnMessageReceivedLogout(string GuidKey)
+    //{
+    //    Device.BeginInvokeOnMainThread(async () =>
+    //    {
+    //        string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+    //        bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
+    //        string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
+    //        string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
 
-            Preferences.Default.Clear();
-            await BlobCache.LocalMachine.InvalidateAll();
-            await BlobCache.LocalMachine.Vacuum();
+    //        Preferences.Default.Clear();
+    //        await BlobCache.LocalMachine.InvalidateAll();
+    //        await BlobCache.LocalMachine.Vacuum();
 
-            Preferences.Default.Set("Lan", LangValueToKeep);
-            Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
-            Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
-            Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
+    //        Preferences.Default.Set("Lan", LangValueToKeep);
+    //        Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
+    //        Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
+    //        Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
 
-            await _signalRService.InvokeNotifyDisconnectyAsync(GuidKey);
+    //        await _signalRService.InvokeNotifyDisconnectyAsync(GuidKey);
 
-            await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _audioService)));
-            await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.MsgloggedOut, AppResources.msgOk);
-        });
-    }
+    //        await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService)));
+    //        await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.MsgloggedOut, AppResources.msgOk);
+    //    });
+    //}
 
 
-    // UpdateVersion
-    private async void _signalRService_OnMessageReceivedUpdateVersion(string GuidKey, string Name, string VersionNumber, string VersionBuild, string DescriptionEN, string DescriptionAR, string ReleaseDate)
-    {
-        Device.BeginInvokeOnMainThread(async () =>
-        {
-            UpdateVersionModel oUpdateVersionModel = new UpdateVersionModel
-            {
-                Name = Name,
-                VersionNumber = VersionNumber,
-                VersionBuild = VersionBuild,
-                Description = DescriptionEN,
-                DescriptionAr = DescriptionAR,
-                ReleaseDate = DateTime.Parse(ReleaseDate)
-            };
+    //// UpdateVersion
+    //private async void _signalRService_OnMessageReceivedUpdateVersion(string GuidKey, string Name, string VersionNumber, string VersionBuild, string DescriptionEN, string DescriptionAR, string ReleaseDate)
+    //{
+    //    Device.BeginInvokeOnMainThread(async () =>
+    //    {
+    //        UpdateVersionModel oUpdateVersionModel = new UpdateVersionModel
+    //        {
+    //            Name = Name,
+    //            VersionNumber = VersionNumber,
+    //            VersionBuild = VersionBuild,
+    //            Description = DescriptionEN,
+    //            DescriptionAr = DescriptionAR,
+    //            ReleaseDate = DateTime.Parse(ReleaseDate)
+    //        };
 
-            //await _signalRService.NotifyUpdatedVersionMobile(GuidKey);
-            await StaticMember.DeleteUserSession(Rep, _service);
+    //        //await _signalRService.NotifyUpdatedVersionMobile(GuidKey);
+    //        await StaticMember.DeleteUserSession(Rep, _service);
 
-            string LangValueToKeep = Preferences.Default.Get("Lan", "en");
-            bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
-            string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
-            string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
+    //        string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+    //        bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
+    //        string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
+    //        string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
 
-            Preferences.Default.Clear();
-            await BlobCache.LocalMachine.InvalidateAll();
-            await BlobCache.LocalMachine.Vacuum();
+    //        Preferences.Default.Clear();
+    //        await BlobCache.LocalMachine.InvalidateAll();
+    //        await BlobCache.LocalMachine.Vacuum();
 
-            Preferences.Default.Set("Lan", LangValueToKeep);
-            Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
-            Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
-            Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
+    //        Preferences.Default.Set("Lan", LangValueToKeep);
+    //        Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
+    //        Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
+    //        Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
 
-            await MopupService.Instance.PushAsync(new UpdateVersionPopup(oUpdateVersionModel));
-        });
+    //        await MopupService.Instance.PushAsync(new UpdateVersionPopup(oUpdateVersionModel));
+    //    });
 
-    }
+    //}
 
     private void SfTabView_SelectionChanged(object sender, TabSelectionChangedEventArgs e)
     {
@@ -210,7 +205,7 @@ public partial class HomePage : Controls.CustomControl
         }
         else if (e.NewIndex == 4)
         {
-            MoreView.BindingContext ??= new MoreViewModel(Rep, _service, _audioService);
+            MoreView.BindingContext ??= new MoreViewModel(Rep, _service, _signalRService, _audioService);
         }
 
         isTabHandling = false;

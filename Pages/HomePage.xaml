@@ -81,6 +81,15 @@
                                                         <Image.Source>
                                                             <FontImageSource Glyph="{Binding IconGlyph}" FontFamily="FontIconSolid" Size="25" Color="Gray"/>
                                                         </Image.Source>
+                                                        <Image.Triggers>
+                                                            <DataTrigger TargetType="Image" Binding="{Binding Id}" Value="2">
+                                                                <Setter Property="Source">
+                                                                    <Setter.Value>
+                                                                        <FontImageSource Glyph="{Binding IconGlyph}" FontFamily="FontIcon" Size="25" Color="Gray"/>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </DataTrigger>
+                                                        </Image.Triggers>
                                                         <Image.GestureRecognizers>
                                                             <TapGestureRecognizer 
                                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=NavigateCommand}" 

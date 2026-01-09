@@ -334,6 +334,9 @@
 	  <MauiXaml Update="Pages\MeetingsScript\RecordPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\NoGpsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\NoInternetPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

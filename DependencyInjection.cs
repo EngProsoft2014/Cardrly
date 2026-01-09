@@ -10,6 +10,10 @@ using Cardrly.ViewModels.Links;
 using Microsoft.Maui.Handlers;
 using Plugin.Maui.Audio;
 using Cardrly.Services.AudioStream;
+using Cardrly.Pages.TrackingPages;
+using Cardrly.ViewModels.MeetingsAi;
+
+
 
 #if IOS
 using Cardrly.Services.NativeAudioRecorder;
@@ -26,7 +30,10 @@ namespace Cardrly
         {
             #region ServiceServices
             Services.AddSingleton<ServicesService>();
+            #endregion
 
+            #region SignalRServices
+            Services.AddSingleton<SignalRService>();
             #endregion
 
             #region GenericRepository
@@ -45,18 +52,36 @@ namespace Cardrly
             Services.AddTransient<AddLinkViewModel>();
             #endregion
 
+            #region MeetingsAi ViewModels
+            Services.AddTransient<MeetingSettingViewModel>();
+            Services.AddTransient<NotesScriptDetailsViewModel>();
+            Services.AddTransient<NotesScriptViewModel>();
+            Services.AddTransient<RecordViewModel>();
+            #endregion
+
             #region Share ViewModels
             //Main DistributorsViewModels ViewModels
+            Services.AddTransient<AccountInfoViewModel>();
             Services.AddTransient<ActiveDeviceViewModel>();
             Services.AddTransient<AddCustomCardViewModel>();
+            Services.AddTransient<AddEventViewModel>();
+            Services.AddTransient<ADOnsViewModel>();
             Services.AddTransient<AllCommentViewModel>();
             Services.AddTransient<BaseViewModel>();
+            Services.AddTransient<BillingViewModel>();
+            Services.AddTransient<CalendarViewModel>();
             Services.AddTransient<CardsViewModel>();
+            Services.AddTransient<ChangePasswordViewModel>();
             Services.AddTransient<DevicesViewModel>();
+            Services.AddTransient<EmployeesViewModel>();
             Services.AddTransient<HomeViewModel>();
             Services.AddTransient<LoginViewModel>();
             Services.AddTransient<MoreViewModel>();
+            Services.AddTransient<ResetPasswordViewModel>();
+            Services.AddTransient<TimeSheetViewModel>();
+            Services.AddTransient<TimeZoneViewModel>();
             #endregion
+
             #endregion
 
             #region Pages
@@ -87,9 +112,24 @@ namespace Cardrly
             Services.AddTransient<ShareLeadPopup>();
             Services.AddTransient<InsertDevicePopup>();
             Services.AddTransient<CalendlyDetailsPopup>();
+            Services.AddTransient<CalendrFilterPopup>();
             Services.AddTransient<OutLookDetailsPopup>();
             Services.AddTransient<GmailDetailsPopup>();
+            Services.AddTransient<NoGpsPage>();
+            Services.AddTransient<NoInternetPage>(); 
+            Services.AddTransient<CheckoutPopup>();
+            Services.AddTransient<DatePopup>();
+            Services.AddTransient<LanguagePopup>();
+            Services.AddTransient<LeadFilterPopup>();
+            Services.AddTransient<ReminderPopup>();
+            Services.AddTransient<ShortcutPopup>();
+            Services.AddTransient<UpdateVersionPopup>();
+            #endregion
 
+            #region TimeSheet Pages
+            Services.AddTransient<TrckingMapPage>();
+            Services.AddTransient<TimeSheetPage>();
+            Services.AddTransient<EmployeesWorkingPage>(); 
             #endregion
 
             #endregion

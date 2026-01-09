@@ -1,20 +1,21 @@
 ﻿using Akavache;
-using CommunityToolkit.Mvvm.Input;
+using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Pages;
-using System.Reactive.Linq;
-using Plugin.Maui.Audio;
-using Cardrly.Resources.Lan;
-using Mopups.Services;
 using Cardrly.Pages.MainPopups;
-using CommunityToolkit.Maui.Alerts;
-using Cardrly.Controls;
-using Controls.UserDialogs.Maui;
-using Cardrly.Constants;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Cardrly.Services.AudioStream;
 using Cardrly.Pages.MeetingsScript;
 using Cardrly.Pages.TrackingPages;
+using Cardrly.Resources.Lan;
+using Cardrly.Services.AudioStream;
+using Cardrly.Services.Data;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Controls.UserDialogs.Maui;
+using Mopups.Services;
+using Plugin.Maui.Audio;
+using System.Reactive.Linq;
 
 namespace Cardrly.ViewModels
 {
@@ -28,13 +29,15 @@ namespace Cardrly.ViewModels
         #region Service
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
+        readonly SignalRService _signalRService;
         #endregion
 
         #region Cons
-        public MoreViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioStreamService audioService)
+        public MoreViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService)
         {
             Rep = GenericRep;
             _service = service;
+            _signalRService = signalRService;
             _audioService = audioService;
 
             IsShowBullingInfo = StaticMember.CheckPermission(ApiConstants.GetStripe) == true ? true : false;
@@ -65,7 +68,7 @@ namespace Cardrly.ViewModels
                 Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
                 Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
                 Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
-                await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _audioService)));
+                await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService)));
             };
             Controls.StaticMember.ShowSnackBar($"{AppResources.msgDoYouWantToLogout}", Controls.StaticMember.SnackBarColor, Controls.StaticMember.SnackBarTextColor, action);
             return Task.CompletedTask;
@@ -79,7 +82,7 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task ChangePasswordClick()
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new ChangePasswordPage(new ChangePasswordViewModel(Rep,_service, _audioService)));
+            await App.Current!.MainPage!.Navigation.PushAsync(new ChangePasswordPage(new ChangePasswordViewModel(Rep,_service, _signalRService, _audioService)));
         }
         //[RelayCommand]
         //async Task TimeSheetClick()
@@ -90,7 +93,7 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task AdOnsPageClick()
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new AdOnsPage(new ADOnsViewModel(Rep, _service, _audioService)));
+            await App.Current!.MainPage!.Navigation.PushAsync(new AdOnsPage(new ADOnsViewModel(Rep, _service, _signalRService, _audioService)));
         }
 
         //[RelayCommand]
@@ -112,7 +115,7 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task LanguageClick()
         {
-            await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service, _audioService));
+            await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service, _signalRService, _audioService));
         }
         [RelayCommand]
         async Task FAQClick()

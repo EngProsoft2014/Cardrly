@@ -34,7 +34,8 @@ namespace Cardrly.Controls
         public static int EmployeesPages { get; set; }
         static Helpers.GenericRepository ORep = new Helpers.GenericRepository();
         static readonly ServicesService _service = new ServicesService(ORep);
-        
+        static readonly SignalRService _signalRService = new SignalRService(ORep, _service, _audioService);
+
         public static DateTime SelectedDate { get; set; } = DateTime.Now;
         public static string SnackBarColor = "#FF7F3E";
         public static string SnackBarTextColor = "#FFFFFF";
@@ -114,7 +115,7 @@ namespace Cardrly.Controls
             Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
             Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
             Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
-            await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(generic, _service, _audioService)));
+            await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(generic, _service, _signalRService, _audioService)));
         }
 
         public static async Task<byte[]> GetImageBase64FromUrlAsync(string imageUrl)

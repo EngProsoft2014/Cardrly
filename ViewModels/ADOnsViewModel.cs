@@ -6,6 +6,7 @@ using Cardrly.Pages.MeetingsScript;
 using Cardrly.Pages.TrackingPages;
 using Cardrly.Resources.Lan;
 using Cardrly.Services.AudioStream;
+using Cardrly.Services.Data;
 using Cardrly.ViewModels.MeetingsAi;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -24,6 +25,7 @@ namespace Cardrly.ViewModels
         #region Service
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
+        readonly SignalRService _signalRService;
         #endregion
 
         private readonly IAudioStreamService _audioService;
@@ -31,10 +33,11 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         bool isShowMeetingSCript;
 
-        public ADOnsViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioStreamService audioService)
+        public ADOnsViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService)
         {
             Rep = GenericRep;
             _service = service;
+            _signalRService = signalRService;
             _audioService = audioService;
 
             IsShowMeetingSCript = StaticMember.CheckPermission(ApiConstants.GetMeetingAi) == true ? true : false;
@@ -61,7 +64,7 @@ namespace Cardrly.ViewModels
         async Task TimeSheetClick()
         {
             UserDialogs.Instance.ShowLoading();
-            await App.Current!.MainPage!.Navigation.PushAsync(new TimeSheetPage(new TimeSheetViewModel(Rep, _service)));
+            await App.Current!.MainPage!.Navigation.PushAsync(new TimeSheetPage(new TimeSheetViewModel(Rep, _service, _signalRService)));
             UserDialogs.Instance.HideHud();
         }
     }

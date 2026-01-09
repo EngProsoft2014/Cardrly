@@ -10,6 +10,7 @@ using Cardrly.Pages.MainPopups;
 using Cardrly.Pages.MeetingsScript;
 using Cardrly.Resources.Lan;
 using Cardrly.Services.AudioStream;
+using Cardrly.Services.Data;
 using Cardrly.ViewModels.MeetingsAi;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Views;
@@ -54,16 +55,18 @@ namespace Cardrly.ViewModels
 
         #region Service
         readonly IGenericRepository Rep;
-        readonly Services.Data.ServicesService _service;
+        readonly ServicesService _service;
+        readonly SignalRService _signalRService;
         readonly IAudioStreamService _audioService;
         #endregion
 
         #region Cons
-        public HomeViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, IAudioStreamService audioService)
+        public HomeViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService)
         {
             LoadPermissions();
             Rep = GenericRep;
             _service = service;
+            _signalRService = signalRService;
             _audioService = audioService;
             Init();
         }
@@ -233,9 +236,9 @@ namespace Cardrly.ViewModels
             if (item.Id == 1) //NotesScript Page
                 await App.Current!.MainPage!.Navigation.PushAsync(new NotesScriptPage(new NotesScriptViewModel(Rep, _service, _audioService)));
             else if (item.Id == 2) //TimeSheet Page
-                await App.Current!.MainPage!.Navigation.PushAsync(new TimeSheetPage(new TimeSheetViewModel(Rep, _service)));
+                await App.Current!.MainPage!.Navigation.PushAsync(new TimeSheetPage(new TimeSheetViewModel(Rep, _service, _signalRService)));
             else if (item.Id == 3) //Language Popup
-                await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service, _audioService));
+                await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service, _signalRService, _audioService));
             else if (item.Id == 4) //ActiveDevice Page
                 await App.Current!.MainPage!.Navigation.PushAsync(new ActiveDevicePage(new ActiveDeviceViewModel(Rep, _service)));
         }

@@ -1,6 +1,7 @@
 using Cardrly.Extensions;
 using Cardrly.Helpers;
 using Cardrly.Services.AudioStream;
+using Cardrly.Services.Data;
 using Cardrly.ViewModels;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
@@ -12,12 +13,14 @@ public partial class LanguagePopup : Mopups.Pages.PopupPage
 {
     IGenericRepository Rep;
     readonly Services.Data.ServicesService _service;
+    readonly SignalRService _signalRService;
     private readonly IAudioStreamService _audioService;
-    public LanguagePopup(IGenericRepository generic, Services.Data.ServicesService service, IAudioStreamService audioService)
+    public LanguagePopup(IGenericRepository generic, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService)
 	{
         InitializeComponent();
         Rep = generic;
         _service = service;
+        _signalRService = signalRService;
         _audioService = audioService;
         LoadSetting();
     }
@@ -79,7 +82,7 @@ public partial class LanguagePopup : Mopups.Pages.PopupPage
     {
         (Application.Current as App).MainPage.Dispatcher.Dispatch(() =>
         {
-            App.Current!.MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _audioService), Rep, _service, _audioService));
+            App.Current!.MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService), Rep, _service, _signalRService, _audioService));
         });
     }
 

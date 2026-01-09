@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:Controls="clr-namespace:Cardrly.Controls"
+                        xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+                        x:Class="Cardrly.Pages.NoGpsPage"
+                        NavigationPage.HasNavigationBar="False">
+
+    <Controls:CustomControl.Content>
+        <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+            <StackLayout Spacing="30">
+                <Image>
+                    <Image.Source>
+                        <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#333" Size="100"/>
+                    </Image.Source>
+                </Image>
+
+                <StackLayout>
+                    <Label Text="GPS is disabled."
+                       FontSize="22"
+                       TextColor="#333"
+                       HorizontalOptions="CenterAndExpand" />
+                    <Label Text="Please enable location services."
+                       FontSize="20"
+                       TextColor="#333"
+                       HorizontalOptions="CenterAndExpand" />
+                </StackLayout>
+
+                <Button Text="Retry"
+                        TextTransform="None"
+                        FontAttributes="Bold"
+                        BackgroundColor="#FF7F3E"
+                        TextColor="White"
+                        BorderColor="Gray"
+                        BorderWidth="2"
+                        Margin="30,30,30,0"
+                        VerticalOptions="End"
+                        Clicked="Button_Clicked"/>
+            </StackLayout>
+        </Grid>
+    </Controls:CustomControl.Content>
+</Controls:CustomControl>
