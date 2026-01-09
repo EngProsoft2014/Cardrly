@@ -8,9 +8,5 @@
 		</array>
 		<!--<key>aps-environment</key>
 		<string>production</string>-->
-		<key>UIBackgroundModes</key>
-		<array>
-			<string>location</string>
-		</array>
 	</dict>
 </plist>
