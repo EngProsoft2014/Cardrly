@@ -22,6 +22,10 @@
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="microphone|mediaProjection|camera" />
+		<service
+			android:name="Cardrly.Platforms.Android.Services.LocationService"
+			android:exported="false"
+			android:foregroundServiceType="location" />
 	</application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>

@@ -34,9 +34,9 @@ namespace Cardrly.Controls
         public static int EmployeesPages { get; set; }
         static Helpers.GenericRepository ORep = new Helpers.GenericRepository();
         static readonly ServicesService _service = new ServicesService(ORep);
-        static readonly SignalRService _signalRService = new SignalRService(ORep, _service, _audioService);
+        static readonly SignalRService _signalRService = new SignalRService(_service);
 
-        public static DateTime SelectedDate { get; set; } = DateTime.Now;
+        public static DateTime SelectedDate { get; set; } = DateTime.UtcNow;
         public static string SnackBarColor = "#FF7F3E";
         public static string SnackBarTextColor = "#FFFFFF";
         public static int WayOfTab { get; set; } = 0;

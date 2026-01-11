@@ -14,12 +14,13 @@ using Cardrly.Pages.TrackingPages;
 using Cardrly.ViewModels.MeetingsAi;
 
 
-
 #if IOS
 using Cardrly.Services.NativeAudioRecorder;
 using Cardrly.Platforms.iOS;
+using Cardrly.Platforms.iOS.Services;
 #elif ANDROID
 using Cardrly.Platforms.Android;
+using Cardrly.Platforms.Android.Services;
 #endif
 
 namespace Cardrly
@@ -35,6 +36,17 @@ namespace Cardrly
             #region SignalRServices
             Services.AddSingleton<SignalRService>();
             #endregion
+
+            #region LocationTrackingService
+            Services.AddSingleton<LocationTrackingService>();
+
+#if ANDROID
+            Services.AddSingleton<IPlatformLocationService, AndroidLocationTrackingService>();
+#elif IOS
+            Services.AddSingleton<IPlatformLocationService, iOSLocationTrackingService>();
+#endif
+
+#endregion
 
             #region GenericRepository
             Services.AddScoped<IGenericRepository, GenericRepository>();

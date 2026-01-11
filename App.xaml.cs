@@ -19,10 +19,8 @@ using Controls.UserDialogs.Maui;
 using System.Reactive.Concurrency;
 using Cardrly.Pages.MainPopups;
 using Cardrly.Models;
-
 using Mopups.Services;
-
-
+using CommunityToolkit.Mvvm.Messaging;
 
 
 #if ANDROID
@@ -39,6 +37,9 @@ namespace Cardrly
         readonly IGenericRepository Rep;
         readonly ServicesService _service;
         readonly SignalRService _signalRService;
+        private readonly LocationTrackingService _locationTracking;
+        bool _gpsPageShown = false;
+
         public static IServiceProvider Services { get; private set; }
         private readonly IAudioStreamService _audioService;
         #endregion
@@ -46,7 +47,12 @@ namespace Cardrly
         public static bool UploadInProgress { get; set; } = false;
         public static bool IsInBackground { get; private set; }
         int NavToSecurePage = 0;
-        public App(IGenericRepository GenericRep, ServicesService service, SignalRService signalRService, IAudioStreamService audioService, IServiceProvider serviceProvider,
+        public App(IGenericRepository GenericRep, 
+            ServicesService service, 
+            SignalRService signalRService,
+            LocationTrackingService locationTracking,
+            IAudioStreamService audioService, 
+            IServiceProvider serviceProvider,
             INotificationManagerService notificationManagerService)
         {
             try
@@ -56,6 +62,7 @@ namespace Cardrly
                 _service = service;
                 Services = serviceProvider;
                 _signalRService = signalRService;
+                _locationTracking = locationTracking;
                 Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
                 StaticMember.notificationManager = notificationManagerService;
                 LoadSetting();
@@ -90,6 +97,24 @@ namespace Cardrly
                     {
                         MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService), Rep, _service, _signalRService, _audioService));
                     }
+
+                    WeakReferenceMessenger.Default.Register<GpsStatusMessage>(this, (r, m) =>
+                    {
+                        if (!m.IsEnabled && !_gpsPageShown)
+                        {
+                            _gpsPageShown = true;
+                            MainThread.BeginInvokeOnMainThread(async () =>
+                            {
+                                await App.Current!.MainPage!.Navigation.PushAsync(
+                                    new NoGpsPage(Rep, _service, _signalRService, _audioService));
+                            });
+                        }
+                        else if (m.IsEnabled)
+                        {
+                            _gpsPageShown = false; // reset when GPS is back
+                        }
+                    });
+
 
                     //// Subscribe only for this upload
                     //MessagingCenter.Subscribe<object>(this, "AppForegrounded", sender =>
@@ -155,9 +180,13 @@ namespace Cardrly
 
             await SignalRservice();
 
-            IsInBackground = false;
+            string userId = Preferences.Default.Get(ApiConstants.userid, "");
+            if (!string.IsNullOrEmpty(userId))
+                await _locationTracking.StartAsync(userId);
 
-            EnsureGpsEnabled();
+            await EnsureGpsEnabled();
+
+            IsInBackground = false;
 
             MessagingCenter.Subscribe<object>(this, "AppForegrounded", async sender =>
             {
@@ -184,6 +213,9 @@ namespace Cardrly
                     }
                 });
             });
+
+
+
             //if (Connectivity.NetworkAccess != NetworkAccess.Internet)
             //{
             //    // Connection to internet is Not available
@@ -195,13 +227,22 @@ namespace Cardrly
         protected async override void OnResume()
         {
             base.OnResume();
+
             await SignalRservice();
+
+            _locationTracking.StopBackgroundTrackingLocation();
+
+            string userId = Preferences.Default.Get(ApiConstants.userid, "");
+            if (!string.IsNullOrEmpty(userId))
+                await _locationTracking.StartAsync(userId);
+
+            await EnsureGpsEnabled();
 
             IsInBackground = false;
 
             if (UploadInProgress)
             {
-                MessagingCenter.Send<object>(this, "AppForegrounded");      
+                MessagingCenter.Send<object>(this, "AppForegrounded");
             }
 
             string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
@@ -222,12 +263,21 @@ namespace Cardrly
 
         }
 
-        protected async override void OnSleep()
+        protected override void OnSleep()
         {
             base.OnSleep();
+            _locationTracking.Stop();//only stop foureground location
+
+            string userId = Preferences.Default.Get(ApiConstants.userid, "");
+            if (!string.IsNullOrEmpty(userId))
+            {
+                _locationTracking.StartBackgroundTrackingLocation(userId, null);
+            }
+
             IsInBackground = true;
             MessagingCenter.Send<object>(this, "AppBackgrounded");
         }
+
 
         void LoadSetting()
         {
@@ -246,17 +296,35 @@ namespace Cardrly
 
         public async Task SignalRservice()
         {
-            await _signalRService.StartAsync();
+            try
+            {
+                await _signalRService.StartAsync();
+            }
+            catch (Exception ex)
+            {
+                // Retry after delay
+                await Task.Delay(3000);
+                await _signalRService.StartAsync();
+            }
 
-            // Logout
-            _signalRService.OnMessageReceivedLogout += _signalRService_OnMessageReceivedLogout;
-
-            // UpdateVersion
-            _signalRService.OnMessageReceivedUpdateVersion += _signalRService_OnMessageReceivedUpdateVersion;
-
+            // Prevent duplicate subscriptions
+            _signalRService.OnMessageReceivedLogout -= _signalRService_OnMessageReceivedLogout;
+            _signalRService.OnMessageReceivedUpdateVersion -= _signalRService_OnMessageReceivedUpdateVersion;
+            
+            _signalRService.OnMessageReceivedLogout += _signalRService_OnMessageReceivedLogout;// Logout           
+            _signalRService.OnMessageReceivedUpdateVersion += _signalRService_OnMessageReceivedUpdateVersion;// UpdateVersion
         }
 
-        private async void EnsureGpsEnabled()
+        //Location signalR
+        //public async Task StartSignalRLocationservice()
+        //{
+        //    string UserId = Preferences.Default.Get(ApiConstants.userid, "");
+        //    await _signalRService.StartLocationTrackingAsync(UserId);
+
+        //    await EnsureGpsEnabled();
+        //}
+
+        private async Task EnsureGpsEnabled()
         {
             try
             {

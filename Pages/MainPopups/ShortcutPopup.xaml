@@ -40,6 +40,15 @@
                                                      FontFamily="FontIconSolid"
                                                      Size="20" Color="#333"/>
                                 </Image.Source>
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image" Binding="{Binding Id}" Value="2">
+                                        <Setter Property="Source">
+                                            <Setter.Value>
+                                                <FontImageSource Glyph="{Binding IconGlyph}" FontFamily="FontIcon" Size="20" Color="#333"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Image.Triggers>
                             </Image>
                             <Label Text="{Binding PageName}"
                                    TextColor="Black"

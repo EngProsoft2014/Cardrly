@@ -1,0 +1,125 @@
+﻿using Cardrly.Helpers;
+using Cardrly.Models;
+using Cardrly.Pages;
+using Cardrly.Services.AudioStream;
+using CommunityToolkit.Maui.Alerts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Cardrly.Services.Data
+{
+    public class LocationTrackingService
+    {
+        private readonly SignalRService _signalR;
+        readonly ServicesService _service;
+        readonly IGenericRepository Rep;
+        private readonly IAudioStreamService _audioService;
+        private readonly IPlatformLocationService _platformLocation;
+
+        private string _employeeId;
+
+        public LocationTrackingService(SignalRService signalR, IPlatformLocationService platformLocation, IGenericRepository GenericRep, ServicesService service, IAudioStreamService audioService)
+        {
+            _signalR = signalR;
+            _service = service;
+            Rep = GenericRep;
+            _audioService = audioService;
+            _platformLocation = platformLocation;
+        }
+
+        public async Task StartAsync(string employeeId)
+        {
+            var status = await Permissions.CheckStatusAsync<Permissions.LocationAlways>();
+            if (status != PermissionStatus.Granted)
+                status = await Permissions.RequestAsync<Permissions.LocationAlways>();
+            if (status != PermissionStatus.Granted)
+            {
+                await Toast.Make("Location permission not granted", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+                return;
+            }
+
+            var request = new GeolocationListeningRequest(
+                GeolocationAccuracy.High,
+                TimeSpan.FromSeconds(3)
+            );
+
+            bool started = false;
+
+            try
+            {
+                // Try Foreground listening first
+                started = await Geolocation.StartListeningForegroundAsync(request);
+
+                // If Foreground not available, fall back to background
+                if (started)
+                {
+                    _employeeId = employeeId;
+                    Geolocation.LocationChanged -= OnLocationChanged;
+                    Geolocation.LocationChanged += OnLocationChanged;
+
+                    Geolocation.ListeningFailed += async (s, e) =>
+                    {
+                        await Toast.Make($"⚠️ Location listening failed: {e.Error}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+                        await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalR, _audioService));
+                    };
+                }
+                else
+                {
+                    // If neither worked, delegate to platform native service
+                    _platformLocation.StartBackgroundTracking(employeeId, OnLocationChanged);
+                }
+
+            }
+            catch (FeatureNotEnabledException)
+            {
+                await App.Current!.MainPage!.DisplayAlert(
+                    "Alert",
+                    "Please enable location services (GPS) in your device settings.",
+                    "Ok");
+            }
+            catch (PermissionException)
+            {
+                await App.Current!.MainPage!.DisplayAlert(
+                    "Permissions",
+                    "GPS access was not granted",
+                    "Ok");
+            }
+        }
+
+        private async void OnLocationChanged(object sender, GeolocationLocationChangedEventArgs e)
+        {
+            var loc = e.Location;
+            if (loc != null)
+            {
+                var data = new DataMapsModel
+                {
+                    EmployeeId = _employeeId,
+                    Lat = loc.Latitude.ToString(),
+                    Long = loc.Longitude.ToString(),
+                    CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
+                    Time = DateTime.UtcNow.ToString("HH:mm:ss")
+                };
+
+                await _signalR.SendEmployeeLocation(data);
+            }
+        }
+
+        public void Stop()
+        {
+            Geolocation.StopListeningForeground();
+        }
+
+        public void StartBackgroundTrackingLocation(string employeeId, object value)
+        {
+            _platformLocation.StartBackgroundTracking(employeeId, OnLocationChanged);
+        }
+
+        public void StopBackgroundTrackingLocation()
+        {
+            _platformLocation.StopBackgroundTracking();
+        }
+    }
+}

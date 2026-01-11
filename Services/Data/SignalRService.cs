@@ -20,23 +20,19 @@ namespace Cardrly.Services.Data
 {
     public class SignalRService
     {
+        public static SignalRService Instance { get; private set; }
 
         private readonly HubConnection _hubConnection;
         readonly ServicesService _service;
-        readonly IGenericRepository Rep;
-        private readonly IAudioStreamService _audioService;
         private bool _isReconnecting = false;
-        private string _employeeId;
 
         public event Action<string> OnMessageReceivedLogout;
         public event Action<string, string, string, string, string, string, string> OnMessageReceivedUpdateVersion;
         public event Action<DataMapsModel> OnMessageReceivedLocation;
 
-        public SignalRService(IGenericRepository GenericRep, ServicesService service, IAudioStreamService audioService)
+        public SignalRService(ServicesService service)
         {
             _service = service;
-            Rep = GenericRep;
-            _audioService = audioService;
 
             _hubConnection = new HubConnectionBuilder()
                 .WithUrl(Helpers.Utility.ServerUrl + "authHub", options =>
@@ -113,9 +109,6 @@ namespace Cardrly.Services.Data
             {
                 await _hubConnection.StartAsync();
                 Console.WriteLine("✅ SignalR Connected.");
-
-                string UserId = Preferences.Default.Get(ApiConstants.userid, "");
-                await StartLocationTrackingAsync(UserId);
             }
             catch (Exception ex)
             {
@@ -201,105 +194,105 @@ namespace Cardrly.Services.Data
             }
         }
 
-        // 👇 New method: start listening for geolocation updates
-        public async Task StartLocationTrackingAsync(string employeeId)
-        {
-            var status = await Permissions.CheckStatusAsync<Permissions.LocationAlways>();
-            if (status != PermissionStatus.Granted)
-                status = await Permissions.RequestAsync<Permissions.LocationAlways>();
-            if (status != PermissionStatus.Granted)
-            {
-                await Toast.Make("Location permission not granted", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
-                return;
-            }
-
-            var request = new GeolocationListeningRequest(
-                GeolocationAccuracy.High,
-                TimeSpan.FromSeconds(3) // update interval
-            );
-
-            try
-            {
-                if (await Geolocation.StartListeningForegroundAsync(request))
-                {
-                    _employeeId = employeeId;
-                    Geolocation.LocationChanged -= OnLocationChanged;
-                    Geolocation.LocationChanged += OnLocationChanged;
-
-                    Geolocation.ListeningFailed += async (s, e) =>
-                    {
-                        await Toast.Make($"⚠️ Location listening failed: {e.Error}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
-                        await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, this, _audioService));
-                    };
-                }
-            }
-            catch (FeatureNotEnabledException)
-            {
-                await App.Current!.MainPage!.DisplayAlert(
-                    "Alert",
-                    "Please enable location services (GPS) in your device settings.",
-                    "Ok");
-            }
-            catch (PermissionException)
-            {
-                await App.Current!.MainPage!.DisplayAlert(
-                    "Permissions",
-                    "GPS access was not granted",
-                    "Ok");
-            }
-        }
-
-
-
-        private async void OnLocationChanged(object sender, GeolocationLocationChangedEventArgs e)
-        {
-            var loc = e.Location;
-            if (loc != null)
-            {
-                var data = new DataMapsModel
-                {
-                    EmployeeId = _employeeId,
-                    Lat = loc.Latitude.ToString(),
-                    Long = loc.Longitude.ToString(),
-                    CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
-                    Time = DateTime.UtcNow.ToString("HH:mm:ss")
-                };
-
-                await SendEmployeeLocation(data);
-            }
-        }
-
-
+        //// 👇 New method: start listening for geolocation updates
         //public async Task StartLocationTrackingAsync(string employeeId)
         //{
-        //    // Simulate 100 updates
-        //    for (int i = 0; i < 100; i++)
+        //    var status = await Permissions.CheckStatusAsync<Permissions.LocationAlways>();
+        //    if (status != PermissionStatus.Granted)
+        //        status = await Permissions.RequestAsync<Permissions.LocationAlways>();
+        //    if (status != PermissionStatus.Granted)
         //    {
-        //        var fakeLat = 30.0444 + (i * 0.0002); // Cairo base + small offset
-        //        var fakeLong = 31.2357 + (i * 0.0003);
+        //        await Toast.Make("Location permission not granted", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+        //        return;
+        //    }
 
+        //    var request = new GeolocationListeningRequest(
+        //        GeolocationAccuracy.High,
+        //        TimeSpan.FromSeconds(15) // update interval
+        //    );
+
+        //    try
+        //    {
+        //        if (await Geolocation.StartListeningForegroundAsync(request))
+        //        {
+        //            _employeeId = employeeId;
+        //            Geolocation.LocationChanged -= OnLocationChanged;
+        //            Geolocation.LocationChanged += OnLocationChanged;
+
+        //            Geolocation.ListeningFailed += async (s, e) =>
+        //            {
+        //                await Toast.Make($"⚠️ Location listening failed: {e.Error}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
+        //                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, this, _audioService));
+        //            };
+        //        }
+        //    }
+        //    catch (FeatureNotEnabledException)
+        //    {
+        //        await App.Current!.MainPage!.DisplayAlert(
+        //            "Alert",
+        //            "Please enable location services (GPS) in your device settings.",
+        //            "Ok");
+        //    }
+        //    catch (PermissionException)
+        //    {
+        //        await App.Current!.MainPage!.DisplayAlert(
+        //            "Permissions",
+        //            "GPS access was not granted",
+        //            "Ok");
+        //    }
+        //}
+
+
+
+        //private async void OnLocationChanged(object sender, GeolocationLocationChangedEventArgs e)
+        //{
+        //    var loc = e.Location;
+        //    if (loc != null)
+        //    {
         //        var data = new DataMapsModel
         //        {
-        //            EmployeeId = employeeId,
-        //            Lat = fakeLat.ToString("F6"),
-        //            Long = fakeLong.ToString("F6"),
+        //            EmployeeId = _employeeId,
+        //            Lat = loc.Latitude.ToString(),
+        //            Long = loc.Longitude.ToString(),
         //            CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
         //            Time = DateTime.UtcNow.ToString("HH:mm:ss")
         //        };
 
         //        await SendEmployeeLocation(data);
-
-        //        Console.WriteLine($"📡 Fake location {i}: {data.Lat}, {data.Long}");
-
-        //        await Task.Delay(3000); // wait 3 seconds before next update
         //    }
         //}
 
 
-        public void StopLocationTracking()
-        {
-            Geolocation.StopListeningForeground();
-        }
+        ////public async Task StartLocationTrackingAsync(string employeeId)
+        ////{
+        ////    // Simulate 100 updates
+        ////    for (int i = 0; i < 100; i++)
+        ////    {
+        ////        var fakeLat = 30.0444 + (i * 0.0002); // Cairo base + small offset
+        ////        var fakeLong = 31.2357 + (i * 0.0003);
+
+        ////        var data = new DataMapsModel
+        ////        {
+        ////            EmployeeId = employeeId,
+        ////            Lat = fakeLat.ToString("F6"),
+        ////            Long = fakeLong.ToString("F6"),
+        ////            CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
+        ////            Time = DateTime.UtcNow.ToString("HH:mm:ss")
+        ////        };
+
+        ////        await SendEmployeeLocation(data);
+
+        ////        Console.WriteLine($"📡 Fake location {i}: {data.Lat}, {data.Long}");
+
+        ////        await Task.Delay(3000); // wait 3 seconds before next update
+        ////    }
+        ////}
+
+
+        //public void StopLocationTracking()
+        //{
+        //    Geolocation.StopListeningForeground();
+        //}
 
     }
 

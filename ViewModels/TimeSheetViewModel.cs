@@ -109,7 +109,7 @@ namespace Cardrly.ViewModels
         {
             if (Controls.StaticMember.SelectedDate.ToString("MM-dd-yyyy") == DateTime.Now.ToString("MM-dd-yyyy"))
             {
-                dateDF = DateTime.Now;
+                dateDF = DateTime.UtcNow;
                 Date = AppResources.lblToday;
             }
             else
@@ -121,33 +121,6 @@ namespace Cardrly.ViewModels
             IsShowTrackingBtn = true;
 
             //IsShowTrackingBtn = Preferences.Default.Get(ApiConstants.ownerId, "") == Preferences.Default.Get(ApiConstants.userid, "") ? true : false;
-
-
-            //if(LstEmployeesIn.Count == 0)
-            //{
-            //    CheckInOutModel oCheckInOutModel = new CheckInOutModel
-            //    {
-            //        Id = 1,
-            //        EmployeeName = Preferences.Default.Get(ApiConstants.username, ""),
-            //        EmployeeId = int.TryParse(Preferences.Default.Get(ApiConstants.userid, "0"), out var empId) ? empId : 0,
-            //        AccountId = Preferences.Default.Get(ApiConstants.AccountId, ""),
-            //        Date = dateDF.ToString("yyyy-MM-dd"),
-            //        CreateDate = DateTime.Now,
-            //        CreateUser = int.TryParse(Preferences.Default.Get(ApiConstants.userid, "0"), out var createUser) ? createUser : 0,
-            //        SheetColor = "#26cc8a",
-            //        Active = true,
-            //        HoursFrom = "",
-            //        HoursTo = "",
-            //        DurationHours = "",
-            //        DurationMinutes = "",
-            //        Notes = "",
-            //    };
-
-            //    LstEmployeesIn.Add(oCheckInOutModel);
-            //    LstEmployeesOut.Add(oCheckInOutModel);
-            //    NumIn = LstEmployeesIn.Count.ToString();
-            //    NumOut = LstEmployeesOut.Count.ToString();
-            //}
 
             GetCheckInOutEmployees(dateDF.ToString("MM-dd-yyyy"));
 
@@ -214,7 +187,7 @@ namespace Cardrly.ViewModels
         {
             IsEnable = false;
             dateDF = Controls.StaticMember.SelectedDate;
-            Date = dateDF.AddDays(1).ToString("MM-dd-yyyy") == DateTime.Now.ToString("MM-dd-yyyy") ? AppResources.lblToday : dateDF.AddDays(1).ToString("MM-dd-yyyy");
+            Date = dateDF.AddDays(1).ToString("MM-dd-yyyy") == DateTime.UtcNow.ToString("MM-dd-yyyy") ? AppResources.lblToday : dateDF.AddDays(1).ToString("MM-dd-yyyy");
             Controls.StaticMember.SelectedDate = dateDF = dateDF.AddDays(1);
             RefreshLstEmployees();
             IsEnable = true;
@@ -225,7 +198,7 @@ namespace Cardrly.ViewModels
         {
             IsEnable = false;
             dateDF = Controls.StaticMember.SelectedDate;
-            Date = dateDF.AddDays(-1).ToString("MM-dd-yyyy") == DateTime.Now.ToString("MM-dd-yyyy") ? AppResources.lblToday : dateDF.AddDays(-1).ToString("MM-dd-yyyy");
+            Date = dateDF.AddDays(-1).ToString("MM-dd-yyyy") == DateTime.UtcNow.ToString("MM-dd-yyyy") ? AppResources.lblToday : dateDF.AddDays(-1).ToString("MM-dd-yyyy");
             Controls.StaticMember.SelectedDate = dateDF = dateDF.AddDays(-1);
             RefreshLstEmployees();
             IsEnable = true;
@@ -372,7 +345,7 @@ namespace Cardrly.ViewModels
                 else
                 {
                     // 🔹 Instant check-in for user or owner on their own data
-                    await DoCheckInAsync(DateTime.Now.TimeOfDay);
+                    await DoCheckInAsync(DateTime.UtcNow.TimeOfDay);
                 }
             }
             finally
@@ -450,7 +423,7 @@ namespace Cardrly.ViewModels
                     // 🔹 Rule: Popup only for owner checking **employee data**
                     if (!isOwnData)
                     {
-                        var popupView = new CheckoutPopup(model.HoursFrom.Value.ToString("hh/mm tt"), new TimeSheetViewModel(ORep, _service, _signalRService), ORep, _service);
+                        var popupView = new CheckoutPopup(model.HoursFrom?.ToString() ?? "", new TimeSheetViewModel(ORep, _service, _signalRService), ORep, _service);
 
                         // 🔹 Memory-safe async event handler
                         async void OnPopupTimeClosed(TimeSpan time)
@@ -466,7 +439,7 @@ namespace Cardrly.ViewModels
                     else
                     {
                         // 🔹 Instant check-in for user or owner on their own data
-                        await DoCheckInAsync(DateTime.Now.TimeOfDay);
+                        await DoCheckInAsync(DateTime.UtcNow.TimeOfDay);
                     }
                 }
                 finally
