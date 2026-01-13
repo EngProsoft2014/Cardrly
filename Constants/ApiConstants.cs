@@ -20,6 +20,7 @@
         public static string userPermision = "userPermision";
         public static string userCategory = "userCategory"; //1 = system , 2 = Travel Agency , 3 = Distributor
         public static string AccountId = "AccountId";
+        public static string BranchId = " BranchId";
         public static string AccountName = "AccountName";
         public static string ExpireDate = "ExpireDate";
         public static string GuidKey = "GuidKey";

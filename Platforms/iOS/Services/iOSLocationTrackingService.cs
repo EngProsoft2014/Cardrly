@@ -1,7 +1,9 @@
 ﻿using Cardrly.Models;
 using Cardrly.Services;
 using Cardrly.Services.Data;
+using CoreBluetooth;
 using CoreLocation;
+using Foundation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,65 +13,81 @@ using UIKit;
 
 namespace Cardrly.Platforms.iOS.Services
 {
-    [Foundation.Preserve(AllMembers = true)]
+    [Preserve(AllMembers = true)]
     public class iOSLocationTrackingService : IPlatformLocationService
     {
         private readonly SignalRService _signalR;
         private string _employeeId;
         private CLLocationManager _manager;
 
+        // Movement threshold in meters
+        private const double MovementThreshold = 10;
+
+        private CLLocation _lastSentLocation;
+
         public iOSLocationTrackingService(SignalRService signalR)
         {
             _signalR = signalR;
         }
 
-        public void StartBackgroundTracking(string employeeId, EventHandler<GeolocationLocationChangedEventArgs> callback)
+        public void StartBackgroundTracking(string employeeId)
         {
             _employeeId = employeeId;
 
             _manager = new CLLocationManager
             {
                 AllowsBackgroundLocationUpdates = true,
-                PausesLocationUpdatesAutomatically = false
+                PausesLocationUpdatesAutomatically = false,
+                ShowsBackgroundLocationIndicator = true,
+                ActivityType = CLActivityType.OtherNavigation,
+                DesiredAccuracy = CLLocation.AccuracyBest,
+                DistanceFilter = 1 // receive all updates, we filter manually
             };
 
-            _manager.RequestWhenInUseAuthorization();
-            _manager.RequestAlwaysAuthorization();
-            _manager.DesiredAccuracy = CLLocation.AccuracyBest;
-            _manager.DistanceFilter = 10;
+            _manager.Delegate = new LocationDelegate(_signalR, _employeeId, this);
 
-            _manager.LocationsUpdated += (s, e) =>
+            if (UIDevice.CurrentDevice.CheckSystemVersion(14, 0))
             {
-                var loc = e.Locations.LastOrDefault();
-                if (loc != null)
-                {
-                    // Build your data model
-                    var data = new DataMapsModel
-                    {
-                        EmployeeId = _employeeId,
-                        Lat = loc.Coordinate.Latitude.ToString(),
-                        Long = loc.Coordinate.Longitude.ToString(),
-                        CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
-                        Time = DateTime.UtcNow.ToString("HH:mm:ss")
-                    };
+                _manager.RequestTemporaryFullAccuracyAuthorization("Tracking");
+            }
 
-                    // Send directly to SignalR
-                    _signalR.SendEmployeeLocation(data);
+            if (CLLocationManager.Status == CLAuthorizationStatus.NotDetermined)
+            {
+                _manager.RequestAlwaysAuthorization();
+            }
 
-                    // Optionally still invoke callback if you want shared service to react
-                    var args = new GeolocationLocationChangedEventArgs(
-                        new Location(loc.Coordinate.Latitude, loc.Coordinate.Longitude)
-                    );
-                    callback?.Invoke(this, args);
-                }
-            };
-
+            // Start all location services
             _manager.StartUpdatingLocation();
+            _manager.StartMonitoringSignificantLocationChanges();
+            _manager.StartMonitoringVisits();
         }
 
         public void StopBackgroundTracking()
         {
             _manager?.StopUpdatingLocation();
+            _manager?.StopMonitoringSignificantLocationChanges();
+            _manager?.StopMonitoringVisits();
+        }
+
+        // Called from delegate to check distance threshold
+        internal bool ShouldSendLocation(CLLocation newLocation)
+        {
+            if (_lastSentLocation == null)
+            {
+                _lastSentLocation = newLocation;
+                return true;
+            }
+
+            var distance = newLocation.DistanceFrom(_lastSentLocation); // in meters
+            if (distance >= MovementThreshold)
+            {
+                _lastSentLocation = newLocation;
+                return true;
+            }
+
+            return false;
         }
     }
 }
+
+

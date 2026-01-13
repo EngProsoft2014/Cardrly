@@ -62,7 +62,7 @@
                       VerticalScrollBarVisibility="Never">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <StackLayout Margin="20,10,20,10" Spacing="10">
+                            <StackLayout Margin="30,10,30,10" Spacing="10">
                                 <Border x:Name="yumEmployee" BackgroundColor="#f26d29" HorizontalOptions="FillAndExpand">
                                     <Label Text="{Binding CardName}"
                                           FontAttributes="Bold"

@@ -1,8 +1,10 @@
-﻿using Cardrly.Helpers;
+﻿using Cardrly.Constants;
+using Cardrly.Helpers;
 using Cardrly.Models;
 using Cardrly.Pages;
 using Cardrly.Services.AudioStream;
 using CommunityToolkit.Maui.Alerts;
+using Microsoft.Maui.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +45,7 @@ namespace Cardrly.Services.Data
 
             var request = new GeolocationListeningRequest(
                 GeolocationAccuracy.High,
-                TimeSpan.FromSeconds(3)
+                TimeSpan.FromSeconds(10)
             );
 
             bool started = false;
@@ -69,7 +71,7 @@ namespace Cardrly.Services.Data
                 else
                 {
                     // If neither worked, delegate to platform native service
-                    _platformLocation.StartBackgroundTracking(employeeId, OnLocationChanged);
+                    _platformLocation.StartBackgroundTracking(employeeId);
                 }
 
             }
@@ -97,10 +99,12 @@ namespace Cardrly.Services.Data
                 var data = new DataMapsModel
                 {
                     EmployeeId = _employeeId,
-                    Lat = loc.Latitude.ToString(),
-                    Long = loc.Longitude.ToString(),
-                    CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
-                    Time = DateTime.UtcNow.ToString("HH:mm:ss")
+                    AccountId = Preferences.Default.Get(ApiConstants.AccountId, string.Empty),
+                    BranchId = Preferences.Default.Get(ApiConstants.BranchId, string.Empty),
+                    Lat = loc.Latitude,
+                    Long = loc.Longitude,
+                    CreateDate = DateTime.UtcNow,
+                    Time = DateTime.UtcNow.TimeOfDay
                 };
 
                 await _signalR.SendEmployeeLocation(data);
@@ -114,7 +118,7 @@ namespace Cardrly.Services.Data
 
         public void StartBackgroundTrackingLocation(string employeeId, object value)
         {
-            _platformLocation.StartBackgroundTracking(employeeId, OnLocationChanged);
+            _platformLocation.StartBackgroundTracking(employeeId);
         }
 
         public void StopBackgroundTrackingLocation()

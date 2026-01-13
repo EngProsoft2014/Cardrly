@@ -8,7 +8,7 @@ namespace Cardrly.Services
 {
     public interface IPlatformLocationService
     {
-        void StartBackgroundTracking(string employeeId, EventHandler<GeolocationLocationChangedEventArgs> callback);
+        void StartBackgroundTracking(string employeeId);
         void StopBackgroundTracking();
     }
 }

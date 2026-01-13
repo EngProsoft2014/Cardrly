@@ -40,6 +40,11 @@
 	<string>Cardrly requires location access to track employees even in background.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Cardrly requires location access to function properly, even when running in the background.</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>FullAccuracyPurpose</key>
+		<string>Your location is needed for employee tracking.</string>
+	</dict>
 	<key>CFBundleName</key>
 	<string>Cardrly</string>
 	<key>NSMicrophoneUsageDescription</key>

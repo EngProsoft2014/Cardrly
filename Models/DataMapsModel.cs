@@ -9,26 +9,27 @@ namespace Cardrly.Models
     public class DataMapsModel
     {
         public Empoylee EmpData { get; set; }
-        public int Id { get; set; } = 0;
+        public string Id { get; set; } = new Guid().ToString();
+        public string AccountId { get; set; }
         public string BranchId { get; set; }
         public string EmployeeId { get; set; }
-        public string Lat { get; set; }
-        public string Long { get; set; }
-        public string CreateDate { get; set; }
-        public string Time { get; set; }
-        //public Location MPosition { get; set; }
-        public Location MPosition { get { return new Location(Lat == null ? 0 : double.Parse(Lat), Long == null ? 0 : double.Parse(Long)); } }
+        public double Lat { get; set; }
+        public double Long { get; set; }
+        public DateTime CreateDate { get; set; }
+        public TimeSpan Time { get; set; }
+        public Location MPosition { get { return new Location(Lat == null ? 0 : Lat, Long == null ? 0 : Long); } }
 
     }
 
     public class Empoylee
     {
-        public int Tracking_id { get; set; }
+        public string Tracking_id { get; set; }
+        public string AccountId { get; set; }
         public string BranchId { get; set; }
         public string EmployeeId { get; set; }
-        public string lat { get; set; }
-        public string log { get; set; }
-        public string date { get; set; }
-        public string time { get; set; }
+        public double lat { get; set; }
+        public double log { get; set; }
+        public DateTime date { get; set; }
+        public TimeSpan time { get; set; }
     }
 }

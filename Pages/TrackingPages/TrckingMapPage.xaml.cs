@@ -49,7 +49,7 @@ public partial class TrckingMapPage : Controls.CustomControl
     private void myMap_MapClicked(object sender, MapClickedEventArgs e)
     {
         myMap.MoveToRegion(MapSpan.FromCenterAndRadius(
-            new Location(double.Parse(employeesViewModel.LastListmap.LastOrDefault().Lat), double.Parse(employeesViewModel.LastListmap.LastOrDefault().Long)), Distance.FromMeters(100)));
+            new Location(employeesViewModel.LastListmap.LastOrDefault().Lat, employeesViewModel.LastListmap.LastOrDefault().Long), Distance.FromMeters(100)));
     }
 
     public void UpdateLocationOnMap(DataMapsModel dataMap)
@@ -62,15 +62,15 @@ public partial class TrckingMapPage : Controls.CustomControl
         // Add new pin
         var pin = new Pin
         {
-            Label = dataMap.Id.ToString(),
+            Label = "Time " + dataMap.Time.ToString(@"hh\:mm\:ss"),
             Type = PinType.Place,
-            Location = new Location(double.Parse(dataMap.Lat), double.Parse(dataMap.Long))
+            Location = new Location(dataMap.Lat, dataMap.Long)
         };
         myMap.Pins.Add(pin);
 
         // Move map to new location
         myMap.MoveToRegion(MapSpan.FromCenterAndRadius(
-            new Location(double.Parse(dataMap.Lat), double.Parse(dataMap.Long)),
+            new Location(dataMap.Lat, dataMap.Long),
             Distance.FromMeters(200)));
     }
 

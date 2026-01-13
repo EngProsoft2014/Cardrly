@@ -6,6 +6,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Util;
 using AndroidX.Core.App;
+using Cardrly.Constants;
 using Cardrly.Models;
 using Cardrly.Services.Data;
 using CommunityToolkit.Mvvm.Messaging;
@@ -13,7 +14,7 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Cardrly.Platforms.Android.Services
 {
-    [Service(ForegroundServiceType = ForegroundService.TypeMicrophone, Exported = false)]
+    [Service(ForegroundServiceType = ForegroundService.TypeLocation, Exported = false)]
     public class LocationService : Service, ILocationListener
     {
         private LocationManager _locationManager;
@@ -65,13 +66,17 @@ namespace Cardrly.Platforms.Android.Services
         // Called when a new location is available
         public void OnLocationChanged(global::Android.Locations.Location location)
         {
+            Log.Info("LocationService", "OnLocationChanged fired");
+
             var data = new DataMapsModel
             {
                 EmployeeId = _employeeId,
-                Lat = location.Latitude.ToString(),
-                Long = location.Longitude.ToString(),
-                CreateDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
-                Time = DateTime.UtcNow.ToString("HH:mm:ss")
+                AccountId = Preferences.Default.Get(ApiConstants.AccountId, string.Empty),
+                BranchId = Preferences.Default.Get(ApiConstants.BranchId, string.Empty),
+                Lat = location.Latitude,
+                Long = location.Longitude,
+                CreateDate = DateTime.UtcNow,
+                Time = DateTime.UtcNow.TimeOfDay
             };
 
             _signalR.SendEmployeeLocation(data);
@@ -116,6 +121,14 @@ namespace Cardrly.Platforms.Android.Services
             base.OnDestroy();
             _locationManager?.RemoveUpdates(this);
         }
+
+        public override void OnTaskRemoved(Intent rootIntent)
+        {
+            base.OnTaskRemoved(rootIntent);
+            Log.Info("LocationService", "Task removed, stopping service");
+            StopSelf(); // stops the service → notification disappears
+        }
+
 
         public override IBinder OnBind(Intent intent) => null!;
     }
