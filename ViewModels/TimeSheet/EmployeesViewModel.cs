@@ -206,17 +206,17 @@ namespace Cardrly.ViewModels
 
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                //if (StaticMember.CheckPermission(ApiConstants.GetHistoryLocationTimeSheet))
-                //{
+                if (StaticMember.CheckPermission(ApiConstants.GetHistoryLocationTimeSheet))
+                {
                     UserDialogs.Instance.ShowLoading();
                     await App.Current!.MainPage!.Navigation.PushAsync(new Pages.TrackingPages.EmployeesBranchHistoryPage(new HistoryTrackingViewModel(ORep, _service), ORep, _service));
                     UserDialogs.Instance.HideHud();
-               //}
-               // else
-               // {
-               //     var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
-               //     await toast.Show();
-              //  }
+               }
+               else
+               {
+                    var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                    await toast.Show();
+               }
             }
 
             IsEnable = true;
