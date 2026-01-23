@@ -28,6 +28,15 @@
             </Image>
             <Label Text="{x:Static res:AppResources.lblEmployeesWorking}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
             </Label>
+            <!--History Tracking-->
+            <Image>
+                <Image.Source>
+                    <FontImageSource FontFamily="FontIconSolid" Color="#e36322" Glyph="" Size="22"></FontImageSource>
+                </Image.Source>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoHistoryTrackingCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
         </StackLayout>
 
         <!--Search Bar-->
@@ -54,7 +63,7 @@
 
         <StackLayout Padding="0,0,0,30" VerticalOptions="FillAndExpand">
 
-            <StackLayout>
+            <StackLayout Margin="20,10,20,10">
                 <CollectionView x:Name="lstEmployees" 
                       ItemsSource="{Binding LstWorkingEmployees}"
                       BackgroundColor="White"
@@ -62,7 +71,7 @@
                       VerticalScrollBarVisibility="Never">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <StackLayout Margin="30,10,30,10" Spacing="10">
+                            <StackLayout Spacing="10">
                                 <Border x:Name="yumEmployee" BackgroundColor="#f26d29" HorizontalOptions="FillAndExpand">
                                     <Label Text="{Binding CardName}"
                                           FontAttributes="Bold"

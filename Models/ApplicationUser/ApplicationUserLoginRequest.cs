@@ -38,6 +38,8 @@ namespace Cardrly.Mode_s.ApplicationUser
             }
         }
 
+        public string? DeviceId { get; set; }
+
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -1131,4 +1131,16 @@
   <data name="lblActiveDevicesPage" xml:space="preserve">
     <value>Active devices page</value>
   </data>
+  <data name="lblQrCodeURL" xml:space="preserve">
+    <value>QR Code URL</value>
+  </data>
+  <data name="lblRedirectURL" xml:space="preserve">
+    <value>Redirect URL</value>
+  </data>
+  <data name="lblAlert" xml:space="preserve">
+    <value>Alert</value>
+  </data>
+  <data name="msgLougoutForLoginAnotherDevice" xml:space="preserve">
+    <value>You’ve been logged out.(account is opened on another device)</value>
+  </data>
 </root>

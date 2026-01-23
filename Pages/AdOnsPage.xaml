@@ -70,6 +70,11 @@
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding TimeSheetClickCommand}"></TapGestureRecognizer>
                     </StackLayout.GestureRecognizers>
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout" Binding="{Binding IsShowTimeSheet}" Value="False">
+                            <Setter Property="Opacity" Value=".6"></Setter>
+                        </DataTrigger>
+                    </StackLayout.Triggers>
                 </StackLayout>
 
                 <!--Tracking-->

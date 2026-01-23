@@ -2,8 +2,8 @@
 using Akavache;
 using Cardrly.Constants;
 using Cardrly.Helpers;
-using Cardrly.Models.Card;
 using Cardrly.Models;
+using Cardrly.Models.Card;
 using Cardrly.Models.Permision;
 using Cardrly.Pages;
 using Cardrly.Resources.Lan;
@@ -11,6 +11,7 @@ using Cardrly.Services;
 using Cardrly.Services.AudioStream;
 using Cardrly.Services.Data;
 using Cardrly.ViewModels;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using Controls.UserDialogs.Maui;
 using Microsoft.IdentityModel.Tokens;
@@ -18,23 +19,24 @@ using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reactive.Linq;
-using CommunityToolkit.Maui.Alerts;
 
 
 namespace Cardrly.Controls
 {
     static class StaticMember
     {
-        public static IAudioManager _audioManager;
-        public static IAudioStreamService _audioService;
+        //public static IAudioManager _audioManager;
+        //public static IAudioStreamService _audioService;
         public static INotificationManagerService notificationManager;
-        //public static int TabIndex = 0;
+        //public static IPlatformLocationService platformLocationService;
 
         #region Const Variables
         public static int EmployeesPages { get; set; }
-        static Helpers.GenericRepository ORep = new Helpers.GenericRepository();
-        static readonly ServicesService _service = new ServicesService(ORep);
-        static readonly SignalRService _signalRService = new SignalRService(_service);
+        //static GenericRepository ORep = new GenericRepository();
+        //static readonly ServicesService _service = new ServicesService(ORep);
+        //static readonly SignalRService _signalRService = new SignalRService(_service);
+
+        //static readonly LocationTrackingService _locationTracking = new LocationTrackingService(_signalRService, platformLocationService, ORep, _service, _audioService);
 
         public static DateTime SelectedDate { get; set; } = DateTime.UtcNow;
         public static string SnackBarColor = "#FF7F3E";
@@ -96,27 +98,29 @@ namespace Cardrly.Controls
             return self;
         }
 
-        public async static Task ClearAllData(IGenericRepository generic)
-        {
-            ServicesService _service = new ServicesService(generic);
+        //public async static Task ClearAllData(IGenericRepository generic)
+        //{
+        //    ServicesService _service = new ServicesService(generic);
 
-            await App.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgServicedown}", $"{AppResources.msgOk}");
+        //    await App.Current!.MainPage!.DisplayAlert($"{AppResources.msgWarning}", $"{AppResources.msgServicedown}", $"{AppResources.msgOk}");
 
-            string LangValueToKeep = Preferences.Default.Get("Lan", "en");
-            bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
-            string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
-            string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
+        //    await StaticMember.DeleteUserSession(generic, _service);
 
-            Preferences.Default.Clear();
-            await BlobCache.LocalMachine.InvalidateAll();
-            await BlobCache.LocalMachine.Vacuum();
+        //    string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+        //    bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
+        //    string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
+        //    string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
 
-            Preferences.Default.Set("Lan", LangValueToKeep);
-            Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
-            Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
-            Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
-            await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(generic, _service, _signalRService, _audioService)));
-        }
+        //    Preferences.Default.Clear();
+        //    await BlobCache.LocalMachine.InvalidateAll();
+        //    await BlobCache.LocalMachine.Vacuum();
+
+        //    Preferences.Default.Set("Lan", LangValueToKeep);
+        //    Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
+        //    Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
+        //    Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
+        //    await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(generic, _service, _signalRService, _audioService, _locationTracking)));
+        //}
 
         public static async Task<byte[]> GetImageBase64FromUrlAsync(string imageUrl)
         {
@@ -188,6 +192,45 @@ namespace Cardrly.Controls
             }
         }
 
+
+        public static async Task<string> GetDeviceId()
+        {
+            string deviceID = string.Empty;
+#if ANDROID
+
+            deviceID = Android.Provider.Settings.Secure.GetString(Platform.CurrentActivity!.ContentResolver, Android.Provider.Settings.Secure.AndroidId)!;
+
+#elif IOS
+            deviceID = UIKit.UIDevice.CurrentDevice.IdentifierForVendor.ToString();
+#endif
+            return deviceID;
+        }
+
+
+        public static async Task<string> GetAddressFromCurrentLocation()
+        {
+            var request = new GeolocationRequest(GeolocationAccuracy.Default, TimeSpan.FromSeconds(1));
+            var location = await Geolocation.GetLocationAsync(request);
+
+            if (location == null)
+                return "No location available";
+
+            // Reverse geocode: convert lat/long to placemarks (addresses)
+            var placemarks = await Geocoding.GetPlacemarksAsync(location);
+
+            var placemark = placemarks?.FirstOrDefault();
+            if (placemark != null)
+            {
+                // You can build a full address string
+                return $"{placemark.Thoroughfare} {placemark.SubThoroughfare}, " +
+                       $"{placemark.Locality}, {placemark.AdminArea}, " +
+                       $"{placemark.CountryName}, {placemark.PostalCode}";
+            }
+            else
+            {
+                return "Address not found";
+            }
+        }
 
     }
 }

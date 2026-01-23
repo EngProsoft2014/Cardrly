@@ -49,7 +49,7 @@ namespace Cardrly.Platforms.iOS
             {
                 EmployeeId = _employeeId,
                 AccountId = Preferences.Default.Get(ApiConstants.AccountId, string.Empty),
-                BranchId = Preferences.Default.Get(ApiConstants.BranchId, string.Empty),
+                TimeSheetId = Preferences.Default.Get(ApiConstants.TimeSheetId, string.Empty),
                 Lat = loc.Coordinate.Latitude,
                 Long = loc.Coordinate.Longitude,
                 CreateDate = DateTime.UtcNow,

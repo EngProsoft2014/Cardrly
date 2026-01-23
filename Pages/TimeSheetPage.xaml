@@ -31,7 +31,7 @@
             </Label>
 
             <!--Tracking-->
-            <Image IsVisible="{Binding IsShowTrackingBtn}">
+            <Image>
                 <Image.Source>
                     <FontImageSource FontFamily="FontIconSolid" Color="#e36322" Glyph="" Size="22"></FontImageSource>
                 </Image.Source>

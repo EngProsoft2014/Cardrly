@@ -14,6 +14,7 @@ using Cardrly.Pages.TrackingPages;
 using Cardrly.ViewModels.MeetingsAi;
 
 
+
 #if IOS
 using Cardrly.Services.NativeAudioRecorder;
 using Cardrly.Platforms.iOS;
@@ -29,13 +30,6 @@ namespace Cardrly
     {
         public static IServiceCollection AddDependencies(this IServiceCollection Services)
         {
-            #region ServiceServices
-            Services.AddSingleton<ServicesService>();
-            #endregion
-
-            #region SignalRServices
-            Services.AddSingleton<SignalRService>();
-            #endregion
 
             #region LocationTrackingService
             Services.AddSingleton<LocationTrackingService>();
@@ -45,12 +39,20 @@ namespace Cardrly
 #elif IOS
             Services.AddSingleton<IPlatformLocationService, iOSLocationTrackingService>();
 #endif
+            #endregion
 
-#endregion
+            #region SignalRServices
+            Services.AddSingleton<SignalRService>();
+            #endregion
 
             #region GenericRepository
-            Services.AddScoped<IGenericRepository, GenericRepository>();
+            Services.AddSingleton<IGenericRepository, GenericRepository>();
             #endregion
+
+            #region ServiceServices
+            Services.AddSingleton<ServicesService>();
+            #endregion
+
 
             #region ViewModels
 

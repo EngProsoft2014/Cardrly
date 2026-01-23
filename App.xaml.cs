@@ -21,6 +21,9 @@ using Cardrly.Pages.MainPopups;
 using Cardrly.Models;
 using Mopups.Services;
 using CommunityToolkit.Mvvm.Messaging;
+using Cardrly.Models.TimeSheet;
+using Microsoft.IdentityModel.Tokens;
+
 
 
 #if ANDROID
@@ -37,21 +40,22 @@ namespace Cardrly
         readonly IGenericRepository Rep;
         readonly ServicesService _service;
         readonly SignalRService _signalRService;
-        private readonly LocationTrackingService _locationTracking;
+        readonly LocationTrackingService _locationTracking;
         bool _gpsPageShown = false;
 
         public static IServiceProvider Services { get; private set; }
         private readonly IAudioStreamService _audioService;
         #endregion
 
+        public static bool isHaveTimeSheetTracking = false;
         public static bool UploadInProgress { get; set; } = false;
         public static bool IsInBackground { get; private set; }
         int NavToSecurePage = 0;
-        public App(IGenericRepository GenericRep, 
-            ServicesService service, 
+        public App(IGenericRepository GenericRep,
+            ServicesService service,
             SignalRService signalRService,
             LocationTrackingService locationTracking,
-            IAudioStreamService audioService, 
+            IAudioStreamService audioService,
             IServiceProvider serviceProvider,
             INotificationManagerService notificationManagerService)
         {
@@ -78,7 +82,7 @@ namespace Cardrly
                 if (Connectivity.NetworkAccess != NetworkAccess.Internet)
                 {
                     // Connection to internet is Not available
-                    MainPage = new NavigationPage(new NoInternetPage(Rep, _service, _signalRService, _audioService));
+                    MainPage = new NavigationPage(new NoInternetPage(Rep, _service, _signalRService, _audioService, _locationTracking));
                     return;
                 }
                 else
@@ -91,11 +95,11 @@ namespace Cardrly
                     if (string.IsNullOrEmpty(AccountId) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow) || IsExpireDate == false)
                     {
                         Preferences.Default.Clear();
-                        MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService)));
+                        MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
                     }
                     else
                     {
-                        MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService), Rep, _service, _signalRService, _audioService));
+                        MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking), Rep, _service, _signalRService, _audioService, _locationTracking));
                     }
 
                     WeakReferenceMessenger.Default.Register<GpsStatusMessage>(this, (r, m) =>
@@ -106,7 +110,7 @@ namespace Cardrly
                             MainThread.BeginInvokeOnMainThread(async () =>
                             {
                                 await App.Current!.MainPage!.Navigation.PushAsync(
-                                    new NoGpsPage(Rep, _service, _signalRService, _audioService));
+                                    new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking));
                             });
                         }
                         else if (m.IsEnabled)
@@ -114,62 +118,21 @@ namespace Cardrly
                             _gpsPageShown = false; // reset when GPS is back
                         }
                     });
-
-
-                    //// Subscribe only for this upload
-                    //MessagingCenter.Subscribe<object>(this, "AppForegrounded", sender =>
-                    //{
-                    //    MainThread.BeginInvokeOnMainThread(() =>
-                    //    {
-                    //        UserDialogs.Instance.Loading("Resuming upload...", maskType: MaskType.Clear);
-                    //    });
-
-                    //    UploadInProgress = false;
-                    //});
-
-                    //MessagingCenter.Subscribe<object>(this, "AppBackgrounded", sender =>
-                    //{
-                    //    // Optionally hide the HUD when app goes background
-                    //    MainThread.BeginInvokeOnMainThread(() =>
-                    //    {
-                    //        UserDialogs.Instance.HideHud();
-                    //    });
-                    //});
                 }
-
             }
             catch (Exception ex)
             {
                 Preferences.Default.Clear();
-                MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService)));
+                MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
             }
         }
-
-        //private void OnSecurityStatusChanged(bool isSecure, string msg)
-        //{
-        //    MainThread.BeginInvokeOnMainThread(() =>
-        //    {
-        //        if (isSecure && NavToSecurePage == 0)
-        //        {
-        //            // Navigate to Block Screen if security is compromised
-        //            App.Current!.MainPage!.Navigation.PushAsync(new Security_WarningPage(msg));
-        //            NavToSecurePage = 1;
-        //        }
-        //        else if (!isSecure && NavToSecurePage == 1)
-        //        {
-        //            // Navigate back to the main app when secure again
-        //            App.Current!.MainPage!.Navigation.PopAsync();
-        //            NavToSecurePage = 0;
-        //        }
-        //    });
-        //}
 
         private async void Connectivity_ConnectivityChanged(object? sender, ConnectivityChangedEventArgs e)
         {
             if (e.NetworkAccess != NetworkAccess.Internet)
             {
                 // Connection to internet is Not available
-                await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service, _signalRService, _audioService));
+                await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service, _signalRService, _audioService, _locationTracking));
                 return;
             }
         }
@@ -178,13 +141,13 @@ namespace Cardrly
         {
             base.OnStart();
 
-            await SignalRservice();
+            await Task.WhenAll(GetDeviceIdFromDataBase(), StatusLocation(), SignalRservice(), CheckToStartSendLocation());
 
-            string userId = Preferences.Default.Get(ApiConstants.userid, "");
-            if (!string.IsNullOrEmpty(userId))
-                await _locationTracking.StartAsync(userId);
+            //await StatusLocation();
 
-            await EnsureGpsEnabled();
+            //await SignalRservice();
+
+            //await CheckToStartSendLocation();
 
             IsInBackground = false;
 
@@ -213,71 +176,69 @@ namespace Cardrly
                     }
                 });
             });
-
-
-
-            //if (Connectivity.NetworkAccess != NetworkAccess.Internet)
-            //{
-            //    // Connection to internet is Not available
-            //    await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service));
-            //    return;
-            //}
         }
 
         protected async override void OnResume()
         {
             base.OnResume();
 
-            await SignalRservice();
-
-            _locationTracking.StopBackgroundTrackingLocation();
-
-            string userId = Preferences.Default.Get(ApiConstants.userid, "");
-            if (!string.IsNullOrEmpty(userId))
-                await _locationTracking.StartAsync(userId);
-
-            await EnsureGpsEnabled();
+            _signalRService.OnMessageReceivedOneDeviceForThisAccount -= _signalRService_OnMessageReceivedOneDeviceForThisAccountInSleep;
 
             IsInBackground = false;
 
-            if (UploadInProgress)
+            string userId = Preferences.Default.Get(ApiConstants.userid, "");
+            string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
+
+            if (userId == "")
             {
-                MessagingCenter.Send<object>(this, "AppForegrounded");
+                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                await App.Current!.MainPage!.DisplayAlert(AppResources.lblAlert, AppResources.msgLougoutForLoginAnotherDevice, AppResources.msgOk);
+                return;
             }
 
-            string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
             if (!string.IsNullOrEmpty(Stringdate))
             {
                 bool IsExpireDate = DateOnly.TryParseExact(Stringdate, "M/d/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly ExpireDate);
                 if (string.IsNullOrEmpty(Stringdate) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow))
                 {
-                    string LangValueToKeep = Preferences.Default.Get("Lan", "en");
-                    Preferences.Default.Clear();
-                    await BlobCache.LocalMachine.InvalidateAll();
-                    await BlobCache.LocalMachine.Vacuum();
-
-                    Preferences.Default.Set("Lan", LangValueToKeep);
-                    await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService)));
+                    await ClearMostData();
+                    await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                    return;
                 }
             }
 
+            //await SignalRservice();
+
+            //await CheckToStartSendLocation();
+
+            await Task.WhenAll(SignalRservice(), CheckToStartSendLocation());
+
+            if (UploadInProgress)
+            {
+                MessagingCenter.Send<object>(this, "AppForegrounded");
+            }
         }
 
         protected override void OnSleep()
         {
             base.OnSleep();
-            _locationTracking.Stop();//only stop foureground location
 
-            string userId = Preferences.Default.Get(ApiConstants.userid, "");
-            if (!string.IsNullOrEmpty(userId))
+            if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet))
             {
-                _locationTracking.StartBackgroundTrackingLocation(userId, null);
+                _signalRService.OnMessageReceivedOneDeviceForThisAccount += _signalRService_OnMessageReceivedOneDeviceForThisAccountInSleep;
+
+                _locationTracking.Stop();//only stop foureground location
+
+                string userId = Preferences.Default.Get(ApiConstants.userid, "");
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    _locationTracking.StartBackgroundTrackingLocation(userId, null);
+                }
             }
 
             IsInBackground = true;
             MessagingCenter.Send<object>(this, "AppBackgrounded");
         }
-
 
         void LoadSetting()
         {
@@ -291,6 +252,105 @@ namespace Cardrly
             {
                 CultureInfo cal = new CultureInfo("en");
                 TranslateExtension.Instance.SetCulture(cal);
+            }
+        }
+
+        async Task StatusLocation()
+        {
+            var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+
+            if (status != null)
+            {
+                if (status != PermissionStatus.Granted)
+                {
+                    await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                }
+            }
+            else
+            {
+                status = await Permissions.CheckStatusAsync<Permissions.LocationAlways>();
+                if (status != null && status != PermissionStatus.Granted)
+                {
+                    await Permissions.RequestAsync<Permissions.LocationAlways>();
+                }
+            }
+        }
+
+        async Task CheckToStartSendLocation()
+        {
+            if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet))
+            {
+                string deviceId = Preferences.Default.Get(ApiConstants.DeviceId, string.Empty);
+                string timeSheetId = Preferences.Default.Get(ApiConstants.TimeSheetId, string.Empty);
+                string userId = Preferences.Default.Get(ApiConstants.userid, string.Empty);
+                if (!string.IsNullOrEmpty(deviceId) && !string.IsNullOrEmpty(timeSheetId))
+                {
+                    if (!string.IsNullOrEmpty(userId))
+                        await _locationTracking.StartAsync(userId);
+
+                    await EnsureGpsEnabled();
+                }
+                else
+                {
+                    string cardId = Preferences.Default.Get(ApiConstants.cardId, string.Empty);
+                    if (!string.IsNullOrEmpty(cardId))
+                    {
+                        if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+                        {
+                            string UserToken = await _service.UserToken();
+
+                            string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                            string CardId = Preferences.Default.Get(ApiConstants.cardId, "");
+
+                            var json = await Rep.GetAsync<TimeSheetResponse>(ApiConstants.GetByCardIdTimeSheetApi + AccountId + "/" + CardId, UserToken);
+
+                            if (json != null)
+                            {
+                                if (json.HoursFrom != null && json.HoursTo == null)
+                                {
+                                    string deviceID = await StaticMember.GetDeviceId();
+                                    if (!string.IsNullOrEmpty(deviceID) && deviceID == json.DeviceId)
+                                    {
+                                        Preferences.Default.Set(ApiConstants.DeviceId, json.DeviceId);
+                                        Preferences.Default.Set(ApiConstants.TimeSheetId, json.Id);
+
+                                        if (!string.IsNullOrEmpty(userId))
+                                            await _locationTracking.StartAsync(userId);
+
+                                        await EnsureGpsEnabled();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        async Task GetDeviceIdFromDataBase()
+        {
+            string accountId = Preferences.Default.Get(ApiConstants.AccountId, string.Empty);
+            string cardId = Preferences.Default.Get(ApiConstants.cardId, string.Empty);
+            if (!string.IsNullOrEmpty(accountId) && !string.IsNullOrEmpty(cardId))
+            {
+                if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+                {
+                    string UserToken = await _service.UserToken();
+                    string DeviceId = await Rep.GetAsync<string>(ApiConstants.GetDeviceIdTimeSheetApi + accountId + "/" + cardId, UserToken);
+                    if (!string.IsNullOrEmpty(DeviceId))
+                    {
+                        string myDeviceId = Preferences.Default.Get(ApiConstants.DeviceId, string.Empty);
+                        myDeviceId = string.IsNullOrEmpty(myDeviceId) ? StaticMember.GetDeviceId().Result : myDeviceId;
+
+                        if (DeviceId != myDeviceId)
+                        {
+                            await ClearMostData();
+                            await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                            await App.Current!.MainPage!.DisplayAlert(AppResources.lblAlert, AppResources.msgLougoutForLoginAnotherDevice, AppResources.msgOk);
+                            return;
+                        }
+                    }
+                }
             }
         }
 
@@ -310,10 +370,14 @@ namespace Cardrly
             // Prevent duplicate subscriptions
             _signalRService.OnMessageReceivedLogout -= _signalRService_OnMessageReceivedLogout;
             _signalRService.OnMessageReceivedUpdateVersion -= _signalRService_OnMessageReceivedUpdateVersion;
-            
-            _signalRService.OnMessageReceivedLogout += _signalRService_OnMessageReceivedLogout;// Logout           
+            _signalRService.OnMessageReceivedOneDeviceForThisAccount -= _signalRService_OnMessageReceivedOneDeviceForThisAccount;
+
+            _signalRService.OnMessageReceivedLogout += _signalRService_OnMessageReceivedLogout;// Logout Changed Permissions           
             _signalRService.OnMessageReceivedUpdateVersion += _signalRService_OnMessageReceivedUpdateVersion;// UpdateVersion
+            _signalRService.OnMessageReceivedOneDeviceForThisAccount += _signalRService_OnMessageReceivedOneDeviceForThisAccount; //OneDeviceForThisAccountLogout
         }
+
+
 
         //Location signalR
         //public async Task StartSignalRLocationservice()
@@ -333,16 +397,16 @@ namespace Cardrly
 
                 if (location == null)
                 {
-                    await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService));
+                    await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking));
                 }
             }
             catch (FeatureNotEnabledException)
             {
-                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService));
+                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking));
             }
             catch (PermissionException)
             {
-                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService));
+                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking));
             }
         }
 
@@ -356,7 +420,7 @@ namespace Cardrly
                 {
                     //Controls.StaticMember.TabIndex = message;
 
-                    await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService), Rep, _service, _signalRService, _audioService));
+                    await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking), Rep, _service, _signalRService, _audioService, _locationTracking));
 
                 }
             });
@@ -365,33 +429,23 @@ namespace Cardrly
 
 
         // Logout
+        [Obsolete]
         private async void _signalRService_OnMessageReceivedLogout(string GuidKey)
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
-                string LangValueToKeep = Preferences.Default.Get("Lan", "en");
-                bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
-                string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
-                string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
-
-                Preferences.Default.Clear();
-                await BlobCache.LocalMachine.InvalidateAll();
-                await BlobCache.LocalMachine.Vacuum();
-
-                Preferences.Default.Set("Lan", LangValueToKeep);
-                Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
-                Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
-                Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
+                await ClearMostData();
 
                 await _signalRService.InvokeNotifyDisconnectyAsync(GuidKey);
 
-                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService)));
+                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
                 await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.MsgloggedOut, AppResources.msgOk);
             });
         }
 
 
         // UpdateVersion
+        [Obsolete]
         private async void _signalRService_OnMessageReceivedUpdateVersion(string GuidKey, string Name, string VersionNumber, string VersionBuild, string DescriptionEN, string DescriptionAR, string ReleaseDate)
         {
             Device.BeginInvokeOnMainThread(async () =>
@@ -406,26 +460,72 @@ namespace Cardrly
                     ReleaseDate = DateTime.Parse(ReleaseDate)
                 };
 
-                //await _signalRService.NotifyUpdatedVersionMobile(GuidKey);
-                await StaticMember.DeleteUserSession(Rep, _service);
-
-                string LangValueToKeep = Preferences.Default.Get("Lan", "en");
-                bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
-                string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
-                string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
-
-                Preferences.Default.Clear();
-                await BlobCache.LocalMachine.InvalidateAll();
-                await BlobCache.LocalMachine.Vacuum();
-
-                Preferences.Default.Set("Lan", LangValueToKeep);
-                Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
-                Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
-                Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
+                await ClearMostData();
 
                 await MopupService.Instance.PushAsync(new UpdateVersionPopup(oUpdateVersionModel));
             });
+        }
 
+        [Obsolete]
+        private async void _signalRService_OnMessageReceivedOneDeviceForThisAccount(string AccountId, string UserId, string CardId, string DeviceId)
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                string accountId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                string userId = Preferences.Default.Get(ApiConstants.userid, "");
+                string cardId = Preferences.Default.Get(ApiConstants.cardId, "");
+
+                string deviceID = await StaticMember.GetDeviceId();
+
+                if (!string.IsNullOrEmpty(accountId) && AccountId == accountId && !string.IsNullOrEmpty(userId) && UserId == userId &&
+                    !string.IsNullOrEmpty(cardId) && CardId == cardId && !string.IsNullOrEmpty(deviceID) && DeviceId != deviceID)
+                {
+                    await ClearMostData();
+
+                    await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+
+                    await App.Current!.MainPage!.DisplayAlert(AppResources.lblAlert, AppResources.msgLougoutForLoginAnotherDevice, AppResources.msgOk);
+                }
+            });
+        }
+
+        [Obsolete]
+        private async void _signalRService_OnMessageReceivedOneDeviceForThisAccountInSleep(string AccountId, string UserId, string CardId, string DeviceId)
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                string accountId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                string userId = Preferences.Default.Get(ApiConstants.userid, "");
+                string cardId = Preferences.Default.Get(ApiConstants.cardId, "");
+
+                string deviceID = await StaticMember.GetDeviceId();
+
+                if (!string.IsNullOrEmpty(accountId) && AccountId == accountId && !string.IsNullOrEmpty(userId) && UserId == userId &&
+                    !string.IsNullOrEmpty(cardId) && CardId == cardId && !string.IsNullOrEmpty(deviceID) && DeviceId != deviceID)
+                {
+                    await ClearMostData();
+                }
+            });
+        }
+
+        async Task ClearMostData()
+        {
+            await StaticMember.DeleteUserSession(Rep, _service);
+
+            string LangValueToKeep = Preferences.Default.Get("Lan", "en");
+
+            bool RememberMe = Preferences.Default.Get<bool>(ApiConstants.rememberMe, false);
+            string RememberMeUserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
+            string RememberPassword = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
+
+            Preferences.Default.Clear();
+            await BlobCache.LocalMachine.InvalidateAll();
+            await BlobCache.LocalMachine.Vacuum();
+
+            Preferences.Default.Set("Lan", LangValueToKeep);
+            Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
+            Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
+            Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
         }
     }
 }

@@ -1,8 +1,12 @@
 ﻿
+using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Mode_s.ApplicationUser;
 using Cardrly.Models.MeetingAiAction;
 using Cardrly.Models.MeetingAiActionRecord;
+using Cardrly.Resources.Lan;
+using Cardrly.Services.AudioStream;
+using Cardrly.Services.Data;
 using Controls.UserDialogs.Maui;
 using GoogleApi.Entities.Translate.Common.Enums;
 using Newtonsoft.Json;
@@ -91,33 +95,33 @@ namespace Cardrly.Helpers
                     return json!;
                 }
 
-                if (responseMessage.StatusCode == HttpStatusCode.Forbidden)
-                {
-                    //throw new ServiceAuthenticationException(jsonResult);
-                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
-                    return default(T)!;
-                }
+                //if (responseMessage.StatusCode == HttpStatusCode.Forbidden)
+                //{
+                //    //throw new ServiceAuthenticationException(jsonResult);
+                //    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 403. System.Net.HttpStatusCode.Forbidden indicates\r\nthat the server refuses to fulfill the request.", "OK");
+                //    return default(T)!;
+                //}
 
-                if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
-                    return default(T)!;
-                }
+                //if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
+                //{
+                //    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 401. System.Net.HttpStatusCode.Unauthorized indicates\r\nthat the requested resource requires authentication.", "OK");
+                //    return default(T)!;
+                //}
 
 
-                if (responseMessage.StatusCode == HttpStatusCode.InternalServerError)
-                {
-                    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 500. System.Net.HttpStatusCode.InternalServerError indicates\r\nthat the requested resource requires Data.", "OK");
-                    return default(T)!;
+                //if (responseMessage.StatusCode == HttpStatusCode.InternalServerError)
+                //{
+                //    await App.Current!.MainPage!.DisplayAlert("Warning", "Equivalent to HTTP status 500. System.Net.HttpStatusCode.InternalServerError indicates\r\nthat the requested resource requires Data.", "OK");
+                //    return default(T)!;
 
-                }
-                //throw new HttpRequestExceptionEx(responseMessage.StatusCode, jsonResult);   
+                //}  
                 jsonResult = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
                 return default(T)!;
             }
             catch (Exception e)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning,AppResources.msgServicedown,AppResources.msgOk);
                 return default(T);
             }
         }
@@ -175,7 +179,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return "";
             }
         }
@@ -232,7 +237,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return default(ApplicationUserResponse);
             }
         }
@@ -288,7 +294,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return "";
             }
         }
@@ -348,7 +355,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return default(T);
             }
         }
@@ -409,7 +417,8 @@ namespace Cardrly.Helpers
                     }
                     else
                     {
-                        await Controls.StaticMember.ClearAllData(this);
+                        //await Controls.StaticMember.ClearAllData(this);
+                        await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                         return (model!, null);
                     }
                 }
@@ -417,7 +426,8 @@ namespace Cardrly.Helpers
             catch (Exception e)
             {
                 var model = JsonConvert.DeserializeObject<TR>("");
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return (model!, null);
             }
         }
@@ -475,7 +485,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return (null, null);
             }
         }
@@ -538,7 +549,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return "";
             }
         }
@@ -619,7 +631,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return "";
             }
         }
@@ -697,7 +710,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return "";
             }
         }
@@ -775,7 +789,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return "";
             }
         }
@@ -830,7 +845,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return default(T);
             }
         }
@@ -888,7 +904,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return "";
             }
         }
@@ -959,7 +976,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return "";
             }
         }
@@ -1015,7 +1033,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception ex)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return "api not responding";
             }
         }
@@ -1063,7 +1082,8 @@ namespace Cardrly.Helpers
             }
             catch (Exception e)
             {
-                await Controls.StaticMember.ClearAllData(this);
+                //await Controls.StaticMember.ClearAllData(this);
+                await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.msgServicedown, AppResources.msgOk);
                 return default(TR);
             }
         }
@@ -1356,11 +1376,6 @@ namespace Cardrly.Helpers
                 return false;
             }
         }
-
-
-
-
-
 
     }
 }

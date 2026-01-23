@@ -28,16 +28,18 @@ namespace Cardrly.ViewModels
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
         readonly SignalRService _signalRService;
-        private readonly IAudioStreamService _audioService;
+        readonly IAudioStreamService _audioService;
+        readonly LocationTrackingService _locationTracking;
         #endregion
 
         #region Cons
-        public ChangePasswordViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService)
+        public ChangePasswordViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
         {
             Rep = GenericRep;
             _service = service;
             _signalRService = signalRService;   
             _audioService = audioService;
+            _locationTracking = locationTracking;
         }
         #endregion
 
@@ -91,7 +93,7 @@ namespace Cardrly.ViewModels
                         Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
                         Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
                         Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
-                        await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService)));
+                        await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
                     }
                     else
                     {

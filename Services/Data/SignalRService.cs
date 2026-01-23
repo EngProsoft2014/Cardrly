@@ -27,6 +27,7 @@ namespace Cardrly.Services.Data
         private bool _isReconnecting = false;
 
         public event Action<string> OnMessageReceivedLogout;
+        public event Action<string, string, string, string> OnMessageReceivedOneDeviceForThisAccount;
         public event Action<string, string, string, string, string, string, string> OnMessageReceivedUpdateVersion;
         public event Action<DataMapsModel> OnMessageReceivedLocation;
 
@@ -62,6 +63,11 @@ namespace Cardrly.Services.Data
 
                 if (!string.IsNullOrEmpty(Id) && GuidKey == Id)
                     OnMessageReceivedLogout?.Invoke(GuidKey);
+            });
+
+            _hubConnection.On<string, string, string, string>("OneDeviceForThisAccountLogOut", (AccountId, UserId, CardId, DeviceId) =>
+            {
+                OnMessageReceivedOneDeviceForThisAccount?.Invoke(AccountId, UserId, CardId, DeviceId);
             });
 
             _hubConnection.On<string, string, string, string, string, string, string>("UpdateVersion", (GuidKey, Name, VersionNumber, VersionBuild, DescriptionEN, DescriptionAR, ReleaseDate) =>

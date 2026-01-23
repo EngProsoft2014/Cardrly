@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Controls:CustomControl xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        x:Class="Cardrly.Pages.TrackingPages.HistoryTrackingMapPage"
+                        xmlns:Controls="clr-namespace:Cardrly.Controls"
+                        xmlns:Helpers="clr-namespace:Cardrly.Helpers"
+                        xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+                        xmlns:vm="clr-namespace:Cardrly.ViewModels"
+                        xmlns:sensors="clr-namespace:Microsoft.Maui.Devices.Sensors;assembly=Microsoft.Maui.Essentials"
+                        Visual="Material"
+                        BackgroundColor="White"
+                        IsEnabled="{Binding IsEnable}">
+
+    <StackLayout>
+        <!--Header-->
+        <StackLayout Orientation="Horizontal" Margin="20,10,20,10">
+            <Image VerticalOptions="CenterAndExpand">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="Gray" Size="25"></FontImageSource>
+                </Image.Source>
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Lang}" Value="ar">
+                        <Setter Property="Rotation" Value="180"></Setter>
+                    </DataTrigger>
+                </Image.Triggers>
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="{Binding OneEmployee.CardName}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
+            </Label>
+        </StackLayout>
+
+        <Grid RowDefinitions="Auto,*">
+
+            <maps:Map x:Name="EmployeeMap" 
+                      IsTrafficEnabled="True"
+                      IsShowingUser="True"
+                      IsZoomEnabled="True" 
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand" 
+                      MapType="Street">
+            </maps:Map>
+
+            <StackLayout Orientation="Horizontal" Grid.Row="1">
+                <Button Text="Play" Clicked="OnPlayClicked"/>
+                <Button Text="Stop" Clicked="OnStopClicked"/>
+                <Slider x:Name="ProgressSlider"
+                Minimum="0"
+                Maximum="100"
+                ValueChanged="OnProgressChanged"/>
+            </StackLayout>
+
+        </Grid>
+
+    </StackLayout>
+</Controls:CustomControl>

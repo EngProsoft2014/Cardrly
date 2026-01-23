@@ -26,6 +26,7 @@ namespace Cardrly.ViewModels
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
         readonly SignalRService _signalRService;
+        readonly LocationTrackingService _locationTracking;
         #endregion
 
         private readonly IAudioStreamService _audioService;
@@ -33,14 +34,18 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         bool isShowMeetingSCript;
 
-        public ADOnsViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService)
+        [ObservableProperty]
+        bool isShowTimeSheet;
+
+        public ADOnsViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
         {
             Rep = GenericRep;
             _service = service;
             _signalRService = signalRService;
             _audioService = audioService;
-
+            _locationTracking = locationTracking;
             IsShowMeetingSCript = StaticMember.CheckPermission(ApiConstants.GetMeetingAi) == true ? true : false;
+            IsShowTimeSheet = StaticMember.CheckPermission(ApiConstants.GetHistoryLocationTimeSheet) == true ? true : false;
         }
 
 
@@ -63,9 +68,17 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task TimeSheetClick()
         {
-            UserDialogs.Instance.ShowLoading();
-            await App.Current!.MainPage!.Navigation.PushAsync(new TimeSheetPage(new TimeSheetViewModel(Rep, _service, _signalRService)));
-            UserDialogs.Instance.HideHud();
+            if (StaticMember.CheckPermission(ApiConstants.GetTimeSheet))
+            {
+                UserDialogs.Instance.ShowLoading();
+                await App.Current!.MainPage!.Navigation.PushAsync(new TimeSheetPage(new TimeSheetViewModel(Rep, _service, _signalRService, _locationTracking)));
+                UserDialogs.Instance.HideHud();
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
         }
     }
 }

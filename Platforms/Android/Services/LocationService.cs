@@ -72,7 +72,7 @@ namespace Cardrly.Platforms.Android.Services
             {
                 EmployeeId = _employeeId,
                 AccountId = Preferences.Default.Get(ApiConstants.AccountId, string.Empty),
-                BranchId = Preferences.Default.Get(ApiConstants.BranchId, string.Empty),
+                TimeSheetId = Preferences.Default.Get(ApiConstants.TimeSheetId, string.Empty),
                 Lat = location.Latitude,
                 Long = location.Longitude,
                 CreateDate = DateTime.UtcNow,

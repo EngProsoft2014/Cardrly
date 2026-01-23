@@ -1,5 +1,4 @@
-﻿
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
@@ -16,9 +15,14 @@ namespace Cardrly.Platforms.Android
         const string ChannelId = "upload_channel";
         const int NotificationId = 1001;
 
+        private IGenericRepository _repository;
+
         public override void OnCreate()
         {
             base.OnCreate();
+
+            _repository = IPlatformApplication.Current.Services.GetService<IGenericRepository>();
+
             CreateNotificationChannel();
         }
 
@@ -35,7 +39,7 @@ namespace Cardrly.Platforms.Android
                     StartForeground(NotificationId, BuildNotification("Uploading..."));
 
                     // 🔥 Use your existing upload method here directly
-                    await new GenericRepository().PostFileWithFormAsync<object>(apiUrl, new AudioUploadRequest
+                    await _repository.PostFileWithFormAsync<object>(apiUrl, new AudioUploadRequest
                     {
                         AudioPath = filePath,
                         Extension = Path.GetExtension(filePath)

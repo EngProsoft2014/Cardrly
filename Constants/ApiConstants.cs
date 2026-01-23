@@ -14,13 +14,15 @@
         // Preferences Key
         public static string userid = "userid";
         public static string ownerId = "ownerid";
+        public static string cardId = "cardid";
         public static string email = "email";
         public static string username = "username";
         public static string password = "password";
         public static string userPermision = "userPermision";
         public static string userCategory = "userCategory"; //1 = system , 2 = Travel Agency , 3 = Distributor
         public static string AccountId = "AccountId";
-        public static string BranchId = " BranchId";
+        public static string TimeSheetId = " TimeSheetId";
+        public static string DeviceId = "deviceId";
         public static string AccountName = "AccountName";
         public static string ExpireDate = "ExpireDate";
         public static string GuidKey = "GuidKey";
@@ -200,6 +202,13 @@
 
         // == MeetingAi == 
         public const string GetMeetingAi = "MeetingAi:Get";
+
+        // == TimeSheet ==
+        public const string GetTimeSheet = "TimeSheet:Get";
+        public const string UpdateTimeSheet = "TimeSheet:Update";
+        public const string GetTimeSheetTracking = "TimeSheet:GetTracking";
+        public const string SendLocationTimeSheet = "TimeSheet:SendLocation";
+        public const string GetHistoryLocationTimeSheet = "TimeSheet:GetHistoryLocation";
         #endregion
 
         #region Stripe
@@ -227,13 +236,20 @@
 
         #region TimeSheetApi
         public static string GetByDateTimeSheetApi = "api/TimeSheet/GetByDate/";
+        public static string GetByCardIdTimeSheetApi = "api/TimeSheet/GetByCardId/"; 
         public static string AddTimeSheetApi = "api/TimeSheet/AddTimeSheet/";
         public static string UpdateTimeSheetApi = "api/TimeSheet/UpdateTimeSheet/";
         public static string GetEmpWorkingTimeSheetApi = "api/TimeSheet/GetEmpWorking/";
-        
+        public static string GetDeviceIdTimeSheetApi = "api/TimeSheetEmployeeBranch/GetDeviceId/";
+
+        public static string GetAllBranchesTimeSheetApi = "api/TimeSheetBranch/GetAllForHistoryTracking/";
+        public static string GetTimeSheetsByEmployeeTimeSheetApi = "api/TimeSheet/GetTimeSheetsByEmployee/";
+        public static string GetEmployeeLocationsTimeSheetApi = "api/TimeSheet/GetEmployeeLocations/";
+
+
         #endregion
 
 
-        
+
     }
 }

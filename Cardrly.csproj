@@ -358,7 +358,13 @@
 	  <MauiXaml Update="Pages\MeetingsScript\WebViewMeetingAudioPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\TrackingPages\EmployeesBranchHistoryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\TrackingPages\EmployeesWorkingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\TrackingPages\HistoryTrackingMapPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\TrackingPages\TrckingMapPage.xaml">

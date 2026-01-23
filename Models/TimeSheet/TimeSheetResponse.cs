@@ -40,8 +40,8 @@ namespace Cardrly.Models.TimeSheet
         public bool IsUseNetwork { get; set; }
         public bool IsUseDeviceId { get; set; }
         public bool IsUseFaceId { get; set; }
-        public int? DeviceId { get; set; }
-        public int? FaceId { get; set; }
+        public string? DeviceId { get; set; }
+        public string? FaceId { get; set; }
 
         // 🔥 Work mode info
         public string? TimeSheetBranchWorkModeId { get; set; }

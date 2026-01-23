@@ -38,16 +38,17 @@ namespace Cardrly.ViewModels
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
         readonly SignalRService _signalRService;
+        readonly LocationTrackingService _locationTracking;
         #endregion
 
         #region Cons
-        public LoginViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService)
+        public LoginViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
         {
             Rep = GenericRep;
             _service = service;
             _signalRService = signalRService;
             _audioService = audioService;
-
+            _locationTracking = locationTracking;
             Init();
         }
         #endregion
@@ -96,6 +97,8 @@ namespace Cardrly.ViewModels
                     Preferences.Default.Remove(ApiConstants.rememberMePassword);
                 }
 
+                model.DeviceId = await StaticMember.GetDeviceId();
+
                 var json = await Rep.PostTRAsync<ApplicationUserLoginRequest, ApplicationUserResponse>(ApiConstants.LoginApi, model);
 
                 if (json.Item1 != null)
@@ -129,7 +132,7 @@ namespace Cardrly.ViewModels
                                             else
                                             {
                                                 await SetData(UserResponse);
-                                                var page = new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService), Rep, _service, _signalRService, _audioService);
+                                                var page = new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking), Rep, _service, _signalRService, _audioService, _locationTracking);
                                                 await App.Current!.MainPage!.Navigation.PushAsync(page);
                                             }
                                         }
@@ -155,7 +158,7 @@ namespace Cardrly.ViewModels
                                             else
                                             {
                                                 await SetData(UserResponse);
-                                                var page = new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService), Rep, _service, _signalRService, _audioService);
+                                                var page = new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking), Rep, _service, _signalRService, _audioService, _locationTracking);
                                                 await App.Current!.MainPage!.Navigation.PushAsync(page);
                                             }
                                         }
@@ -214,6 +217,10 @@ namespace Cardrly.ViewModels
             var ownerIdClaim = jwt.Claims.FirstOrDefault(c => c.Type == "OwnerId")?.Value;
             if (!string.IsNullOrEmpty(ownerIdClaim))
                 Preferences.Default.Set(ApiConstants.ownerId, ownerIdClaim);
+
+            var cardIdClaim = jwt.Claims.FirstOrDefault(c => c.Type == "CardId")?.Value;
+            if (!string.IsNullOrEmpty(cardIdClaim))
+                Preferences.Default.Set(ApiConstants.cardId, cardIdClaim);
 
             await BlobCache.LocalMachine.InsertObject(ServicesService.UserTokenServiceKey, userResponse?.Token, DateTimeOffset.Now.AddMinutes(43200));
 

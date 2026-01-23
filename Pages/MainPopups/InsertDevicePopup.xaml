@@ -20,10 +20,17 @@
         <StackLayout  HorizontalOptions="FillAndExpand" Spacing="20">
             <Border Padding="0,10,0,10" BackgroundColor="#FFFFFF" VerticalOptions="Center">
                 <StackLayout  BackgroundColor="#FFFFFF" Spacing="3" Padding="10">
-                    <VerticalStackLayout HorizontalOptions="FillAndExpand" Margin="0,10,0,0" Spacing="5">
-                        <Label Text="{x:Static res:AppResources.lblLink}" TextColor="Gray" FontSize="14" ></Label>
+                    <VerticalStackLayout x:Name="stkURL" HorizontalOptions="FillAndExpand" Margin="0,10,0,0" Spacing="5">
+                        <Label Text="{x:Static res:AppResources.lblQrCodeURL}" TextColor="Gray" FontSize="14" ></Label>
                         <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
                             <Entry x:Name="ValueEn" Keyboard="Url" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></Entry>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout HorizontalOptions="FillAndExpand" Margin="0,10,0,0" Spacing="5">
+                        <Label Text="{x:Static res:AppResources.lblRedirectURL}" TextColor="Gray" FontSize="14" ></Label>
+                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" Stroke="Gray" HeightRequest="40">
+                            <Entry x:Name="ValueEnRedirect" Keyboard="Url" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False"></Entry>
                         </Border>
                     </VerticalStackLayout>
                     <!--Save Button  & Edit Links-->

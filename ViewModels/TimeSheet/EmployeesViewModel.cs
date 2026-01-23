@@ -1,5 +1,6 @@
 ﻿
 using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Models;
 using Cardrly.Models.Card;
@@ -80,29 +81,29 @@ namespace Cardrly.ViewModels
         #endregion
 
         #region Methods
-        async void InitTraking(ObservableCollection<TimeSheetResponse> lstEmployeesTracking)
-        {
-            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
-            {
-                LstWorkingEmployees = new ObservableCollection<TimeSheetResponse>();
+        //async void InitTraking(ObservableCollection<TimeSheetResponse> lstEmployeesTracking)
+        //{
+        //    if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+        //    {
+        //        LstWorkingEmployees = new ObservableCollection<TimeSheetResponse>();
 
-                string Date = DateTime.Now.ToString("yyyy-MM-dd");
-                string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
+        //        string Date = DateTime.Now.ToString("yyyy-MM-dd");
+        //        string AccId = Preferences.Default.Get(ApiConstants.AccountId, "");
 
-                UserDialogs.Instance.ShowLoading();
+        //        UserDialogs.Instance.ShowLoading();
 
-                string UserToken = await _service.UserToken();
-                //Get Working Employees
-                var json = await ORep.GetAsync<ObservableCollection<TimeSheetResponse>>(ApiConstants.GetEmpWorkingTimeSheetApi + AccId + "/" + Date, UserToken);
+        //        string UserToken = await _service.UserToken();
+        //        //Get Working Employees
+        //        var json = await ORep.GetAsync<ObservableCollection<TimeSheetResponse>>(ApiConstants.GetEmpWorkingTimeSheetApi + AccId + "/" + Date, UserToken);
 
-                if (json != null)
-                {
-                    LstWorkingEmployees = json;
-                }
+        //        if (json != null)
+        //        {
+        //            LstWorkingEmployees = json;
+        //        }
 
-                UserDialogs.Instance.HideHud();
-            }
-        }
+        //        UserDialogs.Instance.HideHud();
+        //    }
+        //}
 
 
         public void HandleLocationUpdate(DataMapsModel locationData)
@@ -193,6 +194,29 @@ namespace Cardrly.ViewModels
                 //    var toast = Toast.Make(AppResources.msgNoavailablelocationcoordinates, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                 //    await toast.Show();
                 //}
+            }
+
+            IsEnable = true;
+        }
+
+        [RelayCommand]
+        async Task GoHistoryTracking()
+        {
+            IsEnable = false;
+
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                //if (StaticMember.CheckPermission(ApiConstants.GetHistoryLocationTimeSheet))
+                //{
+                    UserDialogs.Instance.ShowLoading();
+                    await App.Current!.MainPage!.Navigation.PushAsync(new Pages.TrackingPages.EmployeesBranchHistoryPage(new HistoryTrackingViewModel(ORep, _service), ORep, _service));
+                    UserDialogs.Instance.HideHud();
+               //}
+               // else
+               // {
+               //     var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+               //     await toast.Show();
+              //  }
             }
 
             IsEnable = true;

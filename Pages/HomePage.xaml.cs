@@ -44,9 +44,10 @@ public partial class HomePage : Controls.CustomControl
     #region Service
     readonly IGenericRepository Rep;
     readonly Services.Data.ServicesService _service;
+    readonly LocationTrackingService _locationTracking;
     #endregion
 
-    public HomePage(HomeViewModel model, IGenericRepository GenericRep, ServicesService service, SignalRService signalRService, IAudioStreamService audioService)
+    public HomePage(HomeViewModel model, IGenericRepository GenericRep, ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
     {
         InitializeComponent();
         homeViewModel = model;
@@ -55,6 +56,7 @@ public partial class HomePage : Controls.CustomControl
         _service = service;
         _signalRService = signalRService;
         _audioService = audioService;
+        _locationTracking = locationTracking;
         HomeView.BindingContext = model;
         // Add Flow Direction For Content View 
         HomeView.FlowDirection = this.FlowDirection;
@@ -62,6 +64,7 @@ public partial class HomePage : Controls.CustomControl
         LeadView.FlowDirection = this.FlowDirection;
         CalendarView.FlowDirection = this.FlowDirection;
         MoreView.FlowDirection = this.FlowDirection;
+        
 
         //#if ANDROID || IOS
         //        MessagingCenter.Subscribe<NotificationManagerService, bool>(this, "NoifcationClicked", async (sender, message) =>
@@ -205,7 +208,7 @@ public partial class HomePage : Controls.CustomControl
         }
         else if (e.NewIndex == 4)
         {
-            MoreView.BindingContext ??= new MoreViewModel(Rep, _service, _signalRService, _audioService);
+            MoreView.BindingContext ??= new MoreViewModel(Rep, _service, _signalRService, _audioService, _locationTracking);
         }
 
         isTabHandling = false;

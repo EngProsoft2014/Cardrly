@@ -11,6 +11,7 @@ namespace Cardrly.Models
     {
         public string matchValue { get; set; }
         public string scanUriValue { get; set; }
+        public string scanUriRedirectValue { get; set; }
         public bool isManualQrCode { get; set; }
 
     }

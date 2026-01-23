@@ -49,11 +49,11 @@ public partial class ScanQrPage : Controls.CustomControl
             return;
         }
 
-        await CheckQrCode(scannedValue,false);
+        await CheckQrCode(scannedValue, string.Empty, false);
     }
 
 
-    async Task CheckQrCode(string scanValue, bool isMnlQrCode)
+    async Task CheckQrCode(string scanValue, string scanValueRedirect, bool isMnlQrCode)
     {
         // Define the regex pattern for a GUID
         string pattern = @"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}";
@@ -61,18 +61,22 @@ public partial class ScanQrPage : Controls.CustomControl
 
         if (Guid.TryParse(match.Value, out Guid parsedGuid))
         {
+            ReturnQrCodeModel oReturnQrCodeModel = new ReturnQrCodeModel();
+
+            if (isMnlQrCode && !string.IsNullOrEmpty(scanValueRedirect))
+            {
+                oReturnQrCodeModel.scanUriRedirectValue = scanValueRedirect;
+            }
+
             // Stop scanning to prevent multiple detections
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 cameraBarcodeReaderView.IsDetecting = false; // Stops scanning
             });
 
-            ReturnQrCodeModel oReturnQrCodeModel = new ReturnQrCodeModel
-            {
-                matchValue = match.Value,
-                scanUriValue = scanValue,
-                isManualQrCode = isMnlQrCode
-            };
+            oReturnQrCodeModel.matchValue = match.Value;
+            oReturnQrCodeModel.scanUriValue = scanValue;
+            oReturnQrCodeModel.isManualQrCode = isMnlQrCode;
 
             MessagingCenter.Send(this, "QRCodeValue", oReturnQrCodeModel);
 
@@ -107,10 +111,10 @@ public partial class ScanQrPage : Controls.CustomControl
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
-        var page = new InsertDevicePopup();
-        page.DeviceClose += async (Uri) =>
+        var page = new InsertDevicePopup(true);
+        page.DeviceClose += async (Uri, UriRedirect) =>
         {
-            await CheckQrCode(Uri,true);
+            await CheckQrCode(Uri, UriRedirect, true);
         };
         await MopupService.Instance.PushAsync(page, true);
     }

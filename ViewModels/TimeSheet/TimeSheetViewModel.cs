@@ -1,8 +1,10 @@
 ﻿
 using Cardrly.Constants;
+using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Models;
 using Cardrly.Models.TimeSheet;
+using Cardrly.Pages;
 using Cardrly.Pages.MainPopups;
 using Cardrly.Pages.TrackingPages;
 using Cardrly.Resources.Lan;
@@ -11,6 +13,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
+using Microsoft.CognitiveServices.Speech.Transcription;
 using Mopups.Services;
 using Newtonsoft.Json;
 using System;
@@ -30,6 +33,7 @@ namespace Cardrly.ViewModels
         readonly IGenericRepository ORep;
         readonly Services.Data.ServicesService _service;
         readonly SignalRService _signalRService;
+        readonly LocationTrackingService _locationTracking;
         #endregion
 
         #region Prop
@@ -81,18 +85,16 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         bool isShowMyBreakOut;
 
-        [ObservableProperty]
-        bool isShowTrackingBtn;
-
         DateTime dateDF;
         #endregion
 
         #region Cons
-        public TimeSheetViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService)
+        public TimeSheetViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, LocationTrackingService locationTracking)
         {
             ORep = GenericRep;
             _service = service;
             _signalRService = signalRService;
+            _locationTracking = locationTracking;
             Init();
             MessagingCenter.Subscribe<CheckoutPopup, bool>(this, "ChangeEmployeeTime", (sender, message) =>
             {
@@ -101,6 +103,7 @@ namespace Cardrly.ViewModels
                     Init();
                 }
             });
+            //_locationTracking = locationTracking;
         }
         #endregion
 
@@ -118,17 +121,11 @@ namespace Cardrly.ViewModels
                 Date = Controls.StaticMember.SelectedDate.ToString("MM-dd-yyyy");
             }
 
-            IsShowTrackingBtn = true;
-
-            //IsShowTrackingBtn = Preferences.Default.Get(ApiConstants.ownerId, "") == Preferences.Default.Get(ApiConstants.userid, "") ? true : false;
-
             GetCheckInOutEmployees(dateDF.ToString("MM-dd-yyyy"));
-
         }
 
         public async void GetCheckInOutEmployees(string date)
         {
-
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 UserDialogs.Instance.ShowLoading();
@@ -162,14 +159,22 @@ namespace Cardrly.ViewModels
 
         #region RelayCommand
         [RelayCommand]
-        async void GoTracking(ObservableCollection<TimeSheetResponse> lstEmployeesIn)
+        async Task GoTracking(ObservableCollection<TimeSheetResponse> lstEmployeesIn)
         {
-            UserDialogs.Instance.ShowLoading();
+            if (StaticMember.CheckPermission(ApiConstants.GetTimeSheetTracking))
+            {
+                UserDialogs.Instance.ShowLoading();
 
-            ObservableCollection<TimeSheetResponse> lstEmployeesTracking = new ObservableCollection<TimeSheetResponse>(lstEmployeesIn.Where(x => x.HoursFrom != null && x.HoursTo == null).ToList()); // && x.UserId != Preferences.Default.Get(ApiConstants.ownerId, "")
+                ObservableCollection<TimeSheetResponse> lstEmployeesTracking = new ObservableCollection<TimeSheetResponse>(lstEmployeesIn.Where(x => x.HoursFrom != null && x.HoursTo == null).ToList()); // && x.UserId != Preferences.Default.Get(ApiConstants.ownerId, "")
 
-            await App.Current!.MainPage!.Navigation.PushAsync(new EmployeesWorkingPage(new EmployeesViewModel(lstEmployeesTracking, ORep, _service, _signalRService), ORep, _service));
-            UserDialogs.Instance.HideHud();
+                await App.Current!.MainPage!.Navigation.PushAsync(new EmployeesWorkingPage(new EmployeesViewModel(lstEmployeesTracking, ORep, _service, _signalRService), ORep, _service));
+                UserDialogs.Instance.HideHud();
+            }
+            else
+            {
+                var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                await toast.Show();
+            }
         }
 
         [RelayCommand]
@@ -288,7 +293,7 @@ namespace Cardrly.ViewModels
                         HoursFrom = hoursFrom,
                         TimeSheetBranchId = model.TimeSheetBranchId,
                         WorkDate = dateDF,
-                        CheckinAddress = "15 el salam st Alexandria, Egypt"
+                        CheckinAddress = await StaticMember.GetAddressFromCurrentLocation(),
                     };
 
                     var json = await ORep.PostTRAsync<CreateTimeSheet, TimeSheetResponse>(
@@ -298,6 +303,11 @@ namespace Cardrly.ViewModels
 
                     if (json.Item1 != null)
                     {
+                        string deviceID = await StaticMember.GetDeviceId();
+
+                        Preferences.Default.Set(ApiConstants.DeviceId, deviceID);
+                        Preferences.Default.Set(ApiConstants.TimeSheetId, json.Item1.Id);
+
                         // 🔹 Update UI state
                         Init();
                         IsShowBaseCheckIn = false;
@@ -309,6 +319,10 @@ namespace Cardrly.ViewModels
                             AppResources.msgSuccessfullyCheckInTime,
                             CommunityToolkit.Maui.Core.ToastDuration.Long,
                             15).Show();
+
+                        string userId = Preferences.Default.Get(ApiConstants.userid, "");
+                        if (!string.IsNullOrEmpty(userId))
+                            await _locationTracking.StartAsync(userId);
                     }
                     else if (json.Item2?.errors != null)
                     {
@@ -324,23 +338,31 @@ namespace Cardrly.ViewModels
                 // 🔹 Rule: Popup only for owner checking **employee data**
                 if (!isOwnData)
                 {
-                    var popupView = new CheckoutPopup(
+                    if (StaticMember.CheckPermission(ApiConstants.UpdateTimeSheet))
+                    {
+                        var popupView = new CheckoutPopup(
                         model.Id,
                         model.HoursFrom?.ToString() ?? "",
                         this,
                         ORep,
                         _service);
 
-                    // 🔹 Memory-safe async event handler
-                    async void OnPopupTimeClosed(TimeSpan time)
-                    {
-                        popupView.TimeDidClose -= OnPopupTimeClosed; // detach to prevent memory leaks
-                        await DoCheckInAsync(time);
+                        // 🔹 Memory-safe async event handler
+                        async void OnPopupTimeClosed(TimeSpan time)
+                        {
+                            popupView.TimeDidClose -= OnPopupTimeClosed; // detach to prevent memory leaks
+                            await DoCheckInAsync(time);
+                        }
+
+                        popupView.TimeDidClose += OnPopupTimeClosed;
+
+                        await MopupService.Instance.PushAsync(popupView);
                     }
-
-                    popupView.TimeDidClose += OnPopupTimeClosed;
-
-                    await MopupService.Instance.PushAsync(popupView);
+                    else
+                    {
+                        var toast = Toast.Make($"{AppResources.msgPermissionToDoAction}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
+                        await toast.Show();
+                    }
                 }
                 else
                 {
@@ -404,6 +426,10 @@ namespace Cardrly.ViewModels
 
                                 var toast = Toast.Make(AppResources.msgSuccessfullyCheckOutTime, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                                 await toast.Show();
+
+                                _locationTracking.Stop();
+                                Preferences.Default.Remove(ApiConstants.DeviceId);
+                                Preferences.Default.Remove(ApiConstants.TimeSheetId);
                             }
                             else
                             {
@@ -423,7 +449,7 @@ namespace Cardrly.ViewModels
                     // 🔹 Rule: Popup only for owner checking **employee data**
                     if (!isOwnData)
                     {
-                        var popupView = new CheckoutPopup(model.HoursFrom?.ToString() ?? "", new TimeSheetViewModel(ORep, _service, _signalRService), ORep, _service);
+                        var popupView = new CheckoutPopup(model.HoursFrom?.ToString() ?? "", new TimeSheetViewModel(ORep, _service, _signalRService, _locationTracking), ORep, _service);
 
                         // 🔹 Memory-safe async event handler
                         async void OnPopupTimeClosed(TimeSpan time)

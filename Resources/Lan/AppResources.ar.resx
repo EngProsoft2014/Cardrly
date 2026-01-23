@@ -1131,4 +1131,16 @@
   <data name="lblActiveDevicesPage" xml:space="preserve">
     <value>صفحة الأجهزة النشطة</value>
   </data>
+  <data name="lblQrCodeURL" xml:space="preserve">
+    <value>رابط رمز الاستجابة السريعة</value>
+  </data>
+  <data name="lblRedirectURL" xml:space="preserve">
+    <value>عنوان لإعادة التوجيه</value>
+  </data>
+  <data name="lblAlert" xml:space="preserve">
+    <value>تحذير</value>
+  </data>
+  <data name="msgLougoutForLoginAnotherDevice" xml:space="preserve">
+    <value>تم تسجيل خروجك.(تم فتح الحساب على جهاز آخر)</value>
+  </data>
 </root>

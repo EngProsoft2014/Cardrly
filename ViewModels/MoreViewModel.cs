@@ -30,18 +30,19 @@ namespace Cardrly.ViewModels
         readonly IGenericRepository Rep;
         readonly Services.Data.ServicesService _service;
         readonly SignalRService _signalRService;
+        readonly LocationTrackingService _locationTracking;
         #endregion
 
         #region Cons
-        public MoreViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService)
+        public MoreViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
         {
             Rep = GenericRep;
             _service = service;
             _signalRService = signalRService;
             _audioService = audioService;
-
+            _locationTracking = locationTracking;
             IsShowBullingInfo = StaticMember.CheckPermission(ApiConstants.GetStripe) == true ? true : false;
-
+            
         }
         #endregion
 
@@ -68,7 +69,7 @@ namespace Cardrly.ViewModels
                 Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
                 Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
                 Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
-                await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService)));
+                await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
             };
             Controls.StaticMember.ShowSnackBar($"{AppResources.msgDoYouWantToLogout}", Controls.StaticMember.SnackBarColor, Controls.StaticMember.SnackBarTextColor, action);
             return Task.CompletedTask;
@@ -82,7 +83,7 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task ChangePasswordClick()
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new ChangePasswordPage(new ChangePasswordViewModel(Rep,_service, _signalRService, _audioService)));
+            await App.Current!.MainPage!.Navigation.PushAsync(new ChangePasswordPage(new ChangePasswordViewModel(Rep,_service, _signalRService, _audioService, _locationTracking)));
         }
         //[RelayCommand]
         //async Task TimeSheetClick()
@@ -93,7 +94,7 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task AdOnsPageClick()
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new AdOnsPage(new ADOnsViewModel(Rep, _service, _signalRService, _audioService)));
+            await App.Current!.MainPage!.Navigation.PushAsync(new AdOnsPage(new ADOnsViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
         }
 
         //[RelayCommand]
@@ -115,7 +116,7 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task LanguageClick()
         {
-            await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service, _signalRService, _audioService));
+            await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service, _signalRService, _audioService, _locationTracking));
         }
         [RelayCommand]
         async Task FAQClick()

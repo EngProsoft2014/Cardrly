@@ -601,6 +601,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alert.
+        /// </summary>
+        internal static string lblAlert {
+            get {
+                return ResourceManager.GetString("lblAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Script.
         /// </summary>
         internal static string lblAllScript {
@@ -1438,11 +1447,29 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to QR Code URL.
+        /// </summary>
+        internal static string lblQrCodeURL {
+            get {
+                return ResourceManager.GetString("lblQrCodeURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Record.
         /// </summary>
         internal static string lblRecord {
             get {
                 return ResourceManager.GetString("lblRecord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redirect URL.
+        /// </summary>
+        internal static string lblRedirectURL {
+            get {
+                return ResourceManager.GetString("lblRedirectURL", resourceCulture);
             }
         }
         
@@ -2379,6 +2406,15 @@ namespace Cardrly.Resources.Lan {
         internal static string MsgloggedOut {
             get {
                 return ResourceManager.GetString("MsgloggedOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You’ve been logged out.(account is opened on another device).
+        /// </summary>
+        internal static string msgLougoutForLoginAnotherDevice {
+            get {
+                return ResourceManager.GetString("msgLougoutForLoginAnotherDevice", resourceCulture);
             }
         }
         

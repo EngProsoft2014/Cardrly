@@ -65,7 +65,7 @@ namespace Cardrly.Services.Data
                     Geolocation.ListeningFailed += async (s, e) =>
                     {
                         await Toast.Make($"⚠️ Location listening failed: {e.Error}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
-                        await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalR, _audioService));
+                        await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalR, _audioService, this));
                     };
                 }
                 else
@@ -100,7 +100,7 @@ namespace Cardrly.Services.Data
                 {
                     EmployeeId = _employeeId,
                     AccountId = Preferences.Default.Get(ApiConstants.AccountId, string.Empty),
-                    BranchId = Preferences.Default.Get(ApiConstants.BranchId, string.Empty),
+                    TimeSheetId = Preferences.Default.Get(ApiConstants.TimeSheetId, string.Empty),
                     Lat = loc.Latitude,
                     Long = loc.Longitude,
                     CreateDate = DateTime.UtcNow,

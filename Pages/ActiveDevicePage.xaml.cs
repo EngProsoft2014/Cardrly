@@ -347,11 +347,11 @@ public partial class ActiveDevicePage : Controls.CustomControl
 
                             if (existingPopup == null)
                             {
-                                var page2 = new InsertDevicePopup();
+                                var page2 = new InsertDevicePopup(false);
                                 //Get Link  
-                                page2.DeviceClose += async (Uri) =>
+                                page2.DeviceClose += async (Uri, UriRedirect) =>
                                 {
-                                    SetupUri = Uri;
+                                    SetupUri = UriRedirect;
                                     await Model.DeviceClick(SetupUri, deviceType, model.matchValue);
                                 };
                                 await MopupService.Instance.PushAsync(page2, true);
@@ -359,9 +359,9 @@ public partial class ActiveDevicePage : Controls.CustomControl
                         }
                         else
                         {
-                            if (!string.IsNullOrEmpty(model.scanUriValue))
+                            if (!string.IsNullOrEmpty(model.scanUriRedirectValue))
                             {
-                                await Model.DeviceClick(model.scanUriValue, deviceType, model.matchValue);
+                                await Model.DeviceClick(model.scanUriRedirectValue, deviceType, model.matchValue);
                             }
                         }
                     }
@@ -371,10 +371,10 @@ public partial class ActiveDevicePage : Controls.CustomControl
             }
             else if (Item!.DeviceName == "Stand" || Item!.DeviceName == "CustomNFC")
             {
-                var page = new InsertDevicePopup();
-                page.DeviceClose += async (Uri) =>
+                var page = new InsertDevicePopup(false);
+                page.DeviceClose += async (Uri , UriRedirect) =>
                 {
-                    SetupUri = Uri;
+                    SetupUri = UriRedirect;
 
 #if ANDROID
                 var toast = Toast.Make($"Near the stand now.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);

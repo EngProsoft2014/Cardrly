@@ -8,10 +8,10 @@ namespace Cardrly.Pages.MainPopups;
 
 public partial class InsertDevicePopup : Mopups.Pages.PopupPage
 {
-    public delegate void DeviceDelegte(string Uri);
+    public delegate void DeviceDelegte(string Uri, string UrlRedirect);
     public event DeviceDelegte DeviceClose;
 
-    public InsertDevicePopup()
+    public InsertDevicePopup(bool isShowUrl)
 	{
 		InitializeComponent();
 
@@ -27,13 +27,16 @@ public partial class InsertDevicePopup : Mopups.Pages.PopupPage
             this.FlowDirection = FlowDirection.LeftToRight;
             CultureInfo.CurrentCulture = new CultureInfo("en");
         }
+
+        stkURL.IsVisible = isShowUrl;
     }
 
     private async void Save_Clicked(object sender, EventArgs e)
     {
         // check value is a url
         string valid = "";
-        if (string.IsNullOrEmpty(ValueEn.Text))
+        string validRedirect = "";
+        if ((stkURL.IsVisible == true && string.IsNullOrEmpty(ValueEn.Text)) || string.IsNullOrEmpty(ValueEnRedirect.Text))
         {
             var toast = Toast.Make($"{AppResources.msgFRLink}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
@@ -41,17 +44,20 @@ public partial class InsertDevicePopup : Mopups.Pages.PopupPage
         }
         else
         {
-            valid = CheckStringType(ValueEn.Text);
+            if(!string.IsNullOrEmpty(ValueEn.Text))
+                valid = CheckStringGuidType(ValueEn.Text);
+
+            validRedirect = CheckStringType(ValueEnRedirect.Text);
         }
         // return data 
-        if (valid != "URL")
+        if ((!string.IsNullOrEmpty(ValueEn.Text) && valid != "URLGuid") || validRedirect != "URL")
         {
             var toast = Toast.Make($"{AppResources.msgThevaluenotmatchlinkformat}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
         }
         else
         {
-            DeviceClose.Invoke(ValueEn.Text);
+            DeviceClose.Invoke(ValueEn.Text == null ? string.Empty : ValueEn.Text, ValueEnRedirect.Text);
             await MopupService.Instance.PopAsync(true);
         }
     }
@@ -73,6 +79,20 @@ public partial class InsertDevicePopup : Mopups.Pages.PopupPage
         if (Regex.IsMatch(input, urlPattern))
         {
             return "URL";
+        }
+        else
+        {
+            return "Unknown";
+        }
+    }
+
+    public string CheckStringGuidType(string input)
+    {
+        string pattern = @"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}";
+
+        if (Regex.IsMatch(input, pattern))
+        {
+            return "URLGuid";
         }
         else
         {

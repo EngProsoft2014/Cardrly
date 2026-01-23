@@ -78,7 +78,7 @@ namespace Cardrly.ViewModels
             }
             IsEnable = true;
         }
-        public async Task DeviceClick(string uri, int deviceType, string DeviceId)
+        public async Task DeviceClick(string uriRedirect, int deviceType, string DeviceId)
         {
 
             IsEnable = false;
@@ -89,7 +89,7 @@ namespace Cardrly.ViewModels
                 var reqdto = new DevicesRequest
                 {
                     DeviceType = deviceType,
-                    RedirectUrl = uri,
+                    RedirectUrl = uriRedirect,
                     DeviceId = DeviceId
                 };
                 var res = await Rep.PostTRAsync<DevicesRequest, DevicesResponse>($"{ApiConstants.DevicesAddApi}{AccId}/Card/{DetailsResponse.Id}/Devices", reqdto, UserToken);

@@ -6,7 +6,6 @@ using Controls.UserDialogs.Maui;
 using CommunityToolkit.Maui.Alerts;
 
 
-
 namespace Cardrly.Services.Data
 {
     public interface IServicesService
@@ -18,7 +17,6 @@ namespace Cardrly.Services.Data
 
     public class ServicesService : IServicesService
     {
-
         readonly Helpers.IGenericRepository Rep;
         public ServicesService(Helpers.IGenericRepository ORep)
         {

@@ -11,7 +11,7 @@ namespace Cardrly.Models
         public Empoylee EmpData { get; set; }
         public string Id { get; set; } = new Guid().ToString();
         public string AccountId { get; set; }
-        public string BranchId { get; set; }
+        public string TimeSheetId { get; set; }
         public string EmployeeId { get; set; }
         public double Lat { get; set; }
         public double Long { get; set; }

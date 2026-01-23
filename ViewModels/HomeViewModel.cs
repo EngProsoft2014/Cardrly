@@ -58,16 +58,18 @@ namespace Cardrly.ViewModels
         readonly ServicesService _service;
         readonly SignalRService _signalRService;
         readonly IAudioStreamService _audioService;
+        readonly LocationTrackingService _locationTracking;
         #endregion
 
         #region Cons
-        public HomeViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService)
+        public HomeViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
         {
             LoadPermissions();
             Rep = GenericRep;
             _service = service;
             _signalRService = signalRService;
             _audioService = audioService;
+            _locationTracking = locationTracking;
             Init();
         }
         #endregion
@@ -103,11 +105,14 @@ namespace Cardrly.ViewModels
         #region Methodes
         public async void Init()
         {
-            if(StaticMember.CheckPermission(ApiConstants.GetMeetingAi) == true)
+            if(StaticMember.CheckPermission(ApiConstants.GetMeetingAi))
             {
                 Shortcuts.Add(new ShortcutItem { Id = 1, PageName = AppResources.lblMeetingsAiPage, IconGlyph = "\uf130" });   // NotesScript
-            }       
-            Shortcuts.Add(new ShortcutItem { Id = 2, PageName = AppResources.lblTimeSheetPage, IconGlyph = "\uf017" });  // TimeSheet
+            }
+            if (StaticMember.CheckPermission(ApiConstants.GetTimeSheet))
+            {
+                Shortcuts.Add(new ShortcutItem { Id = 2, PageName = AppResources.lblTimeSheetPage, IconGlyph = "\uf017" });  // TimeSheet
+            }              
             Shortcuts.Add(new ShortcutItem { Id = 3, PageName = AppResources.lblLanguagePopup, IconGlyph = "\uf1ab" }); // Language
             Shortcuts.Add(new ShortcutItem { Id = 4, PageName = AppResources.lblActiveDevicesPage, IconGlyph = "\uf6ff" }); // ActiveDevice
 
@@ -236,9 +241,9 @@ namespace Cardrly.ViewModels
             if (item.Id == 1) //NotesScript Page
                 await App.Current!.MainPage!.Navigation.PushAsync(new NotesScriptPage(new NotesScriptViewModel(Rep, _service, _audioService)));
             else if (item.Id == 2) //TimeSheet Page
-                await App.Current!.MainPage!.Navigation.PushAsync(new TimeSheetPage(new TimeSheetViewModel(Rep, _service, _signalRService)));
+                await App.Current!.MainPage!.Navigation.PushAsync(new TimeSheetPage(new TimeSheetViewModel(Rep, _service, _signalRService, _locationTracking)));
             else if (item.Id == 3) //Language Popup
-                await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service, _signalRService, _audioService));
+                await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service, _signalRService, _audioService, _locationTracking));
             else if (item.Id == 4) //ActiveDevice Page
                 await App.Current!.MainPage!.Navigation.PushAsync(new ActiveDevicePage(new ActiveDeviceViewModel(Rep, _service)));
         }

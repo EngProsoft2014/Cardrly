@@ -12,16 +12,18 @@ namespace Cardrly.Pages.MainPopups;
 public partial class LanguagePopup : Mopups.Pages.PopupPage
 {
     IGenericRepository Rep;
-    readonly Services.Data.ServicesService _service;
+    readonly ServicesService _service;
     readonly SignalRService _signalRService;
-    private readonly IAudioStreamService _audioService;
-    public LanguagePopup(IGenericRepository generic, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService)
+    readonly IAudioStreamService _audioService;
+    readonly LocationTrackingService _locationTracking;
+    public LanguagePopup(IGenericRepository generic, ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
 	{
         InitializeComponent();
         Rep = generic;
         _service = service;
         _signalRService = signalRService;
         _audioService = audioService;
+        _locationTracking = locationTracking;
         LoadSetting();
     }
 
@@ -82,7 +84,7 @@ public partial class LanguagePopup : Mopups.Pages.PopupPage
     {
         (Application.Current as App).MainPage.Dispatcher.Dispatch(() =>
         {
-            App.Current!.MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService), Rep, _service, _signalRService, _audioService));
+            App.Current!.MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking), Rep, _service, _signalRService, _audioService, _locationTracking));
         });
     }
 
