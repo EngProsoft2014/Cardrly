@@ -11,9 +11,11 @@ public partial class HistoryTrackingMapPage : Controls.CustomControl
     List<EmployeeLocationResponse> _locations;
     Pin _movingPin;
 
-    public HistoryTrackingMapPage(List<EmployeeLocationResponse> locations)
+    public HistoryTrackingMapPage(List<EmployeeLocationResponse> locations, string CardName)
 	{
 		InitializeComponent();
+
+        titlePage.Text = CardName;
 
         // Order by time
         var ordered = locations.OrderBy(l => l.CreateDate).ToList();

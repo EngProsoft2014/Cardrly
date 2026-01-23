@@ -27,7 +27,7 @@
                     <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
             </Image>
-            <Label Text="{Binding OneEmployee.CardName}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
+            <Label x:Name="titlePage" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
             </Label>
         </StackLayout>
 

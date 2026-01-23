@@ -128,7 +128,7 @@ namespace Cardrly.ViewModels
                 {
                     LstEmployeeLocations = json;
 
-                    await App.Current!.MainPage!.Navigation.PushAsync(new HistoryTrackingMapPage(LstEmployeeLocations));
+                    await App.Current!.MainPage!.Navigation.PushAsync(new HistoryTrackingMapPage(LstEmployeeLocations, timeSheet.CardName));
                 }
             }
         }
