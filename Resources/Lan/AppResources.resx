@@ -1143,4 +1143,10 @@
   <data name="msgLougoutForLoginAnotherDevice" xml:space="preserve">
     <value>You’ve been logged out.(account is opened on another device)</value>
   </data>
+  <data name="lblBranches" xml:space="preserve">
+    <value>Branches</value>
+  </data>
+  <data name="lblEmployees" xml:space="preserve">
+    <value>Employees</value>
+  </data>
 </root>

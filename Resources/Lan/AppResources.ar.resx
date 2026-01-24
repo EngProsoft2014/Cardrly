@@ -1143,4 +1143,10 @@
   <data name="msgLougoutForLoginAnotherDevice" xml:space="preserve">
     <value>تم تسجيل خروجك.(تم فتح الحساب على جهاز آخر)</value>
   </data>
+  <data name="lblBranches" xml:space="preserve">
+    <value>الفروع</value>
+  </data>
+  <data name="lblEmployees" xml:space="preserve">
+    <value>الموظفين</value>
+  </data>
 </root>

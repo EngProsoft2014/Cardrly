@@ -32,42 +32,34 @@
             </Label>
         </StackLayout>
 
+        <!--Branches-->
+        <VerticalStackLayout Margin="20,0,20,5" HorizontalOptions="FillAndExpand">
+            <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="#FF7F3E" HeightRequest="40">
+                <Picker x:Name="BranchesPicker" Title="{x:Static res:AppResources.lblBranches}" ItemsSource="{Binding LstBranches}" ItemDisplayBinding="{Binding Name}" SelectedIndexChanged="BranchesPicker_SelectedIndexChanged" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0">
+                </Picker>
+            </Border>
+        </VerticalStackLayout>
+
         <!--Filter Data-->
         <StackLayout Orientation="Horizontal" Spacing="10" Margin="20,0,20,0" HorizontalOptions="FillAndExpand">
-            <!--Branches-->
-            <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
-                <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="#FF7F3E" HeightRequest="40">
-                    <Picker x:Name="BranchesPicker" Title="Branches" ItemsSource="{Binding LstBranches}" ItemDisplayBinding="{Binding Name}" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0">
-                        <Picker.Behaviors>
-                            <toolkit:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding SelectBranchCommand}" CommandParameter="{Binding}"></toolkit:EventToCommandBehavior>
-                        </Picker.Behaviors>
-                    </Picker>
-                </Border>
-            </VerticalStackLayout>
             <!--Employees-->
-            <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
+            <VerticalStackLayout HorizontalOptions="FillAndExpand">
                 <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="#FF7F3E" HeightRequest="40">
-                    <Picker x:Name="EmployeesPicker" Title="Employees" ItemsSource="{Binding LstEmployeesInBranch}" ItemDisplayBinding="{Binding CardName}" TextColor="Black" FontSize="14" VerticalOptions="CenterAndExpand" FontAutoScalingEnabled="False" Margin="0,0,20,0">
-                        <Picker.Behaviors>
-                            <toolkit:EventToCommandBehavior EventName="SelectedIndexChanged" Command="{Binding SelectEmployeeCommand}" CommandParameter="{Binding}"></toolkit:EventToCommandBehavior>
-                        </Picker.Behaviors>
+                    <Picker x:Name="EmployeesPicker" Title="{x:Static res:AppResources.lblEmployees}" ItemsSource="{Binding LstEmployeesInBranch}" ItemDisplayBinding="{Binding CardName}" SelectedIndexChanged="EmployeesPicker_SelectedIndexChanged" TextColor="Black" FontSize="14" VerticalOptions="CenterAndExpand" FontAutoScalingEnabled="False" Margin="0,0,20,0">
                     </Picker>
                 </Border>
             </VerticalStackLayout>
             <!--Date-->
-            <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
+            <VerticalStackLayout HorizontalOptions="FillAndExpand">
                 <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="#FF7F3E" HeightRequest="40">
-                    <DatePicker Date="{Binding DateTracking}" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0">
-                        <DatePicker.Behaviors>
-                            <toolkit:EventToCommandBehavior EventName="DateSelected" Command="{Binding SelectDatePickerCommand}"></toolkit:EventToCommandBehavior>
-                        </DatePicker.Behaviors>
+                    <DatePicker Date="{Binding DateTracking}" DateSelected="DatePicker_DateSelected" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0">
                     </DatePicker>
                 </Border>
             </VerticalStackLayout>
         </StackLayout>
 
         <!--Search Bar-->
-        <Border BackgroundColor="White" HeightRequest="{OnPlatform Android=42, iOS=55}" Margin="30,10,30,10" Padding="0" HorizontalOptions="FillAndExpand">
+        <Border BackgroundColor="White" HeightRequest="{OnPlatform Android=42, iOS=55}" Margin="20,10,20,10" Padding="0" HorizontalOptions="FillAndExpand">
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
                 <SearchBar x:Name="srcBarEmployee"
                          Placeholder="{x:Static res:AppResources.lblSearch}"    
@@ -99,7 +91,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout Spacing="10">
-                                <StackLayout>
+                                <StackLayout Orientation="Horizontal">
                                     <Border x:Name="yumEmployee" BackgroundColor="#f26d29" HorizontalOptions="FillAndExpand">
                                         <Label Text="{Binding CardName}"
                                                  FontAttributes="Bold"

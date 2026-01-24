@@ -24,32 +24,69 @@
                     </DataTrigger>
                 </Image.Triggers>
                 <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
             </Image>
             <Label x:Name="titlePage" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
             </Label>
         </StackLayout>
 
-        <Grid RowDefinitions="Auto,*">
+        <Grid VerticalOptions="FillAndExpand">
 
-            <maps:Map x:Name="EmployeeMap" 
+            <StackLayout Grid.Row="0">
+                <maps:Map x:Name="EmployeeMap"
                       IsTrafficEnabled="True"
                       IsShowingUser="True"
                       IsZoomEnabled="True" 
                       HorizontalOptions="FillAndExpand"
                       VerticalOptions="FillAndExpand" 
                       MapType="Street">
-            </maps:Map>
-
-            <StackLayout Orientation="Horizontal" Grid.Row="1">
-                <Button Text="Play" Clicked="OnPlayClicked"/>
-                <Button Text="Stop" Clicked="OnStopClicked"/>
-                <Slider x:Name="ProgressSlider"
-                Minimum="0"
-                Maximum="100"
-                ValueChanged="OnProgressChanged"/>
+                </maps:Map>
             </StackLayout>
+
+            <Border BackgroundColor="#d4d2d2" 
+                    Padding="10" 
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="End" 
+                    Margin="25,25,55,25">
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+
+                    <Image x:Name="PlayPauseImage">
+                        <Image.Source>
+                            <!-- Play icon -->
+                            <FontImageSource FontFamily="FontIconSolid" Glyph="" Color="OrangeRed" Size="28"/>
+                        </Image.Source>
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
+                        </Image.GestureRecognizers>
+                    </Image>
+
+
+                    <Slider x:Name="ProgressSlider" 
+                            HorizontalOptions="FillAndExpand" 
+                            Minimum="0"
+                            Maximum="100"  
+                            MinimumTrackColor="OrangeRed"
+                            MaximumTrackColor="#6b6b6b"
+                            ThumbColor="OrangeRed"
+                            ValueChanged="OnProgressChanged"/>
+                    <Label x:Name="TimeLabel"
+                           Text="00:00"
+                           FontSize="14"
+                           TextColor="#6b6b6b"
+                           VerticalOptions="Center"/>
+                </StackLayout>
+
+                <Border.Shadow>
+                    <Shadow Brush="{OnPlatform Android=LightGray, iOS=LightGray}" Radius="{OnPlatform Android=5,iOS=3}"></Shadow>
+                </Border.Shadow>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="{OnPlatform Android=25,iOS=20}" Stroke="LightGray" StrokeThickness="1"></RoundRectangle>
+                </Border.StrokeShape>
+            </Border>
+
+
 
         </Grid>
 

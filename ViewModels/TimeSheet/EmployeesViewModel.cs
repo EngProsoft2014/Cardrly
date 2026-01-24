@@ -212,11 +212,11 @@ namespace Cardrly.ViewModels
                     await App.Current!.MainPage!.Navigation.PushAsync(new Pages.TrackingPages.EmployeesBranchHistoryPage(new HistoryTrackingViewModel(ORep, _service), ORep, _service));
                     UserDialogs.Instance.HideHud();
                }
-               else
-               {
+                else
+                {
                     var toast = Toast.Make($"{AppResources.mshPermissionToViewData}", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                     await toast.Show();
-               }
+                }
             }
 
             IsEnable = true;

@@ -96,12 +96,18 @@ namespace Cardrly.ViewModels
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                if (!string.IsNullOrEmpty(BranchSelected.Id) && !string.IsNullOrEmpty(EmployeeSelected.CardId) && DateTracking.Date < DateTime.UtcNow.Date)
+                if (!string.IsNullOrEmpty(BranchSelected.Id) && DateTracking.Date < DateTime.UtcNow.Date)
                 {
                     string UserToken = await _service.UserToken();
                     //Get all TimeSheets for employee in this branch on selected date
                     UserDialogs.Instance.ShowLoading();
-                    var json = await ORep.GetAsync<ObservableCollection<TimeSheetResponse>>($"{ApiConstants.GetTimeSheetsByEmployeeTimeSheetApi}{BranchSelected.Id}/{EmployeeSelected.CardId}/{DateTracking.Date}", UserToken);
+
+                    ObservableCollection<TimeSheetResponse> json;
+                    if (!string.IsNullOrEmpty(EmployeeSelected.Id))
+                        json = await ORep.GetAsync<ObservableCollection<TimeSheetResponse>>($"{ApiConstants.GetTimeSheetsByEmployeeTimeSheetApi}{BranchSelected.Id}/{DateTracking.Date.ToString("yyyy-MM-dd")}?CardId={EmployeeSelected.CardId}", UserToken);
+                    else
+                        json = await ORep.GetAsync<ObservableCollection<TimeSheetResponse>>($"{ApiConstants.GetTimeSheetsByEmployeeTimeSheetApi}{BranchSelected.Id}/{DateTracking.Date.ToString("yyyy-MM-dd")}", UserToken);
+                    
                     UserDialogs.Instance.HideHud();
 
                     if (json != null)
@@ -121,7 +127,7 @@ namespace Cardrly.ViewModels
                 string UserToken = await _service.UserToken();
                 //Get all Locations for employee in this branch on selected date
                 UserDialogs.Instance.ShowLoading();
-                var json = await ORep.GetAsync<List<EmployeeLocationResponse>>($"{ApiConstants.GetHistoryLocationTimeSheet}{timeSheet.Id}", UserToken);
+                var json = await ORep.GetAsync<List<EmployeeLocationResponse>>($"{ApiConstants.GetEmployeeLocationsTimeSheetApi}{timeSheet.Id}", UserToken);
                 UserDialogs.Instance.HideHud();
 
                 if (json != null)
