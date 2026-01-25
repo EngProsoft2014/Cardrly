@@ -48,4 +48,9 @@ public partial class EmployeesBranchHistoryPage : Controls.CustomControl
     {
         historyTrackingViewModel.SelectDatePickerCommand.Execute(null);
     }
+
+    private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    {
+        brdSearchBar.IsVisible = !brdSearchBar.IsVisible;
+    }
 }

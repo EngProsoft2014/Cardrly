@@ -82,7 +82,10 @@ namespace Cardrly.ViewModels
         async Task SelectBranch(TimeSheetBranchResponse branch)
         {
             BranchSelected = branch;
-            LstEmployeesInBranch = branch.TimeSheetEmployeeBranches?.Count > 0 ? new ObservableCollection<TimeSheetEmployeeBranchResponse>(branch.TimeSheetEmployeeBranches) : new ObservableCollection<TimeSheetEmployeeBranchResponse>();
+            if(branch?.TimeSheetEmployeeBranches != null && branch?.TimeSheetEmployeeBranches.Count > 0)
+            {
+                LstEmployeesInBranch = new ObservableCollection<TimeSheetEmployeeBranchResponse>(branch.TimeSheetEmployeeBranches);
+            }   
         }
 
         [RelayCommand]
@@ -96,7 +99,7 @@ namespace Cardrly.ViewModels
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                if (!string.IsNullOrEmpty(BranchSelected.Id) && DateTracking.Date < DateTime.UtcNow.Date)
+                if (!string.IsNullOrEmpty(BranchSelected?.Id) && DateTracking.Date < DateTime.UtcNow.Date)
                 {
                     string UserToken = await _service.UserToken();
                     //Get all TimeSheets for employee in this branch on selected date

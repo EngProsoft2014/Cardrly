@@ -30,10 +30,18 @@
             </Image>
             <Label Text="Locations" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
             </Label>
+            <Image VerticalOptions="End">
+                <Image.Source>
+                    <FontImageSource Glyph="" FontFamily="FontIconSolid" Color="#FF7F3E" Size="22"></FontImageSource>
+                </Image.Source>
+                <Image.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
+            </Image.GestureRecognizers>
+            </Image>
         </StackLayout>
 
         <!--Branches-->
-        <VerticalStackLayout Margin="20,0,20,5" HorizontalOptions="FillAndExpand">
+        <VerticalStackLayout Margin="20,0,20,10" HorizontalOptions="FillAndExpand">
             <Border StrokeShape="RoundRectangle 10" StrokeThickness="1" BackgroundColor="White" Stroke="#FF7F3E" HeightRequest="40">
                 <Picker x:Name="BranchesPicker" Title="{x:Static res:AppResources.lblBranches}" ItemsSource="{Binding LstBranches}" ItemDisplayBinding="{Binding Name}" SelectedIndexChanged="BranchesPicker_SelectedIndexChanged" TextColor="Black" FontSize="14" FontAutoScalingEnabled="False" Margin="0,0,20,0">
                 </Picker>
@@ -59,7 +67,7 @@
         </StackLayout>
 
         <!--Search Bar-->
-        <Border BackgroundColor="White" HeightRequest="{OnPlatform Android=42, iOS=55}" Margin="20,10,20,10" Padding="0" HorizontalOptions="FillAndExpand">
+        <Border x:Name="brdSearchBar" IsVisible="False" BackgroundColor="White" HeightRequest="{OnPlatform Android=42, iOS=55}" Margin="20,10,20,5" Padding="0" HorizontalOptions="FillAndExpand">
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
                 <SearchBar x:Name="srcBarEmployee"
                          Placeholder="{x:Static res:AppResources.lblSearch}"    
@@ -80,7 +88,7 @@
 
         <Line  X1="400" HorizontalOptions="CenterAndExpand" BackgroundColor="LightGray"></Line>
 
-        <StackLayout Padding="0,0,0,30" VerticalOptions="FillAndExpand">
+        <StackLayout Padding="0,5,0,30" VerticalOptions="FillAndExpand">
 
             <StackLayout Margin="20,10,20,10">
                 <CollectionView x:Name="lstTimeSheets" 
