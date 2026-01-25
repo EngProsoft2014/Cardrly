@@ -28,29 +28,29 @@ namespace Cardrly
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                //.UseSentry(options => {
-                //    // The DSN is the only required setting.
-                //    options.Dsn = "https://462387a2a643f8c993897ae3030c6438@o4508536170676224.ingest.us.sentry.io/4508890903216128";
+                .UseSentry(options =>
+                {
+                    // The DSN is the only required setting.
+                    options.Dsn = "https://462387a2a643f8c993897ae3030c6438@o4508536170676224.ingest.us.sentry.io/4508890903216128";
 
-                //    // Use debug mode if you want to see what the SDK is doing.
-                //    // Debug messages are written to stdout with Console.Writeline,
-                //    // and are viewable in your IDE's debug console or with 'adb logcat', etc.
-                //    // This option is not recommended when deploying your application.
-                //    options.Debug = true;
+                    // Use debug mode if you want to see what the SDK is doing.
+                    // Debug messages are written to stdout with Console.Writeline,
+                    // and are viewable in your IDE's debug console or with 'adb logcat', etc.
+                    // This option is not recommended when deploying your application.
+                    options.Debug = true;
 
-                //    // Set TracesSampleRate to 1.0 to capture 100% of transactions for tracing.
-                //    // We recommend adjusting this value in production.
-                //    options.TracesSampleRate = 1.0;
+                    // Set TracesSampleRate to 1.0 to capture 100% of transactions for tracing.
+                    // We recommend adjusting this value in production.
+                    options.TracesSampleRate = 1.0;
 
-                //    // Other Sentry options can be set here.
-                //})
+                    // Other Sentry options can be set here.
+                })
                 //.RegisterFirebaseServices()
                 .UseMauiCommunityToolkit()
                 .UseMauiCommunityToolkitMediaElement()
                 .UseUserDialogs()
                 .ConfigureMopups()
                 .ConfigureSyncfusionCore()
-                //.UseSkiaSharp()
                 .UseBarcodeReader()
                 .UseMauiMaps()
                 .ConfigureFonts(fonts =>
