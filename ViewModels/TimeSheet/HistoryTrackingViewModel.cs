@@ -78,24 +78,7 @@ namespace Cardrly.ViewModels
             }
         }
 
-        [RelayCommand]
-        async Task SelectBranch(TimeSheetBranchResponse branch)
-        {
-            BranchSelected = branch;
-            if(branch?.TimeSheetEmployeeBranches != null && branch?.TimeSheetEmployeeBranches.Count > 0)
-            {
-                LstEmployeesInBranch = new ObservableCollection<TimeSheetEmployeeBranchResponse>(branch.TimeSheetEmployeeBranches);
-            }   
-        }
-
-        [RelayCommand]
-        async Task SelectEmployee(TimeSheetEmployeeBranchResponse employee)
-        {
-            EmployeeSelected =  employee;
-        }
-
-        [RelayCommand]
-        async Task SelectDatePicker()
+        async Task GetData()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
@@ -110,7 +93,7 @@ namespace Cardrly.ViewModels
                         json = await ORep.GetAsync<ObservableCollection<TimeSheetResponse>>($"{ApiConstants.GetTimeSheetsByEmployeeTimeSheetApi}{BranchSelected.Id}/{DateTracking.Date.ToString("yyyy-MM-dd")}?CardId={EmployeeSelected.CardId}", UserToken);
                     else
                         json = await ORep.GetAsync<ObservableCollection<TimeSheetResponse>>($"{ApiConstants.GetTimeSheetsByEmployeeTimeSheetApi}{BranchSelected.Id}/{DateTracking.Date.ToString("yyyy-MM-dd")}", UserToken);
-                    
+
                     UserDialogs.Instance.HideHud();
 
                     if (json != null)
@@ -118,7 +101,32 @@ namespace Cardrly.ViewModels
                         LstTimeSheet = new ObservableCollection<TimeSheetResponse>(json);
                     }
                 }
-            }     
+            }
+        }
+
+        [RelayCommand]
+        async Task SelectBranch(TimeSheetBranchResponse branch)
+        {
+            BranchSelected = branch;
+            if(branch?.TimeSheetEmployeeBranches != null && branch?.TimeSheetEmployeeBranches.Count > 0)
+            {
+                LstEmployeesInBranch = new ObservableCollection<TimeSheetEmployeeBranchResponse>(branch.TimeSheetEmployeeBranches);
+            }
+
+            await GetData();
+        }
+
+        [RelayCommand]
+        async Task SelectEmployee(TimeSheetEmployeeBranchResponse employee)
+        {
+            EmployeeSelected =  employee;
+            await GetData();
+        }
+
+        [RelayCommand]
+        async Task SelectDatePicker()
+        {
+            await GetData();
         }
 
 
