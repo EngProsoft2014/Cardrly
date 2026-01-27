@@ -82,7 +82,7 @@ namespace Cardrly.ViewModels
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                if (!string.IsNullOrEmpty(BranchSelected?.Id) && DateTracking.Date < DateTime.UtcNow.Date)
+                if (!string.IsNullOrEmpty(BranchSelected?.Id) && DateTracking.Date <= DateTime.UtcNow.Date)
                 {
                     string UserToken = await _service.UserToken();
                     //Get all TimeSheets for employee in this branch on selected date
@@ -100,6 +100,10 @@ namespace Cardrly.ViewModels
                     {
                         LstTimeSheet = new ObservableCollection<TimeSheetResponse>(json);
                     }
+                }
+                else
+                {
+                    LstTimeSheet = new ObservableCollection<TimeSheetResponse>();
                 }
             }
         }

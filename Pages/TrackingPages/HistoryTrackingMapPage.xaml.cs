@@ -81,7 +81,7 @@ public partial class HistoryTrackingMapPage : Controls.CustomControl
             {
                 _movingPin = new Pin
                 {
-                    Label = "Employee",
+                    Label = ordered[_currentIndex].Time.ToString("HH:mm:ss"),
                     Type = PinType.Place,
                     Location = new Location(ordered[_currentIndex].Latitude, ordered[_currentIndex].Longitude)
                 };
@@ -106,7 +106,7 @@ public partial class HistoryTrackingMapPage : Controls.CustomControl
 
                 _movingPin = new Pin
                 {
-                    Label = "Employee",
+                    Label = ordered[_currentIndex].Time.ToString("HH:mm:ss"),
                     Type = PinType.Place,
                     Location = new Location(loc.Latitude, loc.Longitude)
                 };

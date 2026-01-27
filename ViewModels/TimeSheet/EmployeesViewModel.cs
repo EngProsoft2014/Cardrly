@@ -44,6 +44,9 @@ namespace Cardrly.ViewModels
         [ObservableProperty]
         TimeSheetResponse oneEmployee = new TimeSheetResponse();
 
+        [ObservableProperty]
+        EmployeeLocationResponse lastLocation = new EmployeeLocationResponse();
+
         public static DataMapsModel MapsModel { get; set; }
 
         DataTable employeesTable;
@@ -66,6 +69,7 @@ namespace Cardrly.ViewModels
             LastListmap = new ObservableCollection<DataMapsModel>();
             CurrentTrack = new DataMapsModel();
 
+            GetLastLocation(employee.Id);
             //new Timer((Object stateInfo) => { GetDataEmployee(); }, new AutoResetEvent(false), 0, 3000);
         }
 
@@ -81,6 +85,27 @@ namespace Cardrly.ViewModels
         #endregion
 
         #region Methods
+
+        public async void GetLastLocation(string timeSheetId)
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                UserDialogs.Instance.ShowLoading();
+                string UserToken = await _service.UserToken();
+
+                string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
+
+                var json = await ORep.GetAsync<EmployeeLocationResponse>(ApiConstants.GetLastLocationTimeSheetApi + AccountId + "/" + timeSheetId, UserToken);
+
+                if (json != null)
+                {
+                    LastLocation = json;
+                }
+
+                UserDialogs.Instance.HideHud();
+            }
+        }
+
         //async void InitTraking(ObservableCollection<TimeSheetResponse> lstEmployeesTracking)
         //{
         //    if (Connectivity.NetworkAccess == NetworkAccess.Internet)

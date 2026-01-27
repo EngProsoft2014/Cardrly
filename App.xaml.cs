@@ -141,6 +141,13 @@ namespace Cardrly
         {
             base.OnStart();
 
+            bool isFirstRun = Preferences.Get(ApiConstants.isFirstRun, true);
+
+            if (!isFirstRun)
+            {
+                Preferences.Set("IsFirstRun", false);
+            }
+
             await Task.WhenAll(GetDeviceIdFromDataBase(), StatusLocation(), SignalRservice(), CheckToStartSendLocation());
 
             //await StatusLocation();
@@ -189,7 +196,7 @@ namespace Cardrly
             string userId = Preferences.Default.Get(ApiConstants.userid, "");
             string Stringdate = Preferences.Default.Get(ApiConstants.ExpireDate, "");
 
-            if (userId == "")
+            if (userId == "" && !Preferences.Get(ApiConstants.isFirstRun, true))
             {
                 await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
                 await App.Current!.MainPage!.DisplayAlert(AppResources.lblAlert, AppResources.msgLougoutForLoginAnotherDevice, AppResources.msgOk);
@@ -223,13 +230,16 @@ namespace Cardrly
         {
             base.OnSleep();
 
-            if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet))
+            bool isCheckout = Preferences.Default.Get(ApiConstants.isTimeSheetCheckout, false);
+
+            if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet) && !isCheckout)
             {
                 _signalRService.OnMessageReceivedOneDeviceForThisAccount += _signalRService_OnMessageReceivedOneDeviceForThisAccountInSleep;
 
                 _locationTracking.Stop();//only stop foureground location
 
                 string userId = Preferences.Default.Get(ApiConstants.userid, "");
+                
                 if (!string.IsNullOrEmpty(userId))
                 {
                     _locationTracking.StartBackgroundTrackingLocation(userId, null);
@@ -278,7 +288,9 @@ namespace Cardrly
 
         async Task CheckToStartSendLocation()
         {
-            if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet))
+            bool isCheckout = Preferences.Default.Get(ApiConstants.isTimeSheetCheckout, false);
+
+            if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet) && !isCheckout)
             {
                 string deviceId = Preferences.Default.Get(ApiConstants.DeviceId, string.Empty);
                 string timeSheetId = Preferences.Default.Get(ApiConstants.TimeSheetId, string.Empty);
@@ -314,11 +326,17 @@ namespace Cardrly
                                         Preferences.Default.Set(ApiConstants.DeviceId, json.DeviceId);
                                         Preferences.Default.Set(ApiConstants.TimeSheetId, json.Id);
 
+                                        Preferences.Default.Set(ApiConstants.isTimeSheetCheckout, false);//check in
+
                                         if (!string.IsNullOrEmpty(userId))
                                             await _locationTracking.StartAsync(userId);
 
                                         await EnsureGpsEnabled();
                                     }
+                                }
+                                else if(json.HoursFrom != null && json.HoursTo != null)
+                                {
+                                    Preferences.Default.Set(ApiConstants.isTimeSheetCheckout, true);//check out
                                 }
                             }
                         }
@@ -329,29 +347,34 @@ namespace Cardrly
 
         async Task GetDeviceIdFromDataBase()
         {
-            string accountId = Preferences.Default.Get(ApiConstants.AccountId, string.Empty);
-            string cardId = Preferences.Default.Get(ApiConstants.cardId, string.Empty);
-            if (!string.IsNullOrEmpty(accountId) && !string.IsNullOrEmpty(cardId))
-            {
-                if (Connectivity.NetworkAccess == NetworkAccess.Internet)
-                {
-                    string UserToken = await _service.UserToken();
-                    string DeviceId = await Rep.GetAsync<string>(ApiConstants.GetDeviceIdTimeSheetApi + accountId + "/" + cardId, UserToken);
-                    if (!string.IsNullOrEmpty(DeviceId))
-                    {
-                        string myDeviceId = Preferences.Default.Get(ApiConstants.DeviceId, string.Empty);
-                        myDeviceId = string.IsNullOrEmpty(myDeviceId) ? StaticMember.GetDeviceId().Result : myDeviceId;
+            bool isCheckout = Preferences.Default.Get(ApiConstants.isTimeSheetCheckout, false);
 
-                        if (DeviceId != myDeviceId)
+            if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet) && !isCheckout)
+            {
+                string accountId = Preferences.Default.Get(ApiConstants.AccountId, string.Empty);
+                string cardId = Preferences.Default.Get(ApiConstants.cardId, string.Empty);
+                if (!string.IsNullOrEmpty(accountId) && !string.IsNullOrEmpty(cardId))
+                {
+                    if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+                    {
+                        string UserToken = await _service.UserToken();
+                        string DeviceId = await Rep.GetAsync<string>(ApiConstants.GetDeviceIdTimeSheetApi + accountId + "/" + cardId, UserToken);
+                        if (!string.IsNullOrEmpty(DeviceId))
                         {
-                            await ClearMostData();
-                            await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
-                            await App.Current!.MainPage!.DisplayAlert(AppResources.lblAlert, AppResources.msgLougoutForLoginAnotherDevice, AppResources.msgOk);
-                            return;
+                            string myDeviceId = Preferences.Default.Get(ApiConstants.DeviceId, string.Empty);
+                            myDeviceId = string.IsNullOrEmpty(myDeviceId) ? StaticMember.GetDeviceId().Result : myDeviceId;
+
+                            if (DeviceId != myDeviceId)
+                            {
+                                await ClearMostData();
+                                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                                await App.Current!.MainPage!.DisplayAlert(AppResources.lblAlert, AppResources.msgLougoutForLoginAnotherDevice, AppResources.msgOk);
+                                return;
+                            }
                         }
                     }
                 }
-            }
+            }        
         }
 
         public async Task SignalRservice()

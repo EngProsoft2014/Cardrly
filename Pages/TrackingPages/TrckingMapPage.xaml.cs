@@ -23,6 +23,8 @@ public partial class TrckingMapPage : Controls.CustomControl
         _service = service;
         _signalRService = signalRService;
         this.BindingContext = employeesViewModel = model;
+
+        LastLocationEmployee();
     }
 
     protected override void OnAppearing()
@@ -50,6 +52,25 @@ public partial class TrckingMapPage : Controls.CustomControl
     {
         myMap.MoveToRegion(MapSpan.FromCenterAndRadius(
             new Location(employeesViewModel.LastListmap.LastOrDefault().Lat, employeesViewModel.LastListmap.LastOrDefault().Long), Distance.FromMeters(100)));
+    }
+
+    void LastLocationEmployee()
+    {
+        if(employeesViewModel.LastLocation != null)
+        {
+            var pin = new Pin
+            {
+                Label = "Time " + employeesViewModel.LastLocation.Time.ToString(@"hh\:mm\:ss"),
+                Type = PinType.Place,
+                Location = new Location(employeesViewModel.LastLocation.Latitude, employeesViewModel.LastLocation.Longitude)
+            };
+            myMap.Pins.Add(pin);
+
+            // Move map to new location
+            myMap.MoveToRegion(MapSpan.FromCenterAndRadius(
+                new Location(employeesViewModel.LastLocation.Latitude, employeesViewModel.LastLocation.Longitude),
+                Distance.FromMeters(200)));
+        }
     }
 
     public void UpdateLocationOnMap(DataMapsModel dataMap)

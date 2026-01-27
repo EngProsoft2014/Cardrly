@@ -287,15 +287,26 @@ namespace Cardrly.ViewModels
                 // 🔹 Local helper: perform check-in
                 async Task DoCheckInAsync(TimeSpan hoursFrom)
                 {
+                    string userId = Preferences.Default.Get(ApiConstants.userid, "");
+
+                    string Address = await StaticMember.GetAddressFromCurrentLocation();
+
+                    var locations = await Geocoding.GetLocationsAsync(Address);
+                    var location = locations?.FirstOrDefault();
+
                     var obj = new CreateTimeSheet
                     {
                         CardId = model.CardId,
                         HoursFrom = hoursFrom,
                         TimeSheetBranchId = model.TimeSheetBranchId,
                         WorkDate = dateDF,
-                        CheckinAddress = await StaticMember.GetAddressFromCurrentLocation(),
-                    };
+                        CheckinAddress = Address,
 
+                        EmployeeId = userId,
+                        Latitude = location!.Latitude,
+                        Longitude = location!.Longitude,
+                    };
+                    
                     var json = await ORep.PostTRAsync<CreateTimeSheet, TimeSheetResponse>(
                         ApiConstants.AddTimeSheetApi + accountId,
                         obj,
@@ -307,6 +318,7 @@ namespace Cardrly.ViewModels
 
                         Preferences.Default.Set(ApiConstants.DeviceId, deviceID);
                         Preferences.Default.Set(ApiConstants.TimeSheetId, json.Item1.Id);
+                        Preferences.Default.Set(ApiConstants.isTimeSheetCheckout, false);
 
                         // 🔹 Update UI state
                         Init();
@@ -320,7 +332,7 @@ namespace Cardrly.ViewModels
                             CommunityToolkit.Maui.Core.ToastDuration.Long,
                             15).Show();
 
-                        string userId = Preferences.Default.Get(ApiConstants.userid, "");
+                        
                         if (!string.IsNullOrEmpty(userId))
                             await _locationTracking.StartAsync(userId);
                     }
@@ -427,6 +439,7 @@ namespace Cardrly.ViewModels
                                 var toast = Toast.Make(AppResources.msgSuccessfullyCheckOutTime, CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
                                 await toast.Show();
 
+                                Preferences.Default.Set(ApiConstants.isTimeSheetCheckout, true);
                                 _locationTracking.Stop();
                                 Preferences.Default.Remove(ApiConstants.DeviceId);
                                 Preferences.Default.Remove(ApiConstants.TimeSheetId);

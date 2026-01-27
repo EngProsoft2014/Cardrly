@@ -31,6 +31,8 @@
         public static string rememberMeUserName = "rememberMeUserName";
         public static string rememberMePassword = "rememberMePassword";
         public static string shortcutIcons = "shortcuticons";
+        public static string isFirstRun = "isFirstRun";
+        public static string isTimeSheetCheckout = "isTimeSheetCheckout";
         //End Preferences Key 
         #endregion
 
@@ -240,6 +242,7 @@
         public static string AddTimeSheetApi = "api/TimeSheet/AddTimeSheet/";
         public static string UpdateTimeSheetApi = "api/TimeSheet/UpdateTimeSheet/";
         public static string GetEmpWorkingTimeSheetApi = "api/TimeSheet/GetEmpWorking/";
+        public static string GetLastLocationTimeSheetApi = "api/TimeSheet/GetLastEmployeeLocation/";
         public static string GetDeviceIdTimeSheetApi = "api/TimeSheetEmployeeBranch/GetDeviceId/";
 
         public static string GetAllBranchesTimeSheetApi = "api/TimeSheetBranch/GetAllForHistoryTracking/";

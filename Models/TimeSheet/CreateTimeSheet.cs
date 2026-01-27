@@ -14,5 +14,10 @@ namespace Cardrly.Models.TimeSheet
         public TimeSpan HoursFrom { get; set; } = default!;
         public string CheckinAddress { get; set; } = default!;
 
+        //for insert in Tbl_EmployeeLocation
+        public string EmployeeId { get; set; } = default!;
+        public double Latitude { get; set; } = default!;
+        public double Longitude { get; set; } = default!;
+
     }
 }
