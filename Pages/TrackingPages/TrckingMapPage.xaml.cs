@@ -4,6 +4,7 @@ using Cardrly.Services.Data;
 using Cardrly.ViewModels;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
+using System.Threading.Tasks;
 
 namespace Cardrly.Pages.TrackingPages;
 
@@ -23,14 +24,14 @@ public partial class TrckingMapPage : Controls.CustomControl
         _service = service;
         _signalRService = signalRService;
         this.BindingContext = employeesViewModel = model;
-
-        LastLocationEmployee();
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
         _signalRService.OnMessageReceivedLocation += HandleLocationUpdate;
+
+        Task.WhenAll(LastLocationEmployee());
     }
 
     protected override void OnDisappearing()
@@ -54,9 +55,11 @@ public partial class TrckingMapPage : Controls.CustomControl
             new Location(employeesViewModel.LastListmap.LastOrDefault().Lat, employeesViewModel.LastListmap.LastOrDefault().Long), Distance.FromMeters(100)));
     }
 
-    void LastLocationEmployee()
+    async Task LastLocationEmployee()
     {
-        if(employeesViewModel.LastLocation != null)
+        await employeesViewModel.GetLastLocation(employeesViewModel.OneEmployee.Id);
+
+        if (employeesViewModel.LastLocation != null)
         {
             var pin = new Pin
             {

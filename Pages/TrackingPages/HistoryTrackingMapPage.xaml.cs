@@ -39,7 +39,7 @@ public partial class HistoryTrackingMapPage : Controls.CustomControl
 
             EmployeeMap.MoveToRegion(MapSpan.FromCenterAndRadius(
                 new Location(ordered.First().Latitude, ordered.First().Longitude),
-                Distance.FromKilometers(1)));
+                Distance.FromMeters(200)));
         }
     }
 
@@ -81,7 +81,7 @@ public partial class HistoryTrackingMapPage : Controls.CustomControl
             {
                 _movingPin = new Pin
                 {
-                    Label = ordered[_currentIndex].Time.ToString("HH:mm:ss"),
+                    Label = ordered[_currentIndex].Time.ToString(@"hh\:mm\:ss"),
                     Type = PinType.Place,
                     Location = new Location(ordered[_currentIndex].Latitude, ordered[_currentIndex].Longitude)
                 };
@@ -106,7 +106,7 @@ public partial class HistoryTrackingMapPage : Controls.CustomControl
 
                 _movingPin = new Pin
                 {
-                    Label = ordered[_currentIndex].Time.ToString("HH:mm:ss"),
+                    Label = ordered[_currentIndex].Time.ToString(@"hh\:mm\:ss"),
                     Type = PinType.Place,
                     Location = new Location(loc.Latitude, loc.Longitude)
                 };
@@ -114,9 +114,13 @@ public partial class HistoryTrackingMapPage : Controls.CustomControl
                 EmployeeMap.Pins.Add(_movingPin);
 
                 ProgressSlider.Value = (double)i / total * 100;
-                TimeLabel.Text = loc.CreateDate.ToLocalTime().ToString("HH:mm:ss");
+                TimeLabel.Text = loc.CreateDate.TimeOfDay.ToString(@"hh\:mm\:ss");
 
                 _currentIndex = i;   // 👈 update here every step
+
+                EmployeeMap.MoveToRegion(MapSpan.FromCenterAndRadius(
+                new Location(ordered[_currentIndex].Latitude, ordered[_currentIndex].Longitude),
+                Distance.FromMeters(200)));
 
                 await Task.Delay(1000);
             }
@@ -159,7 +163,7 @@ public partial class HistoryTrackingMapPage : Controls.CustomControl
             }
 
             // Show time in label
-            TimeLabel.Text = loc.CreateDate.ToLocalTime().ToString("HH:mm:ss");
+            TimeLabel.Text = loc.CreateDate.TimeOfDay.ToString(@"hh\:mm\:ss");
 
             // Update playback position
             _currentIndex = index;

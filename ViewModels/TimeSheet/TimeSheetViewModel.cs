@@ -308,7 +308,7 @@ namespace Cardrly.ViewModels
                     };
                     
                     var json = await ORep.PostTRAsync<CreateTimeSheet, TimeSheetResponse>(
-                        ApiConstants.AddTimeSheetApi + accountId,
+                        ApiConstants.AddTimeSheetApi + accountId + "/" + userId,
                         obj,
                         userToken);
 
@@ -440,7 +440,10 @@ namespace Cardrly.ViewModels
                                 await toast.Show();
 
                                 Preferences.Default.Set(ApiConstants.isTimeSheetCheckout, true);
+   
+                                // 🔥 STOP EVERYTHING
                                 _locationTracking.Stop();
+
                                 Preferences.Default.Remove(ApiConstants.DeviceId);
                                 Preferences.Default.Remove(ApiConstants.TimeSheetId);
                             }

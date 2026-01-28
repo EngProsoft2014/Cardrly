@@ -232,11 +232,15 @@ namespace Cardrly
 
             bool isCheckout = Preferences.Default.Get(ApiConstants.isTimeSheetCheckout, false);
 
+            // 🔥 ALWAYS stop foreground
+            _locationTracking.Stop();//only stop foureground location
+
+            // 🔥 ALWAYS stop background first
+            _locationTracking.StopBackgroundTrackingLocation();
+
             if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet) && !isCheckout)
             {
                 _signalRService.OnMessageReceivedOneDeviceForThisAccount += _signalRService_OnMessageReceivedOneDeviceForThisAccountInSleep;
-
-                _locationTracking.Stop();//only stop foureground location
 
                 string userId = Preferences.Default.Get(ApiConstants.userid, "");
                 
@@ -289,6 +293,13 @@ namespace Cardrly
         async Task CheckToStartSendLocation()
         {
             bool isCheckout = Preferences.Default.Get(ApiConstants.isTimeSheetCheckout, false);
+
+            if (isCheckout)
+            {
+                _locationTracking.Stop();
+                _locationTracking.StopBackgroundTrackingLocation();
+                return;
+            }
 
             if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet) && !isCheckout)
             {

@@ -113,7 +113,15 @@ namespace Cardrly.Services.Data
 
         public void Stop()
         {
-            Geolocation.StopListeningForeground();
+            try
+            {
+                Geolocation.LocationChanged -= OnLocationChanged;
+                Geolocation.StopListeningForeground();
+            }
+            catch { }
+
+            // 🔥 THIS IS CRITICAL FOR iOS
+            _platformLocation.StopBackgroundTracking();
         }
 
         public void StartBackgroundTrackingLocation(string employeeId, object value)

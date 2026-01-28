@@ -69,7 +69,7 @@ namespace Cardrly.ViewModels
             LastListmap = new ObservableCollection<DataMapsModel>();
             CurrentTrack = new DataMapsModel();
 
-            GetLastLocation(employee.Id);
+            //GetLastLocation(employee.Id);
             //new Timer((Object stateInfo) => { GetDataEmployee(); }, new AutoResetEvent(false), 0, 3000);
         }
 
@@ -86,7 +86,7 @@ namespace Cardrly.ViewModels
 
         #region Methods
 
-        public async void GetLastLocation(string timeSheetId)
+        public async Task GetLastLocation(string timeSheetId)
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
@@ -95,7 +95,7 @@ namespace Cardrly.ViewModels
 
                 string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
 
-                var json = await ORep.GetAsync<EmployeeLocationResponse>(ApiConstants.GetLastLocationTimeSheetApi + AccountId + "/" + timeSheetId, UserToken);
+                var json = await ORep.GetAsync<EmployeeLocationResponse>(ApiConstants.GetLastLocationTimeSheetApi + timeSheetId, UserToken);
 
                 if (json != null)
                 {
