@@ -1,5 +1,6 @@
 ﻿using Cardrly.Platforms.iOS;
 using Cardrly.Platforms.iOS.Services;
+using Cardrly.Services;
 using Cardrly.Services.Data;
 using Foundation;
 using UIKit;
@@ -30,7 +31,7 @@ namespace Cardrly
             var result = base.FinishedLaunching(application, launchOptions);
 
             // Reset background location state at app startup
-            var locationService = new iOSLocationTrackingService(new SignalRService());
+            var locationService = App.Services.GetRequiredService<IPlatformLocationService>();
             locationService.StopBackgroundTracking();
 
             // Get the main window
@@ -104,7 +105,7 @@ namespace Cardrly
             base.OnActivated(uiApplication);
 
             // Optional: reset again when app comes to foreground
-            var locationService = new iOSLocationTrackingService(new SignalRService());
+            var locationService = App.Services.GetRequiredService<IPlatformLocationService>();
             locationService.StopBackgroundTracking();
         }
 

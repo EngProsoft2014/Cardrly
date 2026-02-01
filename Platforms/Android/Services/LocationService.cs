@@ -20,6 +20,7 @@ namespace Cardrly.Platforms.Android.Services
         private LocationManager _locationManager;
         private string _employeeId;
         private SignalRService _signalR;
+        private bool _isListening;
 
         public override void OnCreate()
         {
@@ -53,12 +54,17 @@ namespace Cardrly.Platforms.Android.Services
 
             _employeeId = intent.GetStringExtra("EmployeeId") ?? string.Empty;
 
+            if (_isListening)
+                return StartCommandResult.Sticky; // already tracking
+
             // Request GPS updates every 5 seconds
             _locationManager.RequestLocationUpdates(
                 LocationManager.GpsProvider,
                 5000, // milliseconds
-                0,    // meters
+                10,    // meters
                 this);
+
+            _isListening = true;
 
             return StartCommandResult.Sticky;
         }
@@ -119,8 +125,13 @@ namespace Cardrly.Platforms.Android.Services
         public override void OnDestroy()
         {
             base.OnDestroy();
-            _locationManager?.RemoveUpdates(this);
+            if (_isListening)
+            {
+                _locationManager?.RemoveUpdates(this);
+                _isListening = false;
+            }
         }
+
 
         public override void OnTaskRemoved(Intent rootIntent)
         {

@@ -15,16 +15,22 @@ namespace Cardrly.Platforms.Android.Services
     {
         public void StartBackgroundTracking(string employeeId)
         {
-            var context = Application.Context; // avoids ambiguity with MAUI Application
-            var intent = new Intent(context, Java.Lang.Class.FromType(typeof(Cardrly.Platforms.Android.Services.LocationService)));
-            intent.PutExtra("EmployeeId", employeeId);
-            context.StartForegroundService(intent);
+            var context = Application.Context;
+            var serviceType = typeof(LocationService);
+
+            // ✅ Only start if not already running
+            if (!ServiceHelper.IsServiceRunning(context, serviceType))
+            {
+                var intent = new Intent(context, serviceType);
+                intent.PutExtra("EmployeeId", employeeId);
+                context.StartForegroundService(intent);
+            }
         }
 
         public void StopBackgroundTracking()
         {
             var context = Application.Context;
-            var intent = new Intent(context, Java.Lang.Class.FromType(typeof(Cardrly.Platforms.Android.Services.LocationService)));
+            var intent = new Intent(context, typeof(LocationService));
             context.StopService(intent);
         }
     }
