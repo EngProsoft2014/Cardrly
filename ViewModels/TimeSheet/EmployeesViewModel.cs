@@ -5,6 +5,7 @@ using Cardrly.Helpers;
 using Cardrly.Models;
 using Cardrly.Models.Card;
 using Cardrly.Models.TimeSheet;
+using Cardrly.Pages.TrackingPages;
 using Cardrly.Resources.Lan;
 using Cardrly.Services.Data;
 using CommunityToolkit.Maui.Alerts;
@@ -33,7 +34,7 @@ namespace Cardrly.ViewModels
 
         #region Prop
         [ObservableProperty]
-        ObservableCollection<TimeSheetResponse> lstWorkingEmployees;
+        ObservableCollection<TimeSheetResponse> lstWorkingEmployees = new ObservableCollection<TimeSheetResponse>();
 
         [ObservableProperty]
         ObservableCollection<DataMapsModel> listmap;
@@ -46,6 +47,7 @@ namespace Cardrly.ViewModels
 
         [ObservableProperty]
         EmployeeLocationResponse lastLocation = new EmployeeLocationResponse();
+
 
         public static DataMapsModel MapsModel { get; set; }
 
@@ -74,17 +76,46 @@ namespace Cardrly.ViewModels
         }
 
         //Employees Working Today Constructor
-        public EmployeesViewModel(ObservableCollection<TimeSheetResponse> lstEmployeesTracking, IGenericRepository GenericRep, ServicesService service, SignalRService signalRService)
+        public EmployeesViewModel(string date, IGenericRepository GenericRep, ServicesService service, SignalRService signalRService)
         {
             ORep = GenericRep;
             _service = service;
             _signalRService = signalRService;
-            LstWorkingEmployees = lstEmployeesTracking;
+            Task.WhenAll(GetCheckInOutEmployees(date));
+
+            MessagingCenter.Subscribe<TrckingMapPage, bool>(this, "ChangeEmployeeTime", (sender, message) =>
+            {
+                if (true)
+                {
+                    Task.WhenAll(GetCheckInOutEmployees(date));
+                }
+            });
             //InitTraking(lstEmployeesTracking);
         }
         #endregion
 
         #region Methods
+
+        public async Task GetCheckInOutEmployees(string date)
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                UserDialogs.Instance.ShowLoading();
+                string UserToken = await _service.UserToken();
+
+                string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                string UserId = Preferences.Default.Get(ApiConstants.userid, "");
+
+                var json = await ORep.GetAsync<List<TimeSheetResponse>>(ApiConstants.GetByDateTimeSheetApi + AccountId + "/" + UserId + "/" + date, UserToken);
+
+                if (json != null)
+                {
+                    LstWorkingEmployees = new ObservableCollection<TimeSheetResponse>(json.Where(x => x.HoursFrom != null && x.HoursTo == null).OrderBy(x => x.CardName).ToList());
+                }
+
+                UserDialogs.Instance.HideHud();
+            }
+        }
 
         public async Task GetLastLocation(string timeSheetId)
         {

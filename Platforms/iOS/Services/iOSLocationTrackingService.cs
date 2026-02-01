@@ -19,6 +19,7 @@ namespace Cardrly.Platforms.iOS.Services
         private readonly SignalRService _signalR;
         private string _employeeId;
         private CLLocationManager _manager;
+        private bool _isListening;
 
         // Movement threshold in meters
         private const double MovementThreshold = 10;
@@ -32,6 +33,9 @@ namespace Cardrly.Platforms.iOS.Services
 
         public void StartBackgroundTracking(string employeeId)
         {
+            if (_isListening)
+                return; // already running
+
             // 🔥 prevent duplicate managers
             StopBackgroundTracking();
 
@@ -63,6 +67,8 @@ namespace Cardrly.Platforms.iOS.Services
             _manager.StartUpdatingLocation();
             _manager.StartMonitoringSignificantLocationChanges();
             _manager.StartMonitoringVisits();
+
+            _isListening = true;
         }
 
         public void StopBackgroundTracking()
@@ -82,6 +88,7 @@ namespace Cardrly.Platforms.iOS.Services
             }
 
             _lastSentLocation = null;
+            _isListening = false;
         }
 
         // Called from delegate to check distance threshold

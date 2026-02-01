@@ -24,4 +24,9 @@ public partial class EmployeesWorkingPage : Controls.CustomControl
         lstEmployees.ItemsSource = employeesViewModel.LstWorkingEmployees.Where(x => (x.CardName!).Contains(srcBarEmployee.Text.ToLower()));
     }
 
+    private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    {
+        MessagingCenter.Send(this, "ChangeEmployeeTime", true);
+        await Navigation.PopAsync();
+    }
 }

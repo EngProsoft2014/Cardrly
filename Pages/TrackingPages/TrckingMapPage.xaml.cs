@@ -98,6 +98,12 @@ public partial class TrckingMapPage : Controls.CustomControl
             Distance.FromMeters(200)));
     }
 
+    private async void TapGestureRecognizer_Tapped_1(object sender, TappedEventArgs e)
+    {
+        MessagingCenter.Send(this, "ChangeEmployeeTime", true);
+        await Navigation.PopAsync();
+    }
+
     //public TrckingMapPage(EmployeesViewModel model, IGenericRepository GenericRep, Services.Data.ServicesService service)
     //{
     //    InitializeComponent();
@@ -123,7 +129,7 @@ public partial class TrckingMapPage : Controls.CustomControl
     //    //    myMap.MoveToRegion(MapSpan.FromCenterAndRadius(
     //    //           new Location(double.Parse(dataMap.Lat), double.Parse(dataMap.Long)), Distance.FromMeters(200)));
     //    //}
-       
+
     //}
 
 }

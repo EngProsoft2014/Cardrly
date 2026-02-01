@@ -23,7 +23,7 @@
                     </DataTrigger>
                 </Image.Triggers>
                 <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
             </Image>
             <Label Text="{x:Static res:AppResources.lblEmployeesWorking}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >

@@ -103,6 +103,15 @@ namespace Cardrly.ViewModels
                     Init();
                 }
             });
+
+            MessagingCenter.Subscribe<EmployeesWorkingPage, bool>(this, "ChangeEmployeeTime", (sender, message) =>
+            {
+                if (true)
+                {
+                    Init();
+                }
+            });
+
             //_locationTracking = locationTracking;
         }
         #endregion
@@ -164,10 +173,7 @@ namespace Cardrly.ViewModels
             if (StaticMember.CheckPermission(ApiConstants.GetTimeSheetTracking))
             {
                 UserDialogs.Instance.ShowLoading();
-
-                ObservableCollection<TimeSheetResponse> lstEmployeesTracking = new ObservableCollection<TimeSheetResponse>(lstEmployeesIn.Where(x => x.HoursFrom != null && x.HoursTo == null).ToList()); // && x.UserId != Preferences.Default.Get(ApiConstants.ownerId, "")
-
-                await App.Current!.MainPage!.Navigation.PushAsync(new EmployeesWorkingPage(new EmployeesViewModel(lstEmployeesTracking, ORep, _service, _signalRService), ORep, _service));
+                await App.Current!.MainPage!.Navigation.PushAsync(new EmployeesWorkingPage(new EmployeesViewModel(dateDF.ToString("MM-dd-yyyy"), ORep, _service, _signalRService), ORep, _service));
                 UserDialogs.Instance.HideHud();
             }
             else

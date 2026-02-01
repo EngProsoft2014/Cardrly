@@ -20,6 +20,7 @@ namespace Cardrly.Services.Data
         readonly IGenericRepository Rep;
         private readonly IAudioStreamService _audioService;
         private readonly IPlatformLocationService _platformLocation;
+        private bool _isListening;
 
         private string _employeeId;
 
@@ -34,6 +35,11 @@ namespace Cardrly.Services.Data
 
         public async Task StartAsync(string employeeId)
         {
+            if (_isListening)
+                return; // or throw a controlled exception
+
+            _isListening = true;
+
             var status = await Permissions.CheckStatusAsync<Permissions.LocationAlways>();
             if (status != PermissionStatus.Granted)
                 status = await Permissions.RequestAsync<Permissions.LocationAlways>();
@@ -115,6 +121,11 @@ namespace Cardrly.Services.Data
         {
             try
             {
+                if (!_isListening)
+                    return;
+
+                _isListening = false;
+
                 Geolocation.LocationChanged -= OnLocationChanged;
                 Geolocation.StopListeningForeground();
             }

@@ -1,4 +1,6 @@
 ﻿using Cardrly.Platforms.iOS;
+using Cardrly.Platforms.iOS.Services;
+using Cardrly.Services.Data;
 using Foundation;
 using UIKit;
 using UserNotifications;
@@ -19,10 +21,21 @@ namespace Cardrly
                 Console.WriteLine($"iOS Exception: {e.ExceptionObject}");
             };
 
+            TaskScheduler.UnobservedTaskException += (sender, e) =>
+            {
+                Console.WriteLine($"Unobserved Task Exception: {e.Exception}");
+                e.SetObserved();
+            };
+
             var result = base.FinishedLaunching(application, launchOptions);
 
+            // Reset background location state at app startup
+            var locationService = new iOSLocationTrackingService(new SignalRService());
+            locationService.StopBackgroundTracking();
+
             // Get the main window
-            var window = UIApplication.SharedApplication.KeyWindow;
+            // Get the key window safely (iOS 13+)
+            var window = UIApplication.SharedApplication.Windows.FirstOrDefault(w => w.IsKeyWindow);
 
             if (window != null)
             {
@@ -85,6 +98,16 @@ namespace Cardrly
 
             return result;
         }
+
+        public override void OnActivated(UIApplication uiApplication)
+        {
+            base.OnActivated(uiApplication);
+
+            // Optional: reset again when app comes to foreground
+            var locationService = new iOSLocationTrackingService(new SignalRService());
+            locationService.StopBackgroundTracking();
+        }
+
 
         // ✅ This is the correct override in .NET 8 MAUI
         [Export("application:handleEventsForBackgroundURLSession:completionHandler:")]

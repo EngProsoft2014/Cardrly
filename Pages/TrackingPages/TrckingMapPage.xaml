@@ -24,7 +24,7 @@
                     </DataTrigger>
                 </Image.Triggers>
                 <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
             </Image>
             <Label Text="{Binding OneEmployee.CardName}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
