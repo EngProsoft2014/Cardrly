@@ -1,9 +1,11 @@
 ﻿using Cardrly.Constants;
 using Cardrly.Models;
+using Cardrly.Platforms.iOS.Helpers;
 using Cardrly.Platforms.iOS.Services;
 using Cardrly.Services.Data;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CoreLocation;
+using Foundation;
 using System;
 
 namespace Cardrly.Platforms.iOS
@@ -13,6 +15,9 @@ namespace Cardrly.Platforms.iOS
         private readonly SignalRService _signalR;
         private readonly string _employeeId;
         private readonly iOSLocationTrackingService _service;
+
+        private const string InternetNotifId = "InternetUnavailable";
+        private const string GpsNotifId = "GpsDisabled";
 
         public LocationDelegate(SignalRService signalR, string employeeId, iOSLocationTrackingService service)
         {
@@ -30,17 +35,39 @@ namespace Cardrly.Platforms.iOS
             if (!_service.ShouldSendLocation(loc))
                 return;
 
-            // Allow deferred updates for battery optimization
-            manager.AllowDeferredLocationUpdatesUntil(CLLocationDistance.MaxDistance, double.MaxValue);
+            // Internet check (event-based)
+            if (!NetworkHelper.IsInternetAvailable())
+            {
+                iOSNotificationHelper.SendOnce(
+                    InternetNotifId,
+                    "Internet Unavailable",
+                    "Location will be sent when internet is restored."
+                );
+                return;
+            }
+
+            // ✅ Internet OK → clear warning
+            iOSNotificationHelper.Cancel(InternetNotifId);
 
             SendLocation(loc);
+        }
+
+
+        public override void Failed(CLLocationManager manager, NSError error)
+        {
+            iOSNotificationHelper.SendOnce(
+                GpsNotifId,
+                "Location Error",
+                "Location services are unavailable. Please enable GPS."
+            );
         }
 
         public override void DidVisit(CLLocationManager manager, CLVisit visit)
         {
             // Handle stationary locations (arrival / departure)
             var loc = new CLLocation(visit.Coordinate.Latitude, visit.Coordinate.Longitude);
-            SendLocation(loc);
+
+            LocationsUpdated(manager, new[] { loc });
         }
 
         private void SendLocation(CLLocation loc)
@@ -57,18 +84,38 @@ namespace Cardrly.Platforms.iOS
             };
 
             // Send directly to SignalR
-            _signalR.SendEmployeeLocation(data);
+            try
+            {
+                _signalR.SendEmployeeLocation(data);
+            }
+            catch
+            {
+                // network lost during send
+                iOSNotificationHelper.SendOnce(
+                    InternetNotifId,
+                    "Internet Unavailable",
+                    "Location will be sent when internet is restored."
+                );
+            }
         }
 
-        public override void DidChangeAuthorization(CLLocationManager manager)
-        {
-            Console.WriteLine($"Authorization: {manager.AuthorizationStatus}");
-        }
-
+        // 🔹 Permission changes
         public override void AuthorizationChanged(CLLocationManager manager, CLAuthorizationStatus status)
         {
-            Console.WriteLine($"AuthorizationChanged: {status}");
+            if (status != CLAuthorizationStatus.AuthorizedAlways)
+            {
+                iOSNotificationHelper.SendOnce(
+                    GpsNotifId,
+                    "Location Disabled",
+                    "Please enable location permission to continue tracking."
+                );
+            }
+            else
+            {
+                iOSNotificationHelper.Cancel(GpsNotifId);
+            }
         }
+
     }
 }
 

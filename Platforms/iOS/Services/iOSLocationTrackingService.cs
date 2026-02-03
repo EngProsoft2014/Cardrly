@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UIKit;
+using UserNotifications;
 
 namespace Cardrly.Platforms.iOS.Services
 {
@@ -20,11 +21,10 @@ namespace Cardrly.Platforms.iOS.Services
         private string _employeeId;
         private CLLocationManager _manager;
         private bool _isListening;
+        private CLLocation _lastSentLocation;
 
         // Movement threshold in meters
         private const double MovementThreshold = 10;
-
-        private CLLocation _lastSentLocation;
 
         public iOSLocationTrackingService(SignalRService signalR)
         {
@@ -69,10 +69,16 @@ namespace Cardrly.Platforms.iOS.Services
             _manager.StartMonitoringVisits();
 
             _isListening = true;
+
+            // ✅ Cancel any reminder notifications if tracking is active
+            CancelReminderNotification();
         }
 
         public void StopBackgroundTracking()
         {
+            // Cancel reminder notifications when stopping
+            CancelReminderNotification();
+
             if (_manager != null)
             {
                 _manager.StopUpdatingLocation();
@@ -89,6 +95,9 @@ namespace Cardrly.Platforms.iOS.Services
 
             _lastSentLocation = null;
             _isListening = false;
+
+            // 🔔 Schedule reminder notification when tracking stops
+            ScheduleReminderNotification();
         }
 
         // Called from delegate to check distance threshold
@@ -108,6 +117,38 @@ namespace Cardrly.Platforms.iOS.Services
             }
 
             return false;
+        }
+
+        // 🔔 Schedule reminder notification
+        private void ScheduleReminderNotification()
+        {
+            var center = UNUserNotificationCenter.Current;
+
+            var content = new UNMutableNotificationContent
+            {
+                Title = "Location Sharing Stopped",
+                Body = "Please reopen the app, enable GPS, or allow location permission to resume sending your location.",
+                Sound = UNNotificationSound.Default
+            };
+
+            // Trigger after 5 min, repeat
+            var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(300, false); // 5 min
+
+            var request = UNNotificationRequest.FromIdentifier("LocationReminder", content, trigger);
+
+            center.AddNotificationRequest(request, (err) =>
+            {
+                if (err != null)
+                    Console.WriteLine($"Error scheduling notification: {err}");
+            });
+        }
+
+        // ❌ Cancel reminder notification
+        private void CancelReminderNotification()
+        {
+            var center = UNUserNotificationCenter.Current;
+            center.RemovePendingNotificationRequests(new[] { "LocationReminder" });
+            center.RemoveDeliveredNotifications(new[] { "LocationReminder" });
         }
     }
 }

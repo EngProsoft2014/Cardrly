@@ -1,3 +1,4 @@
+
 using Cardrly.Models.TimeSheet;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
@@ -72,73 +73,26 @@ public partial class HistoryTrackingMapPage : Controls.CustomControl
                 FontFamily = "FontIconSolid",
                 Glyph = "\uf04c", // Pause
                 Color = Colors.OrangeRed,
-                Size = 32, 
+                Size = 32,
             };
             PlayPauseImage.Margin = new Thickness(5, 0, 0, 0);
             _isPlaying = true;
 
+            // Ensure pin exists
             if (_movingPin == null)
             {
+                var loc = ordered[_currentIndex];
                 _movingPin = new Pin
                 {
-                    Label = ordered[_currentIndex].Time.ToString(@"hh\:mm\:ss"),
-                    Type = PinType.Place,
-                    Location = new Location(ordered[_currentIndex].Latitude, ordered[_currentIndex].Longitude)
-                };
-                EmployeeMap.Pins.Add(_movingPin);
-            }
-
-            int total = ordered.Count;
-
-            for (int i = _currentIndex; i < total; i++)
-            {
-                if (_cts.IsCancellationRequested)
-                {
-                    _currentIndex = i; // remember where we paused
-                    break;
-                }
-
-                var loc = ordered[i];
-
-
-                if (EmployeeMap.Pins.Contains(_movingPin))
-                    EmployeeMap.Pins.Remove(_movingPin);
-
-                _movingPin = new Pin
-                {
-                    Label = ordered[_currentIndex].Time.ToString(@"hh\:mm\:ss"),
+                    Label = loc.Time.ToString(@"hh\:mm\:ss"),
                     Type = PinType.Place,
                     Location = new Location(loc.Latitude, loc.Longitude)
                 };
-
                 EmployeeMap.Pins.Add(_movingPin);
-
-                ProgressSlider.Value = (double)i / total * 100;
-                TimeLabel.Text = loc.CreateDate.TimeOfDay.ToString(@"hh\:mm\:ss");
-
-                _currentIndex = i;   // 👈 update here every step
-
-                EmployeeMap.MoveToRegion(MapSpan.FromCenterAndRadius(
-                new Location(ordered[_currentIndex].Latitude, ordered[_currentIndex].Longitude),
-                Distance.FromMeters(200)));
-
-                await Task.Delay(1000);
             }
 
-            // Reset when finished
-            if (_currentIndex >= total - 1)
-            {
-                PlayPauseImage.Source = new FontImageSource
-                {
-                    FontFamily = "FontIconSolid",
-                    Glyph = "\uf04b", // Play
-                    Color = Colors.OrangeRed,
-                    Size = 30
-                };
-                PlayPauseImage.Margin = 0;
-                _isPlaying = false;
-                _currentIndex = 0;
-            }
+            // Always delegate playback to helper
+            _ = ContinuePlaybackFromIndex(_currentIndex, ordered, _cts.Token);
         }
     }
 
@@ -157,16 +111,86 @@ public partial class HistoryTrackingMapPage : Controls.CustomControl
             var loc = ordered[index];
 
             // Move pin immediately
-            if (_movingPin != null)
+            if (_movingPin != null && EmployeeMap.Pins.Contains(_movingPin))
+                EmployeeMap.Pins.Remove(_movingPin);
+
+            _movingPin = new Pin
             {
-                _movingPin.Location = new Location(loc.Latitude, loc.Longitude);
-            }
+                Label = loc.Time.ToString(@"hh\:mm\:ss"),
+                Type = PinType.Place,
+                Location = new Location(loc.Latitude, loc.Longitude)
+            };
+            EmployeeMap.Pins.Add(_movingPin);
 
             // Show time in label
             TimeLabel.Text = loc.CreateDate.TimeOfDay.ToString(@"hh\:mm\:ss");
 
             // Update playback position
             _currentIndex = index;
+
+            // Move map immediately
+            EmployeeMap.MoveToRegion(MapSpan.FromCenterAndRadius(
+                new Location(loc.Latitude, loc.Longitude),
+                Distance.FromMeters(200)));
+
+            // If playing, restart playback from new index
+            if (_isPlaying)
+            {
+                _cts?.Cancel();
+                _cts = new CancellationTokenSource();
+                _ = ContinuePlaybackFromIndex(_currentIndex, ordered, _cts.Token);
+            }
+        }
+    }
+
+    private async Task ContinuePlaybackFromIndex(int startIndex, List<EmployeeLocationResponse> ordered, CancellationToken token)
+    {
+        int total = ordered.Count;
+        for (int i = startIndex; i < total; i++)
+        {
+            if (token.IsCancellationRequested)
+            {
+                _currentIndex = i;
+                break;
+            }
+
+            var loc = ordered[i];
+
+            if (EmployeeMap.Pins.Contains(_movingPin))
+                EmployeeMap.Pins.Remove(_movingPin);
+
+            _movingPin = new Pin
+            {
+                Label = loc.Time.ToString(@"hh\:mm\:ss"),
+                Type = PinType.Place,
+                Location = new Location(loc.Latitude, loc.Longitude)
+            };
+            EmployeeMap.Pins.Add(_movingPin);
+
+            ProgressSlider.Value = (double)i / total * 100;
+            TimeLabel.Text = loc.CreateDate.TimeOfDay.ToString(@"hh\:mm\:ss");
+            _currentIndex = i;
+
+            EmployeeMap.MoveToRegion(MapSpan.FromCenterAndRadius(
+                new Location(loc.Latitude, loc.Longitude),
+                Distance.FromMeters(200)));
+
+            await Task.Delay(1000);
+        }
+
+        // Reset when finished
+        if (_currentIndex >= total - 1)
+        {
+            _isPlaying = false;
+            _currentIndex = 0;
+            PlayPauseImage.Source = new FontImageSource
+            {
+                FontFamily = "FontIconSolid",
+                Glyph = "\uf04b", // Play
+                Color = Colors.OrangeRed,
+                Size = 30
+            };
+            PlayPauseImage.Margin = 0;
         }
     }
 

@@ -300,6 +300,16 @@ namespace Cardrly.ViewModels
                     var locations = await Geocoding.GetLocationsAsync(Address);
                     var location = locations?.FirstOrDefault();
 
+                    if (location == null)
+                    {
+                        await Toast.Make(
+                            AppResources.msgUnableToGetYourLocation,
+                            CommunityToolkit.Maui.Core.ToastDuration.Long,
+                            15).Show();
+
+                        return;
+                    }
+
                     var obj = new CreateTimeSheet
                     {
                         CardId = model.CardId,
@@ -312,7 +322,7 @@ namespace Cardrly.ViewModels
                         Latitude = location!.Latitude,
                         Longitude = location!.Longitude,
                     };
-                    
+
                     var json = await ORep.PostTRAsync<CreateTimeSheet, TimeSheetResponse>(
                         ApiConstants.AddTimeSheetApi + accountId + "/" + userId,
                         obj,
@@ -338,9 +348,11 @@ namespace Cardrly.ViewModels
                             CommunityToolkit.Maui.Core.ToastDuration.Long,
                             15).Show();
 
-                        
-                        if (!string.IsNullOrEmpty(userId))
-                            await _locationTracking.StartAsync(userId);
+                        if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet))
+                        {
+                            if (!string.IsNullOrEmpty(userId))
+                                await _locationTracking.StartAsync(userId);
+                        }
                     }
                     else if (json.Item2?.errors != null)
                     {
@@ -446,9 +458,9 @@ namespace Cardrly.ViewModels
                                 await toast.Show();
 
                                 Preferences.Default.Set(ApiConstants.isTimeSheetCheckout, true);
-   
+
                                 // 🔥 STOP EVERYTHING
-                                _locationTracking.Stop();
+                                await _locationTracking.StopAsync();
 
                                 Preferences.Default.Remove(ApiConstants.DeviceId);
                                 Preferences.Default.Remove(ApiConstants.TimeSheetId);
@@ -465,7 +477,7 @@ namespace Cardrly.ViewModels
                         {
                             await Toast.Make(AppResources.msgPleaseChooseTimeAfterCheckInTime, CommunityToolkit.Maui.Core.ToastDuration.Long, 15).Show();
                         }
-                            
+
                     }
 
                     // 🔹 Rule: Popup only for owner checking **employee data**

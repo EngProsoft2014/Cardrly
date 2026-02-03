@@ -1,6 +1,8 @@
+using Cardrly.Constants;
 using Cardrly.Controls;
 using Cardrly.Helpers;
 using Cardrly.Resources.Lan;
+using Cardrly.Services;
 using Cardrly.Services.AudioStream;
 using Cardrly.Services.Data;
 using Cardrly.ViewModels;
@@ -17,6 +19,7 @@ public partial class NoInternetPage : Controls.CustomControl
     readonly SignalRService _signalRService;
     readonly IAudioStreamService _audioService;
     readonly LocationTrackingService _locationTracking;
+    private static CancellationTokenSource _notifyCts;
     #endregion
 
     public NoInternetPage(IGenericRepository GenericRep, ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
@@ -63,7 +66,6 @@ public partial class NoInternetPage : Controls.CustomControl
         if (e.NetworkAccess != NetworkAccess.Internet)
         {
             // Connection to internet is Not available
-
         }
         else
         {
@@ -82,7 +84,15 @@ public partial class NoInternetPage : Controls.CustomControl
         }
         else
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking), Rep, _service, _signalRService, _audioService, _locationTracking));
+            string userId = Preferences.Default.Get(ApiConstants.userid, string.Empty);
+            if (string.IsNullOrEmpty(userId))
+            {
+                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+            }
+            else
+            {
+                await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking), Rep, _service, _signalRService, _audioService, _locationTracking));
+            }
         }
 
         //App.Current.MainPage.Navigation.RemovePage(App.Current.MainPage.Navigation.NavigationStack[App.Current.MainPage.Navigation.NavigationStack.Count - 2]);

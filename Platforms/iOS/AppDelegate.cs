@@ -36,7 +36,12 @@ namespace Cardrly
 
             // Get the main window
             // Get the key window safely (iOS 13+)
-            var window = UIApplication.SharedApplication.Windows.FirstOrDefault(w => w.IsKeyWindow);
+            //var window = UIApplication.SharedApplication.Windows.FirstOrDefault(w => w.IsKeyWindow);
+            var window = UIApplication.SharedApplication
+                        .ConnectedScenes
+                        .OfType<UIWindowScene>()
+                        .SelectMany(scene => scene.Windows)
+                        .FirstOrDefault(w => w.IsKeyWindow);
 
             if (window != null)
             {
@@ -104,6 +109,9 @@ namespace Cardrly
         {
             base.OnActivated(uiApplication);
 
+            // 🔥 App reopened → stop reminder notification
+            CancelLocationReminder();
+
             // Optional: reset again when app comes to foreground
             var locationService = App.Services.GetRequiredService<IPlatformLocationService>();
             locationService.StopBackgroundTracking();
@@ -121,6 +129,14 @@ namespace Cardrly
             BackgroundUploader.Instance.RecreateSession();
 
             BackgroundUploader.Instance.SetCompletionHandler(completionHandler);
+        }
+
+        private void CancelLocationReminder()
+        {
+            var center = UNUserNotificationCenter.Current;
+
+            center.RemovePendingNotificationRequests(new[] { "LocationReminder" });
+            center.RemoveDeliveredNotifications(new[] { "LocationReminder" });
         }
 
     }

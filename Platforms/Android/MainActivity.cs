@@ -60,6 +60,9 @@ namespace Cardrly
 
             // Plugin NFC: Restart NFC listening on resume (needed for Android 10+) 
             CrossNFC.OnResume();
+
+            // 🔥 App reopened → stop reminder loop + notifications
+            Cardrly.Platforms.Android.Services.LocationService.ClearReminders(this);
         }
 
         protected override void OnNewIntent(Intent intent)

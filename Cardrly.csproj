@@ -98,7 +98,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
-		<AndroidSupportedAbis>arm64-v8a</AndroidSupportedAbis>
+		<RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
 		<AndroidEnable16kPageSupport>true</AndroidEnable16kPageSupport>
 		<RunAOTCompilation>false</RunAOTCompilation>
 		<AndroidUseLLVM>false</AndroidUseLLVM>
@@ -109,13 +109,14 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
-		<AndroidSupportedAbis>arm64-v8a;x86_64</AndroidSupportedAbis>
-	  <ApplicationVersion>18</ApplicationVersion>
-	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
-	  <AndroidUseAapt2>True</AndroidUseAapt2>
-	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
-	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+		<RuntimeIdentifiers>android-arm64;android-x64</RuntimeIdentifiers>
+		<ApplicationVersion>18</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
+		<AndroidUseAapt2>True</AndroidUseAapt2>
+		<AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+		<AndroidPackageFormat>apk</AndroidPackageFormat>
 	</PropertyGroup>
+
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-maccatalyst|AnyCPU'">
 	  <ApplicationVersion>18</ApplicationVersion>

@@ -1149,4 +1149,13 @@
   <data name="lblEmployees" xml:space="preserve">
     <value>Employees</value>
   </data>
+  <data name="msgUnableToGetYourLocation" xml:space="preserve">
+    <value>Unable To Get Your Location</value>
+  </data>
+  <data name="titleLocationsharingstopped" xml:space="preserve">
+    <value>Location sharing stopped</value>
+  </data>
+  <data name="msgLocalNotificationforLocations" xml:space="preserve">
+    <value>Please reopen the app, enable GPS, or allow location permission to resume sending your location.</value>
+  </data>
 </root>

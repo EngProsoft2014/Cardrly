@@ -2419,6 +2419,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please reopen the app, enable GPS, or allow location permission to resume sending your location..
+        /// </summary>
+        internal static string msgLocalNotificationforLocations {
+            get {
+                return ResourceManager.GetString("msgLocalNotificationforLocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You’ve been logged out.(account is Changed permissions).
         /// </summary>
         internal static string MsgloggedOut {
@@ -2896,6 +2905,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable To Get Your Location.
+        /// </summary>
+        internal static string msgUnableToGetYourLocation {
+            get {
+                return ResourceManager.GetString("msgUnableToGetYourLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An unexpected error occurred. Please restart the app or contact support..
         /// </summary>
         internal static string msgUnexpected {
@@ -3144,6 +3162,15 @@ namespace Cardrly.Resources.Lan {
         internal static string RFCurrentPassword {
             get {
                 return ResourceManager.GetString("RFCurrentPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location sharing stopped.
+        /// </summary>
+        internal static string titleLocationsharingstopped {
+            get {
+                return ResourceManager.GetString("titleLocationsharingstopped", resourceCulture);
             }
         }
         

@@ -42,6 +42,7 @@ namespace Cardrly
         readonly SignalRService _signalRService;
         readonly LocationTrackingService _locationTracking;
         bool _gpsPageShown = false;
+        bool _locationStartRequested = false;
 
         public static IServiceProvider Services { get; private set; }
         private readonly IAudioStreamService _audioService;
@@ -141,20 +142,11 @@ namespace Cardrly
         {
             base.OnStart();
 
-            bool isFirstRun = Preferences.Get(ApiConstants.isFirstRun, true);
-
-            if (!isFirstRun)
-            {
-                Preferences.Set("IsFirstRun", false);
-            }
-
-            await Task.WhenAll(GetDeviceIdFromDataBase(), StatusLocation(), SignalRservice(), CheckToStartSendLocation());
-
-            //await StatusLocation();
-
-            //await SignalRservice();
-
-            //await CheckToStartSendLocation();
+            //await Task.WhenAll(GetDeviceIdFromDataBase(), StatusLocation(), SignalRservice(), CheckToStartSendLocation());
+            await GetDeviceIdFromDataBase();
+            await StatusLocation();
+            await SignalRservice();
+            await CheckToStartSendLocation();
 
             IsInBackground = false;
 
@@ -214,11 +206,9 @@ namespace Cardrly
                 }
             }
 
-            //await SignalRservice();
-
-            //await CheckToStartSendLocation();
-
-            await Task.WhenAll(SignalRservice(), CheckToStartSendLocation());
+            //await Task.WhenAll(SignalRservice(), CheckToStartSendLocation());
+            await SignalRservice();
+            await CheckToStartSendLocation();
 
             if (UploadInProgress)
             {
@@ -233,7 +223,7 @@ namespace Cardrly
             bool isCheckout = Preferences.Default.Get(ApiConstants.isTimeSheetCheckout, false);
 
             // 🔥 ALWAYS stop foreground
-            _locationTracking.Stop();//only stop foureground location
+            _locationTracking.StopAsync();//only stop foureground location
 
             // 🔥 ALWAYS stop background first
             _locationTracking.StopBackgroundTrackingLocation();
@@ -243,7 +233,7 @@ namespace Cardrly
                 _signalRService.OnMessageReceivedOneDeviceForThisAccount += _signalRService_OnMessageReceivedOneDeviceForThisAccountInSleep;
 
                 string userId = Preferences.Default.Get(ApiConstants.userid, "");
-                
+
                 if (!string.IsNullOrEmpty(userId))
                 {
                     _locationTracking.StartBackgroundTrackingLocation(userId, null);
@@ -292,104 +282,120 @@ namespace Cardrly
 
         async Task CheckToStartSendLocation()
         {
-            bool isCheckout = Preferences.Default.Get(ApiConstants.isTimeSheetCheckout, false);
-
-            if (isCheckout)
-            {
-                _locationTracking.Stop();
-                _locationTracking.StopBackgroundTrackingLocation();
+            if (_locationStartRequested)
                 return;
-            }
 
-            if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet) && !isCheckout)
+            _locationStartRequested = true;
+
+            try
             {
-                string deviceId = Preferences.Default.Get(ApiConstants.DeviceId, string.Empty);
-                string timeSheetId = Preferences.Default.Get(ApiConstants.TimeSheetId, string.Empty);
-                string userId = Preferences.Default.Get(ApiConstants.userid, string.Empty);
-                if (!string.IsNullOrEmpty(deviceId) && !string.IsNullOrEmpty(timeSheetId))
-                {
-                    if (!string.IsNullOrEmpty(userId))
-                        await _locationTracking.StartAsync(userId);
+                bool isCheckout = Preferences.Default.Get(ApiConstants.isTimeSheetCheckout, false);
 
-                    await EnsureGpsEnabled();
+                if (isCheckout)
+                {
+                    await _locationTracking.StopAsync();
+                    _locationTracking.StopBackgroundTrackingLocation();
+                    return;
                 }
-                else
+
+                string userId = Preferences.Default.Get(ApiConstants.userid, string.Empty);
+
+                if (string.IsNullOrEmpty(userId))
+                    return;
+
+                if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet) && !isCheckout)
                 {
-                    string cardId = Preferences.Default.Get(ApiConstants.cardId, string.Empty);
-                    if (!string.IsNullOrEmpty(cardId))
+                    string deviceId = Preferences.Default.Get(ApiConstants.DeviceId, string.Empty);
+                    string timeSheetId = Preferences.Default.Get(ApiConstants.TimeSheetId, string.Empty);
+                    if (!string.IsNullOrEmpty(deviceId) && !string.IsNullOrEmpty(timeSheetId))
                     {
-                        if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+                        await _locationTracking.StartAsync(userId);
+                        await EnsureGpsEnabled();
+                    }
+                    else
+                    {
+                        string cardId = Preferences.Default.Get(ApiConstants.cardId, string.Empty);
+                        if (!string.IsNullOrEmpty(cardId))
                         {
-                            string UserToken = await _service.UserToken();
-
-                            string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
-                            string CardId = Preferences.Default.Get(ApiConstants.cardId, "");
-
-                            var json = await Rep.GetAsync<TimeSheetResponse>(ApiConstants.GetByCardIdTimeSheetApi + AccountId + "/" + CardId, UserToken);
-
-                            if (json != null)
+                            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
                             {
-                                if (json.HoursFrom != null && json.HoursTo == null)
+                                string UserToken = await _service.UserToken();
+
+                                string AccountId = Preferences.Default.Get(ApiConstants.AccountId, "");
+                                string CardId = Preferences.Default.Get(ApiConstants.cardId, "");
+
+                                var json = await Rep.GetAsync<TimeSheetResponse>(ApiConstants.GetByCardIdTimeSheetApi + AccountId + "/" + CardId, UserToken);
+
+                                if (json != null)
                                 {
-                                    string deviceID = await StaticMember.GetDeviceId();
-                                    if (!string.IsNullOrEmpty(deviceID) && deviceID == json.DeviceId)
+                                    if (json.HoursFrom != null && json.HoursTo == null)
                                     {
-                                        Preferences.Default.Set(ApiConstants.DeviceId, json.DeviceId);
-                                        Preferences.Default.Set(ApiConstants.TimeSheetId, json.Id);
+                                        string deviceID = await StaticMember.GetDeviceId();
+                                        if (!string.IsNullOrEmpty(deviceID) && deviceID == json.DeviceId)
+                                        {
+                                            Preferences.Default.Set(ApiConstants.DeviceId, json.DeviceId);
+                                            Preferences.Default.Set(ApiConstants.TimeSheetId, json.Id);
 
-                                        Preferences.Default.Set(ApiConstants.isTimeSheetCheckout, false);//check in
+                                            Preferences.Default.Set(ApiConstants.isTimeSheetCheckout, false);//check in
 
-                                        if (!string.IsNullOrEmpty(userId))
-                                            await _locationTracking.StartAsync(userId);
+                                            if (!string.IsNullOrEmpty(userId))
+                                                await _locationTracking.StartAsync(userId);
 
-                                        await EnsureGpsEnabled();
+                                            await EnsureGpsEnabled();
+                                        }
                                     }
-                                }
-                                else if(json.HoursFrom != null && json.HoursTo != null)
-                                {
-                                    Preferences.Default.Set(ApiConstants.isTimeSheetCheckout, true);//check out
+                                    else if (json.HoursFrom != null && json.HoursTo != null)
+                                    {
+                                        Preferences.Default.Set(ApiConstants.isTimeSheetCheckout, true);//check out
+                                    }
                                 }
                             }
                         }
                     }
                 }
+            }
+            finally
+            {
+                _locationStartRequested = false;
             }
         }
 
         async Task GetDeviceIdFromDataBase()
         {
+            string accountId = Preferences.Default.Get(ApiConstants.AccountId, string.Empty);
+            string cardId = Preferences.Default.Get(ApiConstants.cardId, string.Empty);
+
+            if (string.IsNullOrEmpty(accountId) && string.IsNullOrEmpty(cardId))
+                return;
+
             bool isCheckout = Preferences.Default.Get(ApiConstants.isTimeSheetCheckout, false);
 
             if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet) && !isCheckout)
             {
-                string accountId = Preferences.Default.Get(ApiConstants.AccountId, string.Empty);
-                string cardId = Preferences.Default.Get(ApiConstants.cardId, string.Empty);
-                if (!string.IsNullOrEmpty(accountId) && !string.IsNullOrEmpty(cardId))
+                if (Connectivity.NetworkAccess == NetworkAccess.Internet)
                 {
-                    if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+                    string UserToken = await _service.UserToken();
+                    string DeviceId = await Rep.GetAsync<string>(ApiConstants.GetDeviceIdTimeSheetApi + accountId + "/" + cardId, UserToken);
+                    if (!string.IsNullOrEmpty(DeviceId))
                     {
-                        string UserToken = await _service.UserToken();
-                        string DeviceId = await Rep.GetAsync<string>(ApiConstants.GetDeviceIdTimeSheetApi + accountId + "/" + cardId, UserToken);
-                        if (!string.IsNullOrEmpty(DeviceId))
-                        {
-                            string myDeviceId = Preferences.Default.Get(ApiConstants.DeviceId, string.Empty);
-                            myDeviceId = string.IsNullOrEmpty(myDeviceId) ? StaticMember.GetDeviceId().Result : myDeviceId;
+                        string myDeviceId = Preferences.Default.Get(ApiConstants.DeviceId, string.Empty);
+                        myDeviceId = string.IsNullOrEmpty(myDeviceId) ? StaticMember.GetDeviceId().Result : myDeviceId;
 
-                            if (DeviceId != myDeviceId)
-                            {
-                                await ClearMostData();
-                                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
-                                await App.Current!.MainPage!.DisplayAlert(AppResources.lblAlert, AppResources.msgLougoutForLoginAnotherDevice, AppResources.msgOk);
-                                return;
-                            }
+                        if (DeviceId != myDeviceId)
+                        {
+                            await ClearMostData();
+                            await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                            await App.Current!.MainPage!.DisplayAlert(AppResources.lblAlert, AppResources.msgLougoutForLoginAnotherDevice, AppResources.msgOk);
+                            return;
                         }
                     }
                 }
-            }        
+            }
         }
 
         public async Task SignalRservice()
         {
+            UserDialogs.Instance.ShowLoading();
             try
             {
                 await _signalRService.StartAsync();
@@ -409,6 +415,8 @@ namespace Cardrly
             _signalRService.OnMessageReceivedLogout += _signalRService_OnMessageReceivedLogout;// Logout Changed Permissions           
             _signalRService.OnMessageReceivedUpdateVersion += _signalRService_OnMessageReceivedUpdateVersion;// UpdateVersion
             _signalRService.OnMessageReceivedOneDeviceForThisAccount += _signalRService_OnMessageReceivedOneDeviceForThisAccount; //OneDeviceForThisAccountLogout
+
+            UserDialogs.Instance.HideHud();
         }
 
 

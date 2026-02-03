@@ -28,6 +28,7 @@ namespace Cardrly.Controls
         //public static IAudioManager _audioManager;
         //public static IAudioStreamService _audioService;
         public static INotificationManagerService notificationManager;
+
         //public static IPlatformLocationService platformLocationService;
 
         #region Const Variables

@@ -31,6 +31,10 @@ namespace Cardrly.Platforms.Android.Services
         {
             var context = Application.Context;
             var intent = new Intent(context, typeof(LocationService));
+
+            // 🔥 Stop reminder loop when service is stopped
+            LocationService.StopReminderLoop();
+
             context.StopService(intent);
         }
     }

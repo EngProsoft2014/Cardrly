@@ -210,6 +210,7 @@ namespace Cardrly.ViewModels
             Preferences.Default.Set(ApiConstants.AccountId, userResponse.AccountId);
             Preferences.Default.Set(ApiConstants.AccountName, userResponse.Account!.Name);
             Preferences.Default.Set(ApiConstants.ExpireDate, Convert.ToString(userResponse.Account!.ExpireDateAcc));
+            Preferences.Set(ApiConstants.isFirstRun, false);
 
             var handler = new JwtSecurityTokenHandler();
             var jwt = handler.ReadJwtToken(userResponse.Token);
