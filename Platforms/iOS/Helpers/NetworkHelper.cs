@@ -52,9 +52,18 @@ namespace Cardrly.Platforms.iOS.Helpers
         {
             if (_monitor != null)
             {
-                _monitor.Cancel();
-                _monitor.Dispose();
+                try
+                {
+                    _monitor.Cancel();
+                    _monitor.Dispose();
+                }
+                catch (Exception)
+                {
+
+                }
+
                 _monitor = null;
+                _lastStatus = NWPathStatus.Unsatisfied;
             }
         }
 

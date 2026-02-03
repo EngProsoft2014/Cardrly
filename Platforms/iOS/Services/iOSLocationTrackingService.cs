@@ -113,11 +113,11 @@ namespace Cardrly.Platforms.iOS.Services
             _lastSentLocation = null;
             _isListening = false;
 
-            // Stop network monitoring
-            NetworkHelper.StopMonitoring();
-
             // 🔔 Schedule reminder notification when tracking stops
             ScheduleReminderNotification();
+
+            // Stop network monitoring
+            NetworkHelper.StopMonitoring();
         }
 
         // Called from delegate to check distance threshold

@@ -76,7 +76,6 @@ public partial class NoInternetPage : Controls.CustomControl
 
     public async Task GoAfterConnected()
     {
-        UserDialogs.Instance.ShowLoading();
         //await App.Current.MainPage.Navigation.PushAsync(Name);
         if (App.Current!.MainPage!.Navigation.NavigationStack.Count > 1)
         {
@@ -96,8 +95,6 @@ public partial class NoInternetPage : Controls.CustomControl
         }
 
         //App.Current.MainPage.Navigation.RemovePage(App.Current.MainPage.Navigation.NavigationStack[App.Current.MainPage.Navigation.NavigationStack.Count - 2]);
-
-        UserDialogs.Instance.HideHud();
     }
 
     private async void Button_Clicked(object sender, EventArgs e)
