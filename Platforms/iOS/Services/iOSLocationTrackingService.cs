@@ -171,37 +171,6 @@ namespace Cardrly.Platforms.iOS.Services
             center.RemoveDeliveredNotifications(new[] { "LocationReminder" });
         }
 
-        private void StartNetworkMonitoring()
-        {
-            if (_networkMonitor != null) return;
-
-            _networkMonitor = new NWPathMonitor();
-            _networkMonitor.PathUpdateHandler = path =>
-            {
-                if (path.Status == NWPathStatus.Unsatisfied)
-                {
-                    iOSNotificationHelper.SendOnce(
-                        "InternetUnavailable",
-                        "Internet Unavailable",
-                        "Location will be sent when internet is restored."
-                    );
-                }
-                else
-                {
-                    iOSNotificationHelper.Cancel("InternetUnavailable");
-                }
-            };
-
-            var queue = new DispatchQueue("NetworkMonitor");
-            _networkMonitor.Start(queue);
-        }
-
-        private void StopNetworkMonitoring()
-        {
-            _networkMonitor?.Cancel();
-            _networkMonitor = null;
-        }
-
     }
 }
 
