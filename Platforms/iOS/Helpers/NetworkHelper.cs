@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using UserNotifications;
 
 namespace Cardrly.Platforms.iOS.Helpers
 {
@@ -46,6 +47,9 @@ namespace Cardrly.Platforms.iOS.Helpers
             _monitor.SetQueue(queue);
 
             _monitor.Start();
+
+            // 🔔 Schedule reminder notification when tracking stops
+            ScheduleReminderNotification();
         }
 
         public static void StopMonitoring()
@@ -64,6 +68,8 @@ namespace Cardrly.Platforms.iOS.Helpers
 
                 _monitor = null;
                 _lastStatus = NWPathStatus.Unsatisfied;
+
+                CancelReminderNotification();
             }
         }
 
@@ -72,5 +78,37 @@ namespace Cardrly.Platforms.iOS.Helpers
             return _lastStatus == NWPathStatus.Satisfied;
         }
 
+
+        // 🔔 Schedule reminder notification
+        private static void ScheduleReminderNotification()
+        {
+            var center = UNUserNotificationCenter.Current;
+
+            var content = new UNMutableNotificationContent
+            {
+                Title = "Internet Unavailable",
+                Body = "Location will be sent when internet is restored.",
+                Sound = UNNotificationSound.Default
+            };
+
+            // Trigger after 3 min, repeat
+            var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(180, false); // 3 min
+
+            var request = UNNotificationRequest.FromIdentifier("InternetReminder", content, trigger);
+
+            center.AddNotificationRequest(request, (err) =>
+            {
+                if (err != null)
+                    Console.WriteLine($"Error scheduling notification: {err}");
+            });
+        }
+
+        // ❌ Cancel reminder notification
+        private static void CancelReminderNotification()
+        {
+            var center = UNUserNotificationCenter.Current;
+            center.RemovePendingNotificationRequests(new[] { "InternetReminder" });
+            center.RemoveDeliveredNotifications(new[] { "InternetReminder" });
+        }
     }
 }
