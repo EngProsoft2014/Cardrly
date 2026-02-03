@@ -1,9 +1,12 @@
 ﻿using Cardrly.Models;
+using Cardrly.Platforms.iOS.Helpers;
 using Cardrly.Services;
 using Cardrly.Services.Data;
 using CoreBluetooth;
+using CoreFoundation;
 using CoreLocation;
 using Foundation;
+using Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +25,7 @@ namespace Cardrly.Platforms.iOS.Services
         private CLLocationManager _manager;
         private bool _isListening;
         private CLLocation _lastSentLocation;
+        private NWPathMonitor _networkMonitor;
 
         // Movement threshold in meters
         private const double MovementThreshold = 10;
@@ -63,6 +67,16 @@ namespace Cardrly.Platforms.iOS.Services
                 _manager.RequestAlwaysAuthorization();
             }
 
+            // GPS check before starting
+            if (!CLLocationManager.LocationServicesEnabled)
+            {
+                iOSNotificationHelper.SendOnce(
+                    "GpsDisabled",
+                    "GPS Disabled",
+                    "Please enable location services to continue tracking."
+                );
+            }
+
             // Start all location services
             _manager.StartUpdatingLocation();
             _manager.StartMonitoringSignificantLocationChanges();
@@ -72,6 +86,9 @@ namespace Cardrly.Platforms.iOS.Services
 
             // ✅ Cancel any reminder notifications if tracking is active
             CancelReminderNotification();
+
+            // Start monitoring internet connectivity
+            NetworkHelper.StartMonitoring();
         }
 
         public void StopBackgroundTracking()
@@ -95,6 +112,9 @@ namespace Cardrly.Platforms.iOS.Services
 
             _lastSentLocation = null;
             _isListening = false;
+
+            // Stop network monitoring
+            NetworkHelper.StopMonitoring();
 
             // 🔔 Schedule reminder notification when tracking stops
             ScheduleReminderNotification();
@@ -131,8 +151,8 @@ namespace Cardrly.Platforms.iOS.Services
                 Sound = UNNotificationSound.Default
             };
 
-            // Trigger after 5 min, repeat
-            var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(300, false); // 5 min
+            // Trigger after 3 min, repeat
+            var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(180, false); // 3 min
 
             var request = UNNotificationRequest.FromIdentifier("LocationReminder", content, trigger);
 
@@ -150,6 +170,38 @@ namespace Cardrly.Platforms.iOS.Services
             center.RemovePendingNotificationRequests(new[] { "LocationReminder" });
             center.RemoveDeliveredNotifications(new[] { "LocationReminder" });
         }
+
+        private void StartNetworkMonitoring()
+        {
+            if (_networkMonitor != null) return;
+
+            _networkMonitor = new NWPathMonitor();
+            _networkMonitor.PathUpdateHandler = path =>
+            {
+                if (path.Status == NWPathStatus.Unsatisfied)
+                {
+                    iOSNotificationHelper.SendOnce(
+                        "InternetUnavailable",
+                        "Internet Unavailable",
+                        "Location will be sent when internet is restored."
+                    );
+                }
+                else
+                {
+                    iOSNotificationHelper.Cancel("InternetUnavailable");
+                }
+            };
+
+            var queue = new DispatchQueue("NetworkMonitor");
+            _networkMonitor.Start(queue);
+        }
+
+        private void StopNetworkMonitoring()
+        {
+            _networkMonitor?.Cancel();
+            _networkMonitor = null;
+        }
+
     }
 }
 

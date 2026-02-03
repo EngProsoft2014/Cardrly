@@ -395,7 +395,9 @@ namespace Cardrly
 
         public async Task SignalRservice()
         {
+#if ANDROID
             UserDialogs.Instance.ShowLoading();
+#endif
             try
             {
                 await _signalRService.StartAsync();
@@ -415,8 +417,9 @@ namespace Cardrly
             _signalRService.OnMessageReceivedLogout += _signalRService_OnMessageReceivedLogout;// Logout Changed Permissions           
             _signalRService.OnMessageReceivedUpdateVersion += _signalRService_OnMessageReceivedUpdateVersion;// UpdateVersion
             _signalRService.OnMessageReceivedOneDeviceForThisAccount += _signalRService_OnMessageReceivedOneDeviceForThisAccount; //OneDeviceForThisAccountLogout
-
+#if ANDROID
             UserDialogs.Instance.HideHud();
+#endif
         }
 
 
