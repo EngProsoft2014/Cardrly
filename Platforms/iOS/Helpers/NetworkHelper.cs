@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using CoreFoundation;
+using Foundation;
 using Network;
 using System;
 using System.Collections.Generic;
@@ -11,23 +12,40 @@ namespace Cardrly.Platforms.iOS.Helpers
 {
     public static class NetworkHelper
     {
-        //public static bool IsInternetAvailable()
-        //{
-        //    return NetworkInterface.GetIsNetworkAvailable();
-        //}
 
         private static NWPathMonitor _monitor;
-        private static bool _initialized;
         private static NWPathStatus _lastStatus = NWPathStatus.Unsatisfied;
 
         public static void StartMonitoring()
         {
-            if (_initialized) return;
+            if (_monitor != null) return;
 
             _monitor = new NWPathMonitor();
-            _monitor.Start();
 
-            _initialized = true;
+            // Assign handler for path updates
+            _monitor.SnapshotHandler = (path) =>
+            {
+                _lastStatus = path.Status;
+
+                if (_lastStatus == NWPathStatus.Unsatisfied)
+                {
+                    iOSNotificationHelper.SendOnce(
+                        "InternetUnavailable",
+                        "Internet Unavailable",
+                        "Location will be sent when internet is restored."
+                    );
+                }
+                else
+                {
+                    iOSNotificationHelper.Cancel("InternetUnavailable");
+                }
+            };
+
+            // You must set a queue before Start()
+            var queue = new DispatchQueue("NetworkMonitor");
+            _monitor.SetQueue(queue);
+
+            _monitor.Start();
         }
 
         public static void StopMonitoring()
@@ -37,14 +55,12 @@ namespace Cardrly.Platforms.iOS.Helpers
                 _monitor.Cancel();
                 _monitor.Dispose();
                 _monitor = null;
-                _initialized = false;
             }
         }
 
         public static bool IsInternetAvailable()
         {
-            if (_monitor == null) return false;
-            return _monitor.CurrentPath?.Status == NWPathStatus.Satisfied;
+            return _lastStatus == NWPathStatus.Satisfied;
         }
 
     }
