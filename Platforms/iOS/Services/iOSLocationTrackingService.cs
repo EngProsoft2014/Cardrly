@@ -1,4 +1,6 @@
-﻿using Cardrly.Models;
+﻿using Cardrly.Constants;
+using Cardrly.Controls;
+using Cardrly.Models;
 using Cardrly.Platforms.iOS.Helpers;
 using Cardrly.Services;
 using Cardrly.Services.Data;
@@ -169,31 +171,40 @@ namespace Cardrly.Platforms.iOS.Services
         // 🔔 Schedule reminder notification
         private void ScheduleReminderNotification()
         {
-            iOSNotificationHelper.SendOnce(
+            bool isCheckout = Preferences.Default.Get(ApiConstants.isTimeSheetCheckout, false);
+            string userId = Preferences.Default.Get(ApiConstants.userid, string.Empty);
+
+            if (string.IsNullOrEmpty(userId))
+                return;
+
+            if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet) && !isCheckout)
+            {
+                iOSNotificationHelper.SendOnce(
                     CloseAppNotifId,
                     "Location Sharing Stopped",
                     "Please reopen the app, enable GPS, or allow location permission to resume sending your location."
                 );
 
-            var center = UNUserNotificationCenter.Current;
+                var center = UNUserNotificationCenter.Current;
 
-            var content = new UNMutableNotificationContent
-            {
-                Title = "Location Sharing Stopped",
-                Body = "Please reopen the app, enable GPS, or allow location permission to resume sending your location.",
-                Sound = UNNotificationSound.Default
-            };
+                var content = new UNMutableNotificationContent
+                {
+                    Title = "Location Sharing Stopped",
+                    Body = "Please reopen the app, enable GPS, or allow location permission to resume sending your location.",
+                    Sound = UNNotificationSound.Default
+                };
 
-            // Trigger after 3 min, repeat
-            var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(180, false); // 3 min
+                // Trigger after 3 min, repeat
+                var trigger = UNTimeIntervalNotificationTrigger.CreateTrigger(180, false); // 3 min
 
-            var request = UNNotificationRequest.FromIdentifier("LocationReminder", content, trigger);
+                var request = UNNotificationRequest.FromIdentifier("LocationReminder", content, trigger);
 
-            center.AddNotificationRequest(request, (err) =>
-            {
-                if (err != null)
-                    Console.WriteLine($"Error scheduling notification: {err}");
-            });
+                center.AddNotificationRequest(request, (err) =>
+                {
+                    if (err != null)
+                        Console.WriteLine($"Error scheduling notification: {err}");
+                });
+            }       
         }
 
         // ❌ Cancel reminder notification
