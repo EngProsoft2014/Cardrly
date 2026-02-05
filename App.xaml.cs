@@ -24,7 +24,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Cardrly.Models.TimeSheet;
 using Microsoft.IdentityModel.Tokens;
 using Plugin.FirebasePushNotifications;
-
+using Plugin.FirebasePushNotifications.Model;
 
 
 
@@ -50,6 +50,7 @@ namespace Cardrly
         public static IServiceProvider Services { get; private set; }
         private readonly IAudioStreamService _audioService;
         private readonly IFirebasePushNotification _firebasePushNotification;
+        private readonly INotificationPermissions _notificationPermissions;
         #endregion
 
         public static bool isHaveTimeSheetTracking = false;
@@ -63,7 +64,8 @@ namespace Cardrly
             IAudioStreamService audioService,
             IServiceProvider serviceProvider,
             INotificationManagerService notificationManagerService,
-            IFirebasePushNotification firebasePushNotification)
+            IFirebasePushNotification firebasePushNotification,
+            INotificationPermissions notificationPermissions)
         {
             try
             {
@@ -74,6 +76,7 @@ namespace Cardrly
                 _signalRService = signalRService;
                 _locationTracking = locationTracking;
                 _firebasePushNotification = firebasePushNotification;
+                _notificationPermissions = notificationPermissions;
                 Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
                 StaticMember.notificationManager = notificationManagerService;
                 LoadSetting();
@@ -147,6 +150,8 @@ namespace Cardrly
         protected async override void OnStart()
         {
             base.OnStart();
+
+            AuthorizationStatus authorizationStatus = await _notificationPermissions.GetAuthorizationStatusAsync();
 
             await _firebasePushNotification.RegisterForPushNotificationsAsync();
 
