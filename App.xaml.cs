@@ -23,6 +23,8 @@ using Mopups.Services;
 using CommunityToolkit.Mvvm.Messaging;
 using Cardrly.Models.TimeSheet;
 using Microsoft.IdentityModel.Tokens;
+using Plugin.Firebase.CloudMessaging;
+
 
 
 
@@ -141,6 +143,9 @@ namespace Cardrly
         protected async override void OnStart()
         {
             base.OnStart();
+
+            await CrossFirebaseCloudMessaging.Current.CheckIfValidAsync();
+            var token = await CrossFirebaseCloudMessaging.Current.GetTokenAsync();
 
             //await Task.WhenAll(GetDeviceIdFromDataBase(), StatusLocation(), SignalRservice(), CheckToStartSendLocation());
             await GetDeviceIdFromDataBase();

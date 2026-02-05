@@ -26,6 +26,7 @@ namespace Cardrly.Platforms.iOS.Services
         private bool _isListening;
         private CLLocation _lastSentLocation;
         private NWPathMonitor _networkMonitor;
+        private const string CloseAppNotifId = "CloseApp";
 
         // Movement threshold in meters
         private const double MovementThreshold = 10;
@@ -142,6 +143,12 @@ namespace Cardrly.Platforms.iOS.Services
         // 🔔 Schedule reminder notification
         private void ScheduleReminderNotification()
         {
+            iOSNotificationHelper.SendOnce(
+                    CloseAppNotifId,
+                    "Location Sharing Stopped",
+                    "Please reopen the app, enable GPS, or allow location permission to resume sending your location."
+                );
+
             var center = UNUserNotificationCenter.Current;
 
             var content = new UNMutableNotificationContent
@@ -169,6 +176,8 @@ namespace Cardrly.Platforms.iOS.Services
             var center = UNUserNotificationCenter.Current;
             center.RemovePendingNotificationRequests(new[] { "LocationReminder" });
             center.RemoveDeliveredNotifications(new[] { "LocationReminder" });
+
+            iOSNotificationHelper.Cancel(CloseAppNotifId);
         }
 
     }

@@ -8,16 +8,20 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.LifecycleEvents;
 using Mopups.Hosting;
+using Plugin.Firebase.Auth;
+using Plugin.Firebase.Bundled.Shared;
+using Plugin.Firebase.CloudMessaging;
+using Plugin.Firebase.Crashlytics;
 using Plugin.Maui.Audio;
 //using SkiaSharp.Views.Maui.Controls.Hosting;
 using Syncfusion.Maui.Core.Hosting;
 using ZXing.Net.Maui.Controls;
 //using Plugin.Firebase.CloudMessaging;
-//#if IOS
-//using Plugin.Firebase.Core.Platforms.iOS;
-//#elif ANDROID
-//using Plugin.Firebase.Core.Platforms.Android;
-//#endif
+#if IOS
+using Plugin.Firebase.Core.Platforms.iOS;
+#elif ANDROID
+using Plugin.Firebase.Core.Platforms.Android;
+#endif
 
 namespace Cardrly
 {
@@ -45,7 +49,7 @@ namespace Cardrly
 
                     // Other Sentry options can be set here.
                 })
-                //.RegisterFirebaseServices()
+                .RegisterFirebaseServices()
                 .UseMauiCommunityToolkit()
                 .UseMauiCommunityToolkitMediaElement()
                 .UseUserDialogs()
@@ -80,23 +84,25 @@ namespace Cardrly
             return builder.Build();
         }
 
-//        private static MauiAppBuilder RegisterFirebaseServices(this MauiAppBuilder builder)
-//        {
-//            builder.ConfigureLifecycleEvents(events => {
-//#if IOS
-//        events.AddiOS(iOS => iOS.WillFinishLaunching((_, __) => {
-//            CrossFirebase.Initialize();
-//            FirebaseCloudMessagingImplementation.Initialize();
-//            return false;
-//        }));
-//#elif ANDROID
-//                events.AddAndroid(android => android.OnCreate((activity, _) =>
-//                CrossFirebase.Initialize(activity)));
-//#endif
-//            });
 
-//            return builder;
-//        }
+        private static MauiAppBuilder RegisterFirebaseServices(this MauiAppBuilder builder)
+        {
+            builder.ConfigureLifecycleEvents(events =>
+            {
+#if IOS
+                events.AddiOS(iOS => iOS.WillFinishLaunching((_, __) => {
+                    CrossFirebase.Initialize();
+                    FirebaseCloudMessagingImplementation.Initialize();
+                    return false;
+                }));
+#elif ANDROID
+                events.AddAndroid(android => android.OnCreate((activity, _) =>
+                CrossFirebase.Initialize(activity)));
+#endif
+            });
+
+            return builder;
+        }
     }
 
 }

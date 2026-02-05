@@ -26,14 +26,14 @@ public partial class DatePopup : Mopups.Pages.PopupPage
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        _tcs.TrySetResult(null);
     }
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
         //RangeClose = null;
         _tcs.TrySetResult(null);
-        await MopupService.Instance.PopAsync();
+        if (MopupService.Instance.PopupStack.Any())
+            await MopupService.Instance.PopAsync();
     }
 
     private async void btnOk_Clicked(object sender, EventArgs e)
@@ -64,10 +64,12 @@ public partial class DatePopup : Mopups.Pages.PopupPage
         {
             var toast = Toast.Make("Please select a date.", CommunityToolkit.Maui.Core.ToastDuration.Long, 15);
             await toast.Show();
+            return; // don’t close popup if no date selected
         }
         //RangeClose = null;
         _tcs.TrySetResult(Cal);
-        await MopupService.Instance.PopAsync();
+        if (MopupService.Instance.PopupStack.Any())
+            await MopupService.Instance.PopAsync();
 
     }
 }

@@ -6,6 +6,7 @@ using Foundation;
 using UIKit;
 using UserNotifications;
 
+
 namespace Cardrly
 {
     [Register("AppDelegate")]
