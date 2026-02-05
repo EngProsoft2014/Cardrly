@@ -116,7 +116,7 @@ namespace Cardrly
 
             // Optional: reset again when app comes to foreground
             var locationService = App.Services.GetRequiredService<IPlatformLocationService>();
-            locationService.StopBackgroundTracking();
+            locationService.ResetBackgroundTracking();
         }
 
 
