@@ -23,7 +23,8 @@ using Mopups.Services;
 using CommunityToolkit.Mvvm.Messaging;
 using Cardrly.Models.TimeSheet;
 using Microsoft.IdentityModel.Tokens;
-using Plugin.Firebase.CloudMessaging;
+using Plugin.FirebasePushNotifications;
+
 
 
 
@@ -48,6 +49,7 @@ namespace Cardrly
 
         public static IServiceProvider Services { get; private set; }
         private readonly IAudioStreamService _audioService;
+        private readonly IFirebasePushNotification _firebasePushNotification;
         #endregion
 
         public static bool isHaveTimeSheetTracking = false;
@@ -60,7 +62,8 @@ namespace Cardrly
             LocationTrackingService locationTracking,
             IAudioStreamService audioService,
             IServiceProvider serviceProvider,
-            INotificationManagerService notificationManagerService)
+            INotificationManagerService notificationManagerService,
+            IFirebasePushNotification firebasePushNotification)
         {
             try
             {
@@ -70,6 +73,7 @@ namespace Cardrly
                 Services = serviceProvider;
                 _signalRService = signalRService;
                 _locationTracking = locationTracking;
+                _firebasePushNotification = firebasePushNotification;
                 Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
                 StaticMember.notificationManager = notificationManagerService;
                 LoadSetting();
@@ -144,8 +148,10 @@ namespace Cardrly
         {
             base.OnStart();
 
-            await CrossFirebaseCloudMessaging.Current.CheckIfValidAsync();
-            var token = await CrossFirebaseCloudMessaging.Current.GetTokenAsync();
+            await _firebasePushNotification.RegisterForPushNotificationsAsync();
+
+            var token = _firebasePushNotification.Token;
+
 
             //await Task.WhenAll(GetDeviceIdFromDataBase(), StatusLocation(), SignalRservice(), CheckToStartSendLocation());
             await GetDeviceIdFromDataBase();

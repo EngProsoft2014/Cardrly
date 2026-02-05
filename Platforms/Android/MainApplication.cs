@@ -12,5 +12,6 @@ namespace Cardrly
         }
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+
     }
 }

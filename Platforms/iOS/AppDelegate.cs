@@ -3,9 +3,10 @@ using Cardrly.Platforms.iOS.Services;
 using Cardrly.Services;
 using Cardrly.Services.Data;
 using Foundation;
+using ObjCRuntime;
+using Plugin.FirebasePushNotifications;
 using UIKit;
 using UserNotifications;
-
 
 namespace Cardrly
 {
@@ -138,6 +139,28 @@ namespace Cardrly
 
             center.RemovePendingNotificationRequests(new[] { "LocationReminder" });
             center.RemoveDeliveredNotifications(new[] { "LocationReminder" });
+        }
+
+
+        [Export("application:didRegisterForRemoteNotificationsWithDeviceToken:")]
+        [BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+        public void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+        {
+            IFirebasePushNotification.Current.RegisteredForRemoteNotifications(deviceToken);
+        }
+
+        [Export("application:didFailToRegisterForRemoteNotificationsWithError:")]
+        [BindingImpl(BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+        public void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        {
+            IFirebasePushNotification.Current.FailedToRegisterForRemoteNotifications(error);
+        }
+
+        [Export("application:didReceiveRemoteNotification:fetchCompletionHandler:")]
+        public void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
+        {
+            IFirebasePushNotification.Current.DidReceiveRemoteNotification(userInfo);
+            completionHandler(UIBackgroundFetchResult.NewData);
         }
 
     }
