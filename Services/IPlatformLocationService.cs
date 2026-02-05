@@ -10,5 +10,6 @@ namespace Cardrly.Services
     {
         void StartBackgroundTracking(string employeeId);
         void StopBackgroundTracking();
+        void ResetBackgroundTracking();
     }
 }

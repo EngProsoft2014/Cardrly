@@ -92,6 +92,32 @@ namespace Cardrly.Platforms.iOS.Services
             NetworkHelper.StartMonitoring();
         }
 
+        public void ResetBackgroundTracking()
+        {
+            // Cancel reminder notifications when stopping
+            CancelReminderNotification();
+
+            if (_manager != null)
+            {
+                _manager.StopUpdatingLocation();
+                _manager.StopMonitoringSignificantLocationChanges();
+                _manager.StopMonitoringVisits();
+
+                _manager.AllowsBackgroundLocationUpdates = false;
+                _manager.PausesLocationUpdatesAutomatically = true;
+
+                _manager.Delegate = null;
+                _manager.Dispose();
+                _manager = null;
+            }
+
+            _lastSentLocation = null;
+            _isListening = false;
+
+            // Stop network monitoring
+            NetworkHelper.StopMonitoring();
+        }
+
         public void StopBackgroundTracking()
         {
             // Cancel reminder notifications when stopping

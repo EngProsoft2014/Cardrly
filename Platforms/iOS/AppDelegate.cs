@@ -34,7 +34,7 @@ namespace Cardrly
 
             // Reset background location state at app startup
             var locationService = App.Services.GetRequiredService<IPlatformLocationService>();
-            locationService.StopBackgroundTracking();
+            locationService.ResetBackgroundTracking();
 
             // Get the main window
             // Get the key window safely (iOS 13+)

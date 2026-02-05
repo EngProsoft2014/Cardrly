@@ -50,7 +50,6 @@ namespace Cardrly
         public static IServiceProvider Services { get; private set; }
         private readonly IAudioStreamService _audioService;
         private readonly IFirebasePushNotification _firebasePushNotification;
-        private readonly INotificationPermissions _notificationPermissions;
         #endregion
 
         public static bool isHaveTimeSheetTracking = false;
@@ -64,8 +63,7 @@ namespace Cardrly
             IAudioStreamService audioService,
             IServiceProvider serviceProvider,
             INotificationManagerService notificationManagerService,
-            IFirebasePushNotification firebasePushNotification,
-            INotificationPermissions notificationPermissions)
+            IFirebasePushNotification firebasePushNotification)
         {
             try
             {
@@ -76,7 +74,6 @@ namespace Cardrly
                 _signalRService = signalRService;
                 _locationTracking = locationTracking;
                 _firebasePushNotification = firebasePushNotification;
-                _notificationPermissions = notificationPermissions;
                 Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
                 StaticMember.notificationManager = notificationManagerService;
                 LoadSetting();
@@ -151,12 +148,8 @@ namespace Cardrly
         {
             base.OnStart();
 
-            AuthorizationStatus authorizationStatus = await _notificationPermissions.GetAuthorizationStatusAsync();
-
             await _firebasePushNotification.RegisterForPushNotificationsAsync();
-
             var token = _firebasePushNotification.Token;
-
 
             //await Task.WhenAll(GetDeviceIdFromDataBase(), StatusLocation(), SignalRservice(), CheckToStartSendLocation());
             await GetDeviceIdFromDataBase();

@@ -62,6 +62,8 @@ namespace Cardrly.ViewModels
                 LoginRequest.UserName = Preferences.Default.Get<string>(ApiConstants.rememberMeUserName, string.Empty);
                 LoginRequest.Password = Preferences.Default.Get<string>(ApiConstants.rememberMePassword, string.Empty);
             }
+
+            _locationTracking.Stop();
         }
         #endregion
 
