@@ -43,60 +43,67 @@ namespace Cardrly.Services.Data
 
         public async Task StartAsync(string employeeId)
         {
-            await _startStopLock.WaitAsync();
+            bool isCheckout = Preferences.Default.Get(ApiConstants.isTimeSheetCheckout, false);
+            string userId = Preferences.Default.Get(ApiConstants.userid, string.Empty);
 
-            try
+            if (string.IsNullOrEmpty(userId))
+                return;
+
+            if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet) && !isCheckout)
             {
-                if (_isListening)
-                    return;
+                await _startStopLock.WaitAsync();
 
-                var status = await Permissions.CheckStatusAsync<Permissions.LocationAlways>();
-                if (status != PermissionStatus.Granted)
-                    status = await Permissions.RequestAsync<Permissions.LocationAlways>();
-
-                if (status != PermissionStatus.Granted)
+                try
                 {
-                    await Toast.Make(
-                        "Location permission not granted",
-                        CommunityToolkit.Maui.Core.ToastDuration.Long,
-                        15).Show();
-                    return;
+                    if (_isListening)
+                        return;
+
+                    var status = await Permissions.CheckStatusAsync<Permissions.LocationAlways>();
+                    if (status != PermissionStatus.Granted)
+                        status = await Permissions.RequestAsync<Permissions.LocationAlways>();
+
+                    if (status != PermissionStatus.Granted)
+                    {
+                        await Toast.Make(
+                            "Location permission not granted",
+                            CommunityToolkit.Maui.Core.ToastDuration.Long,
+                            15).Show();
+                        return;
+                    }
+
+                    var request = new GeolocationListeningRequest(
+                        GeolocationAccuracy.High,
+                        TimeSpan.FromSeconds(10));
+
+                    bool started = await Geolocation.StartListeningForegroundAsync(request);
+
+                    if (started)
+                    {
+                        _employeeId = employeeId;
+
+                        Geolocation.LocationChanged -= OnLocationChanged;
+                        Geolocation.LocationChanged += OnLocationChanged;
+
+                        Geolocation.ListeningFailed -= OnListeningFailed;
+                        Geolocation.ListeningFailed += OnListeningFailed;
+
+                        _isListening = true; // ✅ set ONLY after success
+                    }
+                    else
+                    {
+                        _platformLocation.StartBackgroundTracking(employeeId);
+                        _isListening = true;
+                    }
                 }
-
-                var request = new GeolocationListeningRequest(
-                    GeolocationAccuracy.High,
-                    TimeSpan.FromSeconds(10));
-
-                bool started = await Geolocation.StartListeningForegroundAsync(request);
-
-                if (started)
+                catch (Exception)
                 {
-                    _employeeId = employeeId;
-
-                    Geolocation.LocationChanged -= OnLocationChanged;
-                    Geolocation.LocationChanged += OnLocationChanged;
-
-                    Geolocation.ListeningFailed -= OnListeningFailed;
-                    Geolocation.ListeningFailed += OnListeningFailed;
-
-                    _isListening = true; // ✅ set ONLY after success
+                    _isListening = false;
                 }
-                else
+                finally
                 {
-                    _platformLocation.StartBackgroundTracking(employeeId);
-                    _isListening = true;
+                    _startStopLock.Release();
                 }
             }
-            catch (Exception)
-            {
-                _isListening = false;
-            }
-            finally
-            {
-                _startStopLock.Release();
-            }
-
-          
         }
         private async void OnListeningFailed(object sender, GeolocationListeningFailedEventArgs e)
         {
@@ -156,8 +163,21 @@ namespace Cardrly.Services.Data
         // Backward compatibility with your App.xaml.cs
         public void Stop() => StopAsync().FireAndForget();
         public void StopBackgroundTrackingLocation() => _platformLocation.StopBackgroundTracking();
-        public void StartBackgroundTrackingLocation(string employeeId, object _) =>
-            _platformLocation.StartBackgroundTracking(employeeId);
+        public void StartBackgroundTrackingLocation(string employeeId, object _)
+        {
+            bool isCheckout = Preferences.Default.Get(ApiConstants.isTimeSheetCheckout, false);
+            string userId = Preferences.Default.Get(ApiConstants.userid, string.Empty);
+
+            if (string.IsNullOrEmpty(userId))
+                return;
+
+            if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet) && !isCheckout)
+            {
+                _platformLocation.StartBackgroundTracking(employeeId);
+            }
+        }
+
+
 
         //StaticMember.notificatioLocationsManager.SendNotification(AppResources.titleLocationsharingstopped, AppResources.msgLocalNotificationforLocations, DateTime.Now.Date.AddSeconds(3));
 
