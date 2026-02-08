@@ -14,6 +14,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
+using Plugin.FirebasePushNotifications;
 using Plugin.Maui.Audio;
 using System.Reactive.Linq;
 
@@ -31,16 +32,23 @@ namespace Cardrly.ViewModels
         readonly Services.Data.ServicesService _service;
         readonly SignalRService _signalRService;
         readonly LocationTrackingService _locationTracking;
+        readonly IFirebasePushNotification _firebasePushNotification;
         #endregion
 
         #region Cons
-        public MoreViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
+        public MoreViewModel(IGenericRepository GenericRep, 
+            Services.Data.ServicesService service, 
+            SignalRService signalRService, 
+            IAudioStreamService audioService, 
+            LocationTrackingService locationTracking,
+            IFirebasePushNotification firebasePushNotification)
         {
             Rep = GenericRep;
             _service = service;
             _signalRService = signalRService;
             _audioService = audioService;
             _locationTracking = locationTracking;
+            _firebasePushNotification = firebasePushNotification;
             IsShowBullingInfo = StaticMember.CheckPermission(ApiConstants.GetStripe) == true ? true : false;
             
         }
@@ -69,7 +77,7 @@ namespace Cardrly.ViewModels
                 Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
                 Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
                 Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
-                await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification)));
             };
             Controls.StaticMember.ShowSnackBar($"{AppResources.msgDoYouWantToLogout}", Controls.StaticMember.SnackBarColor, Controls.StaticMember.SnackBarTextColor, action);
             return Task.CompletedTask;
@@ -83,7 +91,7 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task ChangePasswordClick()
         {
-            await App.Current!.MainPage!.Navigation.PushAsync(new ChangePasswordPage(new ChangePasswordViewModel(Rep,_service, _signalRService, _audioService, _locationTracking)));
+            await App.Current!.MainPage!.Navigation.PushAsync(new ChangePasswordPage(new ChangePasswordViewModel(Rep,_service, _signalRService, _audioService, _locationTracking, _firebasePushNotification)));
         }
         //[RelayCommand]
         //async Task TimeSheetClick()
@@ -116,7 +124,7 @@ namespace Cardrly.ViewModels
         [RelayCommand]
         async Task LanguageClick()
         {
-            await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service, _signalRService, _audioService, _locationTracking));
+            await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
         }
         [RelayCommand]
         async Task FAQClick()

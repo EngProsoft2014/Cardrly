@@ -25,6 +25,10 @@ using Cardrly.Models.TimeSheet;
 using Microsoft.IdentityModel.Tokens;
 using Plugin.FirebasePushNotifications;
 using Plugin.FirebasePushNotifications.Model;
+using Plugin.FirebasePushNotifications.Platforms;
+using Cardrly.Mode_s.ApplicationUser;
+
+
 
 
 
@@ -84,12 +88,19 @@ namespace Cardrly
                 // Register global exception handling
                 GlobalExceptionHandler.RegisterGlobalExceptionHandlers();
                 InitializeComponent();
+
+                RegisterFcmEvents();
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    await _firebasePushNotification.RegisterForPushNotificationsAsync();
+                });
+
                 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(ApiConstants.syncFusionLicence);
 
                 if (Connectivity.NetworkAccess != NetworkAccess.Internet)
                 {
                     // Connection to internet is Not available
-                    MainPage = new NavigationPage(new NoInternetPage(Rep, _service, _signalRService, _audioService, _locationTracking));
+                    MainPage = new NavigationPage(new NoInternetPage(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
                     return;
                 }
                 else
@@ -102,11 +113,11 @@ namespace Cardrly
                     if (string.IsNullOrEmpty(AccountId) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow) || IsExpireDate == false)
                     {
                         Preferences.Default.Clear();
-                        MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                        MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification)));
                     }
                     else
                     {
-                        MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking), Rep, _service, _signalRService, _audioService, _locationTracking));
+                        MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification), Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
                     }
 
                     WeakReferenceMessenger.Default.Register<GpsStatusMessage>(this, (r, m) =>
@@ -117,7 +128,7 @@ namespace Cardrly
                             MainThread.BeginInvokeOnMainThread(async () =>
                             {
                                 await App.Current!.MainPage!.Navigation.PushAsync(
-                                    new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking));
+                                    new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
                             });
                         }
                         else if (m.IsEnabled)
@@ -130,7 +141,7 @@ namespace Cardrly
             catch (Exception ex)
             {
                 Preferences.Default.Clear();
-                MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                MainPage = new NavigationPage(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification)));
             }
         }
 
@@ -139,7 +150,7 @@ namespace Cardrly
             if (e.NetworkAccess != NetworkAccess.Internet)
             {
                 // Connection to internet is Not available
-                await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service, _signalRService, _audioService, _locationTracking));
+                await App.Current!.MainPage!.Navigation.PushAsync(new NoInternetPage(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
                 return;
             }
         }
@@ -147,9 +158,6 @@ namespace Cardrly
         protected async override void OnStart()
         {
             base.OnStart();
-
-            await _firebasePushNotification.RegisterForPushNotificationsAsync();
-            var token = _firebasePushNotification.Token;
 
             //await Task.WhenAll(GetDeviceIdFromDataBase(), StatusLocation(), SignalRservice(), CheckToStartSendLocation());
             await GetDeviceIdFromDataBase();
@@ -199,7 +207,7 @@ namespace Cardrly
 
             if (userId == "" && !Preferences.Get(ApiConstants.isFirstRun, true))
             {
-                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification)));
                 await App.Current!.MainPage!.DisplayAlert(AppResources.lblAlert, AppResources.msgLougoutForLoginAnotherDevice, AppResources.msgOk);
                 return;
             }
@@ -210,7 +218,7 @@ namespace Cardrly
                 if (string.IsNullOrEmpty(Stringdate) || ExpireDate < DateOnly.FromDateTime(DateTime.UtcNow))
                 {
                     await ClearMostData();
-                    await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                    await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification)));
                     return;
                 }
             }
@@ -266,6 +274,40 @@ namespace Cardrly
                 CultureInfo cal = new CultureInfo("en");
                 TranslateExtension.Instance.SetCulture(cal);
             }
+        }
+
+        void RegisterFcmEvents()
+        {
+            _firebasePushNotification.TokenRefreshed -= OnTokenRefreshed;
+            _firebasePushNotification.TokenRefreshed += OnTokenRefreshed;
+        }
+
+        async void OnTokenRefreshed(object sender, FirebasePushNotificationTokenEventArgs p)
+        {
+            _firebasePushNotification.TokenRefreshed += async (s, p) =>
+            {
+                if (string.IsNullOrWhiteSpace(p.Token))
+                    return;
+
+                var username = Preferences.Default.Get(ApiConstants.username, string.Empty);
+                if (string.IsNullOrEmpty(username))
+                    return;
+
+                ApplicationUserLoginRequest model = new ApplicationUserLoginRequest
+                {
+                    UserName = Preferences.Default.Get(ApiConstants.username, string.Empty),
+                    FCM_Token = p.Token
+                };
+
+                try
+                {
+                    await Rep.PostAsync(ApiConstants.RefrshFCMToken, model);
+                }
+                catch
+                {
+                    // optional logging
+                }
+            };
         }
 
         async Task StatusLocation()
@@ -393,7 +435,7 @@ namespace Cardrly
                         if (DeviceId != myDeviceId)
                         {
                             await ClearMostData();
-                            await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                            await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification)));
                             await App.Current!.MainPage!.DisplayAlert(AppResources.lblAlert, AppResources.msgLougoutForLoginAnotherDevice, AppResources.msgOk);
                             return;
                         }
@@ -451,16 +493,16 @@ namespace Cardrly
 
                 if (location == null)
                 {
-                    await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking));
+                    await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
                 }
             }
             catch (FeatureNotEnabledException)
             {
-                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking));
+                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
             }
             catch (PermissionException)
             {
-                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking));
+                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
             }
         }
 
@@ -474,7 +516,7 @@ namespace Cardrly
                 {
                     //Controls.StaticMember.TabIndex = message;
 
-                    await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking), Rep, _service, _signalRService, _audioService, _locationTracking));
+                    await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification), Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
 
                 }
             });
@@ -492,7 +534,7 @@ namespace Cardrly
 
                 await _signalRService.InvokeNotifyDisconnectyAsync(GuidKey);
 
-                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification)));
                 await App.Current!.MainPage!.DisplayAlert(AppResources.msgWarning, AppResources.MsgloggedOut, AppResources.msgOk);
             });
         }
@@ -536,7 +578,7 @@ namespace Cardrly
                 {
                     await ClearMostData();
 
-                    await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                    await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification)));
 
                     await App.Current!.MainPage!.DisplayAlert(AppResources.lblAlert, AppResources.msgLougoutForLoginAnotherDevice, AppResources.msgOk);
                 }

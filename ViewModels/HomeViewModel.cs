@@ -19,6 +19,8 @@ using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
 using Newtonsoft.Json;
+using Plugin.FirebasePushNotifications;
+
 //using Plugin.Firebase.CloudMessaging;
 using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
@@ -59,10 +61,16 @@ namespace Cardrly.ViewModels
         readonly SignalRService _signalRService;
         readonly IAudioStreamService _audioService;
         readonly LocationTrackingService _locationTracking;
+        readonly IFirebasePushNotification _firebasePushNotification;
         #endregion
 
         #region Cons
-        public HomeViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
+        public HomeViewModel(IGenericRepository GenericRep,
+            Services.Data.ServicesService service,
+            SignalRService signalRService, 
+            IAudioStreamService audioService, 
+            LocationTrackingService locationTracking,
+            IFirebasePushNotification firebasePushNotification)
         {
             LoadPermissions();
             Rep = GenericRep;
@@ -70,6 +78,7 @@ namespace Cardrly.ViewModels
             _signalRService = signalRService;
             _audioService = audioService;
             _locationTracking = locationTracking;
+            _firebasePushNotification = firebasePushNotification;
             Init();
         }
         #endregion
@@ -243,7 +252,7 @@ namespace Cardrly.ViewModels
             else if (item.Id == 2) //TimeSheet Page
                 await App.Current!.MainPage!.Navigation.PushAsync(new TimeSheetPage(new TimeSheetViewModel(Rep, _service, _signalRService, _locationTracking)));
             else if (item.Id == 3) //Language Popup
-                await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service, _signalRService, _audioService, _locationTracking));
+                await MopupService.Instance.PushAsync(new LanguagePopup(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
             else if (item.Id == 4) //ActiveDevice Page
                 await App.Current!.MainPage!.Navigation.PushAsync(new ActiveDevicePage(new ActiveDeviceViewModel(Rep, _service)));
         }

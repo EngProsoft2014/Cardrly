@@ -40,6 +40,8 @@ namespace Cardrly.Mode_s.ApplicationUser
 
         public string? DeviceId { get; set; }
 
+        public string FCM_Token { get; set; } = string.Empty;
+
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

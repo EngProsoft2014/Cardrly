@@ -4,12 +4,14 @@ using Cardrly.Controls;
 using Cardrly.Extensions;
 using Cardrly.Helpers;
 using Cardrly.Models;
+using Cardrly.Models.TimeSheet;
 using Cardrly.Pages;
 using Cardrly.Resources.Lan;
 using Cardrly.Services.AudioStream;
 using CommunityToolkit.Maui.Alerts;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
+using Plugin.FirebasePushNotifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,21 +26,28 @@ namespace Cardrly.Services.Data
         private readonly SignalRService _signalR;
         readonly ServicesService _service;
         readonly IGenericRepository Rep;
-        private readonly IAudioStreamService _audioService;
-        private readonly IPlatformLocationService _platformLocation;
+        readonly IAudioStreamService _audioService;
+        readonly IPlatformLocationService _platformLocation;
+        readonly IFirebasePushNotification _firebasePushNotification;
 
         private readonly SemaphoreSlim _startStopLock = new(1, 1);
 
         private bool _isListening;
         private string _employeeId;
 
-        public LocationTrackingService(SignalRService signalR, IPlatformLocationService platformLocation, IGenericRepository GenericRep, ServicesService service, IAudioStreamService audioService)
+        public LocationTrackingService(SignalRService signalR, 
+            IPlatformLocationService platformLocation, 
+            IGenericRepository GenericRep,
+            ServicesService service,
+            IAudioStreamService audioService,
+            IFirebasePushNotification firebasePushNotification)
         {
             _signalR = signalR;
             _service = service;
             Rep = GenericRep;
             _audioService = audioService;
             _platformLocation = platformLocation;
+            _firebasePushNotification = firebasePushNotification;
         }
 
         public async Task StartAsync(string employeeId)
@@ -115,7 +124,7 @@ namespace Cardrly.Services.Data
                     15).Show();
 
                 await App.Current!.MainPage!.Navigation.PushAsync(
-                    new NoGpsPage(Rep, _service, _signalR, _audioService, this));
+                    new NoGpsPage(Rep, _service, _signalR, _audioService, this, _firebasePushNotification));
             });
         }
 
@@ -153,6 +162,20 @@ namespace Cardrly.Services.Data
 
                 Geolocation.StopListeningForeground();
                 _platformLocation.StopBackgroundTracking();
+
+
+                bool isCheckout = Preferences.Default.Get(ApiConstants.isTimeSheetCheckout, false);
+                string accountId = Preferences.Default.Get(ApiConstants.AccountId, string.Empty);
+                string CardId = Preferences.Default.Get(ApiConstants.cardId, string.Empty);
+                if (string.IsNullOrEmpty(CardId))
+                    return;
+
+                if (StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet) && !isCheckout)
+                {
+                    string userToken = await _service.UserToken();
+
+                    var json = await Rep.PostAsync(ApiConstants.SendNotifyToOwner + accountId + "/" + CardId, userToken);
+                }
             }
             finally
             {

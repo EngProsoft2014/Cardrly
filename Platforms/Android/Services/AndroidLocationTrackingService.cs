@@ -37,5 +37,10 @@ namespace Cardrly.Platforms.Android.Services
 
             context.StopService(intent);
         }
+
+        public void ResetBackgroundTracking()
+        {
+
+        }
     }
 }

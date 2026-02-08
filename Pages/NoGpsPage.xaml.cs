@@ -2,6 +2,7 @@
 using Cardrly.Services.AudioStream;
 using Cardrly.Services.Data;
 using Cardrly.ViewModels;
+using Plugin.FirebasePushNotifications;
 
 namespace Cardrly.Pages;
 
@@ -13,9 +14,15 @@ public partial class NoGpsPage : Controls.CustomControl
     readonly SignalRService _signalRService;
     readonly IAudioStreamService _audioService;
     readonly LocationTrackingService _locationTracking;
+    readonly IFirebasePushNotification _firebasePushNotification;
     #endregion
 
-    public NoGpsPage(IGenericRepository GenericRep, ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
+    public NoGpsPage(IGenericRepository GenericRep, 
+            ServicesService service, 
+            SignalRService signalRService, 
+            IAudioStreamService audioService,
+            LocationTrackingService locationTracking,
+            IFirebasePushNotification firebasePushNotification)
     {
         InitializeComponent();
         Rep = GenericRep;
@@ -23,6 +30,7 @@ public partial class NoGpsPage : Controls.CustomControl
         _signalRService = signalRService;
         _audioService = audioService;
         _locationTracking = locationTracking;
+        _firebasePushNotification = firebasePushNotification;
     }
 
     protected override void OnAppearing()
@@ -49,7 +57,7 @@ public partial class NoGpsPage : Controls.CustomControl
                 if (App.Current!.MainPage!.Navigation.NavigationStack.Count > 1)
                     await App.Current.MainPage.Navigation.PopAsync();
                 else
-                    await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking), Rep, _service, _signalRService, _audioService, _locationTracking));
+                    await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification), Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
             }
         }
         catch (FeatureNotEnabledException)

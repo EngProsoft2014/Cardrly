@@ -15,6 +15,7 @@ using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
 using Newtonsoft.Json;
+using Plugin.FirebasePushNotifications;
 using Plugin.Maui.Audio;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reactive.Linq;
@@ -39,16 +40,23 @@ namespace Cardrly.ViewModels
         readonly Services.Data.ServicesService _service;
         readonly SignalRService _signalRService;
         readonly LocationTrackingService _locationTracking;
+        private readonly IFirebasePushNotification _firebasePushNotification;
         #endregion
 
         #region Cons
-        public LoginViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
+        public LoginViewModel(IGenericRepository GenericRep, 
+            Services.Data.ServicesService service, 
+            SignalRService signalRService, 
+            IAudioStreamService audioService, 
+            LocationTrackingService locationTracking,
+            IFirebasePushNotification firebasePushNotification)
         {
             Rep = GenericRep;
             _service = service;
             _signalRService = signalRService;
             _audioService = audioService;
             _locationTracking = locationTracking;
+            _firebasePushNotification = firebasePushNotification;
             Init();
         }
         #endregion
@@ -97,6 +105,9 @@ namespace Cardrly.ViewModels
                     Preferences.Default.Remove(ApiConstants.rememberMePassword);
                 }
 
+                await _firebasePushNotification.RegisterForPushNotificationsAsync();
+                model.FCM_Token = _firebasePushNotification.Token;
+
                 model.DeviceId = await StaticMember.GetDeviceId();
 
                 var json = await Rep.PostTRAsync<ApplicationUserLoginRequest, ApplicationUserResponse>(ApiConstants.LoginApi, model);
@@ -132,7 +143,7 @@ namespace Cardrly.ViewModels
                                             else
                                             {
                                                 await SetData(UserResponse);
-                                                var page = new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking), Rep, _service, _signalRService, _audioService, _locationTracking);
+                                                var page = new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification), Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification);
                                                 await App.Current!.MainPage!.Navigation.PushAsync(page);
                                             }
                                         }
@@ -158,7 +169,7 @@ namespace Cardrly.ViewModels
                                             else
                                             {
                                                 await SetData(UserResponse);
-                                                var page = new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking), Rep, _service, _signalRService, _audioService, _locationTracking);
+                                                var page = new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification), Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification);
                                                 await App.Current!.MainPage!.Navigation.PushAsync(page);
                                             }
                                         }

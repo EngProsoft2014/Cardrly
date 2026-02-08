@@ -7,6 +7,7 @@ using Cardrly.Services.AudioStream;
 using Cardrly.Services.Data;
 using Cardrly.ViewModels;
 using Controls.UserDialogs.Maui;
+using Plugin.FirebasePushNotifications;
 
 namespace Cardrly.Pages;
 
@@ -19,10 +20,16 @@ public partial class NoInternetPage : Controls.CustomControl
     readonly SignalRService _signalRService;
     readonly IAudioStreamService _audioService;
     readonly LocationTrackingService _locationTracking;
+    readonly IFirebasePushNotification _firebasePushNotification;
     private static CancellationTokenSource _notifyCts;
     #endregion
 
-    public NoInternetPage(IGenericRepository GenericRep, ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
+    public NoInternetPage(IGenericRepository GenericRep, 
+            ServicesService service, 
+            SignalRService signalRService, 
+            IAudioStreamService audioService, 
+            LocationTrackingService locationTracking,
+            IFirebasePushNotification firebasePushNotification)
     {
         InitializeComponent();
 
@@ -31,6 +38,7 @@ public partial class NoInternetPage : Controls.CustomControl
         _signalRService = signalRService;
         _audioService = audioService;
         _locationTracking = locationTracking;
+        _firebasePushNotification = firebasePushNotification;
     }
 
     protected override void OnAppearing()
@@ -86,11 +94,11 @@ public partial class NoInternetPage : Controls.CustomControl
             string userId = Preferences.Default.Get(ApiConstants.userid, string.Empty);
             if (string.IsNullOrEmpty(userId))
             {
-                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                await App.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification)));
             }
             else
             {
-                await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking), Rep, _service, _signalRService, _audioService, _locationTracking));
+                await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification), Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
             }
         }
 

@@ -253,6 +253,9 @@
         #endregion
 
 
-
+        #region FCM_Notifications
+        public static string SendNotifyToOwner = "api/ApplicationUser/Notify/Owner/";
+        public static string RefrshFCMToken = "api/ApplicationUser/RefreshToken";
+        #endregion
     }
 }

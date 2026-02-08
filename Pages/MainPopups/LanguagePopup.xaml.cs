@@ -5,6 +5,7 @@ using Cardrly.Services.Data;
 using Cardrly.ViewModels;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
+using Plugin.FirebasePushNotifications;
 using System.Globalization;
 
 namespace Cardrly.Pages.MainPopups;
@@ -16,7 +17,13 @@ public partial class LanguagePopup : Mopups.Pages.PopupPage
     readonly SignalRService _signalRService;
     readonly IAudioStreamService _audioService;
     readonly LocationTrackingService _locationTracking;
-    public LanguagePopup(IGenericRepository generic, ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
+    readonly IFirebasePushNotification _firebasePushNotification;
+    public LanguagePopup(IGenericRepository generic,
+            ServicesService service, 
+            SignalRService signalRService, 
+            IAudioStreamService audioService,
+            LocationTrackingService locationTracking,
+            IFirebasePushNotification firebasePushNotification)
 	{
         InitializeComponent();
         Rep = generic;
@@ -24,6 +31,7 @@ public partial class LanguagePopup : Mopups.Pages.PopupPage
         _signalRService = signalRService;
         _audioService = audioService;
         _locationTracking = locationTracking;
+        _firebasePushNotification = firebasePushNotification;
         LoadSetting();
     }
 
@@ -84,7 +92,7 @@ public partial class LanguagePopup : Mopups.Pages.PopupPage
     {
         (Application.Current as App).MainPage.Dispatcher.Dispatch(() =>
         {
-            App.Current!.MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking), Rep, _service, _signalRService, _audioService, _locationTracking));
+            App.Current!.MainPage = new NavigationPage(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification), Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
         });
     }
 

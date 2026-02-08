@@ -11,6 +11,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
+using Plugin.FirebasePushNotifications;
 using System.Reactive.Linq;
 
 namespace Cardrly.ViewModels
@@ -30,16 +31,23 @@ namespace Cardrly.ViewModels
         readonly SignalRService _signalRService;
         readonly IAudioStreamService _audioService;
         readonly LocationTrackingService _locationTracking;
+        readonly IFirebasePushNotification _firebasePushNotification;
         #endregion
 
         #region Cons
-        public ChangePasswordViewModel(IGenericRepository GenericRep, Services.Data.ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
+        public ChangePasswordViewModel(IGenericRepository GenericRep, 
+            Services.Data.ServicesService service, 
+            SignalRService signalRService, 
+            IAudioStreamService audioService, 
+            LocationTrackingService locationTracking,
+            IFirebasePushNotification firebasePushNotification)
         {
             Rep = GenericRep;
             _service = service;
             _signalRService = signalRService;   
             _audioService = audioService;
             _locationTracking = locationTracking;
+            _firebasePushNotification = firebasePushNotification;
         }
         #endregion
 
@@ -93,7 +101,7 @@ namespace Cardrly.ViewModels
                         Preferences.Default.Set(ApiConstants.rememberMe, RememberMe);
                         Preferences.Default.Set(ApiConstants.rememberMeUserName, RememberMeUserName);
                         Preferences.Default.Set(ApiConstants.rememberMePassword, RememberPassword);
-                        await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking)));
+                        await Application.Current!.MainPage!.Navigation.PushAsync(new LoginPage(new LoginViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification)));
                     }
                     else
                     {

@@ -44,7 +44,7 @@ namespace Cardrly.Platforms.iOS.Services
                 return; // already running
 
             // 🔥 prevent duplicate managers
-            StopBackgroundTracking();
+            ResetBackgroundTracking();
 
             _employeeId = employeeId;
 

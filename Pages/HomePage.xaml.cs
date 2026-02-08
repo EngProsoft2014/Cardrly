@@ -21,6 +21,7 @@ using CommunityToolkit.Mvvm.Input;
 using Controls.UserDialogs.Maui;
 using Mopups.Services;
 using Newtonsoft.Json;
+using Plugin.FirebasePushNotifications;
 using Syncfusion.Maui.TabView;
 using System;
 using System.Reactive.Linq;
@@ -45,9 +46,16 @@ public partial class HomePage : Controls.CustomControl
     readonly IGenericRepository Rep;
     readonly Services.Data.ServicesService _service;
     readonly LocationTrackingService _locationTracking;
+    readonly IFirebasePushNotification _firebasePushNotification;
     #endregion
 
-    public HomePage(HomeViewModel model, IGenericRepository GenericRep, ServicesService service, SignalRService signalRService, IAudioStreamService audioService, LocationTrackingService locationTracking)
+    public HomePage(HomeViewModel model, 
+            IGenericRepository GenericRep, 
+            ServicesService service,
+            SignalRService signalRService, 
+            IAudioStreamService audioService, 
+            LocationTrackingService locationTracking,
+            IFirebasePushNotification firebasePushNotification)
     {
         InitializeComponent();
         homeViewModel = model;
@@ -57,6 +65,7 @@ public partial class HomePage : Controls.CustomControl
         _signalRService = signalRService;
         _audioService = audioService;
         _locationTracking = locationTracking;
+        _firebasePushNotification = firebasePushNotification;
         HomeView.BindingContext = model;
         // Add Flow Direction For Content View 
         HomeView.FlowDirection = this.FlowDirection;
@@ -208,7 +217,7 @@ public partial class HomePage : Controls.CustomControl
         }
         else if (e.NewIndex == 4)
         {
-            MoreView.BindingContext ??= new MoreViewModel(Rep, _service, _signalRService, _audioService, _locationTracking);
+            MoreView.BindingContext ??= new MoreViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification);
         }
 
         isTabHandling = false;
