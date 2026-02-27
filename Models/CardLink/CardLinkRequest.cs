@@ -1,6 +1,6 @@
 ﻿
 
-namespace Cardrly.Mode_s.CardLink
+namespace Cardrly.Models.CardLink
 {
     public class CardLinkRequest
     {

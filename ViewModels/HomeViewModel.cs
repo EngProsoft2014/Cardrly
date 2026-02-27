@@ -1,7 +1,7 @@
 ﻿using Cardrly.Constants;
 using Cardrly.Controls;
 using Cardrly.Helpers;
-using Cardrly.Mode_s.Account;
+using Cardrly.Models.Account;
 using Cardrly.Models.Card;
 using Cardrly.Models.Home;
 using Cardrly.Models.Permision;

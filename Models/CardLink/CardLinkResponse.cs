@@ -5,7 +5,7 @@ using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-namespace Cardrly.Mode_s.CardLink
+namespace Cardrly.Models.CardLink
 {
     public class CardLinkResponse : INotifyPropertyChanged
     {

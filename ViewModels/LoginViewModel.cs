@@ -2,7 +2,7 @@
 using Cardrly.Constants;
 using Cardrly.Controls;
 using Cardrly.Helpers;
-using Cardrly.Mode_s.ApplicationUser;
+using Cardrly.Models.ApplicationUser;
 using Cardrly.Models;
 using Cardrly.Pages;
 using Cardrly.Pages.MainPopups;

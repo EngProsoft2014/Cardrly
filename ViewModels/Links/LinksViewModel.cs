@@ -1,7 +1,6 @@
 ﻿using Cardrly.Constants;
 using Cardrly.Helpers;
 using Cardrly.Models.Card;
-using Cardrly.Mode_s.CardLink;
 using Cardrly.Models.CardLink;
 using Cardrly.Pages.Links;
 using Cardrly.Pages.MainPopups;

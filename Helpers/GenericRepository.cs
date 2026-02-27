@@ -1,7 +1,7 @@
 ﻿
 using Cardrly.Controls;
 using Cardrly.Helpers;
-using Cardrly.Mode_s.ApplicationUser;
+using Cardrly.Models.ApplicationUser;
 using Cardrly.Models.MeetingAiAction;
 using Cardrly.Models.MeetingAiActionRecord;
 using Cardrly.Resources.Lan;

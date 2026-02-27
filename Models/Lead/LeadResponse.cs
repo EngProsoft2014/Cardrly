@@ -52,5 +52,7 @@ namespace Cardrly.Models.Lead
         public bool UnsubscribeEmail { get; set; }
         public bool UnsubscribeSms { get; set; }
 
+        public bool IsNotification { get; set; } = false;
+
     }
 }

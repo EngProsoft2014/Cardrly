@@ -1158,4 +1158,7 @@
   <data name="msgLocalNotificationforLocations" xml:space="preserve">
     <value>Please reopen the app, enable GPS, or allow location permission to resume sending your location.</value>
   </data>
+  <data name="hdrLeadDetails" xml:space="preserve">
+    <value>Lead Details</value>
+  </data>
 </root>

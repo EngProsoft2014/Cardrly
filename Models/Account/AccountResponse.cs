@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 
 
-namespace Cardrly.Mode_s.Account
+namespace Cardrly.Models.Account
 {
     public class AccountResponse : INotifyPropertyChanged
     {

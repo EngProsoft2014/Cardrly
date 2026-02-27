@@ -1,7 +1,7 @@
 using Cardrly.Constants;
 using Cardrly.Controls;
 using Cardrly.Helpers;
-using Cardrly.Mode_s.CardLink;
+using Cardrly.Models.CardLink;
 using Cardrly.Models.Card;
 using Cardrly.Resources.Lan;
 using Cardrly.ViewModels;

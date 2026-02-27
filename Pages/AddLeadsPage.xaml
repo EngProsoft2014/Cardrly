@@ -21,11 +21,13 @@
                     <TapGestureRecognizer Command="{Binding BackClickedCommand}"></TapGestureRecognizer>
                 </Image.GestureRecognizers>
             </Image>
-            <Label Text="{x:Static res:AppResources.hdrCreateLead}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"
-           TextColor="Black" VerticalOptions="CenterAndExpand" >
+            <Label Text="{x:Static res:AppResources.hdrCreateLead}" FontSize="18" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" TextColor="Black" VerticalOptions="CenterAndExpand" >
                 <Label.Triggers>
                     <DataTrigger TargetType="Label" Binding="{Binding AddOrUpdate}" Value='2'>
                         <Setter Property="Text" Value="{x:Static res:AppResources.hdrEditLead}"></Setter>
+                    </DataTrigger>
+                    <DataTrigger TargetType="Label" Binding="{Binding AddOrUpdate}" Value='3'>
+                        <Setter Property="Text" Value="{x:Static res:AppResources.hdrLeadDetails}"></Setter>
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
@@ -50,8 +52,7 @@
                         </Border.GestureRecognizers>
                     </Border>
                     <!--Star Recording-->
-                    <Border StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="10" Stroke="Black" HorizontalOptions="FillAndExpand"
-            IsVisible="False">
+                    <Border IsVisible="False" StrokeShape="RoundRectangle 10" BackgroundColor="White" Padding="10" Stroke="Black" HorizontalOptions="FillAndExpand">
                         <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="7">
                             <Image>
                                 <Image.Source>
@@ -165,7 +166,13 @@
                 <!--Save Button-->
                 <Button  FontAutoScalingEnabled="False" Text="{x:Static res:AppResources.btnSave}" FontSize="16" FontAttributes="Bold" Margin="0,20,0,0" VerticalOptions="EndAndExpand"
                          BackgroundColor="#FF7F3E" TextColor="White" Command="{Binding SaveClickCommand}"
-                         HorizontalOptions="FillAndExpand"></Button>
+                         HorizontalOptions="FillAndExpand">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsNotificationVM}" Value="True">
+                            <Setter Property="IsVisible" Value="False"></Setter>
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
             </StackLayout>
         </ScrollView>
     </StackLayout>

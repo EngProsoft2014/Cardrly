@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cardrly.Mode_s.ApplicationUser
+namespace Cardrly.Models.ApplicationUser
 {
     public class ApplicationUserLoginRequest : INotifyPropertyChanged
     {

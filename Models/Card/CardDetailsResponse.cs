@@ -1,5 +1,5 @@
 ﻿using Cardrly.Helpers;
-using Cardrly.Mode_s.CardLink;
+using Cardrly.Models.CardLink;
 using System;
 using System.Collections.Generic;
 using System.Linq;

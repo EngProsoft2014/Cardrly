@@ -1,7 +1,6 @@
 ﻿using Cardrly.Constants;
 using Cardrly.Helpers;
-using Cardrly.Mode_s.Account;
-using Cardrly.Mode_s.ApplicationUser;
+using Cardrly.Models.Account;
 using Cardrly.Models.ApplicationUser;
 using Cardrly.Pages;
 using CommunityToolkit.Mvvm.ComponentModel;

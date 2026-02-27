@@ -1,6 +1,6 @@
 ﻿using Akavache;
 using System.Reactive.Linq;
-using Cardrly.Mode_s.ApplicationUser;
+using Cardrly.Models.ApplicationUser;
 using Cardrly.Constants;
 using Controls.UserDialogs.Maui;
 using CommunityToolkit.Maui.Alerts;

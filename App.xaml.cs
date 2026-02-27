@@ -26,8 +26,9 @@ using Microsoft.IdentityModel.Tokens;
 using Plugin.FirebasePushNotifications;
 using Plugin.FirebasePushNotifications.Model;
 using Plugin.FirebasePushNotifications.Platforms;
-using Cardrly.Mode_s.ApplicationUser;
-
+using Cardrly.Models.ApplicationUser;
+using Cardrly.ViewModels.Leads;
+using Cardrly.Models.Lead;
 
 
 
@@ -276,39 +277,6 @@ namespace Cardrly
             }
         }
 
-        void RegisterFcmEvents()
-        {
-            _firebasePushNotification.TokenRefreshed -= OnTokenRefreshed;
-            _firebasePushNotification.TokenRefreshed += OnTokenRefreshed;
-        }
-
-        async void OnTokenRefreshed(object sender, FirebasePushNotificationTokenEventArgs p)
-        {
-            _firebasePushNotification.TokenRefreshed += async (s, p) =>
-            {
-                if (string.IsNullOrWhiteSpace(p.Token))
-                    return;
-
-                var username = Preferences.Default.Get(ApiConstants.username, string.Empty);
-                if (string.IsNullOrEmpty(username))
-                    return;
-
-                ApplicationUserLoginRequest model = new ApplicationUserLoginRequest
-                {
-                    UserName = Preferences.Default.Get(ApiConstants.username, string.Empty),
-                    FCM_Token = p.Token
-                };
-
-                try
-                {
-                    await Rep.PostAsync(ApiConstants.RefrshFCMToken, model);
-                }
-                catch
-                {
-                    // optional logging
-                }
-            };
-        }
 
         async Task StatusLocation()
         {
@@ -444,6 +412,30 @@ namespace Cardrly
             }
         }
 
+        private async Task EnsureGpsEnabled()
+        {
+            try
+            {
+                var request = new GeolocationRequest(GeolocationAccuracy.Default, TimeSpan.FromSeconds(1));
+                var location = await Geolocation.GetLocationAsync(request);
+
+                if (location == null)
+                {
+                    await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
+                }
+            }
+            catch (FeatureNotEnabledException)
+            {
+                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
+            }
+            catch (PermissionException)
+            {
+                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
+            }
+        }
+
+
+        #region SignalR Methods
         public async Task SignalRservice()
         {
 #if ANDROID
@@ -472,57 +464,6 @@ namespace Cardrly
             UserDialogs.Instance.HideHud();
 #endif
         }
-
-
-
-        //Location signalR
-        //public async Task StartSignalRLocationservice()
-        //{
-        //    string UserId = Preferences.Default.Get(ApiConstants.userid, "");
-        //    await _signalRService.StartLocationTrackingAsync(UserId);
-
-        //    await EnsureGpsEnabled();
-        //}
-
-        private async Task EnsureGpsEnabled()
-        {
-            try
-            {
-                var request = new GeolocationRequest(GeolocationAccuracy.Default, TimeSpan.FromSeconds(1));
-                var location = await Geolocation.GetLocationAsync(request);
-
-                if (location == null)
-                {
-                    await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
-                }
-            }
-            catch (FeatureNotEnabledException)
-            {
-                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
-            }
-            catch (PermissionException)
-            {
-                await App.Current!.MainPage!.Navigation.PushAsync(new NoGpsPage(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
-            }
-        }
-
-
-        async Task HandleNotify()
-        {
-#if ANDROID || IOS
-            MessagingCenter.Subscribe<NotificationManagerService, int>(this, "NoifcationClicked", async (sender, message) =>
-            {
-                if (message == 2)
-                {
-                    //Controls.StaticMember.TabIndex = message;
-
-                    await App.Current!.MainPage!.Navigation.PushAsync(new HomePage(new HomeViewModel(Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification), Rep, _service, _signalRService, _audioService, _locationTracking, _firebasePushNotification));
-
-                }
-            });
-#endif
-        }
-
 
         // Logout
         [Obsolete]
@@ -603,6 +544,98 @@ namespace Cardrly
                 }
             });
         }
+
+        #endregion
+
+        #region FCMRegister
+        void RegisterFcmEvents()
+        {
+            _firebasePushNotification.TokenRefreshed -= OnTokenRefreshed;
+            _firebasePushNotification.TokenRefreshed += OnTokenRefreshed;
+
+            _firebasePushNotification.NotificationOpened -= OnNotificationOpened;
+            _firebasePushNotification.NotificationOpened += OnNotificationOpened;
+        }
+
+        async void OnTokenRefreshed(object sender, FirebasePushNotificationTokenEventArgs p)
+        {
+            _firebasePushNotification.TokenRefreshed += async (s, p) =>
+            {
+                if (string.IsNullOrWhiteSpace(p.Token))
+                    return;
+
+                var username = Preferences.Default.Get(ApiConstants.username, string.Empty);
+                if (string.IsNullOrEmpty(username))
+                    return;
+
+                ApplicationUserLoginRequest model = new ApplicationUserLoginRequest
+                {
+                    UserName = Preferences.Default.Get(ApiConstants.username, string.Empty),
+                    FCM_Token = p.Token
+                };
+
+                try
+                {
+                    await Rep.PostAsync(ApiConstants.RefrshFCMToken, model);
+                }
+                catch
+                {
+                    // optional logging
+                }
+            };
+        }
+
+        async void OnNotificationOpened(object sender, FirebasePushNotificationResponseEventArgs e)
+        {
+            await Task.Delay(500); // iOS / Android safety
+
+            if (e.Data == null || !e.Data.Any())
+                return;
+
+            if (!e.Data.TryGetValue("route", out var route))
+                return;
+
+            switch (route)
+            {
+                case "lead-details":
+                    await OpenLeadDetails(e.Data);
+                    break;
+            }
+        }
+
+        string GetValue(IDictionary<string, object> data, string key)
+        {
+            return data.TryGetValue(key, out var value)
+                ? value?.ToString() ?? string.Empty
+                : string.Empty;
+        }
+
+        async Task OpenLeadDetails(IDictionary<string, object> data)
+        {
+            if (App.Current?.MainPage is not NavigationPage nav)
+                return;
+
+            var lead = new LeadResponse
+            {
+                Id = GetValue(data, "LeadId"),
+                CardName = GetValue(data, "CardName"),
+                LeadCategoryId = GetValue(data, "LeadCategoryId"),
+                LeadCategoryName = GetValue(data, "LeadCategoryName"),
+                FullName = GetValue(data, "FullName"),
+                Email = GetValue(data, "Email"),
+                Address = GetValue(data, "Address"),
+                Phone = GetValue(data, "Phone"),
+                Company = GetValue(data, "Company"),
+                Website = GetValue(data, "Website"),
+                JobTitle = GetValue(data, "JobTitle"),
+                ImgProfile = GetValue(data, "ImgProfile"),
+                UrlImgProfile = GetValue(data, "UrlImgProfile"),
+                IsNotification = true
+            };
+
+            await nav.Navigation.PushAsync(new AddLeadsPage(new AddLeadViewModel(lead, Rep, _service)));
+        }
+        #endregion
 
         async Task ClearMostData()
         {

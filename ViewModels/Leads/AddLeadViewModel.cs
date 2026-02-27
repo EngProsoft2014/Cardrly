@@ -29,6 +29,8 @@ namespace Cardrly.ViewModels.Leads
         [ObservableProperty]
         public int isProfileImageAdded = 1;
         [ObservableProperty]
+        public bool isNotificationVM = false;
+        [ObservableProperty]
         int addOrUpdate = 0; // 1 - Add & 2 - update  
         [ObservableProperty]
         ObservableCollection<SelectListCategory> listCategories = new ObservableCollection<SelectListCategory>();
@@ -55,8 +57,9 @@ namespace Cardrly.ViewModels.Leads
         {
             Rep = GenericRep;
             _service = service;
-            AddOrUpdate = 2;
+            IsNotificationVM = leadResponse.IsNotification;
             Response = leadResponse;
+            AddOrUpdate = leadResponse.IsNotification == true ? 3 : 2; //3 for notification lead details //2 for update   
             Init(leadResponse);
         }
         #endregion

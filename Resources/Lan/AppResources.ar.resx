@@ -1158,4 +1158,7 @@
   <data name="msgLocalNotificationforLocations" xml:space="preserve">
     <value>يرجى إعادة فتح التطبيق، أو تفعيل نظام تحديد المواقع العالمي (GPS)، أو منح إذن الوصول إلى الموقع لاستئناف إرسال موقعك.</value>
   </data>
+  <data name="hdrLeadDetails" xml:space="preserve">
+    <value>بيانات العميل</value>
+  </data>
 </root>

@@ -1,8 +1,8 @@
-﻿using Cardrly.Mode_s.Account;
+﻿using Cardrly.Models.Account;
 using Cardrly.Models;
 using Cardrly.Models.Permision;
 
-namespace Cardrly.Mode_s.ApplicationUser
+namespace Cardrly.Models.ApplicationUser
 {
     public class ApplicationUserResponse
     {

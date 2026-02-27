@@ -376,6 +376,15 @@ namespace Cardrly.Resources.Lan {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lead Details.
+        /// </summary>
+        internal static string hdrLeadDetails {
+            get {
+                return ResourceManager.GetString("hdrLeadDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Leads.
         /// </summary>
         internal static string hdrLeads {

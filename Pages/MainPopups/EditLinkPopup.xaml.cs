@@ -1,6 +1,6 @@
 using Cardrly.Constants;
 using Cardrly.Helpers;
-using Cardrly.Mode_s.CardLink;
+using Cardrly.Models.CardLink;
 using Cardrly.Models.AccountLinks;
 using Cardrly.Resources.Lan;
 using CommunityToolkit.Maui.Alerts;
