@@ -45,7 +45,7 @@ namespace Cardrly.ViewModels
             _audioService = audioService;
             _locationTracking = locationTracking;
             IsShowMeetingSCript = StaticMember.CheckPermission(ApiConstants.GetMeetingAi) == true ? true : false;
-            IsShowTimeSheet = StaticMember.CheckPermission(ApiConstants.GetHistoryLocationTimeSheet) == true ? true : false;
+            IsShowTimeSheet = StaticMember.CheckPermission(ApiConstants.GetTimeSheet) == true ? true : false;
         }
 
 

@@ -85,7 +85,7 @@
 		<CodesignProvision>Cardrly Development Provisioning</CodesignProvision>
 		<CodesignKey>Apple Development: TAREK GABER (9RKU8MRSBH)</CodesignKey>
 		<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
-		<ApplicationVersion>18</ApplicationVersion>
+		<ApplicationVersion>19</ApplicationVersion>
 		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
@@ -94,7 +94,7 @@
 		<CodesignProvision>Cardrly Provisioning</CodesignProvision>
 		<CodesignKey>Apple Distribution: ENG PRO SOFT, LLC (YZWTVALFLW)</CodesignKey>
 		<CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
-		<ApplicationVersion>18</ApplicationVersion>
+		<ApplicationVersion>19</ApplicationVersion>
 		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
@@ -105,13 +105,13 @@
 		<AndroidUseLLVM>false</AndroidUseLLVM>
 		<AndroidLinkMode>None</AndroidLinkMode>
 		<AndroidPackageFormat>aab</AndroidPackageFormat>
-		<ApplicationVersion>18</ApplicationVersion>
+		<ApplicationVersion>19</ApplicationVersion>
 		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
 		<RuntimeIdentifiers>android-arm64;android-x64</RuntimeIdentifiers>
-		<ApplicationVersion>18</ApplicationVersion>
+		<ApplicationVersion>19</ApplicationVersion>
 		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 		<AndroidUseAapt2>True</AndroidUseAapt2>
 		<AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
@@ -120,22 +120,22 @@
 
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-maccatalyst|AnyCPU'">
-	  <ApplicationVersion>18</ApplicationVersion>
+	  <ApplicationVersion>19</ApplicationVersion>
 	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-windows10.0.19041.0|AnyCPU'">
-	  <ApplicationVersion>18</ApplicationVersion>
+	  <ApplicationVersion>19</ApplicationVersion>
 	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-maccatalyst|AnyCPU'">
-	  <ApplicationVersion>18</ApplicationVersion>
+	  <ApplicationVersion>19</ApplicationVersion>
 	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-windows10.0.19041.0|AnyCPU'">
-	  <ApplicationVersion>18</ApplicationVersion>
+	  <ApplicationVersion>19</ApplicationVersion>
 	  <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-ios'">
@@ -185,7 +185,6 @@
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.7.1" />
 		<PackageReference Include="ZXing.Net.Maui.Controls" Version="0.4.0" />
 	</ItemGroup>
-
 
 	<ItemGroup>
 	  <Resource Include="Platforms\iOS\GoogleService-Info.plist" />
