@@ -17,11 +17,13 @@
 		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDqwZ6F9-8JeluwYaJaOYyBnK_BHEBGjR8" />
 		<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 		<meta-data android:name="android.enable16kPageSupport" android:value="true"/>
+
 		<service
-            android:name=".Services.RecordingForegroundService"
-            android:enabled="true"
-            android:exported="false"
-            android:foregroundServiceType="microphone|mediaProjection|camera" />
+			android:name=".Services.RecordingForegroundService"
+			android:enabled="true"
+			android:exported="false"
+			android:foregroundServiceType="microphone|mediaProjection|camera|mediaPlayback" />
+
 		<service
 			android:name="Cardrly.Platforms.Android.Services.LocationService"
 			android:exported="false"
@@ -36,6 +38,7 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.NFC" />
 	<uses-feature android:name="android.hardware.nfc" android:required="false" />
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 	<uses-permission android:name="android.permission.RECORD_AUDIO"/>
 	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -48,7 +51,6 @@
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
 
 	<uses-feature android:name="android.hardware.location" android:required="false" />
