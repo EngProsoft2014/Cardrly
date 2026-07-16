@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+                  xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+                  xmlns:res="clr-namespace:Cardrly.Resources.Lan"
+                  x:Class="Cardrly.Pages.MainPopups.LocationDisclosurePopup"
+                  NavigationPage.HasNavigationBar="False" 
+                  CloseWhenBackgroundIsClicked="False"
+                  BackgroundColor="#90000000"
+                  Title="LocationDisclosurePopup">
+
+    <mopups:PopupPage.Animation>
+        <mopupsanim:MoveAnimation
+       DurationIn="700"
+       EasingIn="BounceOut"
+       PositionIn="Bottom"
+       PositionOut="Center" />
+    </mopups:PopupPage.Animation>
+
+
+    <Border VerticalOptions="CenterAndExpand" Padding="10" Margin="20" BackgroundColor="White" Stroke="White">
+            <StackLayout Padding="20" Spacing="20" BackgroundColor="White">
+            <Label Text="{x:Static res:AppResources.msgCardrlycollects}"
+               FontSize="16"
+               TextColor="Black"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="30">
+                <Button Text="{x:Static res:AppResources.btnallow}" FontSize="15" FontAttributes="Bold" Clicked="OnAllowClicked" BackgroundColor="Green" TextColor="White" HorizontalOptions="FillAndExpand"/>
+                <Button Text="{x:Static res:AppResources.btnDontAllow}" FontSize="15" FontAttributes="Bold" Clicked="OnDenyClicked" BackgroundColor="Red" TextColor="White" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
+
+            </StackLayout>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="30"></RoundRectangle>
+            </Border.StrokeShape>
+        </Border>
+
+</mopups:PopupPage>

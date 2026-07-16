@@ -33,6 +33,8 @@
         public static string shortcutIcons = "shortcuticons";
         public static string isFirstRun = "isFirstRun";
         public static string isTimeSheetCheckout = "isTimeSheetCheckout";
+        public static string isLocationDisclosureAccepted = "LocationDisclosureAccepted";
+
         //End Preferences Key 
         #endregion
 

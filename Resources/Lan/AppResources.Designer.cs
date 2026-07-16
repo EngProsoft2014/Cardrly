@@ -19,7 +19,7 @@ namespace Cardrly.Resources.Lan {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class AppResources {
@@ -66,6 +66,15 @@ namespace Cardrly.Resources.Lan {
         internal static string btnActivateanotherDevice {
             get {
                 return ResourceManager.GetString("btnActivateanotherDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow.
+        /// </summary>
+        internal static string btnallow {
+            get {
+                return ResourceManager.GetString("btnallow", resourceCulture);
             }
         }
         
@@ -120,6 +129,15 @@ namespace Cardrly.Resources.Lan {
         internal static string btnCreateNewMeeting {
             get {
                 return ResourceManager.GetString("btnCreateNewMeeting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t Allow.
+        /// </summary>
+        internal static string btnDontAllow {
+            get {
+                return ResourceManager.GetString("btnDontAllow", resourceCulture);
             }
         }
         
@@ -1974,6 +1992,15 @@ namespace Cardrly.Resources.Lan {
         internal static string msgCan_tDeleteThisLeadNowTryagainLater {
             get {
                 return ResourceManager.GetString("msgCan\'tDeleteThisLeadNowTryagainLater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cardrly collects your location in the background to track employee attendance during work shifts, even when the app is closed or not in use. Location data is used only for employee management purposes within the company and is never shared with third parties..
+        /// </summary>
+        internal static string msgCardrlycollects {
+            get {
+                return ResourceManager.GetString("msgCardrlycollects", resourceCulture);
             }
         }
         

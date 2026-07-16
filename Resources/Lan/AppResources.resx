@@ -1161,4 +1161,13 @@
   <data name="hdrLeadDetails" xml:space="preserve">
     <value>Lead Details</value>
   </data>
+  <data name="msgCardrlycollects" xml:space="preserve">
+    <value>Cardrly collects your location in the background to track employee attendance during work shifts, even when the app is closed or not in use. Location data is used only for employee management purposes within the company and is never shared with third parties.</value>
+  </data>
+  <data name="btnallow" xml:space="preserve">
+    <value>Allow</value>
+  </data>
+  <data name="btnDontAllow" xml:space="preserve">
+    <value>Don't Allow</value>
+  </data>
 </root>

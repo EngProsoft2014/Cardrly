@@ -162,9 +162,30 @@ namespace Cardrly
 
             //await Task.WhenAll(GetDeviceIdFromDataBase(), StatusLocation(), SignalRservice(), CheckToStartSendLocation());
             await GetDeviceIdFromDataBase();
-            await StatusLocation();
             await SignalRservice();
-            await CheckToStartSendLocation();
+
+            bool hasTrackingPermission = StaticMember.CheckPermission(ApiConstants.SendLocationTimeSheet);
+
+            if (hasTrackingPermission)
+            {
+                bool accepted = Preferences.Default.Get(ApiConstants.isLocationDisclosureAccepted, false);
+
+                if (!accepted)
+                {
+                    var popup = new LocationDisclosurePopup();
+                    await MopupService.Instance.PushAsync(popup);
+                    bool result = await popup.ShowAsync();
+
+                    if (!result)
+                    {
+                        // المستخدم رفض → لا تبدأ التتبع
+                        return;
+                    }
+                }
+
+                await StatusLocation();
+                await CheckToStartSendLocation();
+            }
 
             IsInBackground = false;
 

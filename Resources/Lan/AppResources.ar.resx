@@ -1161,4 +1161,13 @@
   <data name="hdrLeadDetails" xml:space="preserve">
     <value>بيانات العميل</value>
   </data>
+  <data name="msgCardrlycollects" xml:space="preserve">
+    <value>يجمع تطبيق Cardrly موقعك في الخلفية لتتبع حضور الموظفين خلال نوبات العمل، حتى عندما يكون التطبيق مغلقًا أو غير مستخدم. تُستخدم بيانات الموقع فقط لأغراض إدارة شؤون الموظفين داخل الشركة، ولا تتم مشاركتها مطلقًا مع أي جهات خارجية.</value>
+  </data>
+  <data name="btnallow" xml:space="preserve">
+    <value>موافق</value>
+  </data>
+  <data name="btnDontAllow" xml:space="preserve">
+    <value>غير موافق</value>
+  </data>
 </root>
